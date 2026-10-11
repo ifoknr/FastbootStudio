@@ -25,6 +25,10 @@ nothing to install.
 > 🆕 **A new version.** Fastboot Studio is the new generation of Fastboot Enhance: a new
 > interface from top to bottom, new pages, and more protection for the phone.
 >
+> **New in 2.5:**
+> - A **Phone** page for the phone in Android: specs, kernel, security and battery; with the
+>   Companion module, the bootloader's own AVB state, module conflicts and its backups.
+>
 > **New in 2.4:**
 > - A **Root** page: Magisk, KernelSU or APatch in four steps, with the right image (boot or init_boot) picked for you.
 > - Boot images are read before flashing: kernel, KMI, security patch and root, with a stop on the usual bricks.

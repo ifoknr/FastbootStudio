@@ -235,7 +235,7 @@ namespace FastbootEnhance
 
         static void showDevice(PhoneReport phone)
         {
-            List<InfoRow> rows = new List<InfoRow>();
+            List<PhoneRow> rows = new List<PhoneRow>();
             string model = phone.Model;
             if (model != null && phone.Brand != null && model.IndexOf(phone.Brand, StringComparison.OrdinalIgnoreCase) < 0)
                 model = phone.Brand + " " + model;
@@ -276,7 +276,7 @@ namespace FastbootEnhance
         static void showSecurity(PhoneReport phone, bool companionPending)
         {
             bool ready = phone.Companion == CompanionState.Ready;
-            List<InfoRow> rows = new List<InfoRow>();
+            List<PhoneRow> rows = new List<PhoneRow>();
             add(rows, Properties.Resources.phone_kernel, phone.Kernel);
             add(rows, "KMI", phone.Kmi);
             add(rows, Properties.Resources.phone_bootloader, phone.DeviceState == "unlocked" ? Properties.Resources.phone_unlocked
@@ -548,10 +548,10 @@ namespace FastbootEnhance
             }
         }
 
-        static void add(List<InfoRow> rows, string name, string value)
+        static void add(List<PhoneRow> rows, string name, string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
-                rows.Add(new InfoRow(name, value));
+                rows.Add(new PhoneRow(name, value));
         }
 
         static string join(params string[] parts)

@@ -283,8 +283,8 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="{Binding Name}" Foreground="{StaticResource Dim}" FontSize="12.5"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Value}" FontFamily="{StaticResource Mono}" FontSize="12.5"
-                                               FlowDirection="LeftToRight" TextAlignment="Left" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Value}" FontFamily="{Binding Font}" FontSize="12.5"
+                                               FlowDirection="{Binding Flow}" HorizontalAlignment="Left" TextWrapping="Wrap"/>
                                 </Grid>
                             </DataTemplate>
                         </Grid.Resources>
@@ -383,7 +383,7 @@
                                 </DockPanel>
                                 <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource Note}" FontSize="11.5" Margin="0,10,0,0" Text="{x:Static props:Resources.phone_backups_note}"/>
                                 <Grid MinHeight="90">
-                                    <ListView x:Name="phone_backups" local:ColumnFill.Column="0" local:ColumnFill.MinWidth="110" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                    <ListView x:Name="phone_backups" local:ColumnFill.Column="0" local:ColumnFill.MinWidth="90" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                                         <ListView.View>
                                             <GridView>
                                                 <GridViewColumn Header="{x:Static props:Resources.phone_col_backup}" Width="300">
@@ -394,7 +394,7 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_type}" Width="80">
+                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_type}" Width="74">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <Border BorderBrush="{Binding TypeBrush}" BorderThickness="1" CornerRadius="10" Padding="9,1" HorizontalAlignment="Left">
@@ -403,17 +403,17 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_files}" Width="50" DisplayMemberBinding="{Binding Files}"/>
+                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_files}" Width="48" DisplayMemberBinding="{Binding Files}"/>
                                                 <GridViewColumn Header="{x:Static props:Resources.phone_col_size}" Width="76" DisplayMemberBinding="{Binding Size}"/>
-                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_date}" Width="122" DisplayMemberBinding="{Binding Date}"/>
-                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_pc}" Width="150">
+                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_date}" Width="116" DisplayMemberBinding="{Binding Date}"/>
+                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_pc}" Width="140">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding OnPc}" Foreground="{Binding OnPcBrush}" FontSize="12" TextTrimming="CharacterEllipsis" ToolTip="{Binding OnPc}"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Width="124">
+                                                <GridViewColumn Width="118">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Horizontal">
@@ -1465,7 +1465,7 @@
                         </Border>
                         <StackPanel Grid.Column="1" Margin="26,4,0,0">
                             <TextBlock Text="Fastboot Studio" FontSize="22" FontWeight="SemiBold"/>
-                            <TextBlock Text="v2.4.0" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}" Margin="0,2,0,10"/>
+                            <TextBlock Text="v2.5.0" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}" Margin="0,2,0,10"/>
                             <TextBlock Style="{StaticResource Note}" Margin="0,0,0,20" Text="{x:Static props:Resources.about_engine}"/>
 
                             <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.about_developer}"/>

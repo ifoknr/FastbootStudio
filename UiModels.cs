@@ -392,6 +392,30 @@ namespace FastbootEnhance
         public FlowDirection ImageFlow => Partition.HasImage ? FlowDirection.LeftToRight : Languages.Flow;
     }
 
+    /// <summary>
+    /// A name and a value on the Phone page. Codes and versions are drawn left to right in the
+    /// mono font; a value with Arabic words in it (a battery or slot line) keeps the page's
+    /// direction and font, so it does not come out backwards.
+    /// </summary>
+    sealed class PhoneRow
+    {
+        public PhoneRow(string name, string value)
+        {
+            bool words = false;
+            foreach (char c in value)
+                words |= c >= '\u0600' && c <= '\u06FF';
+            Name = name;
+            Value = value;
+            Flow = words ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+            Font = (FontFamily)Application.Current.FindResource(words ? "UiFont" : "Mono");
+        }
+
+        public string Name { get; }
+        public string Value { get; }
+        public FlowDirection Flow { get; }
+        public FontFamily Font { get; }
+    }
+
     /// <summary>A conflict between root modules, on the Phone page.</summary>
     sealed class ConflictRow
     {
