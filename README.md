@@ -13,6 +13,7 @@
   <img alt="Languages" src="https://img.shields.io/badge/UI-English%20%7C%20%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9%20%7C%20%E4%B8%AD%E6%96%87%20%7C%20%E6%97%A5%E6%9C%AC%E8%AA%9E%20%7C%20%ED%95%9C%EA%B5%AD%EC%96%B4-0E1116?style=flat-square&labelColor=1D222B">
   <a href="https://github.com/ifoknr/FastbootStudio/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/ifoknr/FastbootStudio?style=flat-square&labelColor=1D222B&color=2DD4BF&label=release"></a>
   <img alt="License MIT" src="https://img.shields.io/badge/license-MIT-0E1116?style=flat-square&labelColor=1D222B">
+  <a href="https://xdaforums.com/t/tool-windows-fastboot-studio-fastboot-ota-flasher-root-helper-phone-info-payload-dumper-super-builder-backups.4804685/"><img alt="XDA thread" src="https://img.shields.io/badge/XDA-thread-0E1116?style=flat-square&labelColor=1D222B&color=EA7100"></a>
 </p>
 
 Fastboot Studio is a modern rewrite of [Fastboot Enhance](https://github.com/libxzr/FastbootEnhance)
@@ -411,7 +412,7 @@ would like to help, you are welcome. Every contribution counts, however small:
 - **Send code**: fork the repository and open a pull request; see [CONTRIBUTING.md](CONTRIBUTING.md).
 - **Share the app** with people who need it, and ⭐ the repository.
 
-Direct contact: Telegram [@IFOKNR1](https://t.me/IFOKNR1).
+Direct contact: Telegram [@IFOKNR1](https://t.me/IFOKNR1). Questions and feedback are also welcome on the [XDA thread](https://xdaforums.com/t/tool-windows-fastboot-studio-fastboot-ota-flasher-root-helper-phone-info-payload-dumper-super-builder-backups.4804685/).
 
 ---
 

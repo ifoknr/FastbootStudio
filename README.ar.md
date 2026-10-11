@@ -6,7 +6,7 @@
 
 <p align="center">
   <b>فاست بوت، تفليش التحديثات، مستخرج Payload، صور super والنسخ الاحتياطي — في برنامج واحد لويندوز.</b><br>
-  <a href="README.md">English</a> · <a href="#تحميل">التحميل</a> · <a href="#الأقسام">أقسام البرنامج</a> · <a href="#شرح">طريقة الاستخدام</a> · <a href="CHANGELOG.md">سجل التعديلات</a> · <a href="#ساهم">ساهم معنا</a>
+  <a href="README.md">English</a> · <a href="#تحميل">التحميل</a> · <a href="#الأقسام">أقسام البرنامج</a> · <a href="#شرح">طريقة الاستخدام</a> · <a href="CHANGELOG.md">سجل التعديلات</a> · <a href="#ساهم">ساهم معنا</a> · <a href="https://xdaforums.com/t/tool-windows-fastboot-studio-fastboot-ota-flasher-root-helper-phone-info-payload-dumper-super-builder-backups.4804685/">موضوع XDA</a>
 </p>
 
 **Fastboot Studio** نسخة مطوّرة بالكامل من برنامج [Fastboot Enhance](https://github.com/libxzr/FastbootEnhance)
@@ -330,7 +330,7 @@
 - **ساهم بالكود:** سوِّ Fork وافتح Pull Request. التفاصيل في [CONTRIBUTING.md](CONTRIBUTING.md).
 - **انشر البرنامج** لمن يحتاجه، وحط ⭐ للمستودع.
 
-للتواصل المباشر: تيليجرام [@IFOKNR1](https://t.me/IFOKNR1).
+للتواصل المباشر: تيليجرام [@IFOKNR1](https://t.me/IFOKNR1). وتقدر تسأل أو تعطي رأيك في [موضوع XDA](https://xdaforums.com/t/tool-windows-fastboot-studio-fastboot-ota-flasher-root-helper-phone-info-payload-dumper-super-builder-backups.4804685/).
 
 ---
 
