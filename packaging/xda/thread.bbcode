@@ -1,11 +1,12 @@
 [CENTER][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/banner.png[/IMG]
 
 [SIZE=6][B]Fastboot Studio[/B][/SIZE]
-[SIZE=4]fastboot, OTA flashing, rooting, payload dumper, super images, backups and a terminal — in one Windows app[/SIZE]
+[SIZE=4]fastboot, OTA flashing, rooting, a phone page, payload dumper, super images, backups and a terminal — in one Windows app[/SIZE]
 
 [URL='https://github.com/ifoknr/FastbootStudio/releases/latest'][B]⬇ Download[/B][/URL] · [URL='https://github.com/ifoknr/FastbootStudio']Source (GitHub)[/URL] · [URL='https://github.com/ifoknr/FastbootStudio/blob/master/CHANGELOG.md']Changelog[/URL] · [URL='https://t.me/IFOKNR1']Telegram[/URL]
 
-[B]New in v2.4.0:[/B] a Root page (Magisk, KernelSU, APatch in four steps) and a boot image check that stops the usual bricks[/CENTER]
+[B]New in v2.5.0:[/B] a Phone page — your phone in Android, its security and its backups, with the Companion root module
+[B]v2.4.0:[/B] a Root page (Magisk, KernelSU, APatch in four steps) and a boot image check that stops the usual bricks[/CENTER]
 
 [SIZE=5][B]What is it?[/B][/SIZE]
 Fastboot Studio is a free, open-source (MIT) rewrite of [URL='https://github.com/libxzr/FastbootEnhance']Fastboot Enhance[/URL] by LibXZR. It keeps everything the original did and adds what people who flash phones reach for every day: a safe OTA flasher, image tools that replace simg2img / lpunpack / lpmake, a super image builder, and backups of partitions and files over adb.
@@ -22,8 +23,18 @@ Everything runs inside the app: no Python, no Linux tools, nothing to install. a
 [*][B]Boot once[/B] (fastboot boot) — refuses init_boot and vendor_boot images, which cannot start on their own, and goes through the bootloader when you are in fastbootd
 [*][B]Super space[/B] — what each slot and the COW partitions take in super, and how much is free
 [*][B]Boot image check[/B] — before boot, init_boot, recovery or vendor_boot is flashed, the image is unpacked (gzip, lz4, zstd, xz) and read: kernel version and KMI, security patch, and root (Magisk, KernelSU, APatch, SuSFS). An init_boot image into boot, a boot image into vendor_boot or a file that is not a boot image needs the partition name typed; a kernel built for another KMI than the phone runs (a boot-loop) or an older security patch is flagged first
-[*][B]Phone in Android[/B] — the device page notices it over adb and notes its kernel and security patch for the checks above. With the [URL='https://github.com/ifoknr/FastbootStudio-Companion']Fastboot Studio Companion[/URL] root module it also shows the root manager, the real AVB state and conflicts between root modules
+[*][B]Phone in Android[/B] — the device page notices it over adb and notes its kernel and security patch for the checks above (more on the Phone page below)
 [*][B]USB check[/B] — phone plugged in but not listed? It tells you why: a missing or broken driver (with the steps to fix it), Qualcomm EDL (9008), MediaTek BROM/preloader, Unisoc or Samsung download mode, or a phone still in Android (and reboots it to the bootloader)
+[/LIST]
+
+[B]📲 Phone[/B]
+The phone while it runs Android, over adb — open the page and plug it in.
+[LIST]
+[*][B]Device[/B] — model, chip, Android and SDK, security patch, slot (A/B, dynamic), battery health and cycles, storage wear (eMMC / UFS)
+[*][B]Kernel and security[/B] — kernel and KMI, bootloader locked or unlocked, SELinux, root manager, AVB state
+[*][B]With the [URL='https://github.com/ifoknr/FastbootStudio-Companion']Fastboot Studio Companion[/URL] root module[/B] (Magisk, KernelSU, APatch) — the page recognises it and asks it through su: the AVB state as the [B]bootloader[/B] reported it (and a warning when a hiding module changed the property), the root manager, storage wear, and every [B]conflict between your modules[/B]: the same file from two modules, a folder one module replaces and hides from another, a property set twice. Without the module it tells you what it adds and links to it
+[*][B]Backups on the phone[/B] — the Companion's backups with their kind (full, critical, boot), size and date; [B]Copy and verify[/B] brings one to the PC without root and checks every file against its SHA256SUMS
+[*]Restart to bootloader, fastbootd or recovery from the page
 [/LIST]
 
 [B]⚡ Flash[/B]
@@ -108,6 +119,8 @@ The stock image is kept in Documents\Fastboot Studio\Root, to undo it.
 [SPOILER="Flash"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/10-flash.png[/IMG]
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/14-super-space.png[/IMG]
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/15a-boot-check-init-boot.png[/IMG][/SPOILER]
+[SPOILER="Phone"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/33a-phone.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/33b-phone-copied.png[/IMG][/SPOILER]
 [SPOILER="Root"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/32-root-patched.png[/IMG][/SPOILER]
 [SPOILER="Payload Dumper"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/02-payload-partitions.png[/IMG][/SPOILER]
 [SPOILER="Image Tools"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/25-images-super.png[/IMG]
@@ -120,7 +133,8 @@ The stock image is kept in Documents\Fastboot Studio\Root, to undo it.
 [SPOILER="Light theme"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/light-02-device.png[/IMG]
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/light-04-terminal.png[/IMG][/SPOILER]
 [SPOILER="Arabic interface"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/ar-02-device.png[/IMG]
-[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/ar-03-flash.png[/IMG][/SPOILER]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/ar-03-flash.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/ar-11-phone.png[/IMG][/SPOILER]
 
 [SIZE=5][B]Credits[/B][/SIZE]
 [LIST]
