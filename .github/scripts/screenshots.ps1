@@ -830,7 +830,13 @@ Remove-Item $adbCompanion -ErrorAction SilentlyContinue
 function Text-Of([string] $id) { return (By-Id $root $id).Current.Name }
 function Phone-Buttons([string] $label) {
     $cond = New-Object System.Windows.Automation.PropertyCondition($UIA::ControlTypeProperty, $Type::Button)
-    return @((By-Id $root 'phone_backups').FindAll($Scope::Descendants, $cond) | Where-Object { $_.Current.Name -eq $label -and -not $_.Current.IsOffscreen })
+    return @((By-Id $root 'phone_backups').FindAll($Scope::Descendants, $cond) | Where-Object { $_.Current.Name -eq $label })
+}
+# The page scrolls as a whole on a small screen; 0 is the top, 100 the backups table.
+function Phone-Scroll([double] $percent) {
+    $scroll = (By-Id $root 'phone_page').GetCurrentPattern([System.Windows.Automation.ScrollPattern]::Pattern)
+    if ($scroll.Current.VerticallyScrollable) { $scroll.SetScrollPercent(-1, $percent) }
+    Start-Sleep -Milliseconds 400
 }
 Go 'phone_tab' | Out-Null
 Wait-For { Shown $root 'phone_companion_version' } 60 "the Companion's report" | Out-Null
@@ -847,6 +853,7 @@ $copyButtons = Wait-For { $b = Phone-Buttons $copyLabel; if ($b.Count -eq 3) { $
 $copyButtons[2].GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
 $copied = Join-Path $saveRoot 'Backups\Sample_A64_FBE0SAMPLE02_20260830-091233'
 Wait-For { (Phone-Buttons $copyLabel).Count -eq 2 -and (Phone-Buttons 'Open').Count -eq 1 } 60 "the boot backup to be copied and checked" | Out-Null
+Phone-Scroll 100
 if (-not (Test-Path (Join-Path $copied 'SHA256SUMS'))) { Fail "the backup was not copied to $copied" }
 Push-Location $copied
 foreach ($line in Get-Content 'SHA256SUMS') {
@@ -860,6 +867,7 @@ Save-Window ('{0:D2}b-phone-copied' -f ($i - 1))
 
 Set-Content $adbCompanion 'missing'
 Press 'phone_read_again'
+Phone-Scroll 0
 Wait-For { Shown $root 'phone_companion_get' } 40 "the page to offer the Companion" | Out-Null
 if ($null -ne (Shown $root 'phone_companion_version')) { Fail "the Companion still shows after it was removed" }
 Start-Sleep -Milliseconds 600

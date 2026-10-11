@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using FastbootEnhance.Core.Adb;
 
 namespace FastbootEnhance
@@ -52,6 +53,12 @@ namespace FastbootEnhance
         {
             W.phone_backups.ItemsSource = backupRows;
             W.phone_backups.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(rowButton));
+            // The table shows every row and the page scrolls; the list would keep the wheel to itself.
+            W.phone_backups.PreviewMouseWheel += delegate (object sender, MouseWheelEventArgs e)
+            {
+                e.Handled = true;
+                W.phone_page.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta) { RoutedEvent = UIElement.MouseWheelEvent, Source = sender });
+            };
 
             W.phone_reboot_recovery.Click += delegate { reboot("recovery", Properties.Resources.phone_reboot_recovery); };
             W.phone_reboot_fastbootd.Click += delegate { reboot("fastboot", "fastbootd"); };
