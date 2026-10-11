@@ -42,6 +42,8 @@ namespace FastbootEnhance
         static int copying;
         static string shownSerial;
         static string shownModel;
+        static bool wideLayout = true;
+        static bool laidOut;
 
         static void log(string line) => LogStore.Append("phone: " + line);
 
@@ -67,6 +69,8 @@ namespace FastbootEnhance
             W.phone_companion_retry.Click += delegate { readNow(); };
             W.phone_companion_get.Click += delegate { openLink(CompanionReleases); };
             W.phone_backups_open.Click += delegate { BackupUI.openInExplorer(backupsOnPc); };
+
+            W.phone_grid.SizeChanged += delegate { layout(); };
 
             W.main_tabs.SelectionChanged += delegate (object sender, SelectionChangedEventArgs e)
             {
@@ -184,6 +188,27 @@ namespace FastbootEnhance
         }
 
         // ---------------------------------------------------------------- showing it
+
+        /// <summary>
+        /// Three cards side by side when there is room for kernel strings on one line; otherwise
+        /// the Companion card goes under the other two, across the page.
+        /// </summary>
+        static void layout()
+        {
+            // A gap between the two widths, so the scroll bar coming and going cannot flip it back and forth.
+            double width = W.phone_grid.ActualWidth;
+            bool wide = width >= 1100 || (wideLayout && width >= 1040);
+            if (wide == wideLayout && laidOut)
+                return;
+            wideLayout = wide;
+            laidOut = true;
+            W.phone_gap_column.Width = new GridLength(wide ? 16 : 0);
+            W.phone_third_column.Width = wide ? new GridLength(1, GridUnitType.Star) : new GridLength(0);
+            Grid.SetRow(W.phone_companion_card, wide ? 0 : 2);
+            Grid.SetColumn(W.phone_companion_card, wide ? 4 : 0);
+            Grid.SetColumnSpan(W.phone_companion_card, wide ? 1 : 3);
+            W.phone_companion_card.Margin = new Thickness(0, 0, 0, wide ? 0 : 16);
+        }
 
         static void showEmpty(string title, string text)
         {

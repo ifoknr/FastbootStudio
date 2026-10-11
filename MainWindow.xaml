@@ -260,18 +260,20 @@
 
                 <!-- The phone: the page scrolls as a whole, so every backup is in the table on a small screen too -->
                 <ScrollViewer x:Name="phone_page" Grid.Row="1" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
-                    <Grid Margin="28,18,28,18">
+                    <!-- Three cards side by side on a wide window; on a narrower one the Companion goes under the other two (PhoneUI.layout). -->
+                    <Grid x:Name="phone_grid" Margin="28,18,28,18">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="16"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="16"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition x:Name="phone_gap_column" Width="16"/>
+                            <ColumnDefinition x:Name="phone_third_column" Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.Resources>
                             <DataTemplate x:Key="PhoneInfoRow">
@@ -294,7 +296,7 @@
                                     <Border x:Name="phone_soc_chip" DockPanel.Dock="Right" Style="{StaticResource Chip}" Padding="10,2" Visibility="Collapsed">
                                         <TextBlock x:Name="phone_soc" FontSize="11.5" Foreground="{StaticResource Dim}"/>
                                     </Border>
-                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0" VerticalAlignment="Center" Text="{x:Static props:Resources.phone_card_device}"/>
+                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,10,0" VerticalAlignment="Center" TextWrapping="Wrap" Text="{x:Static props:Resources.phone_card_device}"/>
                                 </DockPanel>
                                 <ItemsControl x:Name="phone_device_rows" ItemTemplate="{StaticResource PhoneInfoRow}"/>
                             </DockPanel>
@@ -307,7 +309,7 @@
                                     <Border x:Name="phone_avb_chip" DockPanel.Dock="Right" Style="{StaticResource Badge}" Padding="10,2" Visibility="Collapsed">
                                         <TextBlock x:Name="phone_avb" FontSize="11.5" FontFamily="{StaticResource Mono}"/>
                                     </Border>
-                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0" VerticalAlignment="Center" Text="{x:Static props:Resources.phone_card_security}"/>
+                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,10,0" VerticalAlignment="Center" TextWrapping="Wrap" Text="{x:Static props:Resources.phone_card_security}"/>
                                 </DockPanel>
                                 <StackPanel>
                                     <ItemsControl x:Name="phone_security_rows" ItemTemplate="{StaticResource PhoneInfoRow}"/>
@@ -321,13 +323,13 @@
                         </Border>
 
                         <!-- Fastboot Studio Companion -->
-                        <Border Grid.Column="4" Style="{StaticResource Card}">
+                        <Border x:Name="phone_companion_card" Grid.Column="4" Style="{StaticResource Card}">
                             <DockPanel>
                                 <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
                                     <Border x:Name="phone_companion_chip" DockPanel.Dock="Right" Style="{StaticResource Badge}" Padding="10,2" Visibility="Collapsed">
                                         <TextBlock x:Name="phone_companion_version" FontSize="11.5" Foreground="{StaticResource Accent}"/>
                                     </Border>
-                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0" VerticalAlignment="Center" Text="Fastboot Studio Companion"/>
+                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,10,0" VerticalAlignment="Center" TextWrapping="Wrap" Text="Fastboot Studio Companion"/>
                                 </DockPanel>
                                 <StackPanel DockPanel.Dock="Top">
                                     <DockPanel>
@@ -364,10 +366,11 @@
                         </Border>
 
                         <!-- Backups on the phone -->
-                        <Border Grid.Row="2" Grid.ColumnSpan="5" Style="{StaticResource Card}">
+                        <Border Grid.Row="3" Grid.ColumnSpan="5" Style="{StaticResource Card}">
                             <DockPanel>
                                 <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
-                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock DockPanel.Dock="Top" Style="{StaticResource CardTitle}" Margin="0,0,0,10" Text="{x:Static props:Resources.phone_card_backups}"/>
+                                    <WrapPanel VerticalAlignment="Center">
                                         <Border Style="{StaticResource Chip}" Padding="10,3" Margin="0,0,8,0">
                                             <TextBlock x:Name="phone_backups_summary" FontSize="11.5" Foreground="{StaticResource Dim}"/>
                                         </Border>
@@ -376,8 +379,7 @@
                                         </Border>
                                         <Button x:Name="phone_read_again" Style="{StaticResource GhostButton}" Margin="0,0,8,0" Content="{x:Static props:Resources.phone_read_again}"/>
                                         <Button x:Name="phone_backups_open" Content="{x:Static props:Resources.phone_backups_open}"/>
-                                    </StackPanel>
-                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0" VerticalAlignment="Center" Text="{x:Static props:Resources.phone_card_backups}"/>
+                                    </WrapPanel>
                                 </DockPanel>
                                 <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource Note}" FontSize="11.5" Margin="0,10,0,0" Text="{x:Static props:Resources.phone_backups_note}"/>
                                 <Grid MinHeight="90">
@@ -401,17 +403,17 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_files}" Width="56" DisplayMemberBinding="{Binding Files}"/>
+                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_files}" Width="50" DisplayMemberBinding="{Binding Files}"/>
                                                 <GridViewColumn Header="{x:Static props:Resources.phone_col_size}" Width="76" DisplayMemberBinding="{Binding Size}"/>
-                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_date}" Width="110" DisplayMemberBinding="{Binding Date}"/>
-                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_pc}" Width="140">
+                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_date}" Width="122" DisplayMemberBinding="{Binding Date}"/>
+                                                <GridViewColumn Header="{x:Static props:Resources.phone_col_pc}" Width="150">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="{Binding OnPc}" Foreground="{Binding OnPcBrush}" FontSize="12" TextTrimming="CharacterEllipsis" ToolTip="{Binding OnPc}"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Width="130">
+                                                <GridViewColumn Width="124">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Horizontal">
