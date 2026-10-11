@@ -141,6 +141,30 @@ namespace FastbootEnhance.FakeAdb
                 return 0;
             }
 
+            // PhoneReport.Command: the Phone page's read without root, backups on /sdcard included.
+            if (command.Contains("soc_maker ro.soc.manufacturer"))
+            {
+                if (!Android)
+                    return 1;
+                Console.Out.Write(PhoneBasic());
+                return 0;
+            }
+            // PhoneReport.CompanionCommand through su: "fbs info", "@@", "fbs modules".
+            if (command.StartsWith("su -c '", StringComparison.Ordinal) && command.Contains("fastboot_studio_companion/bin/fbs") && command.Contains(" info"))
+            {
+                switch (CompanionMode())
+                {
+                    case "missing":
+                        Console.Out.Write("fbs-missing\n");
+                        return 0;
+                    case "refused":
+                        Console.Error.Write("Permission denied\n");
+                        return 1;
+                }
+                Console.Out.Write(CompanionInfo + "\n@@\n" + CompanionModules + "\n");
+                return 0;
+            }
+
             // DeviceFacts.Command: what any app can ask without root.
             if (command.Contains("echo kernel=$(uname -r)"))
             {
@@ -159,7 +183,7 @@ namespace FastbootEnhance.FakeAdb
                 if (!Android)
                     return 127;
                 Console.Out.Write("kernel=5.10.198-android12-9-00001-gabcdef\npatch=2024-09-05\nvendor_patch=2024-09-05\n"
-                    + "model=Sample_A64\nandroid=14\ncompanion=2.3.0 beta\nroot=KernelSU\navb=orange\ndevice_state=unlocked\n"
+                    + "model=Sample_A64\nandroid=14\ncompanion=2.4.0 beta\nroot=KernelSU\navb=orange\ndevice_state=unlocked\n"
                     + "spoofed=false\nselinux=Enforcing\nkmi=5.10-android12\nconflicts=1\n");
                 return 0;
             }
@@ -312,6 +336,8 @@ namespace FastbootEnhance.FakeAdb
                 Console.Error.WriteLine("adb: usage: pull [-a] REMOTE LOCAL");
                 return 1;
             }
+            if (paths[0].StartsWith(BackupsFolder + "/", StringComparison.Ordinal))
+                return PullBackup(paths[0].Substring(BackupsFolder.Length + 1).TrimEnd('/'), paths[1]);
             string remote = paths[0].TrimEnd('/');
             string local = paths[1];
             string parent = remote.Substring(0, Math.Max(1, remote.LastIndexOf('/')));
@@ -364,6 +390,111 @@ namespace FastbootEnhance.FakeAdb
         {
             using (FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write))
                 file.SetLength(size);
+        }
+
+        // ---------------------------------------------------------------- the Phone page
+
+        const string BackupsFolder = "/sdcard/FastbootStudio/Backups";
+
+        // Three backups the Companion made, as on the mockup: full, critical and boot.
+        static readonly (string name, long kb, string[] images)[] Backups =
+        {
+            ("Sample_A64_FBE0SAMPLE02_20261010-184012", 10066329, new[]
+            {
+                "boot_a", "init_boot_a", "vendor_boot_a", "dtbo_a", "vbmeta_a", "vbmeta_system_a", "modem_a", "persist",
+                "modemst1", "modemst2", "fsg", "fsc", "devinfo", "misc", "metadata", "frp", "super", "abl_a", "xbl_a",
+                "tz_a", "aop_a", "keymaster_a",
+            }),
+            ("Sample_A64_FBE0SAMPLE02_20260921-184012", 352256, new[]
+            {
+                "persist", "modemst1", "modemst2", "fsg", "fsc", "devinfo", "frp", "abl_a", "xbl_a", "tz_a", "modem_a",
+            }),
+            ("Sample_A64_FBE0SAMPLE02_20260830-091233", 114688, new[] { "boot_a", "init_boot_a", "vendor_boot_a", "vbmeta_a" }),
+        };
+
+        /// <summary>"companion" (default), "missing" or "refused", from fake-adb.companion next to the executable.</summary>
+        static string CompanionMode()
+        {
+            string path = Path.Combine(AppContext.BaseDirectory, "fake-adb.companion");
+            return File.Exists(path) ? File.ReadAllText(path).Trim() : "companion";
+        }
+
+        static string PhoneBasic()
+        {
+            StringBuilder text = new StringBuilder(
+                "model=Sample_A64\nbrand=Sample\ndevice=sample\nandroid=14\nsdk=34\npatch=2024-09-05\n" +
+                "platform=taro\nhardware=qcom\nsoc_maker=QTI\nsoc_model=SM8450\narch=arm64-v8a\n" +
+                "slot=_a\ndynamic=true\navb=green\ndevice_state=locked\nlocked=1\n" +
+                "kernel=5.10.198-android12-9-00001-gabcdef\nselinux=Enforcing\n" +
+                "battery_capacity=78\nbattery_cycle_count=312\nbattery_charge_full=4550000\nbattery_charge_full_design=5000000\n");
+            foreach (var (name, kb, images) in Backups)
+                text.Append("backup=").Append(name).Append('|').Append(images.Length).Append('|').Append(kb).Append("|SHA256SUMS backup-info.txt ")
+                    .Append(string.Join(" ", images.Select(i => i + ".img"))).Append(" \n");
+            return text.ToString();
+        }
+
+        // A hiding module set ro.boot.verifiedbootstate to green while the bootloader said orange.
+        const string CompanionInfo =
+            "{\"fbs\":\"2.4.0\",\"channel\":\"beta\",\"model\":\"Sample_A64\",\"brand\":\"Sample\",\"device\":\"sample\",\"product\":\"sample_a64\"," +
+            "\"android\":\"14\",\"sdk\":\"34\",\"patch\":\"2024-09-05\",\"build\":\"SAMPLE-14.0.1\",\"platform\":\"taro\",\"soc\":\"qualcomm\"," +
+            "\"arch\":\"arm64-v8a\",\"slot\":\"_a\",\"dynamic\":true,\"treble\":true,\"vndk\":\"34\"," +
+            "\"boot\":{\"vbstate\":\"orange\",\"device_state\":\"unlocked\",\"locked\":false,\"spoofed\":true}," +
+            "\"kernel\":\"5.10.198-android12-9-00001-gabcdef\",\"kmi\":\"5.10-android12\",\"selinux\":\"Enforcing\",\"root\":\"KernelSU\"," +
+            "\"boot_reason\":\"reboot\",\"battery\":{\"level\":78,\"health\":91,\"cycles\":312,\"temp_dc\":334}," +
+            "\"memory\":{\"total_kb\":7864320,\"avail_kb\":2725000},\"storage\":{\"type\":\"ufs\",\"life_a\":\"0x02\",\"life_b\":\"0x01\",\"eol\":\"0x01\"}}";
+
+        const string CompanionModules =
+            "{\"root\":\"/data/adb/modules\",\"modules\":[" +
+            "{\"id\":\"adblock\",\"name\":\"AdBlock Plus\",\"version\":\"v3.1\",\"enabled\":true}," +
+            "{\"id\":\"hosts\",\"name\":\"Systemless Hosts\",\"version\":\"v1.0\",\"enabled\":true}," +
+            "{\"id\":\"debloater\",\"name\":\"Debloater\",\"version\":\"v20.1\",\"enabled\":true}," +
+            "{\"id\":\"youtube\",\"name\":\"YouTube Patched\",\"version\":\"19.16\",\"enabled\":true}," +
+            "{\"id\":\"gpu\",\"name\":\"GPU Tweaks\",\"version\":\"v2\",\"enabled\":true}," +
+            "{\"id\":\"fastboot_studio_companion\",\"name\":\"Fastboot Studio Companion (Beta)\",\"version\":\"v2.4.0\",\"enabled\":true}]," +
+            "\"conflicts\":[" +
+            "{\"kind\":\"file\",\"modules\":[\"adblock\",\"hosts\"],\"count\":1,\"paths\":[\"/system/etc/hosts\"]}," +
+            "{\"kind\":\"replace\",\"path\":\"/system/app/YouTube\",\"by\":\"debloater\",\"modules\":[\"youtube\"]}," +
+            "{\"kind\":\"prop\",\"key\":\"debug.hwui.renderer\",\"values\":[{\"module\":\"gpu\",\"value\":\"skiavk\"},{\"module\":\"debloater\",\"value\":\"skiagl\"}]}]}";
+
+        /// <summary>Writes a backup folder as the Companion leaves it: small images, SHA256SUMS and backup-info.txt.</summary>
+        static int PullBackup(string name, string local)
+        {
+            var backup = Backups.FirstOrDefault(b => b.name == name);
+            if (backup.name == null)
+            {
+                Console.Error.WriteLine("adb: error: failed to stat remote object '" + BackupsFolder + "/" + name + "': No such file or directory");
+                return 1;
+            }
+            string folder = Path.Combine(local, name);
+            Directory.CreateDirectory(folder);
+            StringBuilder sums = new StringBuilder();
+            StringBuilder info = new StringBuilder("Fastboot Studio backup\ndate\t2026-10-10 18:40:12 +03:00\nserial\t" + Serial
+                + "\nmodel\tSample_A64\nproduct\tsample_a64\nmode\tcompanion\nsource\t/dev/block/by-name\n\npartition\tbytes\tsha256\n");
+            long bytes = 0;
+            foreach (string image in backup.images)
+            {
+                byte[] content = new byte[64 * 1024];
+                uint state = 2166136261;
+                foreach (char c in image)
+                    state = (state ^ c) * 16777619;
+                for (int i = 0; i < content.Length; i += 4)
+                {
+                    state ^= state << 13;
+                    state ^= state >> 17;
+                    state ^= state << 5;
+                    BitConverter.TryWriteBytes(new Span<byte>(content, i, 4), state);
+                }
+                File.WriteAllBytes(Path.Combine(folder, image + ".img"), content);
+                string hash = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(content)).ToLowerInvariant();
+                sums.Append(hash).Append("  ").Append(image).Append(".img\n");
+                info.Append(image).Append('\t').Append(content.Length).Append('\t').Append(hash).Append('\n');
+                bytes += content.Length;
+            }
+            File.WriteAllText(Path.Combine(folder, "SHA256SUMS"), sums.ToString());
+            File.WriteAllText(Path.Combine(folder, "backup-info.txt"), info.ToString());
+            Console.Out.WriteLine(BackupsFolder + "/" + name + "/: " + (backup.images.Length + 2) + " files pulled, 0 skipped. 40.0 MB/s ("
+                + bytes + " bytes in 0.100s)");
+            return 0;
         }
 
         /// <summary>

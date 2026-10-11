@@ -54,6 +54,7 @@ namespace FastbootEnhance
             wireLanguages();
             wireThemes();
             RootUI.init();
+            PhoneUI.init();
             TerminalUI.init();
 
             // Closing mid-flash kills the worker between partitions and can leave the phone

@@ -391,4 +391,88 @@ namespace FastbootEnhance
         /// <summary>File names read left to right; the "empty" label follows the page.</summary>
         public FlowDirection ImageFlow => Partition.HasImage ? FlowDirection.LeftToRight : Languages.Flow;
     }
+
+    /// <summary>A conflict between root modules, on the Phone page.</summary>
+    sealed class ConflictRow
+    {
+        public ConflictRow(string title, string detail, bool serious)
+        {
+            Title = title;
+            Detail = detail;
+            Brush = Palette.Get(serious ? "Danger" : "Warn");
+        }
+
+        public string Title { get; }
+        public string Detail { get; }
+        public Brush Brush { get; }
+    }
+
+    /// <summary>A backup on the phone, and whether it is on this PC. Updated while it is copied.</summary>
+    sealed class PhoneBackupRow : INotifyPropertyChanged
+    {
+        string onPc;
+        Brush onPcBrush;
+        bool copied;
+        bool idle = true;
+
+        public PhoneBackupRow(Core.Adb.PhoneBackup backup, string type, Brush typeBrush, string size, string date)
+        {
+            Backup = backup;
+            Type = type;
+            TypeBrush = typeBrush;
+            Size = size;
+            Date = date;
+        }
+
+        public Core.Adb.PhoneBackup Backup { get; }
+        public string Name => Backup.Name;
+        public string Type { get; }
+        public Brush TypeBrush { get; }
+        public int Files => Backup.Files;
+        public string Size { get; }
+        public string Date { get; }
+
+        public string OnPc => onPc;
+        public Brush OnPcBrush => onPcBrush;
+
+        /// <summary>The PC copy exists, so the row offers to open it instead of copying.</summary>
+        public bool Copied
+        {
+            get { return copied; }
+            set
+            {
+                copied = value;
+                Raise(nameof(CopyVisibility));
+                Raise(nameof(OpenVisibility));
+            }
+        }
+
+        public bool Idle
+        {
+            get { return idle; }
+            set
+            {
+                idle = value;
+                Raise(nameof(Idle));
+            }
+        }
+
+        public Visibility CopyVisibility => copied ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility OpenVisibility => copied ? Visibility.Visible : Visibility.Collapsed;
+
+        public void SetState(string text, string brushKey)
+        {
+            onPc = text;
+            onPcBrush = Palette.Get(brushKey);
+            Raise(nameof(OnPc));
+            Raise(nameof(OnPcBrush));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void Raise(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
 }

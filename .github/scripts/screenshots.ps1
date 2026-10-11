@@ -819,6 +819,54 @@ if (Test-Path $stockBoot) {
     Write-Host "root: stock boot sent, Magisk image pulled and checked, flashed to boot"
 }
 
+# ---------------------------------------------------------------- phone
+# A phone in Android with Fastboot Studio Companion: read without root, then through su (the
+# bootloader's own AVB state wins over the property a hiding module changed). The boot backup
+# on the phone is copied and checked against its SHA256SUMS; then the same phone without the
+# module offers to get it.
+$adbCompanion = Join-Path $appDir 'fake-adb.companion'
+Set-Content $adbMode 'android'
+Remove-Item $adbCompanion -ErrorAction SilentlyContinue
+function Text-Of([string] $id) { return (By-Id $root $id).Current.Name }
+function Phone-Buttons([string] $label) {
+    $cond = New-Object System.Windows.Automation.PropertyCondition($UIA::ControlTypeProperty, $Type::Button)
+    return @((By-Id $root 'phone_backups').FindAll($Scope::Descendants, $cond) | Where-Object { $_.Current.Name -eq $label -and -not $_.Current.IsOffscreen })
+}
+Go 'phone_tab' | Out-Null
+Wait-For { Shown $root 'phone_companion_version' } 60 "the Companion's report" | Out-Null
+$phoneBackups = Wait-For { By-Id $root 'phone_backups' } 10 "the phone's backups"
+Wait-For { (Rows $phoneBackups).Count -eq 3 } 20 "three backups on the phone" | Out-Null
+if ((Text-Of 'phone_companion_version') -notmatch '2\.4\.0') { Fail "the Companion version is '$(Text-Of 'phone_companion_version')'" }
+if ((Text-Of 'phone_avb') -ne 'AVB orange') { Fail "AVB shows '$(Text-Of 'phone_avb')', not the bootloader's orange" }
+if ((Text-Of 'phone_soc') -ne 'Qualcomm') { Fail "the chip maker shows '$(Text-Of 'phone_soc')'" }
+Start-Sleep -Milliseconds 600
+Save-Window ('{0:D2}a-phone' -f ($i - 1))
+
+$copyLabel = 'Copy and verify'
+$copyButtons = Wait-For { $b = Phone-Buttons $copyLabel; if ($b.Count -eq 3) { $b } } 10 "a copy button on each backup"
+$copyButtons[2].GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+$copied = Join-Path $saveRoot 'Backups\Sample_A64_FBE0SAMPLE02_20260830-091233'
+Wait-For { (Phone-Buttons $copyLabel).Count -eq 2 -and (Phone-Buttons 'Open').Count -eq 1 } 60 "the boot backup to be copied and checked" | Out-Null
+if (-not (Test-Path (Join-Path $copied 'SHA256SUMS'))) { Fail "the backup was not copied to $copied" }
+Push-Location $copied
+foreach ($line in Get-Content 'SHA256SUMS') {
+    $hash, $file = $line -split '  ', 2
+    if ((Get-FileHash $file -Algorithm SHA256).Hash.ToLower() -ne $hash) { Pop-Location; Fail "$file does not match SHA256SUMS" }
+}
+Pop-Location
+if (@(Get-Content $fakeAdbLog | Where-Object { $_ -match 'pull \| -a \| /sdcard/FastbootStudio/Backups/' }).Count -ne 1) { Fail "the backup was not pulled exactly once" }
+Start-Sleep -Milliseconds 600
+Save-Window ('{0:D2}b-phone-copied' -f ($i - 1))
+
+Set-Content $adbCompanion 'missing'
+Press 'phone_read_again'
+Wait-For { Shown $root 'phone_companion_get' } 40 "the page to offer the Companion" | Out-Null
+if ($null -ne (Shown $root 'phone_companion_version')) { Fail "the Companion still shows after it was removed" }
+Start-Sleep -Milliseconds 600
+Save-Window ('{0:D2}c-phone-no-companion' -f ($i - 1))
+Remove-Item $adbMode, $adbCompanion -ErrorAction SilentlyContinue
+Write-Host "phone: read with the Companion (AVB from the bootloader, 3 conflicts), boot backup copied and checked, then without it"
+
 # ---------------------------------------------------------------- terminal
 # A command typed in the Terminal runs with the bundled fastboot and shows its output; one
 # that erases a boot-chain partition asks for the name first, and answering No runs nothing.
@@ -915,6 +963,15 @@ if ($Arabic) {
         Remove-Item $adbMode -ErrorAction SilentlyContinue
     }
 
+    # The Phone page, right to left, with the Companion's report.
+    Set-Content $adbMode 'android'
+    Go 'phone_tab' | Out-Null
+    Wait-For { Shown $root 'phone_companion_version' } 60 "the Companion's report (Arabic)" | Out-Null
+    Wait-For { (Rows (By-Id $root 'phone_backups')).Count -eq 3 } 20 "the phone's backups (Arabic)" | Out-Null
+    Start-Sleep -Milliseconds 600
+    Save-Window 'ar-11-phone'
+    Remove-Item $adbMode -ErrorAction SilentlyContinue
+
     if (Test-Path $superPart) {
         Go 'images_tab' | Out-Null
         Open-Image $superPart
@@ -972,6 +1029,13 @@ Start-Sleep -Seconds 3
 Save-Window 'light-02-device'
 Go 'flash_tab' | Out-Null
 Save-Window 'light-03-flash'
+Set-Content $adbMode 'android'
+Go 'phone_tab' | Out-Null
+Wait-For { Shown $root 'phone_companion_version' } 60 "the Companion's report (light)" | Out-Null
+Wait-For { (Rows (By-Id $root 'phone_backups')).Count -eq 3 } 20 "the phone's backups (light)" | Out-Null
+Start-Sleep -Milliseconds 600
+Save-Window 'light-06-phone'
+Remove-Item $adbMode -ErrorAction SilentlyContinue
 Go 'terminal_tab' | Out-Null
 Terminal-Run 'fastboot devices'
 Wait-For { (Terminal-Output) -match 'FBE0SAMPLE01' } 30 "fastboot devices in the terminal (light)" | Out-Null

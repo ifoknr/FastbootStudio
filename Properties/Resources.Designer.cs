@@ -5394,5 +5394,681 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("root_image_patched", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        public static string nav_phone {
+            get {
+                return ResourceManager.GetString("nav_phone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone while it runs Android: its specs, its security and the backups on it, with more from Fastboot Studio Companion..
+        /// </summary>
+        public static string phone_subtitle {
+            get {
+                return ResourceManager.GetString("phone_subtitle", resourceCulture);
+            }
+        }
+
+
+        /// <summary>
+        ///   Looks up a localized string similar to Recovery.
+        /// </summary>
+        public static string phone_reboot_recovery {
+            get {
+                return ResourceManager.GetString("phone_reboot_recovery", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restart to bootloader.
+        /// </summary>
+        public static string phone_reboot_bootloader {
+            get {
+                return ResourceManager.GetString("phone_reboot_bootloader", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Read again.
+        /// </summary>
+        public static string phone_read_again {
+            get {
+                return ResourceManager.GetString("phone_read_again", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No phone in Android.
+        /// </summary>
+        public static string phone_empty_title {
+            get {
+                return ResourceManager.GetString("phone_empty_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Connect the phone with USB debugging on, and allow this computer when the phone asks. A phone in the bootloader shows on the Device page..
+        /// </summary>
+        public static string phone_empty_text {
+            get {
+                return ResourceManager.GetString("phone_empty_text", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is waiting: allow USB debugging for this computer on the phone's screen..
+        /// </summary>
+        public static string phone_unauthorized {
+            get {
+                return ResourceManager.GetString("phone_unauthorized", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reading {0}….
+        /// </summary>
+        public static string phone_reading {
+            get {
+                return ResourceManager.GetString("phone_reading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Device.
+        /// </summary>
+        public static string phone_card_device {
+            get {
+                return ResourceManager.GetString("phone_card_device", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string phone_model {
+            get {
+                return ResourceManager.GetString("phone_model", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Chip.
+        /// </summary>
+        public static string phone_chip {
+            get {
+                return ResourceManager.GetString("phone_chip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Android.
+        /// </summary>
+        public static string phone_android {
+            get {
+                return ResourceManager.GetString("phone_android", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Security patch.
+        /// </summary>
+        public static string phone_patch {
+            get {
+                return ResourceManager.GetString("phone_patch", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Slot.
+        /// </summary>
+        public static string phone_slot {
+            get {
+                return ResourceManager.GetString("phone_slot", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Battery.
+        /// </summary>
+        public static string phone_battery {
+            get {
+                return ResourceManager.GetString("phone_battery", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Storage.
+        /// </summary>
+        public static string phone_storage {
+            get {
+                return ResourceManager.GetString("phone_storage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kernel and security.
+        /// </summary>
+        public static string phone_card_security {
+            get {
+                return ResourceManager.GetString("phone_card_security", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Kernel.
+        /// </summary>
+        public static string phone_kernel {
+            get {
+                return ResourceManager.GetString("phone_kernel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Bootloader.
+        /// </summary>
+        public static string phone_bootloader {
+            get {
+                return ResourceManager.GetString("phone_bootloader", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Root.
+        /// </summary>
+        public static string phone_root {
+            get {
+                return ResourceManager.GetString("phone_root", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Locked.
+        /// </summary>
+        public static string phone_locked {
+            get {
+                return ResourceManager.GetString("phone_locked", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Unlocked.
+        /// </summary>
+        public static string phone_unlocked {
+            get {
+                return ResourceManager.GetString("phone_unlocked", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to None found.
+        /// </summary>
+        public static string phone_root_none {
+            get {
+                return ResourceManager.GetString("phone_root_none", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Known with the Companion.
+        /// </summary>
+        public static string phone_root_unknown {
+            get {
+                return ResourceManager.GetString("phone_root_unknown", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A hiding module changes ro.boot.verifiedbootstate. The state shown here is the bootloader's own..
+        /// </summary>
+        public static string phone_spoofed {
+            get {
+                return ResourceManager.GetString("phone_spoofed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to AVB as the phone's properties say; a hiding module can change them. The Companion reads the bootloader's own..
+        /// </summary>
+        public static string phone_avb_from_props {
+            get {
+                return ResourceManager.GetString("phone_avb_from_props", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Boot images are checked against this kernel before flashing..
+        /// </summary>
+        public static string phone_boot_checked {
+            get {
+                return ResourceManager.GetString("phone_boot_checked", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}% health.
+        /// </summary>
+        public static string phone_battery_health {
+            get {
+                return ResourceManager.GetString("phone_battery_health", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} cycles.
+        /// </summary>
+        public static string phone_battery_cycles {
+            get {
+                return ResourceManager.GetString("phone_battery_cycles", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}% charged.
+        /// </summary>
+        public static string phone_battery_charge {
+            get {
+                return ResourceManager.GetString("phone_battery_charge", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} · {1}–{2}% worn.
+        /// </summary>
+        public static string phone_storage_wear {
+            get {
+                return ResourceManager.GetString("phone_storage_wear", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} · past its rated life.
+        /// </summary>
+        public static string phone_storage_past {
+            get {
+                return ResourceManager.GetString("phone_storage_past", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to spare blocks running low.
+        /// </summary>
+        public static string phone_storage_spare {
+            get {
+                return ResourceManager.GetString("phone_storage_spare", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No A/B slots.
+        /// </summary>
+        public static string phone_slot_none {
+            get {
+                return ResourceManager.GetString("phone_slot_none", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to dynamic.
+        /// </summary>
+        public static string phone_dynamic {
+            get {
+                return ResourceManager.GetString("phone_dynamic", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Beta.
+        /// </summary>
+        public static string phone_companion_beta {
+            get {
+                return ResourceManager.GetString("phone_companion_beta", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Asking the root manager for the Companion's report… allow Shell if it asks..
+        /// </summary>
+        public static string phone_companion_reading {
+            get {
+                return ResourceManager.GetString("phone_companion_reading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The Companion is a root module for Magisk, KernelSU or APatch, and this phone has no root. Everything here was read without it..
+        /// </summary>
+        public static string phone_companion_no_root {
+            get {
+                return ResourceManager.GetString("phone_companion_no_root", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Not installed on this phone. With it, this page also shows the bootloader's own AVB state, the root manager, storage wear and the conflicts between your modules..
+        /// </summary>
+        public static string phone_companion_missing {
+            get {
+                return ResourceManager.GetString("phone_companion_missing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Get the Companion.
+        /// </summary>
+        public static string phone_companion_get {
+            get {
+                return ResourceManager.GetString("phone_companion_get", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Root was refused or not answered. Allow Shell in your root manager, then read again..
+        /// </summary>
+        public static string phone_companion_refused {
+            get {
+                return ResourceManager.GetString("phone_companion_refused", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} modules, no conflicts between them.
+        /// </summary>
+        public static string phone_conflicts_none {
+            get {
+                return ResourceManager.GetString("phone_conflicts_none", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} conflicts between modules.
+        /// </summary>
+        public static string phone_conflicts_some {
+            get {
+                return ResourceManager.GetString("phone_conflicts_some", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Same file: {0}.
+        /// </summary>
+        public static string phone_conflict_file {
+            get {
+                return ResourceManager.GetString("phone_conflict_file", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {1} same files: {0}.
+        /// </summary>
+        public static string phone_conflict_files {
+            get {
+                return ResourceManager.GetString("phone_conflict_files", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} replaces the folder and hides {1}.
+        /// </summary>
+        public static string phone_conflict_replace {
+            get {
+                return ResourceManager.GetString("phone_conflict_replace", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Same property: {0}.
+        /// </summary>
+        public static string phone_conflict_prop {
+            get {
+                return ResourceManager.GetString("phone_conflict_prop", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to  and .
+        /// </summary>
+        public static string phone_and {
+            get {
+                return ResourceManager.GetString("phone_and", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Backups on the phone.
+        /// </summary>
+        public static string phone_card_backups {
+            get {
+                return ResourceManager.GetString("phone_card_backups", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} backups · {1}.
+        /// </summary>
+        public static string phone_backups_summary {
+            get {
+                return ResourceManager.GetString("phone_backups_summary", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Last: {0}.
+        /// </summary>
+        public static string phone_backups_last {
+            get {
+                return ResourceManager.GetString("phone_backups_last", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open the backups folder on the PC.
+        /// </summary>
+        public static string phone_backups_open {
+            get {
+                return ResourceManager.GetString("phone_backups_open", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No backups on the phone yet. The Companion makes them from its Backup tab, into /sdcard/FastbootStudio/Backups..
+        /// </summary>
+        public static string phone_backups_empty {
+            get {
+                return ResourceManager.GetString("phone_backups_empty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copied over adb without root, then every file is checked against SHA256SUMS. A partition can be flashed back from them on the Device page..
+        /// </summary>
+        public static string phone_backups_note {
+            get {
+                return ResourceManager.GetString("phone_backups_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Backup.
+        /// </summary>
+        public static string phone_col_backup {
+            get {
+                return ResourceManager.GetString("phone_col_backup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string phone_col_type {
+            get {
+                return ResourceManager.GetString("phone_col_type", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string phone_col_files {
+            get {
+                return ResourceManager.GetString("phone_col_files", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Size.
+        /// </summary>
+        public static string phone_col_size {
+            get {
+                return ResourceManager.GetString("phone_col_size", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string phone_col_date {
+            get {
+                return ResourceManager.GetString("phone_col_date", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to On the PC.
+        /// </summary>
+        public static string phone_col_pc {
+            get {
+                return ResourceManager.GetString("phone_col_pc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Full.
+        /// </summary>
+        public static string phone_set_full {
+            get {
+                return ResourceManager.GetString("phone_set_full", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Critical.
+        /// </summary>
+        public static string phone_set_critical {
+            get {
+                return ResourceManager.GetString("phone_set_critical", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Boot.
+        /// </summary>
+        public static string phone_set_boot {
+            get {
+                return ResourceManager.GetString("phone_set_boot", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string phone_pc_no {
+            get {
+                return ResourceManager.GetString("phone_pc_no", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copied.
+        /// </summary>
+        public static string phone_pc_yes {
+            get {
+                return ResourceManager.GetString("phone_pc_yes", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copying….
+        /// </summary>
+        public static string phone_pc_copying {
+            get {
+                return ResourceManager.GetString("phone_pc_copying", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Checking….
+        /// </summary>
+        public static string phone_pc_checking {
+            get {
+                return ResourceManager.GetString("phone_pc_checking", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ✓ Copied and matching.
+        /// </summary>
+        public static string phone_pc_ok {
+            get {
+                return ResourceManager.GetString("phone_pc_ok", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ✗ {0} of {1} files do not match.
+        /// </summary>
+        public static string phone_pc_bad {
+            get {
+                return ResourceManager.GetString("phone_pc_bad", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copy failed: {0}.
+        /// </summary>
+        public static string phone_pc_failed {
+            get {
+                return ResourceManager.GetString("phone_pc_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copy and verify.
+        /// </summary>
+        public static string phone_copy {
+            get {
+                return ResourceManager.GetString("phone_copy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string phone_open {
+            get {
+                return ResourceManager.GetString("phone_open", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restart {0} to {1}?.
+        /// </summary>
+        public static string phone_reboot_confirm {
+            get {
+                return ResourceManager.GetString("phone_reboot_confirm", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone did not restart: {0}.
+        /// </summary>
+        public static string phone_reboot_failed {
+            get {
+                return ResourceManager.GetString("phone_reboot_failed", resourceCulture);
+            }
+        }
     }
 }
