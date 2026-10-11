@@ -1,11 +1,11 @@
 [CENTER][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/banner.png[/IMG]
 
 [SIZE=6][B]Fastboot Studio[/B][/SIZE]
-[SIZE=4]fastboot, OTA flashing, payload dumper, super images, backups and a terminal — in one Windows app[/SIZE]
+[SIZE=4]fastboot, OTA flashing, rooting, payload dumper, super images, backups and a terminal — in one Windows app[/SIZE]
 
 [URL='https://github.com/ifoknr/FastbootStudio/releases/latest'][B]⬇ Download[/B][/URL] · [URL='https://github.com/ifoknr/FastbootStudio']Source (GitHub)[/URL] · [URL='https://github.com/ifoknr/FastbootStudio/blob/master/CHANGELOG.md']Changelog[/URL] · [URL='https://t.me/IFOKNR1']Telegram[/URL]
 
-[B]New in v2.3.0:[/B] light and dark themes, and a Terminal page for your own adb and fastboot commands[/CENTER]
+[B]New in v2.4.0:[/B] a Root page (Magisk, KernelSU, APatch in four steps) and a boot image check that stops the usual bricks[/CENTER]
 
 [SIZE=5][B]What is it?[/B][/SIZE]
 Fastboot Studio is a free, open-source (MIT) rewrite of [URL='https://github.com/libxzr/FastbootEnhance']Fastboot Enhance[/URL] by LibXZR. It keeps everything the original did and adds what people who flash phones reach for every day: a safe OTA flasher, image tools that replace simg2img / lpunpack / lpmake, a super image builder, and backups of partitions and files over adb.
@@ -21,6 +21,8 @@ Everything runs inside the app: no Python, no Linux tools, nothing to install. a
 [*]Reboot to system / bootloader / fastbootd / recovery, switch slot, cancel a pending update
 [*][B]Boot once[/B] (fastboot boot) — refuses init_boot and vendor_boot images, which cannot start on their own, and goes through the bootloader when you are in fastbootd
 [*][B]Super space[/B] — what each slot and the COW partitions take in super, and how much is free
+[*][B]Boot image check[/B] — before boot, init_boot, recovery or vendor_boot is flashed, the image is unpacked (gzip, lz4, zstd, xz) and read: kernel version and KMI, security patch, and root (Magisk, KernelSU, APatch, SuSFS). An init_boot image into boot, a boot image into vendor_boot or a file that is not a boot image needs the partition name typed; a kernel built for another KMI than the phone runs (a boot-loop) or an older security patch is flagged first
+[*][B]Phone in Android[/B] — the device page notices it over adb and notes its kernel and security patch for the checks above. With the [URL='https://github.com/ifoknr/FastbootStudio-Companion']Fastboot Studio Companion[/URL] root module it also shows the root manager, the real AVB state and conflicts between root modules
 [*][B]USB check[/B] — phone plugged in but not listed? It tells you why: a missing or broken driver (with the steps to fix it), Qualcomm EDL (9008), MediaTek BROM/preloader, Unisoc or Samsung download mode, or a phone still in Android (and reboots it to the bootloader)
 [/LIST]
 
@@ -31,6 +33,15 @@ Everything runs inside the app: no Python, no Linux tools, nothing to install. a
 [*]Logical partitions the OTA needs but the phone lacks are created first; the images are checked to fit in super before writing
 [*]Per-partition progress and a live fastboot log
 [/LIST]
+
+[B]🔓 Root[/B]
+[LIST=1]
+[*][B]Stock image[/B] — pick boot.img, init_boot.img or the whole OTA; the right image is taken out of it (init_boot for Magisk and KernelSU on Android 13+ phones that have it, boot otherwise and always for APatch), with its kernel, KMI and patch level shown
+[*][B]Send it to the phone[/B] — into Download, over adb
+[*][B]Patch it[/B] in Magisk, KernelSU or APatch with the steps shown, then [B]get the patched image[/B] — the newest *patched*.img is pulled and checked: root found, same kind of image, same kernel
+[*][B]Flash it[/B] — the phone restarts to the bootloader and the image is written to the active slot once you type the partition name; for boot, [B]try it once first[/B] with fastboot boot
+[/LIST]
+The stock image is kept in Documents\Fastboot Studio\Root, to undo it.
 
 [B]📦 Payload Dumper[/B]
 [LIST]
@@ -44,6 +55,7 @@ Everything runs inside the app: no Python, no Linux tools, nothing to install. a
 [*]Sparse ↔ raw (simg2img / img2simg), split sparse images
 [*]Inspect and unpack super images (lpunpack), including split factory parts
 [*]Combine Qualcomm super_1.img … super_N.img pieces using rawprogram XML
+[*]Boot and init_boot images: kernel version and KMI, Android version, security patch, compression, and whether Magisk, KernelSU or APatch patched them
 [/LIST]
 
 [B]🧩 Build Super[/B]
@@ -70,6 +82,7 @@ Everything runs inside the app: no Python, no Linux tools, nothing to install. a
 [LIST]
 [*][B]Slot switch protection[/B] — warns when the other slot has not booted yet, asks in red when it is marked unbootable or out of retries, and refuses when its logical partitions are empty (as after flashing a factory super)
 [*][B]Critical partitions[/B] (xbl, abl, tz, modem, persist, frp, preloader, nvdata…) can only be flashed or erased after typing the partition name
+[*][B]Boot image check[/B] before flashing boot-type partitions: wrong image type, another KMI, older patch level
 [*]vbmeta: offers --disable-verity --disable-verification and explains what it needs
 [*]The Terminal asks the same questions before risky commands
 [*]Asks before closing mid-flash
@@ -93,14 +106,17 @@ Everything runs inside the app: no Python, no Linux tools, nothing to install. a
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/07-device-partitions.png[/IMG]
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/05-usb-check.png[/IMG][/SPOILER]
 [SPOILER="Flash"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/10-flash.png[/IMG]
-[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/14-super-space.png[/IMG][/SPOILER]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/14-super-space.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/15a-boot-check-init-boot.png[/IMG][/SPOILER]
+[SPOILER="Root"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/32-root-patched.png[/IMG][/SPOILER]
 [SPOILER="Payload Dumper"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/02-payload-partitions.png[/IMG][/SPOILER]
 [SPOILER="Image Tools"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/25-images-super.png[/IMG]
-[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/28-images-qualcomm-pieces.png[/IMG][/SPOILER]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/28-images-qualcomm-pieces.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/28a-images-boot.png[/IMG][/SPOILER]
 [SPOILER="Build Super"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/31-super-built.png[/IMG][/SPOILER]
 [SPOILER="Backup"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/22-backup-partitions.png[/IMG]
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/18-backup-fastboot.png[/IMG][/SPOILER]
-[SPOILER="Terminal"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/32-terminal.png[/IMG][/SPOILER]
+[SPOILER="Terminal"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/34-terminal.png[/IMG][/SPOILER]
 [SPOILER="Light theme"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/light-02-device.png[/IMG]
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/light-04-terminal.png[/IMG][/SPOILER]
 [SPOILER="Arabic interface"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/ar-02-device.png[/IMG]
