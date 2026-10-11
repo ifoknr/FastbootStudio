@@ -383,7 +383,7 @@
                                 </DockPanel>
                                 <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource Note}" FontSize="11.5" Margin="0,10,0,0" Text="{x:Static props:Resources.phone_backups_note}"/>
                                 <Grid MinHeight="90">
-                                    <ListView x:Name="phone_backups" local:ColumnFill.Column="0" local:ColumnFill.MinWidth="90" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                    <ListView x:Name="phone_backups" local:ColumnFill.Column="0" local:ColumnFill.MinWidth="86" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                                         <ListView.View>
                                             <GridView>
                                                 <GridViewColumn Header="{x:Static props:Resources.phone_col_backup}" Width="300">
@@ -413,13 +413,13 @@
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Width="118">
+                                                <GridViewColumn Width="122">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Horizontal">
-                                                                <Button Tag="{Binding}" Style="{StaticResource AccentButton}" Height="28" Padding="12,0"
+                                                                <Button Tag="{Binding}" Style="{StaticResource AccentButton}" Height="28" Padding="9,0"
                                                                         Content="{x:Static props:Resources.phone_copy}" Visibility="{Binding CopyVisibility}" IsEnabled="{Binding Idle}"/>
-                                                                <Button Tag="{Binding}" Height="28" Padding="12,0"
+                                                                <Button Tag="{Binding}" Height="28" Padding="9,0"
                                                                         Content="{x:Static props:Resources.phone_open}" Visibility="{Binding OpenVisibility}" IsEnabled="{Binding Idle}"/>
                                                             </StackPanel>
                                                         </DataTemplate>
