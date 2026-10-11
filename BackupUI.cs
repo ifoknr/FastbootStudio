@@ -37,6 +37,9 @@ namespace FastbootEnhance
         static string saveRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Fastboot Studio");
 
+        /// <summary>The folder backups are saved to; the Phone page copies the Companion's backups there too.</summary>
+        public static string SaveRoot => saveRoot;
+
         static string lastOutputFolder;
 
         static volatile bool busy;
@@ -1047,7 +1050,7 @@ namespace FastbootEnhance
             });
         }
 
-        static void openInExplorer(string folder)
+        internal static void openInExplorer(string folder)
         {
             try
             {

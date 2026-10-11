@@ -25,6 +25,10 @@ nothing to install.
 > 🆕 **A new version.** Fastboot Studio is the new generation of Fastboot Enhance: a new
 > interface from top to bottom, new pages, and more protection for the phone.
 >
+> **New in 2.5:**
+> - A **Phone** page for the phone in Android: specs, kernel, security and battery; with the
+>   Companion module, the bootloader's own AVB state, module conflicts and its backups.
+>
 > **New in 2.4:**
 > - A **Root** page: Magisk, KernelSU or APatch in four steps, with the right image (boot or init_boot) picked for you.
 > - Boot images are read before flashing: kernel, KMI, security patch and root, with a stop on the usual bricks.
@@ -121,6 +125,25 @@ Everything fastboot can tell and do, on the phone that is connected.
 phone reports before you touch anything.
 
 <br clear="right">
+
+### 📲 Phone
+
+The phone while it runs Android, over adb: open the page and plug it in.
+
+- **Device:** model, chip, Android and SDK, security patch, slot (A/B, dynamic), battery
+  health and cycles, and storage wear (eMMC or UFS).
+- **Kernel and security:** kernel and KMI, bootloader locked or unlocked, SELinux, root
+  manager and the AVB state.
+- **[Fastboot Studio Companion](https://github.com/ifoknr/FastbootStudio-Companion):** when the
+  module is installed (Magisk, KernelSU or APatch), the page asks it through su and shows its
+  version, the AVB state as the **bootloader** reported it (a hiding module that changes the
+  property is pointed out), and every **conflict between your modules**: the same file from
+  two modules, a folder one module replaces and hides from another, a property set twice.
+  Without the module the page says what it would add and links to it.
+- **Backups on the phone:** the Companion's backups in `/sdcard/FastbootStudio/Backups`, with
+  their kind (full, critical, boot), size and date. **Copy and verify** brings one to the PC
+  (no root needed) and checks every file against its `SHA256SUMS`.
+- Restart to the **bootloader**, **fastbootd** or **recovery** from the header.
 
 ### ⚡ Flash
 

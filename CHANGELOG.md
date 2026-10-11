@@ -4,6 +4,12 @@
 
 <!-- The "## vX.Y.Z" section is posted to Telegram with the release (.github/scripts/telegram-release.sh): keep it short. -->
 
+## v2.5.0
+- صفحة «الجوال» جديدة: مواصفات الجوال وحمايته وهو شغّال على أندرويد
+- تتعرف على إضافة Fastboot Studio Companion: حالة AVB من البوت لودر وتعارض المودات
+- النسخ الاحتياطية اللي على الجوال: انقلها للكمبيوتر وتحقق منها بضغطة
+- إعادة التشغيل للبوت لودر أو fastbootd أو الريكفري من نفس الصفحة
+
 ## v2.4.0
 - صفحة «روت» جديدة: Magisk و KernelSU و APatch في أربع خطوات
 - فحص صورة الإقلاع قبل التفليش: يمنع init_boot في boot وصورة boot في vendor_boot

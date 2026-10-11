@@ -1960,4 +1960,229 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="root_image_patched" xml:space="preserve">
     <value>معدّلة بـ {0}</value>
   </data>
+  <data name="nav_phone" xml:space="preserve">
+    <value>الجوال</value>
+  </data>
+  <data name="phone_subtitle" xml:space="preserve">
+    <value>الجوال وهو شغّال على أندرويد: مواصفاته وحمايته والنسخ الاحتياطية اللي عليه، والمزيد من Fastboot Studio Companion.</value>
+  </data>
+  <data name="phone_reboot_recovery" xml:space="preserve">
+    <value>ريكفري</value>
+  </data>
+  <data name="phone_reboot_bootloader" xml:space="preserve">
+    <value>إعادة التشغيل للبوت لودر</value>
+  </data>
+  <data name="phone_read_again" xml:space="preserve">
+    <value>اقرأ من جديد</value>
+  </data>
+  <data name="phone_empty_title" xml:space="preserve">
+    <value>ما فيه جوال شغّال على أندرويد</value>
+  </data>
+  <data name="phone_empty_text" xml:space="preserve">
+    <value>وصّل الجوال وتصحيح USB شغّال، ووافق على الكمبيوتر لما يسألك الجوال. الجوال اللي في البوت لودر يطلع في صفحة الجهاز.</value>
+  </data>
+  <data name="phone_unauthorized" xml:space="preserve">
+    <value>{0} ينتظر: وافق على تصحيح USB لهذا الكمبيوتر من شاشة الجوال.</value>
+  </data>
+  <data name="phone_reading" xml:space="preserve">
+    <value>جاري قراءة {0}…</value>
+  </data>
+  <data name="phone_card_device" xml:space="preserve">
+    <value>الجهاز</value>
+  </data>
+  <data name="phone_model" xml:space="preserve">
+    <value>الموديل</value>
+  </data>
+  <data name="phone_chip" xml:space="preserve">
+    <value>المعالج</value>
+  </data>
+  <data name="phone_android" xml:space="preserve">
+    <value>أندرويد</value>
+  </data>
+  <data name="phone_patch" xml:space="preserve">
+    <value>مستوى الحماية</value>
+  </data>
+  <data name="phone_slot" xml:space="preserve">
+    <value>السلوت</value>
+  </data>
+  <data name="phone_battery" xml:space="preserve">
+    <value>البطارية</value>
+  </data>
+  <data name="phone_storage" xml:space="preserve">
+    <value>الذاكرة الداخلية</value>
+  </data>
+  <data name="phone_card_security" xml:space="preserve">
+    <value>الكيرنل والحماية</value>
+  </data>
+  <data name="phone_kernel" xml:space="preserve">
+    <value>الكيرنل</value>
+  </data>
+  <data name="phone_bootloader" xml:space="preserve">
+    <value>البوت لودر</value>
+  </data>
+  <data name="phone_root" xml:space="preserve">
+    <value>الروت</value>
+  </data>
+  <data name="phone_locked" xml:space="preserve">
+    <value>مقفول</value>
+  </data>
+  <data name="phone_unlocked" xml:space="preserve">
+    <value>مفتوح</value>
+  </data>
+  <data name="phone_root_none" xml:space="preserve">
+    <value>ما فيه</value>
+  </data>
+  <data name="phone_root_unknown" xml:space="preserve">
+    <value>يبان مع الإضافة</value>
+  </data>
+  <data name="phone_spoofed" xml:space="preserve">
+    <value>فيه مود إخفاء يغيّر ro.boot.verifiedbootstate. الحالة هنا من البوت لودر نفسه.</value>
+  </data>
+  <data name="phone_avb_from_props" xml:space="preserve">
+    <value>حالة AVB حسب خصائص الجوال، وممكن مود إخفاء يغيّرها. الإضافة تقرأها من البوت لودر نفسه.</value>
+  </data>
+  <data name="phone_boot_checked" xml:space="preserve">
+    <value>صور boot تنفحص على هذا الكيرنل قبل التفليش.</value>
+  </data>
+  <data name="phone_battery_health" xml:space="preserve">
+    <value>صحة {0}%</value>
+  </data>
+  <data name="phone_battery_cycles" xml:space="preserve">
+    <value>{0} دورة</value>
+  </data>
+  <data name="phone_battery_charge" xml:space="preserve">
+    <value>مشحونة {0}%</value>
+  </data>
+  <data name="phone_storage_wear" xml:space="preserve">
+    <value>{0} · استهلاك {1}–{2}%</value>
+  </data>
+  <data name="phone_storage_past" xml:space="preserve">
+    <value>{0} · تجاوزت عمرها المقدّر</value>
+  </data>
+  <data name="phone_storage_spare" xml:space="preserve">
+    <value>الاحتياطي قارب يخلص</value>
+  </data>
+  <data name="phone_slot_none" xml:space="preserve">
+    <value>بدون سلوتات A/B</value>
+  </data>
+  <data name="phone_dynamic" xml:space="preserve">
+    <value>ديناميكي</value>
+  </data>
+  <data name="phone_companion_beta" xml:space="preserve">
+    <value>تجريبي</value>
+  </data>
+  <data name="phone_companion_reading" xml:space="preserve">
+    <value>جاري طلب تقرير الإضافة من مدير الروت… وافق لـ Shell لو سألك.</value>
+  </data>
+  <data name="phone_companion_no_root" xml:space="preserve">
+    <value>الإضافة موديول روت لـ Magisk أو KernelSU أو APatch، وهذا الجوال ما فيه روت. كل اللي هنا انقرا بدونها.</value>
+  </data>
+  <data name="phone_companion_missing" xml:space="preserve">
+    <value>مو مثبتة على هذا الجوال. لو ثبتها تعرض الصفحة كمان حالة AVB من البوت لودر نفسه، ومدير الروت، واستهلاك الذاكرة، والتعارض بين المودات.</value>
+  </data>
+  <data name="phone_companion_get" xml:space="preserve">
+    <value>حمّل الإضافة</value>
+  </data>
+  <data name="phone_companion_refused" xml:space="preserve">
+    <value>الروت انرفض أو ما أحد رد. اسمح لـ Shell في مدير الروت، وبعدين اقرأ من جديد.</value>
+  </data>
+  <data name="phone_conflicts_none" xml:space="preserve">
+    <value>{0} مودات وما بينها تعارض</value>
+  </data>
+  <data name="phone_conflicts_some" xml:space="preserve">
+    <value>{0} تعارضات بين المودات</value>
+  </data>
+  <data name="phone_conflict_file" xml:space="preserve">
+    <value>نفس الملف: {0}</value>
+  </data>
+  <data name="phone_conflict_files" xml:space="preserve">
+    <value>{1} ملفات مشتركة: {0}</value>
+  </data>
+  <data name="phone_conflict_replace" xml:space="preserve">
+    <value>{0} يستبدل المجلد ويخفي {1}</value>
+  </data>
+  <data name="phone_conflict_prop" xml:space="preserve">
+    <value>نفس الخاصية: {0}</value>
+  </data>
+  <data name="phone_and" xml:space="preserve">
+    <value> و </value>
+  </data>
+  <data name="phone_card_backups" xml:space="preserve">
+    <value>النسخ الاحتياطية على الجوال</value>
+  </data>
+  <data name="phone_backups_summary" xml:space="preserve">
+    <value>{0} نسخ · {1}</value>
+  </data>
+  <data name="phone_backups_last" xml:space="preserve">
+    <value>آخر نسخة: {0}</value>
+  </data>
+  <data name="phone_backups_open" xml:space="preserve">
+    <value>افتح مجلد النسخ في الكمبيوتر</value>
+  </data>
+  <data name="phone_backups_empty" xml:space="preserve">
+    <value>ما فيه نسخ على الجوال للحين. الإضافة تسويها من تبويب النسخ الاحتياطي، في /sdcard/FastbootStudio/Backups.</value>
+  </data>
+  <data name="phone_backups_note" xml:space="preserve">
+    <value>النقل عن طريق adb بدون روت، وبعده يتحقق البرنامج من كل ملف بـ SHA256SUMS. تقدر ترجّع أي بارتشن منها بالتفليش من صفحة الجهاز.</value>
+  </data>
+  <data name="phone_col_backup" xml:space="preserve">
+    <value>النسخة</value>
+  </data>
+  <data name="phone_col_type" xml:space="preserve">
+    <value>النوع</value>
+  </data>
+  <data name="phone_col_files" xml:space="preserve">
+    <value>الملفات</value>
+  </data>
+  <data name="phone_col_size" xml:space="preserve">
+    <value>الحجم</value>
+  </data>
+  <data name="phone_col_date" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="phone_col_pc" xml:space="preserve">
+    <value>على الكمبيوتر</value>
+  </data>
+  <data name="phone_set_full" xml:space="preserve">
+    <value>كامل</value>
+  </data>
+  <data name="phone_set_critical" xml:space="preserve">
+    <value>المهمة</value>
+  </data>
+  <data name="phone_set_boot" xml:space="preserve">
+    <value>الإقلاع</value>
+  </data>
+  <data name="phone_pc_no" xml:space="preserve">
+    <value>لا</value>
+  </data>
+  <data name="phone_pc_yes" xml:space="preserve">
+    <value>منقولة</value>
+  </data>
+  <data name="phone_pc_copying" xml:space="preserve">
+    <value>جاري النقل…</value>
+  </data>
+  <data name="phone_pc_checking" xml:space="preserve">
+    <value>جاري التحقق…</value>
+  </data>
+  <data name="phone_pc_ok" xml:space="preserve">
+    <value>✓ منقولة ومطابقة</value>
+  </data>
+  <data name="phone_pc_bad" xml:space="preserve">
+    <value>✗ {0} من {1} ملفات غير مطابقة</value>
+  </data>
+  <data name="phone_pc_failed" xml:space="preserve">
+    <value>فشل النقل: {0}</value>
+  </data>
+  <data name="phone_copy" xml:space="preserve">
+    <value>انقلها وتحقق</value>
+  </data>
+  <data name="phone_open" xml:space="preserve">
+    <value>افتح</value>
+  </data>
+  <data name="phone_reboot_confirm" xml:space="preserve">
+    <value>تعيد تشغيل {0} إلى {1}؟</value>
+  </data>
+  <data name="phone_reboot_failed" xml:space="preserve">
+    <value>الجوال ما أعاد التشغيل: {0}</value>
+  </data>
 </root>

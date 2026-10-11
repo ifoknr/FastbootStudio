@@ -8,6 +8,7 @@
 
     <!-- Navigation icons, drawn as strokes on a 24 unit grid. -->
     <Geometry x:Key="IconDevice">M7,2 H17 A2,2 0 0 1 19,4 V20 A2,2 0 0 1 17,22 H7 A2,2 0 0 1 5,20 V4 A2,2 0 0 1 7,2 Z M10,18 H14</Geometry>
+    <Geometry x:Key="IconPhoneInfo">M7,2 H17 A2,2 0 0 1 19,4 V20 A2,2 0 0 1 17,22 H7 A2,2 0 0 1 5,20 V4 A2,2 0 0 1 7,2 Z M9,7 H15 M9,11 H15 M9,15 H12.5</Geometry>
     <Geometry x:Key="IconFlash">M13,2 L4,14 H11 L10,22 L19,10 H12 Z</Geometry>
     <Geometry x:Key="IconPayload">M21,8 L12,3 L3,8 V16 L12,21 L21,16 Z M3,8 L12,13 L21,8 M12,13 V21</Geometry>
     <Geometry x:Key="IconLogs">M4,5 H20 M4,12 H15 M4,19 H11</Geometry>
@@ -492,7 +493,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="bd" Background="Transparent" CornerRadius="8" Height="40" Margin="0,1" Cursor="Hand">
+                    <Border x:Name="bd" Background="Transparent" CornerRadius="8" Height="38" Margin="0,1" Cursor="Hand">
                         <Grid>
                             <Border x:Name="bar" Width="3" CornerRadius="2" Margin="0,10" HorizontalAlignment="Left"
                                     Background="{StaticResource Accent}" Visibility="Collapsed"/>
@@ -539,7 +540,7 @@
                                            RenderOptions.BitmapScalingMode="HighQuality"/>
                                     <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
                                         <TextBlock Text="Fastboot Studio" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
-                                        <TextBlock Text="v2.4.0" FontSize="11" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}"/>
+                                        <TextBlock Text="v2.5.0" FontSize="11" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}"/>
                                     </StackPanel>
                                 </StackPanel>
                                 <Border DockPanel.Dock="Bottom" Background="{StaticResource Well}" BorderBrush="{StaticResource Line}"
