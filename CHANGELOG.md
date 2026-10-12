@@ -2,11 +2,15 @@
 
 [العربية](#عربي) · [English](#english)
 
-<!-- The "## vX.Y.Z" section is posted to Telegram with the release (.github/scripts/telegram-release.sh): keep it short. -->
+<!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
 ## v2.5.1
 - إصلاح: عناصر القائمة كانت تختفي تحت الماوس والأزرار تطلع مخططة على بعض كروت الشاشة وتطبيقات التحكم عن بعد
 - البرنامج صار يرسم برمجياً افتراضياً، وتقدر ترجع لكرت الشاشة من صفحة «حول»
+
+**English**
+- Fixed: menu items vanished under the mouse and buttons turned striped with some graphics drivers and remote-desktop apps
+- The app now draws in software by default; the graphics card can be chosen again on the About page
 
 ## v2.5.0
 - صفحة «الجوال» جديدة: مواصفات الجوال وحمايته وهو شغّال على أندرويد
