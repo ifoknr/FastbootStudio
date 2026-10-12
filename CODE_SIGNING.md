@@ -30,9 +30,12 @@ on GitHub and SignPath.
 
 ## Privacy
 
-Fastboot Studio does not send any information to other networked systems. It talks only to
-the phone connected over USB (through adb and fastboot), and opens web pages in your browser
-only when you click a link in the app.
+This program will not transfer any information to other networked systems unless
+specifically requested by the user or the person installing or operating it.
+
+Fastboot Studio talks only to the phone connected over USB (through adb and fastboot). It
+has no telemetry and no update check, and it opens a web page in your browser only when you
+click a link in the app.
 
 ## Reporting a problem
 
