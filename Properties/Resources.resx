@@ -2185,4 +2185,19 @@ The bootloader must be unlocked. If the phone does not start afterwards, flash t
   <data name="phone_reboot_failed" xml:space="preserve">
     <value>The phone did not restart: {0}</value>
   </data>
+  <data name="rendering" xml:space="preserve">
+    <value>Drawing</value>
+  </data>
+  <data name="rendering_software" xml:space="preserve">
+    <value>Software (steady)</value>
+  </data>
+  <data name="rendering_gpu" xml:space="preserve">
+    <value>Graphics card</value>
+  </data>
+  <data name="rendering_note" xml:space="preserve">
+    <value>Software drawing stops the flicker, vanishing menu items and striped buttons that some graphics drivers and remote-desktop apps cause.</value>
+  </data>
+  <data name="rendering_restart" xml:space="preserve">
+    <value>The new drawing mode applies after a restart. Restart Fastboot Studio now?</value>
+  </data>
 </root>
