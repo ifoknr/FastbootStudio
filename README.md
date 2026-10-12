@@ -71,6 +71,13 @@ included. You only need the phone's USB driver installed in Windows
 An OTA or image can be opened straight away: `FastbootStudio.exe ota.zip`, or drop the
 file onto the exe.
 
+**Code signing policy:** see [CODE_SIGNING.md](CODE_SIGNING.md). Free code signing provided by
+[SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org)
+(applied for; releases are unsigned until it is approved).
+
+**Privacy:** this program will not transfer any information to other networked systems unless
+specifically requested by the user or the person installing or operating it.
+
 ---
 
 <a id="pages"></a>

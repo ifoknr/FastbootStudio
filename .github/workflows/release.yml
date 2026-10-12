@@ -180,6 +180,8 @@ jobs:
             echo
             echo "**Download** \`$(basename "$zip")\`, unzip it anywhere and run \`FastbootStudio.exe\`. Nothing to install: .NET, adb and fastboot are included."
             echo
+            echo "Code signing policy: [CODE_SIGNING.md](https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_VERSION/CODE_SIGNING.md)"
+            echo
             echo "Full changelog: [CHANGELOG.md](https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_VERSION/CHANGELOG.md) · [README](https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_VERSION/README.md) · [العربية](https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_VERSION/README.ar.md)"
           } > notes.md
           cat notes.md
