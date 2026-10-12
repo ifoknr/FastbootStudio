@@ -21,6 +21,8 @@ namespace FastbootEnhance
         protected override void OnStartup(StartupEventArgs e)
         {
             Languages.Apply();
+            // Software or graphics card: has to be set before anything is drawn.
+            Rendering.Apply();
             // Before any window or dialog exists, so everything is drawn in the chosen theme.
             Theme.Apply(Resources);
 

@@ -11,7 +11,7 @@ namespace FastbootEnhance
     public partial class MainWindow : Window
     {
         public static MainWindow THIS;
-        const string version = "2.5.0";
+        const string version = "2.5.1";
 
         public MainWindow()
         {
@@ -53,6 +53,7 @@ namespace FastbootEnhance
             wireLogs();
             wireLanguages();
             wireThemes();
+            wireRendering();
             RootUI.init();
             PhoneUI.init();
             TerminalUI.init();
@@ -149,6 +150,40 @@ namespace FastbootEnhance
                         App.Restart();
                 };
                 theme_buttons.Children.Add(button);
+            }
+        }
+
+        /// <summary>Software or graphics card drawing: the one in use is highlighted. Applies on restart.</summary>
+        void wireRendering()
+        {
+            Rendering.Mode[] modes = { Rendering.Mode.Software, Rendering.Mode.Gpu };
+            string[] names = { Properties.Resources.rendering_software, Properties.Resources.rendering_gpu };
+            for (int i = 0; i < modes.Length; i++)
+            {
+                Rendering.Mode mode = modes[i];
+                System.Windows.Controls.Button button = new System.Windows.Controls.Button
+                {
+                    Content = names[i],
+                    Tag = mode.ToString().ToLowerInvariant(),
+                    Padding = new Thickness(14, 5, 14, 5),
+                    Margin = new Thickness(0, 0, 8, 8),
+                    Style = (Style)FindResource(mode == Rendering.Chosen ? "AccentButton" : "GhostButton"),
+                };
+                button.Click += delegate
+                {
+                    if (mode == Rendering.Chosen)
+                        return;
+                    if (FastbootUI.flashing || PayloadUI.extracting)
+                    {
+                        ThemedDialog.Show(Properties.Resources.theme_busy);
+                        return;
+                    }
+                    Rendering.Save(mode);
+                    if (ThemedDialog.Show(Properties.Resources.rendering_restart, Properties.Resources.rendering,
+                            MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+                        App.Restart();
+                };
+                rendering_buttons.Children.Add(button);
             }
         }
 

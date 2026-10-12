@@ -6070,5 +6070,50 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("phone_reboot_failed", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Drawing.
+        /// </summary>
+        public static string rendering {
+            get {
+                return ResourceManager.GetString("rendering", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Software (steady).
+        /// </summary>
+        public static string rendering_software {
+            get {
+                return ResourceManager.GetString("rendering_software", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Graphics card.
+        /// </summary>
+        public static string rendering_gpu {
+            get {
+                return ResourceManager.GetString("rendering_gpu", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Software drawing stops the flicker, vanishing menu items and striped buttons that some graphics drivers and remote-desktop apps cause..
+        /// </summary>
+        public static string rendering_note {
+            get {
+                return ResourceManager.GetString("rendering_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The new drawing mode applies after a restart. Restart Fastboot Studio now?.
+        /// </summary>
+        public static string rendering_restart {
+            get {
+                return ResourceManager.GetString("rendering_restart", resourceCulture);
+            }
+        }
     }
 }

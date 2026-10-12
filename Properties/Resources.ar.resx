@@ -2185,4 +2185,19 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="phone_reboot_failed" xml:space="preserve">
     <value>الجوال ما أعاد التشغيل: {0}</value>
   </data>
+  <data name="rendering" xml:space="preserve">
+    <value>طريقة الرسم</value>
+  </data>
+  <data name="rendering_software" xml:space="preserve">
+    <value>برمجي (ثابت)</value>
+  </data>
+  <data name="rendering_gpu" xml:space="preserve">
+    <value>كرت الشاشة</value>
+  </data>
+  <data name="rendering_note" xml:space="preserve">
+    <value>الرسم البرمجي يمنع الوميض واختفاء عناصر القائمة والأزرار المخططة اللي تسببها بعض تعريفات كرت الشاشة وتطبيقات التحكم عن بعد.</value>
+  </data>
+  <data name="rendering_restart" xml:space="preserve">
+    <value>طريقة الرسم الجديدة تشتغل بعد إعادة التشغيل. تعيد تشغيل البرنامج الحين؟</value>
+  </data>
 </root>
