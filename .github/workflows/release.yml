@@ -176,6 +176,8 @@ jobs:
             awk -v v="## $RELEASE_VERSION" '$0 == v { f = 1; next } /^## / { f = 0 } f' CHANGELOG.md
             echo
             echo "---"
+            echo "**التحميل:** \`$(basename "$zip")\`، فك الضغط في أي مكان وشغّل \`FastbootStudio.exe\`. ما يحتاج تثبيت: .NET و adb و fastboot موجودة معه."
+            echo
             echo "**Download** \`$(basename "$zip")\`, unzip it anywhere and run \`FastbootStudio.exe\`. Nothing to install: .NET, adb and fastboot are included."
             echo
             echo "Full changelog: [CHANGELOG.md](https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_VERSION/CHANGELOG.md) · [README](https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_VERSION/README.md) · [العربية](https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_VERSION/README.ar.md)"
