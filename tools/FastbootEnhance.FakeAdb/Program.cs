@@ -112,6 +112,10 @@ namespace FastbootEnhance.FakeAdb
                 case "push":
                     return Push(rest.Skip(1).ToList());
                 case "reboot":
+                    // The phone leaves Android for the bootloader: the fake fastboot lists it
+                    // (as a second device, next to the one already sitting in fastboot).
+                    if (tail == "bootloader")
+                        File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "fake-adb.in-fastboot"), Serial);
                     return 0;
                 default:
                     Console.Error.WriteLine("fake adb: unsupported command " + command);

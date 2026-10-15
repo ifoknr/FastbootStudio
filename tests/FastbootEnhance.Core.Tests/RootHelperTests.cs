@@ -41,5 +41,37 @@ namespace FastbootEnhance.Core.Tests
         {
             Assert.Equal("/sdcard/Download/fbstudio_init_boot.img", RootHelper.PhonePath("init_boot"));
         }
+
+        [Fact]
+        public void PickFastbootSerial_TakesThePhoneItself()
+        {
+            Assert.Equal("PHONE_A", RootHelper.PickFastbootSerial("PHONE_A", new string[0], new[] { "PHONE_A" }));
+            Assert.Equal("PHONE_A", RootHelper.PickFastbootSerial("PHONE_A", new[] { "PHONE_B" }, new[] { "PHONE_B", "PHONE_A" }));
+        }
+
+        [Fact]
+        public void PickFastbootSerial_NeverTakesAPhoneThatWasAlreadyInFastboot()
+        {
+            // Another phone sat in fastboot before this one was restarted: it is not the target,
+            // whether or not this phone has shown up yet.
+            Assert.Null(RootHelper.PickFastbootSerial("PHONE_A", new[] { "PHONE_B" }, new[] { "PHONE_B" }));
+            Assert.Null(RootHelper.PickFastbootSerial("PHONE_A", new[] { "PHONE_B", "PHONE_C" }, new[] { "PHONE_C", "PHONE_B" }));
+        }
+
+        [Fact]
+        public void PickFastbootSerial_AcceptsOneNewSerialForPhonesThatChangeIt()
+        {
+            Assert.Equal("0123456789ABCDEF", RootHelper.PickFastbootSerial("PHONE_A", new string[0], new[] { "0123456789ABCDEF" }));
+            Assert.Equal("0123456789ABCDEF", RootHelper.PickFastbootSerial("PHONE_A", new[] { "PHONE_B" }, new[] { "PHONE_B", "0123456789ABCDEF" }));
+        }
+
+        [Fact]
+        public void PickFastbootSerial_GivesUpWhenItCannotTellPhonesApart()
+        {
+            Assert.Null(RootHelper.PickFastbootSerial("PHONE_A", new string[0], new[] { "NEW_1", "NEW_2" }));
+            Assert.Null(RootHelper.PickFastbootSerial("PHONE_A", new string[0], new string[0]));
+            Assert.Null(RootHelper.PickFastbootSerial(null, new string[0], new[] { "PHONE_B" }));
+            Assert.Null(RootHelper.PickFastbootSerial("", new string[0], new[] { "PHONE_B" }));
+        }
     }
 }

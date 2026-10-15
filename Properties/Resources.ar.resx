@@ -1596,6 +1596,12 @@ fastbootd يحط الأقسام الجديدة في مجموعة "default"، م�
   <data name="usb_reboot_bootloader_ask" xml:space="preserve">
     <value>إعادة تشغيله للبوت لودر الحين عشان يظهر هنا؟</value>
   </data>
+  <data name="usb_reboot_more_than_one" xml:space="preserve">
+    <value>فيه أكثر من جوال موصول بـ adb ({0}). افصل الباقي وحاول مرة ثانية، عشان يعيد تشغيل الجوال الصح.</value>
+  </data>
+  <data name="usb_reboot_none" xml:space="preserve">
+    <value>ما فيه جوال جاهز على adb. وافق على تصحيح USB في الجوال وحاول مرة ثانية.</value>
+  </data>
   <data name="theme" xml:space="preserve">
     <value>المظهر</value>
   </data>

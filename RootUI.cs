@@ -325,18 +325,27 @@ namespace FastbootEnhance
 
         // ---------------------------------------------------------------- 4. flash
 
-        /// <summary>Restarts the phone to the bootloader and waits for it there; returns its fastboot serial.</summary>
+        /// <summary>
+        /// Restarts this phone (and only this one) to the bootloader and waits for it there;
+        /// returns its fastboot serial, or null when it does not show up or cannot be told apart
+        /// from another phone. Another phone that is already in fastboot is never used.
+        /// </summary>
         static string toBootloader(string serial)
         {
+            if (string.IsNullOrEmpty(serial))
+                return null;
             List<string> before = Fastboot.ListSerials();
-            if (before.Count == 0 && serial != null)
-                Adb.Run(AdbCommand.Reboot(serial, "bootloader"), Adb.ShortCommand);
+            if (before.Contains(serial))
+                return serial;
+            Adb.Result reboot = Adb.Run(AdbCommand.Reboot(serial, "bootloader"), Adb.ShortCommand);
+            log("adb -s " + serial + " reboot bootloader: " + (reboot.Succeeded ? "ok" : reboot.Problem)
+                + (before.Count > 0 ? "; already in fastboot, not used: " + string.Join(", ", before) : ""));
             Stopwatch waited = Stopwatch.StartNew();
             while (waited.Elapsed < FastbootWait)
             {
-                List<string> serials = Fastboot.ListSerials();
-                if (serials.Count > 0)
-                    return serials.Contains(serial) ? serial : serials[0];
+                string found = RootHelper.PickFastbootSerial(serial, before, Fastboot.ListSerials());
+                if (found != null)
+                    return found;
                 Thread.Sleep(2000);
             }
             return null;

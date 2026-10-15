@@ -52,6 +52,10 @@ namespace FastbootEnhance.FakeFastboot
             {
                 case "devices":
                     Console.Out.WriteLine(Serial + "\tfastboot");
+                    // A phone the fake adb restarted to the bootloader shows up as well.
+                    string other = Path.Combine(AppContext.BaseDirectory, "fake-adb.in-fastboot");
+                    if (File.Exists(other))
+                        Console.Out.WriteLine(File.ReadAllText(other).Trim() + "\tfastboot");
                     return 0;
 
                 case "getvar":
