@@ -1596,6 +1596,12 @@ Create them and continue?</value>
   <data name="usb_reboot_bootloader_ask" xml:space="preserve">
     <value>Reboot it to the bootloader now, so it shows up here?</value>
   </data>
+  <data name="usb_reboot_more_than_one" xml:space="preserve">
+    <value>More than one phone is connected over adb ({0}). Unplug the others and try again, so the right phone restarts.</value>
+  </data>
+  <data name="usb_reboot_none" xml:space="preserve">
+    <value>No phone is ready over adb. Allow USB debugging on the phone and try again.</value>
+  </data>
   <data name="theme" xml:space="preserve">
     <value>APPEARANCE</value>
   </data>

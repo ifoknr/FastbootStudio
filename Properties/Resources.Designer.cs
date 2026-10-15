@@ -4325,6 +4325,24 @@ namespace FastbootEnhance.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        public static string usb_reboot_more_than_one {
+            get {
+                return ResourceManager.GetString("usb_reboot_more_than_one", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        public static string usb_reboot_none {
+            get {
+                return ResourceManager.GetString("usb_reboot_none", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Appearance.
         /// </summary>
         public static string theme {

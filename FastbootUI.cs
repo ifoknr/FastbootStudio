@@ -707,9 +707,24 @@ namespace FastbootEnhance
                 {
                     try
                     {
+                        // Only a phone named by its serial is restarted: with several connected,
+                        // the user unplugs the others rather than the app guessing.
+                        List<AdbDevice> phones = AdbDevice.ParseList(Adb.Run("devices -l", Adb.ShortCommand).Output)
+                            .Where(d => d.Usable).ToList();
+                        if (phones.Count == 0)
+                        {
+                            problem = Properties.Resources.usb_reboot_none;
+                            return;
+                        }
+                        if (phones.Count > 1)
+                        {
+                            problem = string.Format(Properties.Resources.usb_reboot_more_than_one,
+                                string.Join(", ", phones.Select(d => d.Serial)));
+                            return;
+                        }
                         // Last chance to note the kernel before the phone leaves Android.
                         AdbFacts.ReadConnected();
-                        Adb.Result result = Adb.Run("reboot bootloader", Adb.ShortCommand);
+                        Adb.Result result = Adb.Run(AdbCommand.Reboot(phones[0].Serial, "bootloader"), Adb.ShortCommand);
                         if (!result.Succeeded)
                             problem = result.Problem;
                     }
@@ -719,7 +734,7 @@ namespace FastbootEnhance
                     }
                 }), new Action(delegate
                 {
-                    appendLog("adb reboot bootloader: " + (problem ?? "ok"));
+                    appendLog("adb reboot bootloader (USB check): " + (problem ?? "ok"));
                     if (problem != null)
                         ThemedDialog.Show(problem, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
                 }));

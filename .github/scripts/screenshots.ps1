@@ -781,9 +781,13 @@ if (Test-Path $superPart) {
 # The four steps with a phone running Android: the stock boot image is read, sent to
 # Download, "patched" by the stand-in root app (it hands back the Magisk sample), pulled and
 # checked, then written to boot from the bootloader after the partition name is typed.
+# Another phone (FBE0SAMPLE01) is already in fastboot the whole time: the app has to restart
+# this phone (FBE0SAMPLE02) and flash it, never the other one.
 $stockBoot = Join-Path (Split-Path $Payload) 'boot-gki-stock-sample.img'
 if (Test-Path $stockBoot) {
     $adbPatched = Join-Path $appDir 'fake-adb.patched'
+    $adbInFastboot = Join-Path $appDir 'fake-adb.in-fastboot'
+    Remove-Item $adbInFastboot -ErrorAction SilentlyContinue
     Set-Content $adbMode 'android'
     Set-Content $adbPatched (Join-Path (Split-Path $Payload) 'boot-gki-sample.img')
     function Text-Of([string] $id) { return (By-Id $root $id).Current.Name }
@@ -815,8 +819,11 @@ if (Test-Path $stockBoot) {
     Save-Window ('{0:D2}-root-flashed' -f $i); $i++
     Answer-Dialog $rootDone 'No'
     if ((Fastboot-Log 'flash boot .*magisk_patched') -ne $rootFlashesBefore + 1) { Fail "the patched image was not flashed to boot exactly once" }
-    Remove-Item $adbMode, $adbPatched -ErrorAction SilentlyContinue
-    Write-Host "root: stock boot sent, Magisk image pulled and checked, flashed to boot"
+    if ((Fastboot-Log '^\S+\s+-s FBE0SAMPLE02 flash boot .*magisk_patched') -ne 1) { Fail "the patched image was not flashed to the phone it was made on (FBE0SAMPLE02)" }
+    if ((Fastboot-Log '-s FBE0SAMPLE01 flash boot .*magisk_patched') -ne 0) { Fail "the patched image was flashed to the other phone in fastboot (FBE0SAMPLE01)" }
+    if ((Get-Content $fakeAdbLog | Where-Object { $_ -match 'FBE0SAMPLE02 \| reboot \| bootloader' }).Count -lt 1) { Fail "the phone was not restarted to the bootloader by its serial" }
+    Remove-Item $adbMode, $adbPatched, $adbInFastboot -ErrorAction SilentlyContinue
+    Write-Host "root: stock boot sent, Magisk image pulled and checked, the phone restarted by serial and flashed, the other phone in fastboot untouched"
 }
 
 # ---------------------------------------------------------------- phone

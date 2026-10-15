@@ -4,6 +4,16 @@
 
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
+## v2.5.2
+- إصلاح أمان: صفحة «روت» كانت ممكن تفلّش جوال ثاني موصول في وضع fastboot. الحين تعيد تشغيل جوالك برقمه وما تكتب إلا عليه
+- لو ما قدر يميّز جوالك، يوقف ويقولك بدل ما يخمّن
+- «فحص USB» يعيد تشغيل جوال واحد محدد بس
+
+**English**
+- Security fix: the Root page could flash another phone sitting in fastboot. It now restarts your phone by its serial and writes only to it
+- If it cannot tell your phone apart, it stops instead of guessing
+- USB check restarts only one named phone
+
 ## v2.5.1
 - إصلاح: عناصر القائمة كانت تختفي تحت الماوس والأزرار تطلع مخططة على بعض كروت الشاشة وتطبيقات التحكم عن بعد
 - البرنامج صار يرسم برمجياً افتراضياً، وتقدر ترجع لكرت الشاشة من صفحة «حول»

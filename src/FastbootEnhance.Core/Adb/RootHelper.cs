@@ -96,6 +96,32 @@ namespace FastbootEnhance.Core.Adb
         }
 
         /// <summary>What is wrong with the patched image, compared with the stock one sent to the phone.</summary>
+        /// <summary>
+        /// The fastboot device that is the phone the image was patched on, or null when that is
+        /// not certain. <paramref name="before"/> is what fastboot listed before the phone was
+        /// restarted, <paramref name="now"/> what it lists now. The phone's own serial wins.
+        /// Some phones show another serial in fastboot than in adb, so a single device that was
+        /// not there before is accepted too; a device that was already in fastboot never is,
+        /// because it is another phone.
+        /// </summary>
+        public static string PickFastbootSerial(string adbSerial, ICollection<string> before, ICollection<string> now)
+        {
+            if (string.IsNullOrEmpty(adbSerial) || now == null)
+                return null;
+            if (now.Contains(adbSerial))
+                return adbSerial;
+            string fresh = null;
+            foreach (string serial in now)
+            {
+                if (before != null && before.Contains(serial))
+                    continue;
+                if (fresh != null)
+                    return null;
+                fresh = serial;
+            }
+            return fresh;
+        }
+
         public static List<PatchProblem> Verify(BootImageAnalysis stock, BootImageAnalysis patched, RootTool tool)
         {
             List<PatchProblem> problems = new List<PatchProblem>();
