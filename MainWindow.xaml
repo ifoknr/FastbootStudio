@@ -534,7 +534,9 @@
                             <StackPanel>
                                 <Button x:Name="fastboot_flash_payload" Style="{StaticResource AccentButton}" MinHeight="42" Margin="0,0,0,16"
                                         Content="{x:Static props:Resources.fastboot_flash_payload}"/>
-                                <CheckBox x:Name="ignore_unknown_part" Margin="0,0,0,16" Content="{x:Static props:Resources.fastboot_ignore_unknown}"/>
+                                <CheckBox x:Name="ignore_unknown_part" Margin="0,0,0,12" Content="{x:Static props:Resources.fastboot_ignore_unknown}"/>
+                                <CheckBox x:Name="flash_both_slots" Margin="0,0,0,4" Content="{x:Static props:Resources.flash_both_slots}"/>
+                                <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="26,0,0,16" Text="{x:Static props:Resources.flash_both_slots_note}"/>
                                 <TextBlock Style="{StaticResource Note}" Margin="0,0,0,8" Text="{x:Static props:Resources.flash_note_verify}"/>
                                 <TextBlock Style="{StaticResource Note}" Text="{x:Static props:Resources.flash_note_order}"/>
                             </StackPanel>
@@ -1453,8 +1455,8 @@
 
         <!-- ============================== About ============================== -->
         <TabItem x:Name="about_tab" Header="{x:Static props:Resources.about}" Tag="{StaticResource IconAbout}">
-            <Grid>
-                <Border Style="{StaticResource Card}" Width="660" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="32,28">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Border Style="{StaticResource Card}" Width="660" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="32,28" Margin="0,16">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -1465,7 +1467,7 @@
                         </Border>
                         <StackPanel Grid.Column="1" Margin="26,4,0,0">
                             <TextBlock Text="Fastboot Studio" FontSize="22" FontWeight="SemiBold"/>
-                            <TextBlock Text="v2.5.3" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}" Margin="0,2,0,10"/>
+                            <TextBlock Text="v2.6.0" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}" Margin="0,2,0,10"/>
                             <TextBlock Style="{StaticResource Note}" Margin="0,0,0,20" Text="{x:Static props:Resources.about_engine}"/>
 
                             <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.about_developer}"/>
@@ -1512,10 +1514,25 @@
                                                Text="{x:Static props:Resources.rendering_note}"/>
                                 </StackPanel>
                             </Border>
+
+                            <Border BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="0,16,0,0" Margin="0,18,0,0">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.update_section}"/>
+                                    <CheckBox x:Name="update_auto" Margin="0,0,0,2" Content="{x:Static props:Resources.update_auto}"/>
+                                    <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="26,0,0,10" MaxWidth="494" HorizontalAlignment="Left"
+                                               Text="{x:Static props:Resources.update_auto_note}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="update_check_now" Style="{StaticResource GhostButton}" Margin="0,0,12,0"
+                                                Content="{x:Static props:Resources.update_check_now}"/>
+                                        <TextBlock x:Name="update_status" VerticalAlignment="Center" Foreground="{StaticResource Dim}"
+                                                   TextWrapping="Wrap" MaxWidth="360"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Grid>
                 </Border>
-            </Grid>
+            </ScrollViewer>
         </TabItem>
     </TabControl>
 </Window>

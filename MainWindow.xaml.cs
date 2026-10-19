@@ -11,7 +11,7 @@ namespace FastbootEnhance
     public partial class MainWindow : Window
     {
         public static MainWindow THIS;
-        const string version = "2.5.3";
+        internal const string version = "2.6.0";
 
         public MainWindow()
         {
@@ -54,6 +54,7 @@ namespace FastbootEnhance
             wireLanguages();
             wireThemes();
             wireRendering();
+            UpdateUI.init();
             RootUI.init();
             PhoneUI.init();
             TerminalUI.init();

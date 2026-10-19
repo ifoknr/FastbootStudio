@@ -6169,5 +6169,338 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("rendering_restart", resourceCulture);
             }
         }
+            
+        /// <summary>
+        ///   Looks up a localized string similar to Flash both slots (a and b).
+        /// </summary>
+        public static string flash_both_slots {
+            get {
+                return ResourceManager.GetString("flash_both_slots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firmware partitions such as modem and boot are also written .
+        /// </summary>
+        public static string flash_both_slots_note {
+            get {
+                return ResourceManager.GetString("flash_both_slots_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Besides the slot in use, these partitions are also written t.
+        /// </summary>
+        public static string flash_both_slots_confirm {
+            get {
+                return ResourceManager.GetString("flash_both_slots_confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Also written to the other slot: {0}.
+        /// </summary>
+        public static string flash_both_slots_done {
+            get {
+                return ResourceManager.GetString("flash_both_slots_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates.
+        /// </summary>
+        public static string update_section {
+            get {
+                return ResourceManager.GetString("update_section", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for updates automatically.
+        /// </summary>
+        public static string update_auto {
+            get {
+                return ResourceManager.GetString("update_auto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Once a day, from the app's GitHub page. Turned off, you chec.
+        /// </summary>
+        public static string update_auto_note {
+            get {
+                return ResourceManager.GetString("update_auto_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check now.
+        /// </summary>
+        public static string update_check_now {
+            get {
+                return ResourceManager.GetString("update_check_now", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking….
+        /// </summary>
+        public static string update_checking {
+            get {
+                return ResourceManager.GetString("update_checking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have the latest version ✓.
+        /// </summary>
+        public static string update_latest {
+            get {
+                return ResourceManager.GetString("update_latest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is available.
+        /// </summary>
+        public static string update_found {
+            get {
+                return ResourceManager.GetString("update_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not check: {0}.
+        /// </summary>
+        public static string update_check_failed {
+            get {
+                return ResourceManager.GetString("update_check_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update {0} available.
+        /// </summary>
+        public static string update_badge {
+            get {
+                return ResourceManager.GetString("update_badge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update available: {0}.
+        /// </summary>
+        public static string update_available_title {
+            get {
+                return ResourceManager.GetString("update_available_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have v{0} · released {1}.
+        /// </summary>
+        public static string update_have {
+            get {
+                return ResourceManager.GetString("update_have", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have v{0}.
+        /// </summary>
+        public static string update_have_nodate {
+            get {
+                return ResourceManager.GetString("update_have_nodate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What's new and fixed.
+        /// </summary>
+        public static string update_whats_new {
+            get {
+                return ResourceManager.GetString("update_whats_new", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The release page lists the changes..
+        /// </summary>
+        public static string update_no_notes {
+            get {
+                return ResourceManager.GetString("update_no_notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloaded from the app's GitHub page; its SHA-256 is checke.
+        /// </summary>
+        public static string update_note {
+            get {
+                return ResourceManager.GetString("update_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download the update.
+        /// </summary>
+        public static string update_download {
+            get {
+                return ResourceManager.GetString("update_download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Later.
+        /// </summary>
+        public static string update_later {
+            get {
+                return ResourceManager.GetString("update_later", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip this version.
+        /// </summary>
+        public static string update_skip {
+            get {
+                return ResourceManager.GetString("update_skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the release page.
+        /// </summary>
+        public static string update_open_page {
+            get {
+                return ResourceManager.GetString("update_open_page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading {0}….
+        /// </summary>
+        public static string update_downloading {
+            get {
+                return ResourceManager.GetString("update_downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Once it is downloaded, its SHA-256 is checked and the folder.
+        /// </summary>
+        public static string update_downloading_note {
+            get {
+                return ResourceManager.GetString("update_downloading_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloaded, and the SHA-256 matches ✓.
+        /// </summary>
+        public static string update_done_title {
+            get {
+                return ResourceManager.GetString("update_done_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In Downloads: {0}.
+        /// </summary>
+        public static string update_done_where {
+            get {
+                return ResourceManager.GetString("update_done_where", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close the app, unzip it over the old one (or into any folder.
+        /// </summary>
+        public static string update_done_note {
+            get {
+                return ResourceManager.GetString("update_done_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the folder and close the app.
+        /// </summary>
+        public static string update_open_close {
+            get {
+                return ResourceManager.GetString("update_open_close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the folder.
+        /// </summary>
+        public static string update_open_folder {
+            get {
+                return ResourceManager.GetString("update_open_folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string update_close {
+            get {
+                return ResourceManager.GetString("update_close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The update was not downloaded.
+        /// </summary>
+        public static string update_failed_title {
+            get {
+                return ResourceManager.GetString("update_failed_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The downloaded file does not match its SHA-256, so it was de.
+        /// </summary>
+        public static string update_hash_mismatch {
+            get {
+                return ResourceManager.GetString("update_hash_mismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The release gives no SHA-256 for the zip, so the app does no.
+        /// </summary>
+        public static string update_no_hash {
+            get {
+                return ResourceManager.GetString("update_no_hash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This release has no Windows zip the app can download. Open t.
+        /// </summary>
+        public static string update_no_zip {
+            get {
+                return ResourceManager.GetString("update_no_zip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not download: {0}.
+        /// </summary>
+        public static string update_download_failed {
+            get {
+                return ResourceManager.GetString("update_download_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The app is busy flashing or extracting. Close it once that i.
+        /// </summary>
+        public static string update_busy {
+            get {
+                return ResourceManager.GetString("update_busy", resourceCulture);
+            }
+        }
     }
 }

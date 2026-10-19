@@ -1258,7 +1258,27 @@ namespace FastbootEnhance
                         return;
                     }
 
-                    flashPayload(opened, serial, missing.Create);
+                    // "Flash both slots": physical A/B partitions also go to the other slot.
+                    IReadOnlyDictionary<string, string> otherSlot = new Dictionary<string, string>();
+                    if (MainWindow.THIS.flash_both_slots.IsChecked == true)
+                    {
+                        otherSlot = BothSlots.OtherSlotTargets(fastbootData, opened.Partitions.Select(part => part.Name),
+                            new HashSet<string>(opened.LogicalPartitionNames(), StringComparer.Ordinal));
+                        if (otherSlot.Count == 0)
+                        {
+                            appendLog("flash both slots: nothing to write to another slot on this phone");
+                        }
+                        else if (!Helper.confirm(string.Format(Properties.Resources.flash_both_slots_confirm,
+                                BothSlots.Other(fastbootData.current_slot.TrimStart('_')), string.Join(", ", otherSlot.Keys)),
+                                Properties.Resources.flash_both_slots))
+                        {
+                            opened.Dispose();
+                            action_unlock();
+                            return;
+                        }
+                    }
+
+                    flashPayload(opened, serial, missing.Create, otherSlot);
                 }));
         }
 
@@ -1312,7 +1332,8 @@ namespace FastbootEnhance
         /// payload that turns out to be damaged cannot leave the phone half written. Each image
         /// is deleted as soon as it is flashed to keep the staging directory small.
         /// </summary>
-        static void flashPayload(PayloadFile payload, string serial, IReadOnlyList<string> create)
+        static void flashPayload(PayloadFile payload, string serial, IReadOnlyList<string> create,
+            IReadOnlyDictionary<string, string> otherSlot)
         {
             if (serial == null)
                 throw new ArgumentNullException(nameof(serial));
@@ -1473,36 +1494,58 @@ namespace FastbootEnhance
                                 updateRow(result.Partition, FlashRow.Stage.NotWritten, null);
                         }
 
-                        // Writes one image: the exit code (null when stopped) and what fastboot said.
+                        // Where each image goes: the slot in use, then the other slot with "flash both slots".
+                        Dictionary<string, Queue<string>> targets = new Dictionary<string, Queue<string>>(StringComparer.Ordinal);
+                        foreach (PartitionResult result in results)
+                        {
+                            Queue<string> queue = new Queue<string>();
+                            queue.Enqueue(result.Partition);
+                            string other;
+                            if (otherSlot.TryGetValue(result.Partition, out other))
+                                queue.Enqueue(other);
+                            targets[result.Partition] = queue;
+                        }
+
+                        // Writes one image to each of its targets: the exit code (null when stopped) and
+                        // what fastboot said. A target that fails stays first in the queue, so a write
+                        // deferred to the bootloader picks up where it stopped.
                         (int? code, string said) flashOne(PartitionResult result)
                         {
-                            appendLog("Flashing " + result.Partition);
                             updateRow(result.Partition, FlashRow.Stage.Flashing, 75.0);
-
-                            int? exitCode;
+                            Queue<string> queue = targets[result.Partition];
                             System.Text.StringBuilder output = new System.Text.StringBuilder();
-                            cancel.Token.ThrowIfCancellationRequested();
-                            using (Fastboot fastboot = new Fastboot(serial,
-                                "flash \"" + result.Partition + "\" \"" + result.OutputPath + "\"", Fastboot.NoLimit))
-                            {
-                                activeFlash = fastboot;
-                                // abortFlash may have looked for a process just before this one started.
-                                if (cancel.IsCancellationRequested)
-                                    fastboot.Abort();
-                                while (true)
-                                {
-                                    string line = fastboot.stderr.ReadLine();
-                                    if (line == null)
-                                        break;
-                                    appendLog(line);
-                                    output.AppendLine(line);
-                                }
 
-                                exitCode = fastboot.WaitForExit();
-                                activeFlash = null;
+                            while (queue.Count > 0)
+                            {
+                                string target = queue.Peek();
+                                appendLog("Flashing " + target);
+
+                                int? exitCode;
+                                output.Clear();
+                                cancel.Token.ThrowIfCancellationRequested();
+                                using (Fastboot fastboot = new Fastboot(serial,
+                                    "flash \"" + target + "\" \"" + result.OutputPath + "\"", Fastboot.NoLimit))
+                                {
+                                    activeFlash = fastboot;
+                                    // abortFlash may have looked for a process just before this one started.
+                                    if (cancel.IsCancellationRequested)
+                                        fastboot.Abort();
+                                    while (true)
+                                    {
+                                        string line = fastboot.stderr.ReadLine();
+                                        if (line == null)
+                                            break;
+                                        appendLog(line);
+                                        output.AppendLine(line);
+                                    }
+
+                                    exitCode = fastboot.WaitForExit();
+                                    activeFlash = null;
+                                }
+                                if (exitCode != 0)
+                                    return (exitCode, output.ToString());
+                                queue.Dequeue();
                             }
-                            if (exitCode != 0)
-                                return (exitCode, output.ToString());
 
                             flashed++;
                             flashedBytes += result.Size;
@@ -1525,7 +1568,7 @@ namespace FastbootEnhance
                             return (0, output.ToString());
                         }
 
-                        string failure(PartitionResult result, int? code) => result.Partition + ": fastboot " + (code == null
+                        string failure(PartitionResult result, int? code) => targets[result.Partition].Peek() + ": fastboot " + (code == null
                             ? "was stopped before it finished"
                             : "exited with code " + code);
 
@@ -1640,8 +1683,12 @@ namespace FastbootEnhance
                     {
                         setPhase(Properties.Resources.flash_phase_done, "Ok");
                         MainWindow.THIS.flash_overall_progress.Value = 100;
-                        ThemedDialog.Done(lateNames == null ? Properties.Resources.operation_completed
-                            : Properties.Resources.operation_completed + "\n\n" + string.Format(Properties.Resources.flash_deferred_done, lateNames));
+                        string done = Properties.Resources.operation_completed;
+                        if (otherSlot.Count > 0)
+                            done += "\n\n" + string.Format(Properties.Resources.flash_both_slots_done, string.Join(", ", otherSlot.Values));
+                        if (lateNames != null)
+                            done += "\n\n" + string.Format(Properties.Resources.flash_deferred_done, lateNames);
+                        ThemedDialog.Done(done);
                         return;
                     }
 
