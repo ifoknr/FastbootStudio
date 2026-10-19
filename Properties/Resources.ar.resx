@@ -599,6 +599,18 @@
   <data name="flash_state_failed" xml:space="preserve">
     <value>فشل</value>
   </data>
+  <data name="flash_state_later" xml:space="preserve">
+    <value>لاحقاً من البوت لودر</value>
+  </data>
+  <data name="flash_phase_bootloader" xml:space="preserve">
+    <value>تفليش من البوت لودر</value>
+  </data>
+  <data name="flash_deferred_done" xml:space="preserve">
+    <value>وضع fastbootd رفض يكتب {0}، فأعاد البرنامج تشغيل الجوال على البوت لودر وكتبه هناك. الجوال الحين في البوت لودر.</value>
+  </data>
+  <data name="flash_bootloader_timeout" xml:space="preserve">
+    <value>الجوال ما رجع في البوت لودر. هذي الأقسام للحين ما انكتبت: {0}</value>
+  </data>
   <data name="flash_state_not_written" xml:space="preserve">
     <value>لم يُكتب</value>
   </data>

@@ -58,8 +58,9 @@ $fakeAdbLog = Join-Path $appDir 'fake-adb.log'
 # The stand-ins read these to play a phone in another mode; see FakeAdb and FakeFastboot.
 $adbMode = Join-Path $appDir 'fake-adb.mode'
 $fastbootMode = Join-Path $appDir 'fake-fastboot.mode'
+$fastbootRefuse = Join-Path $appDir 'fake-fastboot.refuse'
 $saveRoot = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Fastboot Studio'
-Remove-Item $crashLog, $fakeLog, $fakeAdbLog, $adbMode, $fastbootMode -ErrorAction SilentlyContinue
+Remove-Item $crashLog, $fakeLog, $fakeAdbLog, $adbMode, $fastbootMode, $fastbootRefuse -ErrorAction SilentlyContinue
 
 # What the USB check reads instead of Windows' device list: a phone without a driver and one
 # in MediaTek preloader mode (see UsbScan.cs).
@@ -319,6 +320,9 @@ if (@(Get-Content $fakeLog | Where-Object { $_ -match ' erase ' }).Count -gt 0) 
 
 # ---------------------------------------------------------------- flash the sample OTA
 if ($ExpectedFlashes -gt 0) {
+    # The stand-in refuses dtbo in fastbootd, as a OnePlus 11 refuses its modem: the app has to
+    # write the rest, restart to the bootloader and write dtbo there (one more flash command).
+    Set-Content $fastbootRefuse 'dtbo'
     Go 'flash_tab' | Out-Null
     $button = Wait-For { By-Id $root 'fastboot_flash_payload' } 10 "the flash button"
     Wait-For { $button.Current.IsEnabled } 30 "the flash button to be enabled" | Out-Null
@@ -351,9 +355,20 @@ if ($ExpectedFlashes -gt 0) {
     Save-Window ('{0:D2}-flash' -f $i); $i++
     Close-Dialog $done
 
+    Remove-Item $fastbootRefuse -ErrorAction SilentlyContinue
     $flashes = @(Get-Content $fakeLog | Where-Object { $_ -match ' flash ' }).Count
-    Write-Host "fastboot flash commands issued: $flashes (expected $ExpectedFlashes)"
-    if ($flashes -ne $ExpectedFlashes) { Fail "expected $ExpectedFlashes flash commands, saw $flashes" }
+    $expected = $ExpectedFlashes + 1   # dtbo: refused in fastbootd, then written in the bootloader
+    Write-Host "fastboot flash commands issued: $flashes (expected $expected)"
+    if ($flashes -ne $expected) { Fail "expected $expected flash commands, saw $flashes" }
+    # dtbo is tried in fastbootd, then written after "reboot bootloader", once everything else is written.
+    $log = @(Get-Content $fakeLog)
+    $dtbo = @(for ($n = 0; $n -lt $log.Count; $n++) { if ($log[$n] -match ' flash dtbo ') { $n } })
+    $toBootloader = @(for ($n = 0; $n -lt $log.Count; $n++) { if ($log[$n] -match 'reboot bootloader') { $n } }) | Select-Object -First 1
+    $lastOther = @(for ($n = 0; $n -lt $log.Count; $n++) { if ($log[$n] -match ' flash ' -and $log[$n] -notmatch ' flash dtbo ') { $n } }) | Select-Object -Last 1
+    if ($dtbo.Count -ne 2) { Fail "dtbo should be tried in fastbootd and written in the bootloader (saw $($dtbo.Count) flashes)" }
+    if ($null -eq $toBootloader -or $toBootloader -lt $lastOther -or $dtbo[1] -lt $toBootloader) { Fail "dtbo was not written from the bootloader after the rest of the OTA" }
+    if ($message -match 'error') { Fail "the OTA ended with an error: $message" }
+    Write-Host "refused in fastbootd: dtbo written from the bootloader after the rest"
     # odm_a is created (empty) before anything is flashed, and odm is then written to it.
     $lines = @(Get-Content $fakeLog)
     $created = -1; $firstFlash = -1
@@ -403,6 +418,14 @@ if ($null -eq (Shown $root 'device_basic_tab')) {
 }
 Select-Item (Wait-For { Shown $root 'device_basic_tab' } 20 "the device page")
 Wait-For { Shown $root 'fastboot_info_list' } 20 "the basic properties" | Out-Null
+if ($ExpectedFlashes -gt 0) {
+    # The OTA ended with the phone in the bootloader (dtbo was written there): back to fastbootd,
+    # as a person would, so the page reads the phone again before the checks below.
+    Press 'fastboot_reboot_d'
+    Wait-For { (Fastboot-Log 'reboot fastboot') -gt 0 } 30 "the restart to fastbootd" | Out-Null
+    Start-Sleep -Seconds 4
+    Wait-For { Shown $root 'fastboot_info_list' } 20 "the basic properties after the restart" | Out-Null
+}
 
 function Filter-Partitions([string] $name) {
     Select-Item (Wait-For { By-Id $root 'device_partitions_tab' } 10 "the partition table tab")

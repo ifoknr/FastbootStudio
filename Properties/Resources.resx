@@ -599,6 +599,18 @@ Needed for a custom or patched system. It works only with an unlocked bootloader
   <data name="flash_state_failed" xml:space="preserve">
     <value>Failed</value>
   </data>
+  <data name="flash_state_later" xml:space="preserve">
+    <value>Later, in the bootloader</value>
+  </data>
+  <data name="flash_phase_bootloader" xml:space="preserve">
+    <value>Flashing from the bootloader</value>
+  </data>
+  <data name="flash_deferred_done" xml:space="preserve">
+    <value>fastbootd would not write {0}, so the app restarted the phone to the bootloader and wrote it there. The phone is in the bootloader now.</value>
+  </data>
+  <data name="flash_bootloader_timeout" xml:space="preserve">
+    <value>The phone did not come back in the bootloader. These partitions are not written yet: {0}</value>
+  </data>
   <data name="flash_state_not_written" xml:space="preserve">
     <value>Not written</value>
   </data>

@@ -1500,6 +1500,42 @@ namespace FastbootEnhance.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Later, in the bootloader.
+        /// </summary>
+        public static string flash_state_later {
+            get {
+                return ResourceManager.GetString("flash_state_later", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Flashing from the bootloader.
+        /// </summary>
+        public static string flash_phase_bootloader {
+            get {
+                return ResourceManager.GetString("flash_phase_bootloader", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to fastbootd would not write {0}, so the app restarted the phon.
+        /// </summary>
+        public static string flash_deferred_done {
+            get {
+                return ResourceManager.GetString("flash_deferred_done", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone did not come back in the bootloader. These partiti.
+        /// </summary>
+        public static string flash_bootloader_timeout {
+            get {
+                return ResourceManager.GetString("flash_bootloader_timeout", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Not written.
         /// </summary>
         public static string flash_state_not_written {
