@@ -599,6 +599,18 @@
   <data name="flash_state_failed" xml:space="preserve">
     <value>فشل</value>
   </data>
+  <data name="flash_state_later" xml:space="preserve">
+    <value>لاحقاً من البوت لودر</value>
+  </data>
+  <data name="flash_phase_bootloader" xml:space="preserve">
+    <value>تفليش من البوت لودر</value>
+  </data>
+  <data name="flash_deferred_done" xml:space="preserve">
+    <value>وضع fastbootd رفض يكتب {0}، فأعاد البرنامج تشغيل الجوال على البوت لودر وكتبه هناك. الجوال الحين في البوت لودر.</value>
+  </data>
+  <data name="flash_bootloader_timeout" xml:space="preserve">
+    <value>الجوال ما رجع في البوت لودر. هذي الأقسام للحين ما انكتبت: {0}</value>
+  </data>
   <data name="flash_state_not_written" xml:space="preserve">
     <value>لم يُكتب</value>
   </data>
@@ -2205,5 +2217,120 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   </data>
   <data name="rendering_restart" xml:space="preserve">
     <value>طريقة الرسم الجديدة تشتغل بعد إعادة التشغيل. تعيد تشغيل البرنامج الحين؟</value>
+  </data>
+  <data name="flash_both_slots" xml:space="preserve">
+    <value>فلّش على السلوتين (a و b)</value>
+  </data>
+  <data name="flash_both_slots_note" xml:space="preserve">
+    <value>أقسام الفيرموير مثل modem و boot تنكتب كمان على السلوت الثاني. أقسام super ما تنلمس.</value>
+  </data>
+  <data name="flash_both_slots_confirm" xml:space="preserve">
+    <value>غير السلوت الحالي، هذي الأقسام بتنكتب كمان على السلوت {0}، عشان لو الجوال اشتغل منه يلقى نفس الفيرموير:
+
+{1}
+
+أقسام super (system و vendor…) ما تنلمس. تكمل؟</value>
+  </data>
+  <data name="flash_both_slots_done" xml:space="preserve">
+    <value>وانكتبت كمان على السلوت الثاني: {0}</value>
+  </data>
+  <data name="update_section" xml:space="preserve">
+    <value>التحديثات</value>
+  </data>
+  <data name="update_auto" xml:space="preserve">
+    <value>تحقق من التحديثات تلقائياً</value>
+  </data>
+  <data name="update_auto_note" xml:space="preserve">
+    <value>مرة باليوم من صفحة البرنامج في GitHub. لو قفلته، تتحقق بنفسك من هنا.</value>
+  </data>
+  <data name="update_check_now" xml:space="preserve">
+    <value>تحقق الحين</value>
+  </data>
+  <data name="update_checking" xml:space="preserve">
+    <value>يتحقق…</value>
+  </data>
+  <data name="update_latest" xml:space="preserve">
+    <value>عندك آخر إصدار ✓</value>
+  </data>
+  <data name="update_found" xml:space="preserve">
+    <value>{0} متوفر</value>
+  </data>
+  <data name="update_check_failed" xml:space="preserve">
+    <value>ما قدر يتحقق: {0}</value>
+  </data>
+  <data name="update_badge" xml:space="preserve">
+    <value>تحديث {0} متوفر</value>
+  </data>
+  <data name="update_available_title" xml:space="preserve">
+    <value>تحديث جديد: {0}</value>
+  </data>
+  <data name="update_have" xml:space="preserve">
+    <value>عندك v{0} · نزل {1}</value>
+  </data>
+  <data name="update_have_nodate" xml:space="preserve">
+    <value>عندك v{0}</value>
+  </data>
+  <data name="update_whats_new" xml:space="preserve">
+    <value>وش الجديد والإصلاحات</value>
+  </data>
+  <data name="update_no_notes" xml:space="preserve">
+    <value>التغييرات مكتوبة في صفحة الإصدار.</value>
+  </data>
+  <data name="update_note" xml:space="preserve">
+    <value>التحميل من صفحة البرنامج في GitHub، والبرنامج يتحقق من بصمة SHA-256 قبل ما تفتحه. وإذا مركّبه من winget: winget upgrade IFOKNR.FastbootStudio</value>
+  </data>
+  <data name="update_download" xml:space="preserve">
+    <value>حمّل التحديث</value>
+  </data>
+  <data name="update_later" xml:space="preserve">
+    <value>بعدين</value>
+  </data>
+  <data name="update_skip" xml:space="preserve">
+    <value>تخطّ هذا الإصدار</value>
+  </data>
+  <data name="update_open_page" xml:space="preserve">
+    <value>افتح صفحة الإصدار</value>
+  </data>
+  <data name="update_downloading" xml:space="preserve">
+    <value>يحمّل {0}…</value>
+  </data>
+  <data name="update_downloading_note" xml:space="preserve">
+    <value>بعد التحميل يتحقق من البصمة، ويفتح لك المجلد. أغلق البرنامج، فك الضغط، وشغّل النسخة الجديدة.</value>
+  </data>
+  <data name="update_done_title" xml:space="preserve">
+    <value>تم التحميل، والبصمة مطابقة ✓</value>
+  </data>
+  <data name="update_done_where" xml:space="preserve">
+    <value>في مجلد التنزيلات: {0}</value>
+  </data>
+  <data name="update_done_note" xml:space="preserve">
+    <value>أغلق البرنامج، فك الضغط مكان القديم (أو في أي مجلد)، وشغّل FastbootStudio.exe. إعداداتك ونسخك الاحتياطية تبقى زي ما هي.</value>
+  </data>
+  <data name="update_open_close" xml:space="preserve">
+    <value>افتح المجلد وأغلق البرنامج</value>
+  </data>
+  <data name="update_open_folder" xml:space="preserve">
+    <value>افتح المجلد</value>
+  </data>
+  <data name="update_close" xml:space="preserve">
+    <value>إغلاق</value>
+  </data>
+  <data name="update_failed_title" xml:space="preserve">
+    <value>ما تم تحميل التحديث</value>
+  </data>
+  <data name="update_hash_mismatch" xml:space="preserve">
+    <value>الملف اللي تحمّل ما يطابق بصمته SHA-256، فانحذف. جرّب مرة ثانية، أو حمّله من صفحة الإصدار.</value>
+  </data>
+  <data name="update_no_hash" xml:space="preserve">
+    <value>الإصدار ما فيه بصمة SHA-256 للملف، فالبرنامج ما يحتفظ فيه. حمّله من صفحة الإصدار.</value>
+  </data>
+  <data name="update_no_zip" xml:space="preserve">
+    <value>هذا الإصدار ما فيه ملف ويندوز يقدر البرنامج يحمّله. افتح صفحة الإصدار وحمّله منها.</value>
+  </data>
+  <data name="update_download_failed" xml:space="preserve">
+    <value>ما قدر يحمّل: {0}</value>
+  </data>
+  <data name="update_busy" xml:space="preserve">
+    <value>البرنامج مشغول بتفليش أو استخراج. أغلقه بعد ما يخلص.</value>
   </data>
 </root>

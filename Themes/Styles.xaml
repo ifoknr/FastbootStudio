@@ -540,7 +540,7 @@
                                            RenderOptions.BitmapScalingMode="HighQuality"/>
                                     <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
                                         <TextBlock Text="Fastboot Studio" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
-                                        <TextBlock Text="v2.5.2" FontSize="11" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}"/>
+                                        <TextBlock Text="v2.6.0" FontSize="11" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}"/>
                                     </StackPanel>
                                 </StackPanel>
                                 <Border DockPanel.Dock="Bottom" Background="{StaticResource Well}" BorderBrush="{StaticResource Line}"
@@ -548,6 +548,29 @@
                                     <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
                                                FontSize="11.5" Foreground="{StaticResource Dim}" TextWrapping="Wrap"/>
                                 </Border>
+                                <!-- Shown by UpdateUI when a newer version is out; opens the update dialog. -->
+                                <Button x:Name="update_badge" DockPanel.Dock="Bottom" Visibility="Collapsed" Margin="0,0,0,10"
+                                        Cursor="Hand" Focusable="False">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="bd" Background="{StaticResource AccentSoft}" BorderBrush="{StaticResource AccentLine}"
+                                                    BorderThickness="1" CornerRadius="10" Padding="12,9">
+                                                <DockPanel>
+                                                    <Ellipse DockPanel.Dock="Left" Width="8" Height="8" Fill="{StaticResource Accent}"
+                                                             Margin="0,0,9,0" VerticalAlignment="Center"/>
+                                                    <ContentPresenter TextElement.Foreground="{StaticResource Accent}"
+                                                                      TextElement.FontWeight="SemiBold" TextElement.FontSize="12"
+                                                                      VerticalAlignment="Center"/>
+                                                </DockPanel>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
                                 <StackPanel IsItemsHost="True" KeyboardNavigation.TabIndex="1"/>
                             </DockPanel>
                         </Border>

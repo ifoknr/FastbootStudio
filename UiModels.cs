@@ -30,7 +30,7 @@ namespace FastbootEnhance
     /// <summary>One partition in the flash queue. Updated from worker threads via the dispatcher.</summary>
     sealed class FlashRow : INotifyPropertyChanged
     {
-        public enum Stage { Queued, Extracting, Verified, Flashing, Flashed, Failed, NotWritten }
+        public enum Stage { Queued, Extracting, Verified, Flashing, Flashed, Failed, NotWritten, Later }
 
         double progress;
         Stage stage = Stage.Queued;
@@ -83,6 +83,7 @@ namespace FastbootEnhance
                     case Stage.Flashed: return Properties.Resources.flash_state_flashed;
                     case Stage.Failed: return Properties.Resources.flash_state_failed;
                     case Stage.NotWritten: return Properties.Resources.flash_state_not_written;
+                    case Stage.Later: return Properties.Resources.flash_state_later;
                     default: return Properties.Resources.flash_state_queued;
                 }
             }
@@ -97,6 +98,7 @@ namespace FastbootEnhance
                     case Stage.Flashed: return Palette.Get("Ok");
                     case Stage.Failed: return Palette.Get("Danger");
                     case Stage.NotWritten: return Palette.Get("Warn");
+                    case Stage.Later: return Palette.Get("Warn");
                     case Stage.Queued: return Palette.Get("Faint");
                     default: return Palette.Get("Accent");
                 }

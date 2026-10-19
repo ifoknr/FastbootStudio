@@ -4,6 +4,16 @@
 
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
+## v2.6.0
+- إشعار التحديث: البرنامج يقولك لما ينزل إصدار جديد ويعرض التغييرات، وأنت تختار تحمّله أو لا. التحميل يتحقق من بصمة SHA-256
+- خيار «فلّش على السلوتين»: أقسام الفيرموير مثل modem و boot تنكتب على a و b
+- تفليش OTA: لو fastbootd رفض قسم مثل modem (زي OnePlus)، يكمل الباقي وبعدين يكتبه من البوت لودر
+
+**English**
+- Update notice: the app tells you when a new version is out and shows what changed; you choose whether to download it. The download is checked against its SHA-256
+- "Flash both slots": firmware partitions such as modem and boot are written to a and b
+- OTA flashing: when fastbootd refuses a partition such as modem (as on OnePlus), the rest is flashed, then it is written from the bootloader
+
 ## v2.5.2
 - إصلاح أمان: صفحة «روت» كانت ممكن تفلّش جوال ثاني موصول في وضع fastboot. الحين تعيد تشغيل جوالك برقمه وما تكتب إلا عليه
 - لو ما قدر يميّز جوالك، يوقف ويقولك بدل ما يخمّن

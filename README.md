@@ -163,6 +163,10 @@ Flashes a full OTA (`payload.bin` or the OTA zip) to the phone in fastbootd.
   before anything is written. A broken download never reaches the phone.
 - **Missing partitions** the OTA places in super are created first (with a note on
   fastbootd's `default` group), and the images are checked to fit in super before writing.
+- A partition fastbootd refuses (a OnePlus modem: "Operation not permitted") is written
+  from the bootloader after the rest, instead of stopping the flash half-way.
+- **Flash both slots** (off by default): firmware partitions such as modem, boot and vbmeta
+  are written to slot a and slot b; partitions in super are left alone.
 - Per-partition progress, phase, elapsed time and a live fastboot log.
 - Asks before closing the app mid-flash, since that would leave the phone half written.
 
@@ -292,6 +296,8 @@ Type adb and fastboot commands and run them with the tools that come with the ap
 - **Logs**: everything the app runs and every fastboot / adb answer, to copy or clear.
 - **About**: version, credits, license, the **language switch** and the **appearance** (dark, light, or as Windows)
   (English, العربية with a full right-to-left layout, 中文, 日本語, 한국어).
+- **Updates**: once a day (or with *Check now*) the app looks for a new release, shows what
+  changed, and downloads it only if you say so; the zip is kept only when its SHA-256 matches.
 
 ---
 

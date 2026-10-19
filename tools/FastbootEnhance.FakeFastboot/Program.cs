@@ -6,7 +6,9 @@ namespace FastbootEnhance.FakeFastboot
     /// "devices" on stdout) so the UI can be driven end to end in CI. Every command is
     /// appended to fake-fastboot.log next to the executable, so a run can be checked.
     /// "reboot bootloader" moves it to the bootloader (remembered in fake-fastboot.mode), where
-    /// "boot" works; any other reboot puts it back in fastbootd.
+    /// "boot" works; any other reboot puts it back in fastbootd. The partitions listed in
+    /// fake-fastboot.refuse are refused in fastbootd as a OnePlus 11 refuses its modem
+    /// ("Operation not permitted") and written in the bootloader.
     /// </summary>
     static class Program
     {
@@ -137,6 +139,14 @@ namespace FastbootEnhance.FakeFastboot
                 ? partition : partition + "_a";
             long kb = new FileInfo(image).Length / 1024;
 
+            if (!InBootloader() && Refused().Contains(partition))
+            {
+                Console.Error.WriteLine("Sending '" + slotted + "' (" + kb + " KB)            OKAY [  0.120s]");
+                Console.Error.WriteLine("Writing '" + slotted + "'                          FAILED (remote: 'Operation not permitted')");
+                Console.Error.WriteLine("fastboot: error: Command failed");
+                return 1;
+            }
+
             Console.Error.WriteLine("Sending '" + slotted + "' (" + kb + " KB)            OKAY [  0.120s]");
             Thread.Sleep(150);
             Console.Error.WriteLine("Writing '" + slotted + "'                          OKAY [  0.080s]");
@@ -145,6 +155,22 @@ namespace FastbootEnhance.FakeFastboot
         }
 
         static string ModePath => Path.Combine(AppContext.BaseDirectory, "fake-fastboot.mode");
+
+        /// <summary>The partitions fastbootd refuses, one per line in fake-fastboot.refuse (none when it is absent).</summary>
+        static HashSet<string> Refused()
+        {
+            string path = Path.Combine(AppContext.BaseDirectory, "fake-fastboot.refuse");
+            try
+            {
+                return File.Exists(path)
+                    ? new HashSet<string>(File.ReadAllLines(path).Select(l => l.Trim()).Where(l => l.Length > 0), StringComparer.Ordinal)
+                    : new HashSet<string>();
+            }
+            catch (IOException)
+            {
+                return new HashSet<string>();
+            }
+        }
 
         static bool InBootloader()
         {

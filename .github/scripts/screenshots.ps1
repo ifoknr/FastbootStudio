@@ -58,8 +58,9 @@ $fakeAdbLog = Join-Path $appDir 'fake-adb.log'
 # The stand-ins read these to play a phone in another mode; see FakeAdb and FakeFastboot.
 $adbMode = Join-Path $appDir 'fake-adb.mode'
 $fastbootMode = Join-Path $appDir 'fake-fastboot.mode'
+$fastbootRefuse = Join-Path $appDir 'fake-fastboot.refuse'
 $saveRoot = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Fastboot Studio'
-Remove-Item $crashLog, $fakeLog, $fakeAdbLog, $adbMode, $fastbootMode -ErrorAction SilentlyContinue
+Remove-Item $crashLog, $fakeLog, $fakeAdbLog, $adbMode, $fastbootMode, $fastbootRefuse -ErrorAction SilentlyContinue
 
 # What the USB check reads instead of Windows' device list: a phone without a driver and one
 # in MediaTek preloader mode (see UsbScan.cs).
@@ -69,6 +70,8 @@ Set-Content $fakeUsb @(
     'MediaTek PreLoader USB VCOM (Android) (COM5)|USB\VID_0E8D&PID_2000\5&2B1E&0&1|0|Ports'
 )
 $env:FASTBOOT_STUDIO_FAKE_USB = $fakeUsb
+# No update check by itself while the screens are captured; the update dialog is tested at the end.
+$env:FASTBOOT_STUDIO_UPDATE_FEED = 'off'
 Remove-Item $saveRoot -Recurse -Force -ErrorAction SilentlyContinue
 
 function Save-Desktop([string] $name) {
@@ -229,8 +232,10 @@ function Answer-Dialog($dialog, [string] $label) {
     $cond = New-Object System.Windows.Automation.PropertyCondition($UIA::ControlTypeProperty, $Type::Button)
     $button = @($dialog.FindAll($Scope::Descendants, $cond)) | Where-Object { $_.Current.Name -eq $label } | Select-Object -First 1
     if ($null -eq $button) { Fail "the dialog has no '$label' button" }
+    $handle = $dialog.Current.NativeWindowHandle
     $button.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
-    Wait-For { $null -eq (Find-Dialog) } 10 "the dialog to close" | Out-Null
+    # The next question may open straight away, so only this dialog has to go.
+    Wait-For { $d = Find-Dialog; $null -eq $d -or $d.Current.NativeWindowHandle -ne $handle } 10 "the dialog to close" | Out-Null
     Start-Sleep -Milliseconds 800
 }
 
@@ -319,7 +324,13 @@ if (@(Get-Content $fakeLog | Where-Object { $_ -match ' erase ' }).Count -gt 0) 
 
 # ---------------------------------------------------------------- flash the sample OTA
 if ($ExpectedFlashes -gt 0) {
+    # The stand-in refuses dtbo in fastbootd, as a OnePlus 11 refuses its modem: the app has to
+    # write the rest, restart to the bootloader and write dtbo there (one more flash command).
+    Set-Content $fastbootRefuse 'dtbo'
     Go 'flash_tab' | Out-Null
+    # "Flash both slots": the six physical partitions of the OTA also go to slot b.
+    $both = Wait-For { By-Id $root 'flash_both_slots' } 10 "the both-slots option"
+    $both.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern).Toggle()
     $button = Wait-For { By-Id $root 'fastboot_flash_payload' } 10 "the flash button"
     Wait-For { $button.Current.IsEnabled } 30 "the flash button to be enabled" | Out-Null
     $button.SetFocus()
@@ -340,6 +351,11 @@ if ($ExpectedFlashes -gt 0) {
     Save-Window ('{0:D2}-create-missing' -f $i); $i++
     Answer-Dialog $create 'Yes'
 
+    $slots = Wait-For { Find-Dialog } 30 "the both-slots question"
+    Start-Sleep -Milliseconds 600
+    Save-Window ('{0:D2}-both-slots' -f $i); $i++
+    Answer-Dialog $slots 'Yes'
+
     # The app shows "operation completed" (or an error) when it is done. With the file dialog
     # gone, the next window to appear is that box. A message box does not expose its text to
     # UI Automation, so the fastboot log below is what proves the flash.
@@ -351,9 +367,33 @@ if ($ExpectedFlashes -gt 0) {
     Save-Window ('{0:D2}-flash' -f $i); $i++
     Close-Dialog $done
 
+    Remove-Item $fastbootRefuse -ErrorAction SilentlyContinue
     $flashes = @(Get-Content $fakeLog | Where-Object { $_ -match ' flash ' }).Count
-    Write-Host "fastboot flash commands issued: $flashes (expected $ExpectedFlashes)"
-    if ($flashes -ne $ExpectedFlashes) { Fail "expected $ExpectedFlashes flash commands, saw $flashes" }
+    $physical = @('boot', 'init_boot', 'vendor_boot', 'dtbo', 'vbmeta', 'vbmeta_system')
+    # dtbo: refused in fastbootd, then written in the bootloader; each physical one once more for slot b.
+    $expected = $ExpectedFlashes + 1 + $physical.Count
+    Write-Host "fastboot flash commands issued: $flashes (expected $expected)"
+    if ($flashes -ne $expected) { Fail "expected $expected flash commands, saw $flashes" }
+    # dtbo is tried in fastbootd, then written after "reboot bootloader", once everything else is written.
+    $log = @(Get-Content $fakeLog)
+    $dtbo = @(for ($n = 0; $n -lt $log.Count; $n++) { if ($log[$n] -match ' flash dtbo ') { $n } })
+    $toBootloader = @(for ($n = 0; $n -lt $log.Count; $n++) { if ($log[$n] -match 'reboot bootloader') { $n } }) | Select-Object -First 1
+    $lastOther = @(for ($n = 0; $n -lt $log.Count; $n++) { if ($log[$n] -match ' flash ' -and $log[$n] -notmatch ' flash dtbo(_b)? ') { $n } }) | Select-Object -Last 1
+    if ($dtbo.Count -ne 2) { Fail "dtbo should be tried in fastbootd and written in the bootloader (saw $($dtbo.Count) flashes)" }
+    if ($null -eq $toBootloader -or $toBootloader -lt $lastOther -or $dtbo[1] -lt $toBootloader) { Fail "dtbo was not written from the bootloader after the rest of the OTA" }
+    if ($message -match 'error') { Fail "the OTA ended with an error: $message" }
+    Write-Host "refused in fastbootd: dtbo written from the bootloader after the rest"
+    # Both slots: each physical partition reaches slot b once, after its slot a write; nothing in super does.
+    foreach ($name in $physical) {
+        $a = @(for ($n = 0; $n -lt $log.Count; $n++) { if ($log[$n] -match " flash $name ") { $n } }) | Select-Object -Last 1
+        $b = @(for ($n = 0; $n -lt $log.Count; $n++) { if ($log[$n] -match " flash ${name}_b ") { $n } })
+        if ($b.Count -ne 1) { Fail "$name was written to slot b $($b.Count) times, expected once" }
+        if ($b[0] -lt $a) { Fail "${name}_b was written before $name" }
+    }
+    $dtboB = @(for ($n = 0; $n -lt $log.Count; $n++) { if ($log[$n] -match ' flash dtbo_b ') { $n } })
+    if ($dtboB[0] -lt $toBootloader) { Fail "dtbo_b was written in fastbootd, where dtbo is refused" }
+    if (@($log | Where-Object { $_ -match ' flash (system|system_ext|product|vendor|vendor_dlkm|odm)_b ' }).Count -gt 0) { Fail "a logical partition was written to slot b" }
+    Write-Host "both slots: $($physical.Count) physical partitions written to slot b too, none in super"
     # odm_a is created (empty) before anything is flashed, and odm is then written to it.
     $lines = @(Get-Content $fakeLog)
     $created = -1; $firstFlash = -1
@@ -403,6 +443,14 @@ if ($null -eq (Shown $root 'device_basic_tab')) {
 }
 Select-Item (Wait-For { Shown $root 'device_basic_tab' } 20 "the device page")
 Wait-For { Shown $root 'fastboot_info_list' } 20 "the basic properties" | Out-Null
+if ($ExpectedFlashes -gt 0) {
+    # The OTA ended with the phone in the bootloader (dtbo was written there): back to fastbootd,
+    # as a person would, so the page reads the phone again before the checks below.
+    Press 'fastboot_reboot_d'
+    Wait-For { (Fastboot-Log 'reboot fastboot') -gt 0 } 30 "the restart to fastbootd" | Out-Null
+    Start-Sleep -Seconds 4
+    Wait-For { Shown $root 'fastboot_info_list' } 20 "the basic properties after the restart" | Out-Null
+}
 
 function Filter-Partitions([string] $name) {
     Select-Item (Wait-For { By-Id $root 'device_partitions_tab' } 10 "the partition table tab")
@@ -1062,3 +1110,89 @@ if ($proc.HasExited) { Fail "the light-theme app exited while being captured, co
 Stop-Process -Id $proc.Id -Force
 Remove-Item Env:FASTBOOT_STUDIO_THEME
 Write-Host "captured the light theme"
+
+# ---------------------------------------------------------------- the update dialog
+# A test feed stands in for GitHub: a newer release whose zip is a local file. The dialog must
+# open by itself, download the zip, keep it only when its SHA-256 matches, and delete it otherwise.
+function Update-Feed([string] $digest, [string] $zip) {
+    $body = "- تفليش السلوتين`n- إشعار التحديث`n`n**English**`n- Flash both slots`n- An update notice with the changes`n`n---`nDownload"
+    $release = [ordered]@{
+        tag_name = 'v9.9.9'; html_url = 'https://github.com/ifoknr/FastbootStudio/releases/tag/v9.9.9'
+        published_at = '2026-10-20T10:00:00Z'; draft = $false; prerelease = $false; body = $body
+        assets = @([ordered]@{ name = 'FastbootStudio-v9.9.9-win-x64.zip'; size = (Get-Item $zip).Length
+                               digest = "sha256:$digest"; browser_download_url = $zip })
+    }
+    $feed = Join-Path $env:TEMP 'fbs-update-feed.json'
+    $release | ConvertTo-Json -Depth 5 | Set-Content $feed -Encoding UTF8
+    return $feed
+}
+
+function Update-Button($dialog, [string] $id) {
+    $b = Wait-For { By-Id $dialog $id } 10 "the update dialog's $id button"
+    $b.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+}
+
+function Update-Text($dialog) {
+    return (@($dialog.FindAll($Scope::Descendants, [System.Windows.Automation.Condition]::TrueCondition)) |
+        ForEach-Object { $_.Current.Name } | Where-Object { $_ }) -join ' | '
+}
+
+$updZip = Join-Path $env:TEMP 'FastbootStudio-v9.9.9-win-x64.zip'
+$bytes = New-Object byte[] (3MB); (New-Object System.Random 7).NextBytes($bytes)
+[System.IO.File]::WriteAllBytes($updZip, $bytes)
+$updHash = (Get-FileHash $updZip -Algorithm SHA256).Hash.ToLower()
+$downloads = Join-Path $env:USERPROFILE 'Downloads'
+$saved = Join-Path $downloads 'FastbootStudio-v9.9.9-win-x64.zip'
+Remove-Item $saved, "$saved.part" -ErrorAction SilentlyContinue
+
+Start-Sleep -Seconds 2
+$env:FASTBOOT_STUDIO_UPDATE_FEED = Update-Feed $updHash $updZip
+Launch-App
+$upd = Wait-For { Find-Dialog } 30 "the update dialog to open by itself"
+Start-Sleep -Milliseconds 800
+Write-Host "update dialog: $(Update-Text $upd)"
+if ((Update-Text $upd) -notmatch 'v9\.9\.9' -or (Update-Text $upd) -notmatch 'Flash both slots') { Fail "the update dialog does not show the new version and its notes" }
+Save-Window 'update-01-dialog'
+Update-Button $upd 'primary'
+Wait-For { (Update-Text $upd) -match 'SHA-256 matches' } 60 "the download to finish and match" | Out-Null
+Start-Sleep -Milliseconds 600
+Save-Window 'update-02-done'
+if (-not (Test-Path $saved)) { Fail "the update was not saved in Downloads" }
+if ((Get-FileHash $saved -Algorithm SHA256).Hash.ToLower() -ne $updHash) { Fail "the saved update does not match its SHA-256" }
+if (Test-Path "$saved.part") { Fail "the partial download was left behind" }
+[Win32]::SetForegroundWindow([IntPtr]$upd.Current.NativeWindowHandle) | Out-Null
+[System.Windows.Forms.SendKeys]::SendWait('{ESC}')
+Wait-For { $null -eq (Find-Dialog) } 10 "the update dialog to close" | Out-Null
+# The sidebar badge sits in the navigation template, which UI Automation does not expose; it
+# shows in this capture, and About says the same.
+Go 'about_tab' | Out-Null
+Wait-For { (By-Id $root 'update_status').Current.Name -match '9\.9\.9' } 10 "About to name the new version" | Out-Null
+Start-Sleep -Milliseconds 600
+Save-Window 'update-03-about'
+if ($proc.HasExited) { Fail "the app exited during the update check" }
+Stop-Process -Id $proc.Id -Force
+Remove-Item $saved -ErrorAction SilentlyContinue
+Write-Host "update: offered by itself, downloaded, SHA-256 checked, named in About"
+
+# The same in Arabic, with a SHA-256 that does not match: nothing may be kept.
+Start-Sleep -Seconds 2
+$env:FASTBOOT_STUDIO_LANG = 'ar'
+$env:FASTBOOT_STUDIO_UPDATE_FEED = Update-Feed ('0' * 64) $updZip
+Launch-App
+$upd = Wait-For { Find-Dialog } 30 "the update dialog to open by itself (Arabic)"
+Start-Sleep -Milliseconds 800
+Save-Window 'ar-update-01-dialog'
+Update-Button $upd 'primary'
+Wait-For { $skip = By-Id $upd 'skip'; $main = By-Id $upd 'primary'
+    ($null -eq $skip -or $skip.Current.IsOffscreen) -and $null -ne $main -and -not $main.Current.IsOffscreen } 60 "the mismatch to be reported" | Out-Null
+Start-Sleep -Milliseconds 800
+Write-Host "after a mismatching download: $(Update-Text $upd)"
+Save-Window 'ar-update-02-mismatch'
+if (Test-Path $saved) { Fail "a download that does not match its SHA-256 was kept" }
+if (Test-Path "$saved.part") { Fail "a download that does not match its SHA-256 was left as .part" }
+Update-Button $upd 'secondary'
+Wait-For { $null -eq (Find-Dialog) } 10 "the update dialog to close (Arabic)" | Out-Null
+if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception during the update check" }
+Stop-Process -Id $proc.Id -Force
+Remove-Item Env:FASTBOOT_STUDIO_LANG, Env:FASTBOOT_STUDIO_UPDATE_FEED
+Write-Host "update: a zip that does not match its SHA-256 is deleted"

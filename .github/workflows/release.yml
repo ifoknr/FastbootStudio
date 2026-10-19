@@ -143,11 +143,17 @@ jobs:
           $zip = "FastbootStudio-$env:RELEASE_VERSION-win-x64.zip"
           Compress-Archive -Path publish/* -DestinationPath $zip
           Get-Item $zip | Select-Object Name, Length
+          # The app's update check also reads this when GitHub reports no digest for the zip.
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
+          [System.IO.File]::WriteAllText("$zip.sha256", "$hash  $zip`n")
+          Get-Content "$zip.sha256"
 
       - uses: actions/upload-artifact@v4
         with:
           name: release-zip
-          path: FastbootStudio-*-win-x64.zip
+          path: |
+            FastbootStudio-*-win-x64.zip
+            FastbootStudio-*-win-x64.zip.sha256
           if-no-files-found: error
 
   release:
@@ -187,7 +193,7 @@ jobs:
           cat notes.md
           flags=()
           [ "$PRE" = true ] && flags+=(--prerelease)
-          gh release create "$RELEASE_VERSION" "$zip" -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+          gh release create "$RELEASE_VERSION" "$zip" "$zip.sha256" -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --title "Fastboot Studio $RELEASE_VERSION" --notes-file notes.md "${flags[@]}"
           echo "FILE=$zip" >> "$GITHUB_ENV"
           echo "TAG=$RELEASE_VERSION" >> "$GITHUB_ENV"

@@ -599,6 +599,18 @@ Needed for a custom or patched system. It works only with an unlocked bootloader
   <data name="flash_state_failed" xml:space="preserve">
     <value>Failed</value>
   </data>
+  <data name="flash_state_later" xml:space="preserve">
+    <value>Later, in the bootloader</value>
+  </data>
+  <data name="flash_phase_bootloader" xml:space="preserve">
+    <value>Flashing from the bootloader</value>
+  </data>
+  <data name="flash_deferred_done" xml:space="preserve">
+    <value>fastbootd would not write {0}, so the app restarted the phone to the bootloader and wrote it there. The phone is in the bootloader now.</value>
+  </data>
+  <data name="flash_bootloader_timeout" xml:space="preserve">
+    <value>The phone did not come back in the bootloader. These partitions are not written yet: {0}</value>
+  </data>
   <data name="flash_state_not_written" xml:space="preserve">
     <value>Not written</value>
   </data>
@@ -2205,5 +2217,120 @@ The bootloader must be unlocked. If the phone does not start afterwards, flash t
   </data>
   <data name="rendering_restart" xml:space="preserve">
     <value>The new drawing mode applies after a restart. Restart Fastboot Studio now?</value>
+  </data>
+  <data name="flash_both_slots" xml:space="preserve">
+    <value>Flash both slots (a and b)</value>
+  </data>
+  <data name="flash_both_slots_note" xml:space="preserve">
+    <value>Firmware partitions such as modem and boot are also written to the other slot. Partitions in super are left out.</value>
+  </data>
+  <data name="flash_both_slots_confirm" xml:space="preserve">
+    <value>Besides the slot in use, these partitions are also written to slot {0}, so the phone finds the same firmware if it ever starts from that slot:
+
+{1}
+
+Partitions in super (system, vendor…) are left out. Continue?</value>
+  </data>
+  <data name="flash_both_slots_done" xml:space="preserve">
+    <value>Also written to the other slot: {0}</value>
+  </data>
+  <data name="update_section" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="update_auto" xml:space="preserve">
+    <value>Check for updates automatically</value>
+  </data>
+  <data name="update_auto_note" xml:space="preserve">
+    <value>Once a day, from the app's GitHub page. Turned off, you check yourself from here.</value>
+  </data>
+  <data name="update_check_now" xml:space="preserve">
+    <value>Check now</value>
+  </data>
+  <data name="update_checking" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="update_latest" xml:space="preserve">
+    <value>You have the latest version ✓</value>
+  </data>
+  <data name="update_found" xml:space="preserve">
+    <value>{0} is available</value>
+  </data>
+  <data name="update_check_failed" xml:space="preserve">
+    <value>Could not check: {0}</value>
+  </data>
+  <data name="update_badge" xml:space="preserve">
+    <value>Update {0} available</value>
+  </data>
+  <data name="update_available_title" xml:space="preserve">
+    <value>Update available: {0}</value>
+  </data>
+  <data name="update_have" xml:space="preserve">
+    <value>You have v{0} · released {1}</value>
+  </data>
+  <data name="update_have_nodate" xml:space="preserve">
+    <value>You have v{0}</value>
+  </data>
+  <data name="update_whats_new" xml:space="preserve">
+    <value>What's new and fixed</value>
+  </data>
+  <data name="update_no_notes" xml:space="preserve">
+    <value>The release page lists the changes.</value>
+  </data>
+  <data name="update_note" xml:space="preserve">
+    <value>Downloaded from the app's GitHub page; its SHA-256 is checked before you open it. Installed with winget? winget upgrade IFOKNR.FastbootStudio</value>
+  </data>
+  <data name="update_download" xml:space="preserve">
+    <value>Download the update</value>
+  </data>
+  <data name="update_later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="update_skip" xml:space="preserve">
+    <value>Skip this version</value>
+  </data>
+  <data name="update_open_page" xml:space="preserve">
+    <value>Open the release page</value>
+  </data>
+  <data name="update_downloading" xml:space="preserve">
+    <value>Downloading {0}…</value>
+  </data>
+  <data name="update_downloading_note" xml:space="preserve">
+    <value>Once it is downloaded, its SHA-256 is checked and the folder opens. Close the app, unzip it, and run the new version.</value>
+  </data>
+  <data name="update_done_title" xml:space="preserve">
+    <value>Downloaded, and the SHA-256 matches ✓</value>
+  </data>
+  <data name="update_done_where" xml:space="preserve">
+    <value>In Downloads: {0}</value>
+  </data>
+  <data name="update_done_note" xml:space="preserve">
+    <value>Close the app, unzip it over the old one (or into any folder) and run FastbootStudio.exe. Your settings and backups stay as they are.</value>
+  </data>
+  <data name="update_open_close" xml:space="preserve">
+    <value>Open the folder and close the app</value>
+  </data>
+  <data name="update_open_folder" xml:space="preserve">
+    <value>Open the folder</value>
+  </data>
+  <data name="update_close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="update_failed_title" xml:space="preserve">
+    <value>The update was not downloaded</value>
+  </data>
+  <data name="update_hash_mismatch" xml:space="preserve">
+    <value>The downloaded file does not match its SHA-256, so it was deleted. Try again, or download it from the release page.</value>
+  </data>
+  <data name="update_no_hash" xml:space="preserve">
+    <value>The release gives no SHA-256 for the zip, so the app does not keep it. Download it from the release page.</value>
+  </data>
+  <data name="update_no_zip" xml:space="preserve">
+    <value>This release has no Windows zip the app can download. Open the release page to get it.</value>
+  </data>
+  <data name="update_download_failed" xml:space="preserve">
+    <value>Could not download: {0}</value>
+  </data>
+  <data name="update_busy" xml:space="preserve">
+    <value>The app is busy flashing or extracting. Close it once that is done.</value>
   </data>
 </root>

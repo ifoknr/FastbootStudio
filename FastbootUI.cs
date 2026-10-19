@@ -1258,7 +1258,27 @@ namespace FastbootEnhance
                         return;
                     }
 
-                    flashPayload(opened, serial, missing.Create);
+                    // "Flash both slots": physical A/B partitions also go to the other slot.
+                    IReadOnlyDictionary<string, string> otherSlot = new Dictionary<string, string>();
+                    if (MainWindow.THIS.flash_both_slots.IsChecked == true)
+                    {
+                        otherSlot = BothSlots.OtherSlotTargets(fastbootData, opened.Partitions.Select(part => part.Name),
+                            new HashSet<string>(opened.LogicalPartitionNames(), StringComparer.Ordinal));
+                        if (otherSlot.Count == 0)
+                        {
+                            appendLog("flash both slots: nothing to write to another slot on this phone");
+                        }
+                        else if (!Helper.confirm(string.Format(Properties.Resources.flash_both_slots_confirm,
+                                BothSlots.Other(fastbootData.current_slot.TrimStart('_')), string.Join(", ", otherSlot.Keys)),
+                                Properties.Resources.flash_both_slots))
+                        {
+                            opened.Dispose();
+                            action_unlock();
+                            return;
+                        }
+                    }
+
+                    flashPayload(opened, serial, missing.Create, otherSlot);
                 }));
         }
 
@@ -1312,7 +1332,8 @@ namespace FastbootEnhance
         /// payload that turns out to be damaged cannot leave the phone half written. Each image
         /// is deleted as soon as it is flashed to keep the staging directory small.
         /// </summary>
-        static void flashPayload(PayloadFile payload, string serial, IReadOnlyList<string> create)
+        static void flashPayload(PayloadFile payload, string serial, IReadOnlyList<string> create,
+            IReadOnlyDictionary<string, string> otherSlot)
         {
             if (serial == null)
                 throw new ArgumentNullException(nameof(serial));
@@ -1406,6 +1427,11 @@ namespace FastbootEnhance
                     }));
                 });
 
+            // Logical partitions exist only in fastbootd; any other partition fastbootd refuses
+            // is written from the bootloader after the rest.
+            bool inFastbootd = fastbootData != null && fastbootData.fastbootd;
+            HashSet<string> logical = new HashSet<string>(payload.LogicalPartitionNames(), StringComparer.Ordinal);
+
             // The lock taken by openPayloadThenFlash carries over and is released when this ends.
             flashing = true;
 
@@ -1416,6 +1442,8 @@ namespace FastbootEnhance
             {
                 string error = null;
                 int flashed = 0;
+                // The partitions written from the bootloader after fastbootd refused them, for the summary.
+                string fromBootloader = null;
 
                 try
                 {
@@ -1466,44 +1494,57 @@ namespace FastbootEnhance
                                 updateRow(result.Partition, FlashRow.Stage.NotWritten, null);
                         }
 
-                        for (int i = 0; error == null && i < results.Count; i++)
+                        // Where each image goes: the slot in use, then the other slot with "flash both slots".
+                        Dictionary<string, Queue<string>> targets = new Dictionary<string, Queue<string>>(StringComparer.Ordinal);
+                        foreach (PartitionResult result in results)
                         {
-                            PartitionResult result = results[i];
-                            appendLog("Flashing " + result.Partition);
+                            Queue<string> queue = new Queue<string>();
+                            queue.Enqueue(result.Partition);
+                            string other;
+                            if (otherSlot.TryGetValue(result.Partition, out other))
+                                queue.Enqueue(other);
+                            targets[result.Partition] = queue;
+                        }
+
+                        // Writes one image to each of its targets: the exit code (null when stopped) and
+                        // what fastboot said. A target that fails stays first in the queue, so a write
+                        // deferred to the bootloader picks up where it stopped.
+                        (int? code, string said) flashOne(PartitionResult result)
+                        {
                             updateRow(result.Partition, FlashRow.Stage.Flashing, 75.0);
+                            Queue<string> queue = targets[result.Partition];
+                            System.Text.StringBuilder output = new System.Text.StringBuilder();
 
-                            int? exitCode;
-                            cancel.Token.ThrowIfCancellationRequested();
-                            using (Fastboot fastboot = new Fastboot(serial,
-                                "flash \"" + result.Partition + "\" \"" + result.OutputPath + "\"", Fastboot.NoLimit))
+                            while (queue.Count > 0)
                             {
-                                activeFlash = fastboot;
-                                // abortFlash may have looked for a process just before this one started.
-                                if (cancel.IsCancellationRequested)
-                                    fastboot.Abort();
-                                while (true)
+                                string target = queue.Peek();
+                                appendLog("Flashing " + target);
+
+                                int? exitCode;
+                                output.Clear();
+                                cancel.Token.ThrowIfCancellationRequested();
+                                using (Fastboot fastboot = new Fastboot(serial,
+                                    "flash \"" + target + "\" \"" + result.OutputPath + "\"", Fastboot.NoLimit))
                                 {
-                                    string line = fastboot.stderr.ReadLine();
-                                    if (line == null)
-                                        break;
-                                    appendLog(line);
+                                    activeFlash = fastboot;
+                                    // abortFlash may have looked for a process just before this one started.
+                                    if (cancel.IsCancellationRequested)
+                                        fastboot.Abort();
+                                    while (true)
+                                    {
+                                        string line = fastboot.stderr.ReadLine();
+                                        if (line == null)
+                                            break;
+                                        appendLog(line);
+                                        output.AppendLine(line);
+                                    }
+
+                                    exitCode = fastboot.WaitForExit();
+                                    activeFlash = null;
                                 }
-
-                                exitCode = fastboot.WaitForExit();
-                                activeFlash = null;
-                            }
-
-                            // Without this the dialog reported success even when every write failed.
-                            if (exitCode != 0)
-                            {
-                                error = result.Partition + ": fastboot " + (exitCode == null
-                                    ? "was stopped before it finished"
-                                    : "exited with code " + exitCode);
-                                appendLog(error);
-                                updateRow(result.Partition, FlashRow.Stage.Failed, null);
-                                for (int rest = i + 1; rest < results.Count; rest++)
-                                    updateRow(results[rest].Partition, FlashRow.Stage.NotWritten, null);
-                                break;
+                                if (exitCode != 0)
+                                    return (exitCode, output.ToString());
+                                queue.Dequeue();
                             }
 
                             flashed++;
@@ -1523,6 +1564,80 @@ namespace FastbootEnhance
                             }
                             catch (IOException)
                             {
+                            }
+                            return (0, output.ToString());
+                        }
+
+                        string failure(PartitionResult result, int? code) => targets[result.Partition].Peek() + ": fastboot " + (code == null
+                            ? "was stopped before it finished"
+                            : "exited with code " + code);
+
+                        // Partitions fastbootd refuses (a OnePlus 11's modem) wait for the bootloader.
+                        List<PartitionResult> later = new List<PartitionResult>();
+
+                        for (int i = 0; error == null && i < results.Count; i++)
+                        {
+                            PartitionResult result = results[i];
+                            (int? code, string said) = flashOne(result);
+                            if (code == 0)
+                                continue;
+
+                            if (code != null && FastbootdRefusal.CanDefer(inFastbootd, logical.Contains(result.Partition), said))
+                            {
+                                later.Add(result);
+                                updateRow(result.Partition, FlashRow.Stage.Later, 75.0);
+                                appendLog(result.Partition + ": fastbootd refuses it; it is written from the bootloader after the rest");
+                                continue;
+                            }
+
+                            // Without this the dialog reported success even when every write failed.
+                            error = failure(result, code);
+                            appendLog(error);
+                            updateRow(result.Partition, FlashRow.Stage.Failed, null);
+                            for (int rest = i + 1; rest < results.Count; rest++)
+                                updateRow(results[rest].Partition, FlashRow.Stage.NotWritten, null);
+                            foreach (PartitionResult waiting in later)
+                                updateRow(waiting.Partition, FlashRow.Stage.NotWritten, null);
+                            break;
+                        }
+
+                        if (error == null && later.Count > 0)
+                        {
+                            string names = string.Join(", ", later.Select(r => r.Partition));
+                            MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
+                            {
+                                setPhase(Properties.Resources.flash_phase_bootloader, "Warn");
+                            }));
+                            appendLog("Restarting to the bootloader for " + names);
+                            string said;
+                            int? code = Fastboot.Run(serial, "reboot bootloader", Fastboot.ShortCommand, out said);
+                            foreach (string line in said.Split('\n').Where(l => l.Trim().Length > 0))
+                                appendLog(line.TrimEnd());
+
+                            if (code != 0 || !waitForBootloader(serial, TimeSpan.FromMinutes(2), cancel.Token))
+                            {
+                                error = string.Format(Properties.Resources.flash_bootloader_timeout, names);
+                                appendLog(error);
+                                foreach (PartitionResult waiting in later)
+                                    updateRow(waiting.Partition, FlashRow.Stage.NotWritten, null);
+                            }
+                            else
+                            {
+                                appendLog("In the bootloader: writing " + names);
+                                for (int i = 0; i < later.Count; i++)
+                                {
+                                    (int? lateCode, string lateSaid) = flashOne(later[i]);
+                                    if (lateCode == 0)
+                                        continue;
+                                    error = failure(later[i], lateCode);
+                                    appendLog(error);
+                                    updateRow(later[i].Partition, FlashRow.Stage.Failed, null);
+                                    for (int rest = i + 1; rest < later.Count; rest++)
+                                        updateRow(later[rest].Partition, FlashRow.Stage.NotWritten, null);
+                                    break;
+                                }
+                                if (error == null)
+                                    fromBootloader = names;
                             }
                         }
                     }
@@ -1550,6 +1665,7 @@ namespace FastbootEnhance
 
                 string summary = error;
                 int flashedCount = flashed;
+                string lateNames = fromBootloader;
 
                 MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
                 {
@@ -1567,7 +1683,12 @@ namespace FastbootEnhance
                     {
                         setPhase(Properties.Resources.flash_phase_done, "Ok");
                         MainWindow.THIS.flash_overall_progress.Value = 100;
-                        ThemedDialog.Done(Properties.Resources.operation_completed);
+                        string done = Properties.Resources.operation_completed;
+                        if (otherSlot.Count > 0)
+                            done += "\n\n" + string.Format(Properties.Resources.flash_both_slots_done, string.Join(", ", otherSlot.Values));
+                        if (lateNames != null)
+                            done += "\n\n" + string.Format(Properties.Resources.flash_deferred_done, lateNames);
+                        ThemedDialog.Done(done);
                         return;
                     }
 
@@ -1582,6 +1703,29 @@ namespace FastbootEnhance
             worker.IsBackground = true;
             flashWorker = worker;
             worker.Start();
+        }
+
+        /// <summary>
+        /// After "reboot bootloader": true once the phone with this serial is back and is not in
+        /// fastbootd (is-userspace is not "yes"; a bootloader may not know the variable at all).
+        /// </summary>
+        static bool waitForBootloader(string serial, TimeSpan limit, CancellationToken cancel)
+        {
+            DateTime end = DateTime.UtcNow + limit;
+            Thread.Sleep(3000);
+            while (DateTime.UtcNow < end)
+            {
+                cancel.ThrowIfCancellationRequested();
+                if (Fastboot.ListSerials().Contains(serial))
+                {
+                    string said;
+                    Fastboot.Run(serial, "getvar is-userspace", Fastboot.ShortCommand, out said);
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(said ?? "", @"is-userspace:\s*yes"))
+                        return true;
+                }
+                Thread.Sleep(2000);
+            }
+            return false;
         }
 
         static volatile Fastboot activeFlash;
