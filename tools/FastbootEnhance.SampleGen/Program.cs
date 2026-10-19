@@ -152,6 +152,16 @@ namespace FastbootEnhance.SampleGen
             part("CSC_OXM_" + csc + tail + ".tar.md5", ("S918B_EUR_OPEN.pit", filler(8192, 4)), ("cache.img.lz4", filler(64 << 10, 5)));
             part("HOME_CSC_OXM_" + csc + tail + ".tar.md5", ("S918B_EUR_OPEN.pit", filler(8192, 4)), ("cache.img.lz4", filler(64 << 10, 5)));
 
+            // The zip a firmware site hands out, holding the five parts.
+            string zipPath = Path.Combine(outDir, "SM-S918B_OXM_" + build + ".zip");
+            if (File.Exists(zipPath))
+                File.Delete(zipPath);
+            using (System.IO.Compression.ZipArchive zip = System.IO.Compression.ZipFile.Open(zipPath, System.IO.Compression.ZipArchiveMode.Create))
+                foreach (string tarFile in Directory.GetFiles(dir, "*.tar.md5"))
+                    System.IO.Compression.ZipFileExtensions.CreateEntryFromFile(zip, tarFile, Path.GetFileName(tarFile),
+                        System.IO.Compression.CompressionLevel.NoCompression);
+            Console.WriteLine("wrote " + Path.GetFileName(zipPath));
+
             // What Magisk gives back: a tar with the patched boot image and vbmeta, not compressed.
             string patched = Path.Combine(outDir, "magisk_patched-28100_FAKE.tar");
             using (FileStream file = new FileStream(patched, FileMode.Create, FileAccess.Write))
