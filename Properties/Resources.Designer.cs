@@ -6502,5 +6502,779 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("update_busy", resourceCulture);
             }
         }
+            
+        /// <summary>
+        ///   Looks up a localized string similar to All files.
+        /// </summary>
+        public static string all_files {
+            get {
+                return ResourceManager.GetString("all_files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung.
+        /// </summary>
+        public static string nav_samsung {
+            get {
+                return ResourceManager.GetString("nav_samsung", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Samsung firmware, take out the images you need, and che.
+        /// </summary>
+        public static string samsung_subtitle {
+            get {
+                return ResourceManager.GetString("samsung_subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Samsung firmware.
+        /// </summary>
+        public static string samsung_drop_hint {
+            get {
+                return ResourceManager.GetString("samsung_drop_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AP, BL, CP, CSC and HOME_CSC (.tar.md5), the folder they are.
+        /// </summary>
+        public static string samsung_drop_detail {
+            get {
+                return ResourceManager.GetString("samsung_drop_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open firmware….
+        /// </summary>
+        public static string samsung_open {
+            get {
+                return ResourceManager.GetString("samsung_open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a folder….
+        /// </summary>
+        public static string samsung_open_folder {
+            get {
+                return ResourceManager.GetString("samsung_open_folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading the firmware….
+        /// </summary>
+        public static string samsung_opening {
+            get {
+                return ResourceManager.GetString("samsung_opening", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unpacking the zip · {0}%.
+        /// </summary>
+        public static string samsung_unzipping {
+            get {
+                return ResourceManager.GetString("samsung_unzipping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung firmware.
+        /// </summary>
+        public static string samsung_filter {
+            get {
+                return ResourceManager.GetString("samsung_filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Samsung firmware files were found. Their names start with.
+        /// </summary>
+        public static string samsung_not_firmware {
+            get {
+                return ResourceManager.GetString("samsung_not_firmware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firmware files.
+        /// </summary>
+        public static string samsung_files {
+            get {
+                return ResourceManager.GetString("samsung_files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About this firmware.
+        /// </summary>
+        public static string samsung_about {
+            get {
+                return ResourceManager.GetString("samsung_about", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string samsung_info_model {
+            get {
+                return ResourceManager.GetString("samsung_info_model", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build (PDA).
+        /// </summary>
+        public static string samsung_info_build {
+            get {
+                return ResourceManager.GetString("samsung_info_build", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bootloader binary.
+        /// </summary>
+        public static string samsung_info_binary {
+            get {
+                return ResourceManager.GetString("samsung_info_binary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Built.
+        /// </summary>
+        public static string samsung_info_date {
+            get {
+                return ResourceManager.GetString("samsung_info_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Android.
+        /// </summary>
+        public static string samsung_info_android {
+            get {
+                return ResourceManager.GetString("samsung_info_android", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CSC.
+        /// </summary>
+        public static string samsung_info_csc {
+            get {
+                return ResourceManager.GetString("samsung_info_csc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not read (not firmware parts).
+        /// </summary>
+        public static string samsung_info_other {
+            get {
+                return ResourceManager.GetString("samsung_info_other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MD5 {0}%.
+        /// </summary>
+        public static string samsung_md5_checking {
+            get {
+                return ResourceManager.GetString("samsung_md5_checking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MD5 ✓.
+        /// </summary>
+        public static string samsung_md5_ok {
+            get {
+                return ResourceManager.GetString("samsung_md5_ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to no MD5.
+        /// </summary>
+        public static string samsung_md5_none {
+            get {
+                return ResourceManager.GetString("samsung_md5_none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MD5 ✕ damaged.
+        /// </summary>
+        public static string samsung_md5_bad {
+            get {
+                return ResourceManager.GetString("samsung_md5_bad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to not readable.
+        /// </summary>
+        public static string samsung_unreadable {
+            get {
+                return ResourceManager.GetString("samsung_unreadable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking the MD5 of {0}.
+        /// </summary>
+        public static string samsung_md5_job {
+            get {
+                return ResourceManager.GetString("samsung_md5_job", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking the MD5 of each file.
+        /// </summary>
+        public static string samsung_md5_all {
+            get {
+                return ResourceManager.GetString("samsung_md5_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is damaged or incomplete: its MD5 does not match. Downlo.
+        /// </summary>
+        public static string samsung_refused_bad {
+            get {
+                return ResourceManager.GetString("samsung_refused_bad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firmware against the phone.
+        /// </summary>
+        public static string samsung_match {
+            get {
+                return ResourceManager.GetString("samsung_match", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check the phone.
+        /// </summary>
+        public static string samsung_read_phone {
+            get {
+                return ResourceManager.GetString("samsung_read_phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Looking for the phone over adb….
+        /// </summary>
+        public static string samsung_phone_reading {
+            get {
+                return ResourceManager.GetString("samsung_phone_reading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect the phone in Android with USB debugging on, then pre.
+        /// </summary>
+        public static string samsung_phone_none {
+            get {
+                return ResourceManager.GetString("samsung_phone_none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compared with {0} ({1}) over adb..
+        /// </summary>
+        public static string samsung_phone_read {
+            get {
+                return ResourceManager.GetString("samsung_phone_read", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This firmware suits your phone.
+        /// </summary>
+        public static string samsung_verdict_ok {
+            get {
+                return ResourceManager.GetString("samsung_verdict_ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flash it with Odin: AP, BL and CP, and HOME_CSC to keep your.
+        /// </summary>
+        public static string samsung_verdict_ok_text {
+            get {
+                return ResourceManager.GetString("samsung_verdict_ok_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read this before flashing.
+        /// </summary>
+        public static string samsung_verdict_warn {
+            get {
+                return ResourceManager.GetString("samsung_verdict_warn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The firmware can be flashed, but see the points below first..
+        /// </summary>
+        public static string samsung_verdict_warn_text {
+            get {
+                return ResourceManager.GetString("samsung_verdict_warn_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do not flash this firmware on your phone.
+        /// </summary>
+        public static string samsung_verdict_block {
+            get {
+                return ResourceManager.GetString("samsung_verdict_block", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The phone would refuse it in Odin, or it is made for another.
+        /// </summary>
+        public static string samsung_verdict_block_text {
+            get {
+                return ResourceManager.GetString("samsung_verdict_block_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to firmware {0} · phone {1}.
+        /// </summary>
+        public static string samsung_m_fw_phone {
+            get {
+                return ResourceManager.GetString("samsung_m_fw_phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This phone is not a Samsung.
+        /// </summary>
+        public static string samsung_m_not_samsung {
+            get {
+                return ResourceManager.GetString("samsung_m_not_samsung", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same model.
+        /// </summary>
+        public static string samsung_m_same_model {
+            get {
+                return ResourceManager.GetString("samsung_m_same_model", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Made for another model.
+        /// </summary>
+        public static string samsung_m_other_model {
+            get {
+                return ResourceManager.GetString("samsung_m_other_model", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same bootloader binary.
+        /// </summary>
+        public static string samsung_m_same_binary {
+            get {
+                return ResourceManager.GetString("samsung_m_same_binary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Newer bootloader binary.
+        /// </summary>
+        public static string samsung_m_newer_binary {
+            get {
+                return ResourceManager.GetString("samsung_m_newer_binary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to firmware {0} · phone {1}. After this, firmware with binary {.
+        /// </summary>
+        public static string samsung_m_newer_binary_detail {
+            get {
+                return ResourceManager.GetString("samsung_m_newer_binary_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bootloader binary is older than the phone's.
+        /// </summary>
+        public static string samsung_m_older_binary {
+            get {
+                return ResourceManager.GetString("samsung_m_older_binary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to firmware {0} · phone {1}. Samsung blocks this downgrade; Odi.
+        /// </summary>
+        public static string samsung_m_older_binary_detail {
+            get {
+                return ResourceManager.GetString("samsung_m_older_binary_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Android version.
+        /// </summary>
+        public static string samsung_m_android {
+            get {
+                return ResourceManager.GetString("samsung_m_android", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Older Android than the phone has.
+        /// </summary>
+        public static string samsung_m_older_android {
+            get {
+                return ResourceManager.GetString("samsung_m_older_android", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to firmware {0} · phone {1}. Going back needs the full CSC, whi.
+        /// </summary>
+        public static string samsung_m_older_android_detail {
+            get {
+                return ResourceManager.GetString("samsung_m_older_android_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your region is in this firmware.
+        /// </summary>
+        public static string samsung_m_same_csc {
+            get {
+                return ResourceManager.GetString("samsung_m_same_csc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Another CSC (region).
+        /// </summary>
+        public static string samsung_m_other_csc {
+            get {
+                return ResourceManager.GetString("samsung_m_other_csc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to firmware {0} · phone {1}. Changing it needs the full CSC, wh.
+        /// </summary>
+        public static string samsung_m_other_csc_detail {
+            get {
+                return ResourceManager.GetString("samsung_m_other_csc_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CSC wipes the phone.
+        /// </summary>
+        public static string samsung_m_csc_wipes {
+            get {
+                return ResourceManager.GetString("samsung_m_csc_wipes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put HOME_CSC in Odin's CSC slot to keep your data..
+        /// </summary>
+        public static string samsung_m_csc_wipes_detail {
+            get {
+                return ResourceManager.GetString("samsung_m_csc_wipes_detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This firmware has no HOME_CSC: flashing it wipes the phone..
+        /// </summary>
+        public static string samsung_m_csc_wipes_no_home {
+            get {
+                return ResourceManager.GetString("samsung_m_csc_wipes_no_home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files from different firmware.
+        /// </summary>
+        public static string samsung_m_mixed {
+            get {
+                return ResourceManager.GetString("samsung_m_mixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inside.
+        /// </summary>
+        public static string samsung_contents {
+            get {
+                return ResourceManager.GetString("samsung_contents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boot images.
+        /// </summary>
+        public static string samsung_select_boot {
+            get {
+                return ResourceManager.GetString("samsung_select_boot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} selected · {1}.
+        /// </summary>
+        public static string samsung_selected {
+            get {
+                return ResourceManager.GetString("samsung_selected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string samsung_column_from {
+            get {
+                return ResourceManager.GetString("samsung_column_from", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        public static string samsung_column_file {
+            get {
+                return ResourceManager.GetString("samsung_column_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract selected (undoes lz4).
+        /// </summary>
+        public static string samsung_extract {
+            get {
+                return ResourceManager.GetString("samsung_extract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting {0} files.
+        /// </summary>
+        public static string samsung_extract_job {
+            get {
+                return ResourceManager.GetString("samsung_extract_job", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} files saved, with LZ4 undone, in: {1}.
+        /// </summary>
+        public static string samsung_extract_done {
+            get {
+                return ResourceManager.GetString("samsung_extract_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick the files to take out first..
+        /// </summary>
+        public static string samsung_pick_first {
+            get {
+                return ResourceManager.GetString("samsung_pick_first", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open super in Image Tools.
+        /// </summary>
+        public static string samsung_super_tools {
+            get {
+                return ResourceManager.GetString("samsung_super_tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Root with Magisk….
+        /// </summary>
+        public static string samsung_magisk {
+            get {
+                return ResourceManager.GetString("samsung_magisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparing the file for Magisk.
+        /// </summary>
+        public static string samsung_magisk_job {
+            get {
+                return ResourceManager.GetString("samsung_magisk_job", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the AP file first: Magisk patches its init_boot (or boo.
+        /// </summary>
+        public static string samsung_magisk_no_ap {
+            get {
+                return ResourceManager.GetString("samsung_magisk_no_ap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is in the phone's Download folder.  In Magisk: Install ›.
+        /// </summary>
+        public static string samsung_magisk_on_phone {
+            get {
+                return ResourceManager.GetString("samsung_magisk_on_phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is ready in: {1}  No phone was found over adb. Copy it t.
+        /// </summary>
+        public static string samsung_magisk_manual {
+            get {
+                return ResourceManager.GetString("samsung_magisk_manual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fetching the patched file.
+        /// </summary>
+        public static string samsung_magisk_fetch {
+            get {
+                return ResourceManager.GetString("samsung_magisk_fetch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No magisk_patched tar newer than the file sent was found in .
+        /// </summary>
+        public static string samsung_magisk_not_found {
+            get {
+                return ResourceManager.GetString("samsung_magisk_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check a Magisk file….
+        /// </summary>
+        public static string samsung_check_patched {
+            get {
+                return ResourceManager.GetString("samsung_check_patched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking the patched file.
+        /// </summary>
+        public static string samsung_magisk_checking {
+            get {
+                return ResourceManager.GetString("samsung_magisk_checking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is patched with Magisk ✓  Flash {1} with Odin in the AP .
+        /// </summary>
+        public static string samsung_patched_ok {
+            get {
+                return ResourceManager.GetString("samsung_patched_ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} in this file is not patched with Magisk. Do not flash it.
+        /// </summary>
+        public static string samsung_patched_not {
+            get {
+                return ResourceManager.GetString("samsung_patched_not", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This tar has no boot or init_boot image..
+        /// </summary>
+        public static string samsung_patched_no_boot {
+            get {
+                return ResourceManager.GetString("samsung_patched_no_boot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tar for Odin….
+        /// </summary>
+        public static string samsung_build_tar {
+            get {
+                return ResourceManager.GetString("samsung_build_tar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images.
+        /// </summary>
+        public static string samsung_tar_images {
+            get {
+                return ResourceManager.GetString("samsung_tar_images", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Building the tar for Odin.
+        /// </summary>
+        public static string samsung_tar_job {
+            get {
+                return ResourceManager.GetString("samsung_tar_job", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is ready for Odin's AP slot, with {1}..
+        /// </summary>
+        public static string samsung_tar_done {
+            get {
+                return ResourceManager.GetString("samsung_tar_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Odin needs file names of up to 99 characters..
+        /// </summary>
+        public static string samsung_tar_long_name {
+            get {
+                return ResourceManager.GetString("samsung_tar_long_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images are saved as plain .img once LZ4 is undone; super sta.
+        /// </summary>
+        public static string samsung_note {
+            get {
+                return ResourceManager.GetString("samsung_note", resourceCulture);
+            }
+        }
     }
 }

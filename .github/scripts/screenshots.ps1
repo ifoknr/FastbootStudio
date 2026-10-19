@@ -954,6 +954,66 @@ if ((Fastboot-Log 'erase abl_a') -ne $erasesBefore) { Fail "the terminal erased 
 Save-Window ('{0:D2}-terminal' -f $i); $i++
 Write-Host "terminal: getvar ran, erase of abl_a asked first and did not run"
 
+# ---------------------------------------------------------------- Samsung firmware
+# The sample firmware (SampleGen) is opened like a real download: a zip of five .tar.md5 files, each
+# checked against its MD5. The stand-in phone plays a Galaxy S23 Ultra over adb, so the page
+# compares the firmware with it; the boot images are taken out with LZ4 undone and must be
+# byte for byte the images SampleGen packed; then Magisk's tar goes to the "phone" and its
+# patched tar comes back and is checked.
+$samsungDir = Join-Path (Split-Path $Payload) 'samsung'
+$samsungFlag = Join-Path $appDir 'fake-adb.samsung'
+$patchedTarPointer = Join-Path $appDir 'fake-adb.patched-tar'
+Set-Content $samsungFlag 'yes'
+Set-Content $adbMode 'android'
+Set-Content $patchedTarPointer (Join-Path (Split-Path $Payload) 'magisk_patched-28100_FAKE.tar')
+Go 'samsung_tab' | Out-Null
+Press 'samsung_open'
+# The zip as a firmware site gives it; the page unpacks its five parts next to it.
+$samsungZip = Join-Path (Split-Path $Payload) 'SM-S918B_OXM_S918BXXU3BWK5.zip'
+Choose-File $samsungZip "the firmware file dialog"
+Wait-For { $c = By-Id $root 'samsung_build_chip'; $null -ne $c -and $c.Current.Name -eq 'S918BXXU3BWK5' } 30 "the firmware to open" | Out-Null
+Wait-For { (By-Id $root 'samsung_progress_text').Current.Name -match '^Done in' } 90 "the MD5 of every firmware file" | Out-Null
+Wait-For { $v = By-Id $root 'samsung_verdict_title'; $null -ne $v -and $v.Current.Name -eq 'This firmware suits your phone' } 30 "the firmware compared with the phone" | Out-Null
+Start-Sleep -Milliseconds 600
+Save-Window ('{0:D2}-samsung-firmware' -f $i); $i++
+
+Press 'samsung_select_boot'
+Press 'samsung_extract'
+$done = Wait-For { Find-Dialog } 60 "the boot images to be taken out"
+Start-Sleep -Milliseconds 600
+Save-Window ('{0:D2}-samsung-extracted' -f $i); $i++
+Close-Dialog $done
+$samsungOut = Join-Path (Split-Path $Payload) 'SM-S918B_OXM_S918BXXU3BWK5\S918BXXU3BWK5_files'
+foreach ($name in 'boot.img', 'vbmeta.img', 'recovery.img') {
+    $got = Join-Path $samsungOut $name
+    if (-not (Test-Path $got)) { Fail "$name was not taken out of the AP" }
+    if ((Get-FileHash $got).Hash -ne (Get-FileHash (Join-Path $samsungDir $name)).Hash) { Fail "$name taken out of the AP is not the image that was packed" }
+}
+if (@(Get-ChildItem $samsungOut -Filter *.part).Count -gt 0) { Fail "a partial file was left in $samsungOut" }
+$unzipped = @(Get-ChildItem (Join-Path (Split-Path $Payload) 'SM-S918B_OXM_S918BXXU3BWK5') -Filter *.tar.md5).Count
+if ($unzipped -ne 5) { Fail "the zip gave $unzipped firmware parts, expected 5" }
+Write-Host "samsung: zip unpacked, 5 files MD5-checked, compared with the phone, boot images taken out byte for byte"
+
+Press 'samsung_magisk'
+$ask = Wait-For { Find-Dialog } 60 "the Magisk step"
+Start-Sleep -Milliseconds 600
+Save-Window ('{0:D2}-samsung-magisk' -f $i); $i++
+Answer-Dialog $ask 'OK'
+$checked = Wait-For { Find-Dialog } 60 "the patched tar to be checked"
+Start-Sleep -Milliseconds 600
+Save-Window ('{0:D2}-samsung-magisk-checked' -f $i); $i++
+Close-Dialog $checked
+if (-not (Test-Path (Join-Path $samsungOut 'magisk_input_S918BXXU3BWK5.tar'))) { Fail "the tar for Magisk was not built" }
+if (-not (Test-Path (Join-Path $samsungOut 'magisk_patched-28100_FAKE.tar'))) { Fail "the patched tar was not fetched from the phone" }
+Go 'logs_tab' | Out-Null
+$logText = (By-Id $root 'log_text').GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern).Current.Value
+if ($logText -notmatch 'magisk_patched-28100_FAKE\.tar: boot\.img, root Magisk') { Fail "the patched tar was not found to carry Magisk" }
+if (@([regex]::Matches($logText, 'tar\.md5: MD5 matches')).Count -ne 5) { Fail "not every firmware part was found to match its MD5" }
+Remove-Item $samsungFlag, $patchedTarPointer -ErrorAction SilentlyContinue
+Remove-Item (Join-Path $appDir 'fake-phone\magisk_input_*.tar') -ErrorAction SilentlyContinue
+Remove-Item $adbMode -ErrorAction SilentlyContinue
+Write-Host "samsung: Magisk's tar built, sent, and the patched one fetched and found to carry Magisk"
+
 # ---------------------------------------------------------------- log and about
 Go 'logs_tab' | Out-Null
 Save-Window ('{0:D2}-logs' -f $i); $i++

@@ -501,4 +501,176 @@ namespace FastbootEnhance
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
+
+    /// <summary>One Samsung firmware file (AP, BL…) and the state of its MD5 check.</summary>
+    sealed class SamsungFileRow : INotifyPropertyChanged
+    {
+        public enum Check { Waiting, Checking, Ok, NoMd5, Bad, Unreadable }
+
+        Check check = Check.Waiting;
+        int percent;
+
+        public SamsungFileRow(FastbootEnhance.Core.Samsung.FirmwareFile file, long size)
+        {
+            File = file;
+            Size = Helper.byte2AUnit(size);
+        }
+
+        public FastbootEnhance.Core.Samsung.FirmwareFile File { get; }
+        public string Part => File.Part == FastbootEnhance.Core.Samsung.FirmwarePart.HomeCsc ? "HOME_CSC" : File.Part.ToString().ToUpperInvariant();
+        public string Name => File.FileName;
+        public string Size { get; }
+        public string Problem { get; set; }
+
+        public Check Current
+        {
+            get { return check; }
+            set
+            {
+                check = value;
+                Raise(nameof(State));
+                Raise(nameof(StateBrush));
+            }
+        }
+
+        public int Percent
+        {
+            get { return percent; }
+            set
+            {
+                percent = value;
+                Raise(nameof(State));
+            }
+        }
+
+        public string State
+        {
+            get
+            {
+                switch (check)
+                {
+                    case Check.Checking: return string.Format(Properties.Resources.samsung_md5_checking, percent);
+                    case Check.Ok: return Properties.Resources.samsung_md5_ok;
+                    case Check.NoMd5: return Properties.Resources.samsung_md5_none;
+                    case Check.Bad: return Properties.Resources.samsung_md5_bad;
+                    case Check.Unreadable: return Properties.Resources.samsung_unreadable;
+                    default: return "…";
+                }
+            }
+        }
+
+        public Brush StateBrush => Palette.Get(check == Check.Ok ? "Ok" : check == Check.Bad || check == Check.Unreadable ? "Danger"
+            : check == Check.NoMd5 ? "Warn" : "Faint");
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void Raise(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    /// <summary>One file inside a Samsung firmware tar.</summary>
+    sealed class SamsungEntryRow : INotifyPropertyChanged
+    {
+        public enum Stage { Idle, Queued, Working, Saved, Failed }
+
+        bool selected;
+        Stage stage = Stage.Idle;
+        int percent;
+
+        public SamsungEntryRow(SamsungFileRow file, FastbootEnhance.Core.Samsung.TarEntry entry)
+        {
+            File = file;
+            Entry = entry;
+        }
+
+        public SamsungFileRow File { get; }
+        public FastbootEnhance.Core.Samsung.TarEntry Entry { get; }
+        public string Part => File.Part;
+        public string Name => Entry.Name;
+        public string Size => Helper.byte2AUnit(Entry.Size);
+
+        public bool Selected
+        {
+            get { return selected; }
+            set
+            {
+                if (selected == value)
+                    return;
+                selected = value;
+                Raise(nameof(Selected));
+                SelectionChanged?.Invoke();
+            }
+        }
+
+        public static event System.Action SelectionChanged;
+
+        public Stage Current
+        {
+            get { return stage; }
+            set
+            {
+                stage = value;
+                Raise(nameof(State));
+                Raise(nameof(StateBrush));
+            }
+        }
+
+        public int Percent
+        {
+            get { return percent; }
+            set
+            {
+                percent = value;
+                Raise(nameof(State));
+            }
+        }
+
+        public string State
+        {
+            get
+            {
+                switch (stage)
+                {
+                    case Stage.Queued: return Properties.Resources.flash_state_queued;
+                    case Stage.Working: return percent + "%";
+                    case Stage.Saved: return Properties.Resources.backup_state_saved;
+                    case Stage.Failed: return Properties.Resources.flash_state_failed;
+                    default: return "";
+                }
+            }
+        }
+
+        public Brush StateBrush => Palette.Get(stage == Stage.Saved ? "Ok" : stage == Stage.Failed ? "Danger"
+            : stage == Stage.Working ? "Accent" : "Faint");
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void Raise(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    /// <summary>One check of firmware against the phone.</summary>
+    sealed class FindingRow
+    {
+        public FindingRow(string glyph, string brushKey, string title, string detail)
+        {
+            Glyph = glyph;
+            Brush = Palette.Get(brushKey);
+            Title = title;
+            Detail = detail;
+        }
+
+        public string Glyph { get; }
+        public Brush Brush { get; }
+        public string Title { get; }
+        public string Detail { get; }
+    }
 }

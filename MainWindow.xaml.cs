@@ -11,7 +11,7 @@ namespace FastbootEnhance
     public partial class MainWindow : Window
     {
         public static MainWindow THIS;
-        internal const string version = "2.6.0";
+        internal const string version = "2.7.0";
 
         public MainWindow()
         {
@@ -27,6 +27,7 @@ namespace FastbootEnhance
             BackupUI.init();
             ImageToolsUI.init();
             SuperUI.init();
+            SamsungUI.init();
 
             Title += " v" + version;
 
@@ -64,7 +65,7 @@ namespace FastbootEnhance
             Closing += delegate (object sender, System.ComponentModel.CancelEventArgs e)
             {
                 string question = FastbootUI.flashing ? Properties.Resources.confirm_close_flashing
-                    : PayloadUI.extracting || ImageToolsUI.busy || SuperUI.busy ? Properties.Resources.confirm_close_extracting
+                    : PayloadUI.extracting || ImageToolsUI.busy || SuperUI.busy || SamsungUI.busy ? Properties.Resources.confirm_close_extracting
                     : null;
                 if (question == null)
                     return;
@@ -80,6 +81,7 @@ namespace FastbootEnhance
                 BackupUI.shutdown();
                 ImageToolsUI.shutdown();
                 SuperUI.shutdown();
+                SamsungUI.shutdown();
                 TerminalUI.shutdown();
                 PayloadUI.cancelRunningWork();
                 PayloadUI.closeCurrent();

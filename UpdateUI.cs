@@ -48,7 +48,7 @@ namespace FastbootEnhance
 
         /// <summary>A flash, an extraction or a build is running: no dialog pops up, and the app is not closed.</summary>
         public static bool Busy =>
-            FastbootUI.flashing || PayloadUI.extracting || ImageToolsUI.busy || SuperUI.busy;
+            FastbootUI.flashing || PayloadUI.extracting || ImageToolsUI.busy || SuperUI.busy || SamsungUI.busy;
 
         public static void init()
         {

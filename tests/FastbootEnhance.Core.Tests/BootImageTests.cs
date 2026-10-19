@@ -38,7 +38,7 @@ namespace FastbootEnhance.Core.Tests
             return ms.ToArray();
         }
 
-        static byte[] Gzip(byte[] data)
+        internal static byte[] Gzip(byte[] data)
         {
             MemoryStream ms = new MemoryStream();
             using (GZipStream gz = new GZipStream(ms, CompressionLevel.Optimal, true))
@@ -47,7 +47,7 @@ namespace FastbootEnhance.Core.Tests
         }
 
         /// <summary>A newc cpio archive with these files (empty contents).</summary>
-        static byte[] Cpio(params string[] names)
+        internal static byte[] Cpio(params string[] names)
         {
             MemoryStream ms = new MemoryStream();
             void Entry(string name, int mode)
@@ -73,7 +73,7 @@ namespace FastbootEnhance.Core.Tests
         }
 
         /// <summary>A boot image: header v2 (page 2048) or v4 (page 4096) with kernel and ramdisk.</summary>
-        static byte[] BootImage(int version, byte[] kernel, byte[] ramdisk, uint osVersion = 0, Dictionary<string, string> avb = null)
+        internal static byte[] BootImage(int version, byte[] kernel, byte[] ramdisk, uint osVersion = 0, Dictionary<string, string> avb = null)
         {
             int page = version >= 3 ? 4096 : 2048;
             byte[] head = new byte[page];
