@@ -1163,14 +1163,16 @@ if (Test-Path "$saved.part") { Fail "the partial download was left behind" }
 [Win32]::SetForegroundWindow([IntPtr]$upd.Current.NativeWindowHandle) | Out-Null
 [System.Windows.Forms.SendKeys]::SendWait('{ESC}')
 Wait-For { $null -eq (Find-Dialog) } 10 "the update dialog to close" | Out-Null
-Wait-For { Shown $root 'update_badge' } 10 "the sidebar's update badge" | Out-Null
+# The sidebar badge sits in the navigation template, which UI Automation does not expose; it
+# shows in this capture, and About says the same.
 Go 'about_tab' | Out-Null
+Wait-For { (By-Id $root 'update_status').Current.Name -match '9\.9\.9' } 10 "About to name the new version" | Out-Null
 Start-Sleep -Milliseconds 600
 Save-Window 'update-03-about'
 if ($proc.HasExited) { Fail "the app exited during the update check" }
 Stop-Process -Id $proc.Id -Force
 Remove-Item $saved -ErrorAction SilentlyContinue
-Write-Host "update: offered by itself, downloaded, SHA-256 checked, badge shown"
+Write-Host "update: offered by itself, downloaded, SHA-256 checked, named in About"
 
 # The same in Arabic, with a SHA-256 that does not match: nothing may be kept.
 Start-Sleep -Seconds 2
