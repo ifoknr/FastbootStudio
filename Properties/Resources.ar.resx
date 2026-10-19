@@ -2333,4 +2333,270 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="update_busy" xml:space="preserve">
     <value>البرنامج مشغول بتفليش أو استخراج. أغلقه بعد ما يخلص.</value>
   </data>
+  <data name="all_files" xml:space="preserve">
+    <value>كل الملفات</value>
+  </data>
+  <data name="nav_samsung" xml:space="preserve">
+    <value>سامسونج</value>
+  </data>
+  <data name="samsung_subtitle" xml:space="preserve">
+    <value>افتح روم سامسونج، طلّع منه الصور اللي تحتاجها، وتأكد إنه يناسب جوالك. ما يكتب شي على الجوال.</value>
+  </data>
+  <data name="samsung_drop_hint" xml:space="preserve">
+    <value>افتح روم سامسونج</value>
+  </data>
+  <data name="samsung_drop_detail" xml:space="preserve">
+    <value>ملفات AP و BL و CP و CSC و HOME_CSC (‎.tar.md5‎)، أو المجلد اللي فيه هي، أو ملف zip اللي نزلت فيه. اسحبها هنا أو اخترها.</value>
+  </data>
+  <data name="samsung_open" xml:space="preserve">
+    <value>افتح الروم…</value>
+  </data>
+  <data name="samsung_open_folder" xml:space="preserve">
+    <value>افتح مجلد…</value>
+  </data>
+  <data name="samsung_opening" xml:space="preserve">
+    <value>يقرا الروم…</value>
+  </data>
+  <data name="samsung_unzipping" xml:space="preserve">
+    <value>يفك ملف zip · {0}%</value>
+  </data>
+  <data name="samsung_filter" xml:space="preserve">
+    <value>روم سامسونج</value>
+  </data>
+  <data name="samsung_not_firmware" xml:space="preserve">
+    <value>ما لقى ملفات روم سامسونج. أسماءها تبدأ بـ AP_ أو BL_ أو CP_ أو CSC_ أو HOME_CSC_ وتنتهي بـ ‎.tar.md5‎.</value>
+  </data>
+  <data name="samsung_files" xml:space="preserve">
+    <value>ملفات الروم</value>
+  </data>
+  <data name="samsung_about" xml:space="preserve">
+    <value>معلومات الروم</value>
+  </data>
+  <data name="samsung_info_model" xml:space="preserve">
+    <value>الموديل</value>
+  </data>
+  <data name="samsung_info_build" xml:space="preserve">
+    <value>الإصدار (PDA)</value>
+  </data>
+  <data name="samsung_info_binary" xml:space="preserve">
+    <value>نسخة البوت لودر (Binary)</value>
+  </data>
+  <data name="samsung_info_date" xml:space="preserve">
+    <value>تاريخ البناء</value>
+  </data>
+  <data name="samsung_info_android" xml:space="preserve">
+    <value>أندرويد</value>
+  </data>
+  <data name="samsung_info_csc" xml:space="preserve">
+    <value>المنطقة (CSC)</value>
+  </data>
+  <data name="samsung_info_other" xml:space="preserve">
+    <value>ما انقرت (مو من ملفات الروم)</value>
+  </data>
+  <data name="samsung_md5_checking" xml:space="preserve">
+    <value>MD5 ‏{0}%</value>
+  </data>
+  <data name="samsung_md5_ok" xml:space="preserve">
+    <value>MD5 ✓</value>
+  </data>
+  <data name="samsung_md5_none" xml:space="preserve">
+    <value>بدون MD5</value>
+  </data>
+  <data name="samsung_md5_bad" xml:space="preserve">
+    <value>MD5 ✕ تالف</value>
+  </data>
+  <data name="samsung_unreadable" xml:space="preserve">
+    <value>ما ينقرا</value>
+  </data>
+  <data name="samsung_md5_job" xml:space="preserve">
+    <value>يتحقق من MD5 حق {0}</value>
+  </data>
+  <data name="samsung_md5_all" xml:space="preserve">
+    <value>يتحقق من MD5 لكل ملف</value>
+  </data>
+  <data name="samsung_refused_bad" xml:space="preserve">
+    <value>الملف {0} تالف أو ناقص: MD5 حقه ما يطابق. حمّله من جديد؛ البرنامج ما ياخذ منه شي.</value>
+  </data>
+  <data name="samsung_match" xml:space="preserve">
+    <value>الروم مقابل الجوال</value>
+  </data>
+  <data name="samsung_read_phone" xml:space="preserve">
+    <value>افحص الجوال</value>
+  </data>
+  <data name="samsung_phone_reading" xml:space="preserve">
+    <value>يدوّر على الجوال عن طريق adb…</value>
+  </data>
+  <data name="samsung_phone_none" xml:space="preserve">
+    <value>وصّل الجوال وهو شغّال على أندرويد وتصحيح USB مفعّل، ثم اضغط «افحص الجوال». الروم نفسه ينفحص حتى بدون جوال.</value>
+  </data>
+  <data name="samsung_phone_read" xml:space="preserve">
+    <value>تمت المقارنة مع {0} ({1}) عن طريق adb.</value>
+  </data>
+  <data name="samsung_verdict_ok" xml:space="preserve">
+    <value>الروم يناسب جوالك</value>
+  </data>
+  <data name="samsung_verdict_ok_text" xml:space="preserve">
+    <value>فلّشه بـ Odin: AP و BL و CP، و HOME_CSC لو تبي تحتفظ ببياناتك.</value>
+  </data>
+  <data name="samsung_verdict_warn" xml:space="preserve">
+    <value>اقرأ هذا قبل التفليش</value>
+  </data>
+  <data name="samsung_verdict_warn_text" xml:space="preserve">
+    <value>الروم ينفلش، لكن شوف النقاط اللي تحت قبل.</value>
+  </data>
+  <data name="samsung_verdict_block" xml:space="preserve">
+    <value>لا تفلّش هذا الروم على جوالك</value>
+  </data>
+  <data name="samsung_verdict_block_text" xml:space="preserve">
+    <value>الجوال بيرفضه في Odin، أو إنه لجوال ثاني.</value>
+  </data>
+  <data name="samsung_m_fw_phone" xml:space="preserve">
+    <value>الروم {0} · الجوال {1}</value>
+  </data>
+  <data name="samsung_m_not_samsung" xml:space="preserve">
+    <value>هذا الجوال مو سامسونج</value>
+  </data>
+  <data name="samsung_m_same_model" xml:space="preserve">
+    <value>نفس الموديل</value>
+  </data>
+  <data name="samsung_m_other_model" xml:space="preserve">
+    <value>الروم لموديل ثاني</value>
+  </data>
+  <data name="samsung_m_same_binary" xml:space="preserve">
+    <value>نفس نسخة البوت لودر</value>
+  </data>
+  <data name="samsung_m_newer_binary" xml:space="preserve">
+    <value>نسخة بوت لودر أحدث</value>
+  </data>
+  <data name="samsung_m_newer_binary_detail" xml:space="preserve">
+    <value>الروم {0} · الجوال {1}. بعده ما تقدر ترجع لروم نسخته {1}.</value>
+  </data>
+  <data name="samsung_m_older_binary" xml:space="preserve">
+    <value>البوت لودر أقدم من اللي في الجوال</value>
+  </data>
+  <data name="samsung_m_older_binary_detail" xml:space="preserve">
+    <value>الروم {0} · الجوال {1}. سامسونج تمنع هذا النزول، و Odin يوقف بـ SW REV CHECK FAIL.</value>
+  </data>
+  <data name="samsung_m_android" xml:space="preserve">
+    <value>نسخة أندرويد</value>
+  </data>
+  <data name="samsung_m_older_android" xml:space="preserve">
+    <value>أندرويد أقدم من اللي في الجوال</value>
+  </data>
+  <data name="samsung_m_older_android_detail" xml:space="preserve">
+    <value>الروم {0} · الجوال {1}. الرجوع يحتاج CSC الكامل، وهو يمسح الجوال.</value>
+  </data>
+  <data name="samsung_m_same_csc" xml:space="preserve">
+    <value>منطقتك موجودة في الروم</value>
+  </data>
+  <data name="samsung_m_other_csc" xml:space="preserve">
+    <value>منطقة (CSC) ثانية</value>
+  </data>
+  <data name="samsung_m_other_csc_detail" xml:space="preserve">
+    <value>الروم {0} · الجوال {1}. تغييرها يحتاج CSC الكامل، وهو يمسح الجوال.</value>
+  </data>
+  <data name="samsung_m_csc_wipes" xml:space="preserve">
+    <value>CSC يمسح بيانات الجوال</value>
+  </data>
+  <data name="samsung_m_csc_wipes_detail" xml:space="preserve">
+    <value>حط HOME_CSC في خانة CSC في Odin لو تبي تحتفظ ببياناتك.</value>
+  </data>
+  <data name="samsung_m_csc_wipes_no_home" xml:space="preserve">
+    <value>هذا الروم ما فيه HOME_CSC: تفليشه يمسح الجوال.</value>
+  </data>
+  <data name="samsung_m_mixed" xml:space="preserve">
+    <value>ملفات من رومات مختلفة</value>
+  </data>
+  <data name="samsung_contents" xml:space="preserve">
+    <value>المحتوى</value>
+  </data>
+  <data name="samsung_select_boot" xml:space="preserve">
+    <value>صور الإقلاع</value>
+  </data>
+  <data name="samsung_selected" xml:space="preserve">
+    <value>{0} محدد · {1}</value>
+  </data>
+  <data name="samsung_column_from" xml:space="preserve">
+    <value>من</value>
+  </data>
+  <data name="samsung_column_file" xml:space="preserve">
+    <value>الملف</value>
+  </data>
+  <data name="samsung_extract" xml:space="preserve">
+    <value>طلّع المحدد (يفك lz4)</value>
+  </data>
+  <data name="samsung_extract_job" xml:space="preserve">
+    <value>يطلّع {0} ملف</value>
+  </data>
+  <data name="samsung_extract_done" xml:space="preserve">
+    <value>انحفظت {0} ملفات بعد فك LZ4 في:
+{1}</value>
+  </data>
+  <data name="samsung_pick_first" xml:space="preserve">
+    <value>اختر الملفات اللي تبي تطلّعها أول.</value>
+  </data>
+  <data name="samsung_super_tools" xml:space="preserve">
+    <value>افتح super في أدوات الصور</value>
+  </data>
+  <data name="samsung_magisk" xml:space="preserve">
+    <value>روت بـ Magisk…</value>
+  </data>
+  <data name="samsung_magisk_job" xml:space="preserve">
+    <value>يجهّز الملف لـ Magisk</value>
+  </data>
+  <data name="samsung_magisk_no_ap" xml:space="preserve">
+    <value>افتح ملف AP أول: Magisk يعدّل init_boot (أو boot) و vbmeta اللي فيه.</value>
+  </data>
+  <data name="samsung_magisk_on_phone" xml:space="preserve">
+    <value>الملف {0} في مجلد Download في الجوال.
+
+في Magisk: تثبيت ← اختر ملف وعدّله ← اختره. لما يخلص Magisk اضغط موافق، والبرنامج يسحب الملف المعدّل ويتأكد منه.</value>
+  </data>
+  <data name="samsung_magisk_manual" xml:space="preserve">
+    <value>الملف {0} جاهز في:
+{1}
+
+ما لقى جوال عن طريق adb. انسخه للجوال، وعدّله في Magisk (تثبيت ← اختر ملف وعدّله)، وبعدين افحص الناتج بزر «افحص ملف Magisk».</value>
+  </data>
+  <data name="samsung_magisk_fetch" xml:space="preserve">
+    <value>يسحب الملف المعدّل</value>
+  </data>
+  <data name="samsung_magisk_not_found" xml:space="preserve">
+    <value>ما لقى ملف magisk_patched أحدث من الملف اللي انرسل في مجلد Download. عدّله في Magisk وجرّب مرة ثانية.</value>
+  </data>
+  <data name="samsung_check_patched" xml:space="preserve">
+    <value>افحص ملف Magisk…</value>
+  </data>
+  <data name="samsung_magisk_checking" xml:space="preserve">
+    <value>يفحص الملف المعدّل</value>
+  </data>
+  <data name="samsung_patched_ok" xml:space="preserve">
+    <value>{0} معدّل بـ Magisk ✓
+
+فلّش {1} بـ Odin في خانة AP بس.</value>
+  </data>
+  <data name="samsung_patched_not" xml:space="preserve">
+    <value>{0} في هذا الملف مو معدّل بـ Magisk. لا تفلشه عشان الروت.</value>
+  </data>
+  <data name="samsung_patched_no_boot" xml:space="preserve">
+    <value>هذا الملف ما فيه صورة boot ولا init_boot.</value>
+  </data>
+  <data name="samsung_build_tar" xml:space="preserve">
+    <value>tar لـ Odin…</value>
+  </data>
+  <data name="samsung_tar_images" xml:space="preserve">
+    <value>الصور</value>
+  </data>
+  <data name="samsung_tar_job" xml:space="preserve">
+    <value>يبني ملف tar لـ Odin</value>
+  </data>
+  <data name="samsung_tar_done" xml:space="preserve">
+    <value>{0} جاهز لخانة AP في Odin، وفيه {1}.</value>
+  </data>
+  <data name="samsung_tar_long_name" xml:space="preserve">
+    <value>{0}: Odin يحتاج أسماء ملفات ما تزيد عن 99 حرف.</value>
+  </data>
+  <data name="samsung_note" xml:space="preserve">
+    <value>الصور تنحفظ ‎.img‎ عادية بعد فك LZ4. وsuper يطلع sparse زي ما هو، وتقدر تفكه من أدوات الصور. والتفليش يبقى بـ Odin.</value>
+  </data>
 </root>

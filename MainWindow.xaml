@@ -1016,6 +1016,213 @@
             </Grid>
         </TabItem>
 
+        <!-- ============================== Samsung ============================== -->
+        <!-- Samsung firmware (AP, BL, CP, CSC): check it, take images out of it, compare it with the
+             phone over adb, and build the tars Magisk and Odin use. Nothing is written to a phone. -->
+        <TabItem x:Name="samsung_tab" Header="{x:Static props:Resources.nav_samsung}" Tag="{StaticResource IconSamsung}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Style="{StaticResource PageHeader}">
+                    <DockPanel LastChildFill="True">
+                        <StackPanel x:Name="samsung_header_actions" DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Collapsed">
+                            <Border Style="{StaticResource Chip}" Margin="0,0,10,0" MaxWidth="220">
+                                <TextBlock x:Name="samsung_build_chip" FontFamily="{StaticResource Mono}" FontSize="12" TextTrimming="CharacterEllipsis"/>
+                            </Border>
+                            <Button x:Name="samsung_open_other" Margin="0,0,10,0" Content="{x:Static props:Resources.samsung_open}"/>
+                            <Button x:Name="samsung_close" Style="{StaticResource GhostButton}" Content="{x:Static props:Resources.payload_remove_file}"/>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,16,0">
+                            <TextBlock Style="{StaticResource PageTitle}" Text="{x:Static props:Resources.nav_samsung}"/>
+                            <TextBlock Style="{StaticResource PageSubtitle}" Text="{x:Static props:Resources.samsung_subtitle}"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <Grid Grid.Row="1" Margin="28,20,28,20">
+                    <!-- Nothing open -->
+                    <Grid x:Name="samsung_empty" AllowDrop="True" Background="Transparent">
+                        <Border Style="{StaticResource Card}" Width="620" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Padding="40,34" BorderBrush="{StaticResource AccentLine}">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Border Width="56" Height="56" CornerRadius="14" Background="{StaticResource AccentSoft}" HorizontalAlignment="Center" Margin="0,0,0,18">
+                                    <Path Data="{StaticResource IconSamsung}" Stroke="{StaticResource Accent}" StrokeThickness="1.8"
+                                          StrokeLineJoin="Round" Stretch="Uniform" Margin="15"/>
+                                </Border>
+                                <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold" Text="{x:Static props:Resources.samsung_drop_hint}"/>
+                                <TextBlock Style="{StaticResource Note}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,6,0,22"
+                                           Text="{x:Static props:Resources.samsung_drop_detail}"/>
+                                <Grid HorizontalAlignment="Center">
+                                    <StackPanel x:Name="samsung_open_buttons" Orientation="Horizontal">
+                                        <Button x:Name="samsung_open" Style="{StaticResource AccentButton}" MinWidth="170" MinHeight="40" Margin="0,0,10,0"
+                                                Content="{x:Static props:Resources.samsung_open}"/>
+                                        <Button x:Name="samsung_open_folder_pick" MinWidth="150" MinHeight="40"
+                                                Content="{x:Static props:Resources.samsung_open_folder}"/>
+                                    </StackPanel>
+                                    <StackPanel x:Name="samsung_opening" Visibility="Hidden" VerticalAlignment="Center">
+                                        <ProgressBar x:Name="samsung_opening_bar" Width="300" Height="6"/>
+                                        <TextBlock x:Name="samsung_opening_text" Style="{StaticResource Note}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Firmware open -->
+                    <Grid x:Name="samsung_loaded" Visibility="Collapsed" AllowDrop="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="240"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel>
+                                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,8" Text="{x:Static props:Resources.samsung_files}"/>
+                                        <ItemsControl x:Name="samsung_files">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel Margin="0,3">
+                                                        <TextBlock DockPanel.Dock="Left" Width="74" Text="{Binding Part}" FontWeight="SemiBold" FlowDirection="LeftToRight"/>
+                                                        <TextBlock DockPanel.Dock="Right" Text="{Binding State}" Foreground="{Binding StateBrush}" Margin="8,0,0,0"/>
+                                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Size}" Foreground="{StaticResource Dim}" Margin="8,0,0,0" FlowDirection="LeftToRight"/>
+                                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="11"
+                                                                   Foreground="{StaticResource Dim}" TextTrimming="CharacterEllipsis" FlowDirection="LeftToRight"
+                                                                   VerticalAlignment="Center"/>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,8" Text="{x:Static props:Resources.samsung_about}"/>
+                                        <ItemsControl x:Name="samsung_info">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel Margin="0,3">
+                                                        <TextBlock DockPanel.Dock="Left" Width="150" Text="{Binding Name}" Foreground="{StaticResource Faint}" TextWrapping="Wrap"/>
+                                                        <TextBlock Text="{Binding Value}" TextWrapping="Wrap"/>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource Card}">
+                                    <StackPanel>
+                                        <DockPanel Margin="0,0,0,8">
+                                            <Button x:Name="samsung_read_phone" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Padding="10,4"
+                                                    Content="{x:Static props:Resources.samsung_read_phone}"/>
+                                            <TextBlock Style="{StaticResource CardTitle}" VerticalAlignment="Center" Text="{x:Static props:Resources.samsung_match}"/>
+                                        </DockPanel>
+                                        <Border x:Name="samsung_verdict" CornerRadius="10" BorderThickness="1" Padding="12,10" Margin="0,0,0,8" Visibility="Collapsed">
+                                            <StackPanel>
+                                                <TextBlock x:Name="samsung_verdict_title" FontWeight="SemiBold" FontSize="13.5" TextWrapping="Wrap"/>
+                                                <TextBlock x:Name="samsung_verdict_text" Style="{StaticResource Note}" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <ItemsControl x:Name="samsung_findings">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel Margin="0,4">
+                                                        <TextBlock DockPanel.Dock="Left" Width="20" Text="{Binding Glyph}" Foreground="{Binding Brush}" FontWeight="Bold"/>
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                                            <TextBlock Text="{Binding Detail}" Foreground="{StaticResource Faint}" FontSize="11.5" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock x:Name="samsung_phone_note" Style="{StaticResource Note}" Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <Border Grid.Column="2" Style="{StaticResource Card}">
+                            <DockPanel>
+                                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+                                    <TextBlock x:Name="samsung_selected_count" DockPanel.Dock="Right" Foreground="{StaticResource Faint}" FontSize="11.5" VerticalAlignment="Center"/>
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.samsung_contents}"/>
+                                </DockPanel>
+                                <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+                                    <Button x:Name="samsung_select_boot" Margin="0,0,8,0" Padding="10,4" Content="{x:Static props:Resources.samsung_select_boot}"/>
+                                    <Button x:Name="samsung_select_none" Style="{StaticResource GhostButton}" Padding="10,4" Content="{x:Static props:Resources.backup_select_none}"/>
+                                </WrapPanel>
+                                <ListView x:Name="samsung_entries" SelectionMode="Single" local:ColumnFill.Column="2" local:ColumnFill.MinWidth="110">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Width="34">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}" Focusable="False"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn Header="{x:Static props:Resources.samsung_column_from}" Width="52" DisplayMemberBinding="{Binding Part}"/>
+                                            <GridViewColumn Header="{x:Static props:Resources.samsung_column_file}" Width="160">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="11.5" TextTrimming="CharacterEllipsis"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn Header="{x:Static props:Resources.column_size}" Width="76" DisplayMemberBinding="{Binding Size}"/>
+                                            <GridViewColumn Width="70">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding State}" Foreground="{Binding StateBrush}" TextTrimming="CharacterEllipsis"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </DockPanel>
+                        </Border>
+
+                        <Border Grid.Column="4" Style="{StaticResource Card}" VerticalAlignment="Top">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.backup_save_to}"/>
+                                <DockPanel Margin="0,0,0,14">
+                                    <Button x:Name="samsung_change_folder" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Padding="10,4"
+                                            Content="{x:Static props:Resources.backup_change}"/>
+                                    <TextBlock x:Name="samsung_out_folder" FlowDirection="LeftToRight" FontFamily="{StaticResource Mono}" FontSize="11.5"
+                                               Foreground="{StaticResource Dim}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                </DockPanel>
+                                <Button x:Name="samsung_extract" Style="{StaticResource AccentButton}" Margin="0,0,0,8"
+                                        Content="{x:Static props:Resources.samsung_extract}"/>
+                                <Button x:Name="samsung_magisk" Margin="0,0,0,8" Content="{x:Static props:Resources.samsung_magisk}"/>
+                                <Button x:Name="samsung_check_patched" Margin="0,0,0,8" Content="{x:Static props:Resources.samsung_check_patched}"/>
+                                <Button x:Name="samsung_build_tar" Margin="0,0,0,8" Content="{x:Static props:Resources.samsung_build_tar}"/>
+                                <Button x:Name="samsung_cancel" Style="{StaticResource DangerButton}" Margin="0,0,0,8" Visibility="Collapsed"
+                                        Content="{x:Static props:Resources.backup_cancel}"/>
+                                <ProgressBar x:Name="samsung_progress" Height="6" Margin="0,4,0,6"/>
+                                <TextBlock x:Name="samsung_progress_text" FontSize="11.5" Foreground="{StaticResource Dim}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                <Button x:Name="samsung_open_out" Style="{StaticResource GhostButton}" Margin="0,0,0,8"
+                                        Content="{x:Static props:Resources.backup_open_folder}"/>
+                                <Button x:Name="samsung_super_tools" Style="{StaticResource GhostButton}" Margin="0,0,0,14" Visibility="Collapsed"
+                                        Content="{x:Static props:Resources.samsung_super_tools}"/>
+                                <TextBlock Style="{StaticResource Note}" Text="{x:Static props:Resources.samsung_note}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </TabItem>
+
         <!-- ============================== Backup ============================== -->
         <TabItem x:Name="backup_tab" Header="{x:Static props:Resources.nav_backup}" Tag="{StaticResource IconBackup}">
             <Grid>

@@ -1,4 +1,5 @@
 using ChromeosUpdateEngine;
+using System.Linq;
 using FastbootEnhance.Core.Tests;
 
 namespace FastbootEnhance.SampleGen
@@ -102,7 +103,85 @@ namespace FastbootEnhance.SampleGen
             WriteRecoveryImage(outDir);
             WriteGkiBootImage(outDir, "boot-gki-sample.img", true);
             WriteGkiBootImage(outDir, "boot-gki-stock-sample.img", false);
+            WriteSamsungFirmware(outDir);
             return 0;
+        }
+
+        /// <summary>
+        /// A Samsung firmware for the Samsung page, packed the way Samsung packs it: each part a
+        /// tar of .lz4 images with its MD5 line (.tar.md5). The AP holds the stock GKI boot image,
+        /// so the Magisk check has something to tell apart from the patched one; the patched pair
+        /// is in magisk_patched-28100_FAKE.tar, what Magisk hands back.
+        /// </summary>
+        static void WriteSamsungFirmware(string outDir)
+        {
+            string dir = Path.Combine(outDir, "samsung");
+            Directory.CreateDirectory(dir);
+            byte[] vbmeta = new byte[4096];
+            System.Text.Encoding.ASCII.GetBytes("AVB0").CopyTo(vbmeta, 0);
+            File.WriteAllBytes(Path.Combine(dir, "vbmeta.img"), vbmeta);
+            File.Copy(Path.Combine(outDir, "boot-gki-stock-sample.img"), Path.Combine(dir, "boot.img"), true);
+            File.Copy(Path.Combine(outDir, "twrp-sample.img"), Path.Combine(dir, "recovery.img"), true);
+            File.Copy(Path.Combine(outDir, "super.img_sparsechunk.0"), Path.Combine(dir, "super.img"), true);
+
+            const string build = "S918BXXU3BWK5", csc = "S918BOXM3BWK5", tail = "_MQB71230440_REV00_user_low_ship_MULTI_CERT";
+            void part(string name, params (string entry, byte[] data)[] files)
+            {
+                string path = Path.Combine(dir, name);
+                using (FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write))
+                using (FastbootEnhance.Core.Samsung.OdinTarWriter tar = new FastbootEnhance.Core.Samsung.OdinTarWriter(file, name.Substring(0, name.Length - 4)))
+                {
+                    foreach (var (entry, data) in files)
+                    {
+                        byte[] packed = entry.EndsWith(".lz4") ? Lz4Stored(data) : data;
+                        tar.Add(entry, new MemoryStream(packed), packed.Length);
+                    }
+                    tar.Finish();
+                }
+                Console.WriteLine("wrote samsung/" + name + " (" + new FileInfo(path).Length / 1024 + " KB)");
+            }
+            byte[] read(string name) => File.ReadAllBytes(Path.Combine(dir, name));
+            byte[] filler(int size, byte seed) => Enumerable.Range(0, size).Select(i => (byte)(i * 31 + seed)).ToArray();
+
+            part("AP_" + build + "_" + build + tail + "_meta_OS14.tar.md5",
+                ("boot.img.lz4", read("boot.img")), ("vbmeta.img.lz4", read("vbmeta.img")),
+                ("recovery.img.lz4", read("recovery.img")), ("super.img.lz4", read("super.img")));
+            part("BL_" + build + "_" + build + tail + ".tar.md5",
+                ("abl.elf.lz4", filler(256 << 10, 1)), ("xbl.elf.lz4", filler(512 << 10, 2)));
+            part("CP_" + build + "_CP25103453" + tail + ".tar.md5", ("modem.bin.lz4", filler(1 << 20, 3)));
+            part("CSC_OXM_" + csc + tail + ".tar.md5", ("S918B_EUR_OPEN.pit", filler(8192, 4)), ("cache.img.lz4", filler(64 << 10, 5)));
+            part("HOME_CSC_OXM_" + csc + tail + ".tar.md5", ("S918B_EUR_OPEN.pit", filler(8192, 4)), ("cache.img.lz4", filler(64 << 10, 5)));
+
+            // What Magisk gives back: a tar with the patched boot image and vbmeta, not compressed.
+            string patched = Path.Combine(outDir, "magisk_patched-28100_FAKE.tar");
+            using (FileStream file = new FileStream(patched, FileMode.Create, FileAccess.Write))
+            using (FastbootEnhance.Core.Samsung.OdinTarWriter tar = new FastbootEnhance.Core.Samsung.OdinTarWriter(file))
+            {
+                byte[] boot = File.ReadAllBytes(Path.Combine(outDir, "boot-gki-sample.img"));
+                tar.Add("boot.img", new MemoryStream(boot), boot.Length);
+                tar.Add("vbmeta.img", new MemoryStream(vbmeta), vbmeta.Length);
+                tar.Finish();
+            }
+            Console.WriteLine("wrote magisk_patched-28100_FAKE.tar");
+        }
+
+        /// <summary>An LZ4 frame of stored blocks with its content checksum: real LZ4 without a compressor.</summary>
+        static byte[] Lz4Stored(byte[] data)
+        {
+            MemoryStream ms = new MemoryStream();
+            ms.Write(BitConverter.GetBytes(FastbootEnhance.Core.Images.Lz4.FrameMagic), 0, 4);
+            byte[] descriptor = { 0x40 | 0x20 | 0x04, 0x70 }; // version 1, independent blocks, content checksum; 4 MiB blocks
+            ms.Write(descriptor, 0, 2);
+            ms.WriteByte((byte)(FastbootEnhance.Core.Samsung.XxHash32.Hash(descriptor, 0, 2) >> 8));
+            for (int at = 0; at < data.Length; at += 4 << 20)
+            {
+                int n = Math.Min(4 << 20, data.Length - at);
+                ms.Write(BitConverter.GetBytes(0x80000000u | (uint)n), 0, 4);
+                ms.Write(data, at, n);
+            }
+            ms.Write(new byte[4], 0, 4);
+            ms.Write(BitConverter.GetBytes(FastbootEnhance.Core.Samsung.XxHash32.Hash(data, 0, data.Length)), 0, 4);
+            return ms.ToArray();
         }
 
         /// <summary>

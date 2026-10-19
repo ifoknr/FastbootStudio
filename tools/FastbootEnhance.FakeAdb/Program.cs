@@ -130,8 +130,21 @@ namespace FastbootEnhance.FakeAdb
                 Console.Out.Write(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + "\n");
                 return 0;
             }
+            if (command.StartsWith("stat -c %Y", StringComparison.Ordinal) && command.Contains("magisk_patched*.tar"))
+                return ListPatchedTar();
             if (command.StartsWith("stat -c %Y", StringComparison.Ordinal))
                 return ListPatched();
+
+            // SamsungPhone.Command: a Galaxy S23 Ultra when fake-adb.samsung exists, the sample phone otherwise.
+            if (command.Contains("getprop ro.boot.bootloader"))
+            {
+                if (!Android)
+                    return 1;
+                Console.Out.Write(File.Exists(Path.Combine(AppContext.BaseDirectory, "fake-adb.samsung"))
+                    ? "maker=samsung\nmodel=SM-S918B\nbootloader=S918BXXU3BWJ1\npda=S918BXXU3BWJ1\nandroid=14\nsales=KSA\ncscver=S918BOXM3BWJ1\n"
+                    : "maker=Sample\nmodel=Sample_A64\nbootloader=unknown\npda=\nandroid=14\nsales=\ncscver=\n");
+                return 0;
+            }
 
             // In Android, adb runs as the shell user (uid 2000) and root comes from su.
             if (command == "id -u")
@@ -326,8 +339,35 @@ namespace FastbootEnhance.FakeAdb
             return 0;
         }
 
+        // The Samsung page's Magisk step: once a magisk_input tar is in Download, "Magisk" has
+        // written magisk_patched-28100_FAKE.tar, the file fake-adb.patched-tar names.
+        const string PatchedTarRemote = "/sdcard/Download/magisk_patched-28100_FAKE.tar";
+
+        static string PatchedTarSample()
+        {
+            string pointer = Path.Combine(AppContext.BaseDirectory, "fake-adb.patched-tar");
+            return File.Exists(pointer) ? File.ReadAllText(pointer).Trim() : null;
+        }
+
+        static int ListPatchedTar()
+        {
+            string sample = PatchedTarSample();
+            bool sent = Directory.Exists(PhoneDir) && Directory.GetFiles(PhoneDir, "magisk_input_*.tar").Length > 0;
+            if (!sent || sample == null || !File.Exists(sample))
+                return 1; // no match for the glob
+            Console.Out.Write(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + "|" + new FileInfo(sample).Length + "|" + PatchedTarRemote + "\n");
+            return 0;
+        }
+
         static int Pull(List<string> paths)
         {
+            if (paths.Count == 2 && paths[0] == PatchedTarRemote && PatchedTarSample() != null)
+            {
+                string target = Directory.Exists(paths[1]) ? Path.Combine(paths[1], "magisk_patched-28100_FAKE.tar") : paths[1];
+                File.Copy(PatchedTarSample(), target, true);
+                Console.Out.WriteLine(PatchedTarRemote + ": 1 file pulled, 0 skipped. 40.0 MB/s");
+                return 0;
+            }
             if (paths.Count == 2 && paths[0] == PatchedRemote && PatchedSample() != null)
             {
                 string target = Directory.Exists(paths[1]) ? Path.Combine(paths[1], "magisk_patched-28100_FAKE.img") : paths[1];
