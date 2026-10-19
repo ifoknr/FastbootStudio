@@ -232,8 +232,10 @@ function Answer-Dialog($dialog, [string] $label) {
     $cond = New-Object System.Windows.Automation.PropertyCondition($UIA::ControlTypeProperty, $Type::Button)
     $button = @($dialog.FindAll($Scope::Descendants, $cond)) | Where-Object { $_.Current.Name -eq $label } | Select-Object -First 1
     if ($null -eq $button) { Fail "the dialog has no '$label' button" }
+    $handle = $dialog.Current.NativeWindowHandle
     $button.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
-    Wait-For { $null -eq (Find-Dialog) } 10 "the dialog to close" | Out-Null
+    # The next question may open straight away, so only this dialog has to go.
+    Wait-For { $d = Find-Dialog; $null -eq $d -or $d.Current.NativeWindowHandle -ne $handle } 10 "the dialog to close" | Out-Null
     Start-Sleep -Milliseconds 800
 }
 
