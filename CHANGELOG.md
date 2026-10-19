@@ -4,6 +4,16 @@
 
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
+## v2.7.0
+- صفحة «سامسونج» جديدة: افتح روم سامسونج أو ملف الـ zip، وتأكد من MD5 لكل ملف، وطلّع boot و init_boot و super بعد فك lz4
+- تشوف إذا الروم يناسب جوالك قبل Odin: الموديل، نسخة البوت لودر (الأقدم ينرفض)، أندرويد والمنطقة
+- روت سامسونج بـ Magisk وملف tar لـ Odin. وقريباً: التفليش من وضع Download
+
+**English**
+- New Samsung page: open Samsung firmware or its zip, check each file's MD5, take out boot, init_boot or super with lz4 undone
+- See whether the firmware suits your phone before Odin: model, bootloader binary (an older one is refused), Android and CSC
+- Root a Samsung with Magisk, and a tar for Odin. Coming soon: flashing from Download mode
+
 ## v2.6.0
 - إشعار التحديث: البرنامج يقولك لما ينزل إصدار جديد ويعرض التغييرات، وأنت تختار تحمّله أو لا. التحميل يتحقق من بصمة SHA-256
 - خيار «فلّش على السلوتين»: أقسام الفيرموير مثل modem و boot تنكتب على a و b

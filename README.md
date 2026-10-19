@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <b>Fastboot, OTA flashing, payload dumper, super images and backups — in one Windows app.</b><br>
+  <b>Fastboot, OTA flashing, payload dumper, super images, Samsung firmware and backups — in one Windows app.</b><br>
   <a href="README.ar.md">العربية</a> · <a href="#download">Download</a> · <a href="#pages">Pages</a> · <a href="CHANGELOG.md">What's new</a> · <a href="#contributing">Contributing</a>
 </p>
 
@@ -25,6 +25,22 @@ nothing to install.
 
 > 🆕 **A new version.** Fastboot Studio is the new generation of Fastboot Enhance: a new
 > interface from top to bottom, new pages, and more protection for the phone.
+>
+> **New in 2.7:**
+> - A **Samsung** page: open Samsung firmware (AP, BL, CP, CSC, or the zip it came in), check every
+>   file's MD5, take out boot, init_boot, vbmeta, recovery or super with LZ4 undone, and see whether
+>   the firmware suits your phone (model, bootloader binary, Android, CSC) before you open Odin.
+> - **Root a Samsung with Magisk**: a small tar of init_boot and vbmeta goes to the phone, and the
+>   patched tar comes back checked, ready for Odin's AP slot. Also **Tar for Odin** for any images.
+>
+> **New in 2.6:**
+> - **Update notice**: the app tells you when a new version is out, shows what changed, and downloads
+>   it only if you want (checked against its SHA-256).
+> - **Flash both slots**: firmware partitions such as modem and boot are written to slot a and b.
+> - A partition fastbootd refuses (a OnePlus modem) is written from the bootloader after the rest.
+>
+> 🔜 **Coming soon: Odin.** Flashing Samsung phones straight from Download mode, with the same
+> checks, so Samsung firmware goes from download to phone in one app.
 >
 > **New in 2.5:**
 > - A **Phone** page for the phone in Android: specs, kernel, security and battery; with the
@@ -236,6 +252,30 @@ Puts partition images back together into a `super.img` (`lpmake`), raw or sparse
 without a Linux machine.
 
 <br clear="right">
+
+### 📥 Samsung
+
+<img src="docs/images/samsung.png" width="560" align="right">
+
+Samsung phones have no fastboot: their firmware comes as `.tar.md5` files (AP, BL, CP, CSC,
+HOME_CSC) for Odin. This page does everything around Odin, and nothing is written to the phone.
+
+- **Open** the files, their folder, or the zip a firmware site gives (unpacked next to it).
+- **MD5**: every file is checked against its own MD5 line; a damaged download is shown, and
+  nothing is taken from it.
+- **About the firmware**: model, build, bootloader binary, Android version and CSC.
+- **Firmware against the phone** (over adb, phone in Android): the same model, a bootloader binary
+  the phone accepts (an older one is refused, as the phone would refuse it with *SW REV CHECK
+  FAIL*), the Android version and the CSC, and a reminder that CSC wipes the phone while HOME_CSC
+  keeps your data.
+- **Extract** any image with LZ4 undone (boot, init_boot, vbmeta, recovery, super…). super opens
+  in Image Tools in one click.
+- **Root with Magisk**: a small tar of init_boot (or boot) and vbmeta goes to the phone; after
+  Magisk patches it, the patched tar is fetched and checked. Flash it with Odin in the AP slot.
+- **Tar for Odin**: any images (TWRP's recovery.img, a patched boot…) packed as a `.tar.md5`.
+
+**Why it helps:** the wrong firmware, a bootloader downgrade or a wiped phone are caught before
+Odin is even open. **Coming soon:** flashing from Download mode, Odin built in.
 
 ### 💾 Backup
 
