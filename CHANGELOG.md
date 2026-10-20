@@ -4,6 +4,12 @@
 
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
+## v2.7.1
+- القوايم ما تبيّض وقت فحص MD5 أو الاستخراج، تبقى داكنة لين يخلص الشغل
+
+**English**
+- Lists no longer turn white during an MD5 check or an extraction; they stay dark until the work is done
+
 ## v2.7.0
 - صفحة «سامسونج» جديدة: افتح روم سامسونج أو ملف الـ zip، وتأكد من MD5 لكل ملف، وطلّع boot و init_boot و super بعد فك lz4
 - تشوف إذا الروم يناسب جوالك قبل Odin: الموديل، نسخة البوت لودر (الأقدم ينرفض)، أندرويد والمنطقة
