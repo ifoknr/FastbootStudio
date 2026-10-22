@@ -1,10 +1,10 @@
-"""Draws the Fastboot Studio icon: a deep teal tile with a phone and a lightning bolt drawn
-in soft mint lines, with a faint glow. Calm colours that sit well with the app's dark theme
+"""Draws the Fastboot Studio icon: a deep teal tile with a monitor and a lightning bolt drawn
+in soft mint lines, with a faint glow (the phone is the Mobile app's icon). Calm colours that sit well with the app's dark theme
 and still stand out on a light desktop.
 
 Run from the repository root:  python tools/icon/make_icon.py
 Writes icon.ico (16 to 256 px) and big_icon.png (512 px). Each size is drawn on its own,
-at 8x and scaled down, so small sizes stay crisp; at 32 px and below the phone outline is
+at 8x and scaled down, so small sizes stay crisp; at 32 px and below the monitor outline is
 dropped and only the bolt remains, which is all that reads at that size.
 """
 from PIL import Image, ImageDraw, ImageFilter
@@ -53,19 +53,19 @@ def tile(size, scale=8):
         # Bolt alone, filling most of the tile.
         box = (s * 0.20, s * 0.16, s * 0.60, s * 0.68)
     else:
-        # Phone outline in a light stroke.
-        w = s * 0.38
-        h = s * 0.62
+        # Monitor outline in a light stroke, on a short stand.
+        w = s * 0.625
+        h = s * 0.40
         left = (s - w) / 2
-        top = (s - h) / 2
-        stroke = max(1, round(s * 0.034))
-        d.rounded_rectangle([left, top, left + w, top + h], round(s * 0.075), outline=GLYPH, width=stroke)
-        # Earpiece.
-        ear = s * 0.07
-        d.rounded_rectangle([s / 2 - ear / 2, top + stroke * 2.0, s / 2 + ear / 2, top + stroke * 2.7],
-                            round(stroke / 2), fill=GLYPH + (200,))
+        top = s * 0.29
+        stroke = max(1, round(s * 0.043))
+        d.rounded_rectangle([left, top, left + w, top + h], round(s * 0.05), outline=GLYPH, width=stroke)
+        d.line([(s / 2, top + h), (s / 2, s * 0.79)], fill=GLYPH, width=stroke)
+        d.line([(s * 0.40, s * 0.79), (s * 0.60, s * 0.79)], fill=GLYPH, width=stroke)
+        for x in (s * 0.40, s * 0.60):  # round ends on the base
+            d.ellipse([x - stroke / 2, s * 0.79 - stroke / 2, x + stroke / 2, s * 0.79 + stroke / 2], fill=GLYPH)
         # Bolt on the screen.
-        box = (left + w * 0.26, top + h * 0.24, w * 0.48, h * 0.56)
+        box = (left + w * 0.30, top + h * 0.14, w * 0.40, h * 0.72)
 
     x0, y0, bw, bh = box
     k = min(bw / 15.0, bh / 20.0)  # the bolt spans x 4..19 and y 2..22
