@@ -281,8 +281,10 @@ namespace FastbootEnhance
 
             facts.Children.Clear();
             facts.RowDefinitions.Clear();
+            // The phone's own words read left to right; the lines this app writes follow the language.
+            HashSet<string> written = new HashSet<string> { Properties.Resources.odin_protocol, Properties.Resources.odin_pit };
             foreach (KeyValuePair<string, string> fact in factsOf(r))
-                addFact(fact.Key, fact.Value);
+                addFact(fact.Key, written.Contains(fact.Key) ? fact.Value : Helper.ltr(fact.Value));
 
             info_note.Visibility = r.Info == null ? Visibility.Visible : Visibility.Collapsed;
             info_note.Text = r.InfoProblem != null ? Properties.Resources.odin_info_failed : Properties.Resources.odin_info_missing;
@@ -328,7 +330,7 @@ namespace FastbootEnhance
             int row = facts.RowDefinitions.Count;
             facts.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             TextBlock l = new TextBlock { Text = label, Foreground = Palette.Get("Dim"), FontSize = 12.5, Margin = new Thickness(0, 0, 14, 5) };
-            TextBlock v = new TextBlock { Text = Helper.ltr(value), FontSize = 12.5, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 5) };
+            TextBlock v = new TextBlock { Text = value, FontSize = 12.5, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 5) };
             Grid.SetRow(l, row);
             Grid.SetRow(v, row);
             Grid.SetColumn(v, 1);
