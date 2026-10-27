@@ -17,6 +17,21 @@ namespace FastbootEnhance.SampleGen
 
         static int Main(string[] args)
         {
+            // For CI on Windows: what the app makes of Samsung's driver page and installer.
+            if (args.Length == 2 && args[0] == "samsung-link")
+            {
+                string link = FastbootEnhance.Core.Usb.SamsungDriver.FindDownloadLink(File.ReadAllText(args[1]));
+                Console.WriteLine(link ?? "");
+                return link == null ? 2 : 0;
+            }
+            if (args.Length == 2 && args[0] == "signer")
+            {
+                string subject = FastbootEnhance.Core.Usb.Authenticode.VerifiedSigner(args[1]);
+                Console.WriteLine("subject=" + (subject ?? "(no trusted signature)"));
+                Console.WriteLine("samsung=" + FastbootEnhance.Core.Usb.SamsungDriver.IsSamsungSubject(subject));
+                return 0;
+            }
+
             string outDir = args.Length > 0 ? args[0] : "sample";
 
             var layout = new (string name, int kilobytes, InstallOperation.Types.Type codec, bool dynamic)[]

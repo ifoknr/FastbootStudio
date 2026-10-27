@@ -214,7 +214,7 @@ namespace FastbootEnhance
                     }
                 }
 
-                string signer = DriverUI.VerifiedSigner(part);
+                string signer = Authenticode.VerifiedSigner(part);
                 LogStore.Append("samsung driver: signed by " + (signer ?? "nobody Windows trusts"));
                 if (signer == null || !SamsungDriver.IsSamsungSubject(signer))
                     throw new DriverException(Properties.Resources.driver_signature_bad);
