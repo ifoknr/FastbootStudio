@@ -5,18 +5,20 @@
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
 ## v2.8.0
-- زر ؟ في زاوية كل صفحة: شرح بلغتك، الخطوات، والأشياء الخطيرة
-- جولة ترحيب أول مرة، و«الجديد» يطلع لك بعد كل تحديث
-- تعريف سامسونج: التطبيق يحمّله من سامسونج، يتأكد من توقيعه، ويثبّته
-- قبل التفليش يقولك إذا صورة boot مروّتة، ويقترح تجرب الريكفري مؤقتاً أول
-- صفحة سامسونج تعرض حالة Knox، وخطوات Magisk أوضح: CSC أول مرة و HOME_CSC للتحديث
+- زر ؟ بكل صفحة: شرح وخطوات وتحذيرات بلغتك
+- جولة ترحيب، و«الجديد» يطلع بعد كل تحديث
+- تعريف سامسونج: يتحمّل من سامسونج ويتفحص توقيعه ويتثبّت
+- ينبهك إذا boot مروّت، ويقترح تجرب الريكفري مؤقتاً أول
+- سامسونج: حالة Knox، وخطوات Magisk أوضح (CSC أول مرة، HOME_CSC للتحديث)
+- جديد: قراءة الجوال في وضع التحميل (أودين): الموديل والمنطقة وجدول PIT
 
 **English**
-- A ? on every page: its help, steps and dangers, in your language
-- A welcome tour on first start, and What's new after each update
-- Samsung USB driver: downloaded from Samsung, its signature checked, installed
-- A rooted boot image is named before flashing; a recovery suggests Boot once first
-- Samsung page shows Knox; Magisk steps: CSC the first time, HOME_CSC to update
+- A ? on every page: help, steps and dangers in your language
+- A welcome tour, and What's new after each update
+- Samsung driver: downloaded from Samsung, signature checked, installed
+- A rooted boot image is named; a recovery suggests Boot once first
+- Samsung: Knox status; clearer Magisk steps (CSC first, HOME_CSC to update)
+- New: read a phone in Download mode (Odin): model, region and PIT
 
 ## v2.7.1
 - القوايم ما تبيّض وقت فحص MD5 أو الاستخراج، تبقى داكنة لين يخلص الشغل

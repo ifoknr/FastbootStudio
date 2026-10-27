@@ -32,6 +32,7 @@ nothing to install.
 > - A short **welcome tour** on first start (language, the pages, a quick check of the PC, safety rules),
 >   and **What's new** on the first start after an update.
 > - **Samsung USB driver** in one click: downloaded from Samsung, kept only with Samsung's signature, installed.
+> - **Download mode reading** (Odin protocol): a Samsung phone's model, region and partition table (PIT), read over Samsung's own driver. It only reads.
 > - A **rooted boot image** is named before it is flashed, and a recovery suggests *Boot once* first.
 > - The Samsung page shows **Knox**, and the Magisk steps say when to use CSC and when HOME_CSC.
 >
@@ -324,6 +325,10 @@ HOME_CSC) for Odin. This page does everything around Odin, and nothing is writte
 - **Samsung USB driver**: shows whether it is installed; *Install…* downloads it from Samsung, keeps
   it only when Windows finds Samsung's signature on it, and runs its installer. It is the driver
   Odin uses too.
+- **Download mode**: reads a phone in Download mode through the port Samsung's driver gives it,
+  as Odin does: its model, serial, region (CSC), the Odin protocol version and its partition table
+  (PIT), which can be saved as a `.pit`. It sends nothing that writes to the phone, and restarts it
+  afterwards (into Android, or into Download mode again).
 - **Tar for Odin**: any images (TWRP's recovery.img, a patched boot…) packed as a `.tar.md5`.
 
 **Why it helps:** the wrong firmware, a bootloader downgrade or a wiped phone are caught before
