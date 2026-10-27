@@ -381,5 +381,28 @@ namespace FastbootEnhance.Core.Tests
             Assert.Equal(magisk, check.Patched);
             Assert.True(check.HasVbmeta);
         }
-    }
+    
+        [Fact]
+        public void Knox_is_read_from_the_phone_and_shown_without_changing_the_verdict()
+        {
+            string common = "maker=samsung\nmodel=SM-S918B\nbootloader=S918BXXU3BWJ1\nandroid=14\nsales=KSA\ncscver=S918BOXM3BWJ1\n";
+            SamsungPhone intact = SamsungPhone.Parse("R5CW", common + "warranty=0\nwarranty2=\n");
+            Assert.Equal("0", intact.Warranty);
+            List<MatchFinding> f = FirmwareMatch.Check(S918B(), intact);
+            Assert.Contains(f, x => x.Code == MatchCode.KnoxIntact && x.Level == MatchLevel.Ok);
+            Assert.Equal(MatchLevel.Ok, FirmwareMatch.Overall(f));
+
+            // Older phones only have ro.warranty_bit.
+            SamsungPhone tripped = SamsungPhone.Parse("R5CW", common + "warranty=\nwarranty2=1\n");
+            Assert.Equal("1", tripped.Warranty);
+            MatchFinding knox = Assert.Single(FirmwareMatch.Check(S918B(), tripped), x => x.Code == MatchCode.KnoxTripped);
+            Assert.Equal(MatchLevel.Notice, knox.Level);
+
+            // No answer, or one that is not a bit, says nothing.
+            SamsungPhone unknown = SamsungPhone.Parse("R5CW", common + "warranty=0x1\n");
+            Assert.Null(unknown.Warranty);
+            Assert.DoesNotContain(FirmwareMatch.Check(S918B(), unknown), x => x.Code == MatchCode.KnoxIntact || x.Code == MatchCode.KnoxTripped);
+            Assert.Contains("ro.boot.warranty_bit", SamsungPhone.Command);
+        }
+}
 }

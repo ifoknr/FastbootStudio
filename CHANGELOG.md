@@ -4,6 +4,20 @@
 
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
+## v2.8.0
+- زر ؟ في زاوية كل صفحة: شرح بلغتك، الخطوات، والأشياء الخطيرة
+- جولة ترحيب أول مرة، و«الجديد» يطلع لك بعد كل تحديث
+- تعريف سامسونج: التطبيق يحمّله من سامسونج، يتأكد من توقيعه، ويثبّته
+- قبل التفليش يقولك إذا صورة boot مروّتة، ويقترح تجرب الريكفري مؤقتاً أول
+- صفحة سامسونج تعرض حالة Knox، وخطوات Magisk أوضح: CSC أول مرة و HOME_CSC للتحديث
+
+**English**
+- A ? on every page: its help, steps and dangers, in your language
+- A welcome tour on first start, and What's new after each update
+- Samsung USB driver: downloaded from Samsung, its signature checked, installed
+- A rooted boot image is named before flashing; a recovery suggests Boot once first
+- Samsung page shows Knox; Magisk steps: CSC the first time, HOME_CSC to update
+
 ## v2.7.1
 - القوايم ما تبيّض وقت فحص MD5 أو الاستخراج، تبقى داكنة لين يخلص الشغل
 

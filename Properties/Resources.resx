@@ -2573,7 +2573,11 @@ No phone was found over adb. Copy it to the phone, patch it in Magisk (Install �
   <data name="samsung_patched_ok" xml:space="preserve">
     <value>{0} is patched with Magisk ✓
 
-Flash {1} with Odin in the AP slot only.</value>
+In Odin, put {1} in AP, with BL, CP and CSC from the same firmware. Never flash AP alone.
+• First Magisk install: CSC, not HOME_CSC. It wipes the phone, and Magisk needs that wipe.
+• A phone that is already rooted, updating: HOME_CSC, to keep your data.
+
+This needs an unlocked bootloader, and trips Knox for good.</value>
   </data>
   <data name="samsung_patched_not" xml:space="preserve">
     <value>{0} in this file is not patched with Magisk. Do not flash it to root the phone.</value>
@@ -2598,5 +2602,325 @@ Flash {1} with Odin in the AP slot only.</value>
   </data>
   <data name="samsung_note" xml:space="preserve">
     <value>Images are saved as plain .img once LZ4 is undone; super stays sparse, and Image Tools unpacks it. Flashing stays with Odin.</value>
+  </data>
+  <data name="help_label" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="help_close" xml:space="preserve">
+    <value>Close the help (Esc)</value>
+  </data>
+  <data name="help_tooltip" xml:space="preserve">
+    <value>Help for this page</value>
+  </data>
+  <data name="help_ask" xml:space="preserve">
+    <value>Ask in Telegram</value>
+  </data>
+  <data name="help_ask_note" xml:space="preserve">
+    <value>Still stuck? Ask in the group.</value>
+  </data>
+  <data name="help_missing" xml:space="preserve">
+    <value>No help is written for this page yet.</value>
+  </data>
+  <data name="help_purpose" xml:space="preserve">
+    <value>What this page is for</value>
+  </data>
+  <data name="help_steps" xml:space="preserve">
+    <value>Step by step</value>
+  </data>
+  <data name="help_tips" xml:space="preserve">
+    <value>Good to know</value>
+  </data>
+  <data name="help_terms" xml:space="preserve">
+    <value>Words to know</value>
+  </data>
+  <data name="help_danger" xml:space="preserve">
+    <value>Dangerous: read this first</value>
+  </data>
+  <data name="welcome_section" xml:space="preserve">
+    <value>Tour and what's new</value>
+  </data>
+  <data name="welcome_show_again" xml:space="preserve">
+    <value>Show the tour again</value>
+  </data>
+  <data name="whats_new_button" xml:space="preserve">
+    <value>What's new in {0}</value>
+  </data>
+  <data name="whats_new_none" xml:space="preserve">
+    <value>This version has no notes built in.</value>
+  </data>
+  <data name="whats_new_title" xml:space="preserve">
+    <value>What's new in {0}</value>
+  </data>
+  <data name="whats_new_intro" xml:space="preserve">
+    <value>Fastboot Studio was updated. This is what changed:</value>
+  </data>
+  <data name="whats_new_ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="welcome_take_tour" xml:space="preserve">
+    <value>Take the tour</value>
+  </data>
+  <data name="welcome_skip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="welcome_back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="welcome_next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="welcome_start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="welcome_title" xml:space="preserve">
+    <value>Welcome to Fastboot Studio</value>
+  </data>
+  <data name="welcome_intro" xml:space="preserve">
+    <value>One app for flashing, root and backups. A short tour first: it takes a minute, and you can skip it.</value>
+  </data>
+  <data name="welcome_language_current" xml:space="preserve">
+    <value>In use</value>
+  </data>
+  <data name="welcome_map_title" xml:space="preserve">
+    <value>What each page does</value>
+  </data>
+  <data name="welcome_map_intro" xml:space="preserve">
+    <value>Each page has one job, and every page has a ? in its corner that explains it step by step. Pick a page to open it when the tour ends.</value>
+  </data>
+  <data name="welcome_map_pick" xml:space="preserve">
+    <value>Open this page when the tour ends</value>
+  </data>
+  <data name="welcome_page_device" xml:space="preserve">
+    <value>The phone in fastboot: its state, partitions and quick restarts</value>
+  </data>
+  <data name="welcome_page_phone" xml:space="preserve">
+    <value>The phone in Android: its specs, security and backups</value>
+  </data>
+  <data name="welcome_page_flash" xml:space="preserve">
+    <value>Flash a whole OTA, every image checked first</value>
+  </data>
+  <data name="welcome_page_payload" xml:space="preserve">
+    <value>Look inside an OTA and take out its images</value>
+  </data>
+  <data name="welcome_page_images" xml:space="preserve">
+    <value>Inspect boot images, convert sparse, unpack super</value>
+  </data>
+  <data name="welcome_page_super" xml:space="preserve">
+    <value>Build one super.img from partition images</value>
+  </data>
+  <data name="welcome_page_samsung" xml:space="preserve">
+    <value>Samsung firmware: MD5, the right match, Magisk, a tar for Odin</value>
+  </data>
+  <data name="welcome_page_backup" xml:space="preserve">
+    <value>Save partitions and files to this PC</value>
+  </data>
+  <data name="welcome_page_root" xml:space="preserve">
+    <value>Root with Magisk, KernelSU or APatch, step by step</value>
+  </data>
+  <data name="welcome_page_terminal" xml:space="preserve">
+    <value>Your own adb and fastboot commands</value>
+  </data>
+  <data name="welcome_page_logs" xml:space="preserve">
+    <value>Everything the app ran, to copy when you ask for help</value>
+  </data>
+  <data name="welcome_page_about" xml:space="preserve">
+    <value>Version, language, theme and updates</value>
+  </data>
+  <data name="welcome_check_title" xml:space="preserve">
+    <value>A quick check</value>
+  </data>
+  <data name="welcome_check_intro" xml:space="preserve">
+    <value>What this PC has ready before you plug a phone in.</value>
+  </data>
+  <data name="welcome_checking" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="welcome_check_tools" xml:space="preserve">
+    <value>adb and fastboot are here</value>
+  </data>
+  <data name="welcome_check_tools_detail" xml:space="preserve">
+    <value>They come with the app (platform-tools 37.0.1): nothing to install.</value>
+  </data>
+  <data name="welcome_check_tools_missing" xml:space="preserve">
+    <value>adb or fastboot is missing</value>
+  </data>
+  <data name="welcome_check_tools_missing_detail" xml:space="preserve">
+    <value>They belong next to FastbootStudio.exe. Unzip the whole download again, not just the exe.</value>
+  </data>
+  <data name="welcome_check_samsung" xml:space="preserve">
+    <value>Samsung USB driver is installed</value>
+  </data>
+  <data name="welcome_check_samsung_detail" xml:space="preserve">
+    <value>For Samsung phones in Download mode.</value>
+  </data>
+  <data name="welcome_check_samsung_missing" xml:space="preserve">
+    <value>Samsung USB driver is not installed</value>
+  </data>
+  <data name="welcome_check_samsung_missing_detail" xml:space="preserve">
+    <value>Only Samsung phones in Download mode need it. The app can get it from Samsung for you.</value>
+  </data>
+  <data name="driver_install" xml:space="preserve">
+    <value>Install…</value>
+  </data>
+  <data name="welcome_check_usb_unknown" xml:space="preserve">
+    <value>The USB devices could not be read</value>
+  </data>
+  <data name="welcome_check_usb_trouble" xml:space="preserve">
+    <value>A phone has no working driver</value>
+  </data>
+  <data name="welcome_check_usb_fastboot" xml:space="preserve">
+    <value>A phone is connected in fastboot</value>
+  </data>
+  <data name="welcome_check_usb_adb" xml:space="preserve">
+    <value>A phone is connected in Android or recovery (adb)</value>
+  </data>
+  <data name="welcome_check_usb_samsung" xml:space="preserve">
+    <value>A Samsung phone is in Download mode</value>
+  </data>
+  <data name="welcome_check_usb_download" xml:space="preserve">
+    <value>A phone is in its chip's download mode (EDL, BROM…)</value>
+  </data>
+  <data name="welcome_check_usb_none" xml:space="preserve">
+    <value>No phone is connected</value>
+  </data>
+  <data name="welcome_check_usb_none_detail" xml:space="preserve">
+    <value>That's fine: plug it in later. In Android, turn on USB debugging in Developer options.</value>
+  </data>
+  <data name="welcome_safety_title" xml:space="preserve">
+    <value>Before any flash</value>
+  </data>
+  <data name="welcome_safety_intro" xml:space="preserve">
+    <value>Four rules that prevent most problems.</value>
+  </data>
+  <data name="welcome_rule_backup" xml:space="preserve">
+    <value>Back up first</value>
+  </data>
+  <data name="welcome_rule_backup_detail" xml:space="preserve">
+    <value>On the Backup page. If something goes wrong, you can put the phone back as it was.</value>
+  </data>
+  <data name="welcome_rule_battery" xml:space="preserve">
+    <value>Battery above 50%</value>
+  </data>
+  <data name="welcome_rule_battery_detail" xml:space="preserve">
+    <value>A phone that switches off in the middle of a flash may not start again.</value>
+  </data>
+  <data name="welcome_rule_cable" xml:space="preserve">
+    <value>Don't unplug the cable</value>
+  </data>
+  <data name="welcome_rule_cable_detail" xml:space="preserve">
+    <value>Use a good data cable in a port on the PC itself, not a hub, and wait until the app says it is done.</value>
+  </data>
+  <data name="welcome_rule_files" xml:space="preserve">
+    <value>Files for your exact phone</value>
+  </data>
+  <data name="welcome_rule_files_detail" xml:space="preserve">
+    <value>Same model and same software version. The app checks what it can and warns you before writing.</value>
+  </data>
+  <data name="welcome_again_note" xml:space="preserve">
+    <value>You can take this tour again from About.</value>
+  </data>
+  <data name="driver_samsung_title" xml:space="preserve">
+    <value>Samsung USB driver</value>
+  </data>
+  <data name="driver_samsung_source" xml:space="preserve">
+    <value>From developer.samsung.com · about 37 MB</value>
+  </data>
+  <data name="driver_samsung_already" xml:space="preserve">
+    <value>It looks installed already; installing it again does no harm.</value>
+  </data>
+  <data name="driver_samsung_offer" xml:space="preserve">
+    <value>Samsung phones in Download mode need Samsung's own driver; it is the same one Odin uses.
+
+The app downloads it from Samsung, checks that Windows finds Samsung's signature on it, then opens its installer. Windows will ask for permission: that is normal for a driver.</value>
+  </data>
+  <data name="driver_download_install" xml:space="preserve">
+    <value>Download and install</value>
+  </data>
+  <data name="driver_downloading" xml:space="preserve">
+    <value>Downloading Samsung's driver</value>
+  </data>
+  <data name="driver_downloading_note" xml:space="preserve">
+    <value>Straight from Samsung. It is checked before it runs.</value>
+  </data>
+  <data name="driver_download_failed" xml:space="preserve">
+    <value>The download failed: {0}</value>
+  </data>
+  <data name="driver_not_https" xml:space="preserve">
+    <value>Samsung's link did not end on a secure (https) address, so the file was not used.</value>
+  </data>
+  <data name="driver_too_big" xml:space="preserve">
+    <value>The file is far bigger than Samsung's driver, so it was not kept.</value>
+  </data>
+  <data name="driver_signature_bad" xml:space="preserve">
+    <value>Windows did not find a valid signature from Samsung Electronics on the file, so it was deleted and not run.</value>
+  </data>
+  <data name="driver_installing" xml:space="preserve">
+    <value>Samsung's installer is open</value>
+  </data>
+  <data name="driver_installing_note" xml:space="preserve">
+    <value>Follow its steps. When it finishes, this window checks that the driver is there.</value>
+  </data>
+  <data name="driver_no_permission" xml:space="preserve">
+    <value>Windows did not get permission to run the installer.</value>
+  </data>
+  <data name="driver_done" xml:space="preserve">
+    <value>Samsung's driver is installed</value>
+  </data>
+  <data name="driver_done_note" xml:space="preserve">
+    <value>If a Samsung phone is plugged in, unplug it and plug it in again.</value>
+  </data>
+  <data name="driver_close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="driver_not_yet" xml:space="preserve">
+    <value>The driver is not there yet</value>
+  </data>
+  <data name="driver_not_yet_note" xml:space="preserve">
+    <value>If the installer is still open, finish it first, then press Check again.</value>
+  </data>
+  <data name="driver_check_again" xml:space="preserve">
+    <value>Check again</value>
+  </data>
+  <data name="driver_failed" xml:space="preserve">
+    <value>Samsung's driver was not installed</value>
+  </data>
+  <data name="driver_failed_note" xml:space="preserve">
+    <value>You can download it yourself from Samsung's page.</value>
+  </data>
+  <data name="driver_try_again" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="driver_open_page" xml:space="preserve">
+    <value>Open Samsung's page</value>
+  </data>
+  <data name="boot_check_question_notice" xml:space="preserve">
+    <value>Flash it to {0}?</value>
+  </data>
+  <data name="boot_find_rooted" xml:space="preserve">
+    <value>This image is rooted with {0}. That is right to root the phone; to remove root, flash the stock image from the same firmware instead.</value>
+  </data>
+  <data name="boot_find_recovery_try" xml:space="preserve">
+    <value>Try it first with Boot image once… on the Device page: it starts the recovery without writing it to {0}, so one that does not suit the phone changes nothing. Some phones cannot start an image that way.</value>
+  </data>
+  <data name="usb_samsung_driver_ask" xml:space="preserve">
+    <value>Samsung's USB driver is not installed on this PC, and this phone needs it. Download it from Samsung and install it now?</value>
+  </data>
+  <data name="samsung_driver_ok" xml:space="preserve">
+    <value>Samsung USB driver is installed: Download mode can be seen.</value>
+  </data>
+  <data name="samsung_driver_missing" xml:space="preserve">
+    <value>Samsung USB driver is not installed. Download mode needs it.</value>
+  </data>
+  <data name="samsung_m_knox_ok" xml:space="preserve">
+    <value>Knox: intact (0x0)</value>
+  </data>
+  <data name="samsung_m_knox_ok_detail" xml:space="preserve">
+    <value>As the phone reports it. Flashing anything not from Samsung (root, a custom recovery or kernel) trips it for good.</value>
+  </data>
+  <data name="samsung_m_knox_tripped" xml:space="preserve">
+    <value>Knox is tripped (0x1)</value>
+  </data>
+  <data name="samsung_m_knox_tripped_detail" xml:space="preserve">
+    <value>Samsung Wallet, Secure Folder and Samsung Pass no longer work on this phone. Flashing official firmware does not bring Knox back.</value>
   </data>
 </root>

@@ -16,7 +16,9 @@ namespace FastbootEnhance.Core.Samsung
             "echo pda=$(getprop ro.build.PDA); " +
             "echo android=$(getprop ro.build.version.release); " +
             "echo sales=$(getprop ro.csc.sales_code); " +
-            "echo cscver=$(getprop ril.official_cscver)";
+            "echo cscver=$(getprop ril.official_cscver); " +
+            "echo warranty=$(getprop ro.boot.warranty_bit); " +
+            "echo warranty2=$(getprop ro.warranty_bit)";
 
         public string Serial { get; set; }
         public string Maker { get; set; }
@@ -29,6 +31,12 @@ namespace FastbootEnhance.Core.Samsung
         public string SalesCode { get; set; }
         /// <summary>The CSC build in use, "S918BOXM3BWJ1"; its code is OXM.</summary>
         public string CscVersion { get; set; }
+
+        /// <summary>
+        /// Knox's warranty bit as the phone reports it: "0" intact, "1" tripped, null unknown.
+        /// A root-hiding module can make a tripped phone report 0.
+        /// </summary>
+        public string Warranty { get; set; }
 
         public bool IsSamsung => string.Equals(Maker, "samsung", StringComparison.OrdinalIgnoreCase);
 
@@ -43,6 +51,13 @@ namespace FastbootEnhance.Core.Samsung
                 SamsungBuild b = SamsungBuild.Parse(v);
                 return b == null ? null : v.Substring(b.Model.Length, 3);
             }
+        }
+
+        /// <summary>"0" or "1"; anything else is no answer.</summary>
+        static string Bit(string value)
+        {
+            value = value?.Trim();
+            return value == "0" || value == "1" ? value : null;
         }
 
         public static SamsungPhone Parse(string serial, string output)
@@ -68,6 +83,7 @@ namespace FastbootEnhance.Core.Samsung
                 Android = get("android"),
                 SalesCode = get("sales"),
                 CscVersion = get("cscver"),
+                Warranty = Bit(get("warranty")) ?? Bit(get("warranty2")),
             };
         }
     }
@@ -96,6 +112,12 @@ namespace FastbootEnhance.Core.Samsung
         CscWipes,
         MixedFirmware,
         PhoneUnknown,
+
+        /// <summary>Knox's warranty bit reads 0: nothing unofficial was ever flashed.</summary>
+        KnoxIntact,
+
+        /// <summary>Knox's warranty bit reads 1: tripped for good.</summary>
+        KnoxTripped,
     }
 
     public sealed class MatchFinding
@@ -178,6 +200,13 @@ namespace FastbootEnhance.Core.Samsung
                 else
                     add(MatchLevel.Notice, MatchCode.OtherCsc, fwCsc, phoneText);
             }
+
+            // Says nothing about the firmware itself; shown so a root or custom recovery is
+            // never flashed without knowing what it costs.
+            if (phone.Warranty == "0")
+                add(MatchLevel.Ok, MatchCode.KnoxIntact, null, "0x0");
+            else if (phone.Warranty == "1")
+                add(MatchLevel.Notice, MatchCode.KnoxTripped, null, "0x1");
             return Sorted(f);
         }
 

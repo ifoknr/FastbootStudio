@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -127,6 +128,32 @@ namespace FastbootEnhance.Core.Update
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// The "## v2.8.0" section of CHANGELOG.md, without its heading: the same text as the
+        /// release body, so <see cref="SplitNotes"/> reads it. Null when the version is not there.
+        /// </summary>
+        public static string ChangelogSection(string changelog, string version)
+        {
+            if (string.IsNullOrEmpty(changelog) || string.IsNullOrEmpty(version))
+                return null;
+            string heading = "## v" + version.Trim().TrimStart('v', 'V');
+            StringBuilder section = null;
+            foreach (string raw in changelog.Replace("\r", "").Split('\n'))
+            {
+                string line = raw.TrimEnd();
+                if (line.StartsWith("## ", StringComparison.Ordinal))
+                {
+                    if (section != null)
+                        break;
+                    if (line.Trim() == heading)
+                        section = new StringBuilder();
+                    continue;
+                }
+                section?.Append(line).Append('\n');
+            }
+            return section?.ToString().Trim();
         }
 
         /// <summary>

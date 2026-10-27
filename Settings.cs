@@ -39,6 +39,12 @@ namespace FastbootEnhance
             return values;
         }
 
+        /// <summary>True once anything was ever saved: the app was used before.</summary>
+        public static bool Any()
+        {
+            return Load().Count > 0;
+        }
+
         public static string Get(string key)
         {
             string value;

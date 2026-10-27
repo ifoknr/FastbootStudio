@@ -181,6 +181,36 @@
         <Setter Property="Background" Value="Transparent"/>
     </Style>
 
+    <!-- The question mark in the corner of each page: opens that page's help at the side. -->
+    <Style x:Key="HelpButton" TargetType="Button">
+        <Setter Property="Width" Value="34"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{StaticResource Accent}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd" CornerRadius="17" Background="{StaticResource AccentSoft}"
+                            BorderBrush="{StaticResource AccentLine}" BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Inputs -->
     <Style TargetType="TextBox">
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
@@ -565,7 +595,7 @@
                                            RenderOptions.BitmapScalingMode="HighQuality"/>
                                     <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
                                         <TextBlock Text="Fastboot Studio" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
-                                        <TextBlock Text="v2.7.1" FontSize="11" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}"/>
+                                        <TextBlock Text="v2.8.0" FontSize="11" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}"/>
                                     </StackPanel>
                                 </StackPanel>
                                 <Border DockPanel.Dock="Bottom" Background="{StaticResource Well}" BorderBrush="{StaticResource Line}"

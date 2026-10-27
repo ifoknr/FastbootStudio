@@ -103,6 +103,22 @@ namespace FastbootEnhance
             W.samsung_check_patched.Click += delegate { checkPatchedFile(); };
             W.samsung_build_tar.Click += delegate { buildTar(); };
             W.samsung_cancel.Click += delegate { cancel?.Cancel(); };
+            W.samsung_driver_install.Click += delegate { DriverUI.InstallSamsung(showDriver); };
+            showDriver();
+        }
+
+        /// <summary>Whether Samsung's USB driver is installed, which Download mode needs; read off the UI thread.</summary>
+        static void showDriver()
+        {
+            bool installed = false;
+            Helper.offloadAndRun(delegate { installed = DriverUI.SamsungInstalled(); }, delegate
+            {
+                W.samsung_driver_text.Text = installed ? Properties.Resources.samsung_driver_ok : Properties.Resources.samsung_driver_missing;
+                W.samsung_driver_text.Foreground = Palette.Get(installed ? "Dim" : "Warn");
+                W.samsung_driver_mark.Text = installed ? "✓" : "!";
+                W.samsung_driver_mark.Foreground = Palette.Get(installed ? "Ok" : "Warn");
+                W.samsung_driver_install.Visibility = installed ? Visibility.Collapsed : Visibility.Visible;
+            });
         }
 
         static void dragOver(object sender, DragEventArgs e)
@@ -478,6 +494,14 @@ namespace FastbootEnhance
                 case MatchCode.CscWipes:
                     title = Properties.Resources.samsung_m_csc_wipes;
                     detail = f.Phone != null ? Properties.Resources.samsung_m_csc_wipes_detail : Properties.Resources.samsung_m_csc_wipes_no_home;
+                    break;
+                case MatchCode.KnoxIntact:
+                    title = Properties.Resources.samsung_m_knox_ok;
+                    detail = Properties.Resources.samsung_m_knox_ok_detail;
+                    break;
+                case MatchCode.KnoxTripped:
+                    title = Properties.Resources.samsung_m_knox_tripped;
+                    detail = Properties.Resources.samsung_m_knox_tripped_detail;
                     break;
                 case MatchCode.MixedFirmware:
                     title = Properties.Resources.samsung_m_mixed;

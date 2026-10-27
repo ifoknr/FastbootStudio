@@ -72,6 +72,8 @@ Set-Content $fakeUsb @(
 $env:FASTBOOT_STUDIO_FAKE_USB = $fakeUsb
 # No update check by itself while the screens are captured; the update dialog is tested at the end.
 $env:FASTBOOT_STUDIO_UPDATE_FEED = 'off'
+# No tour or What's new over the pages; both are captured on their own near the end.
+$env:FASTBOOT_STUDIO_WELCOME = 'off'
 Remove-Item $saveRoot -Recurse -Force -ErrorAction SilentlyContinue
 
 function Save-Desktop([string] $name) {
@@ -1170,6 +1172,70 @@ if ($proc.HasExited) { Fail "the light-theme app exited while being captured, co
 Stop-Process -Id $proc.Id -Force
 Remove-Item Env:FASTBOOT_STUDIO_THEME
 Write-Host "captured the light theme"
+
+# ---------------------------------------------------------------- the tour, What's new and the help panel
+# The first start: four steps, the page picked on the map opens at the end, and its ؟ opens
+# the help at the side. Then the start of a new version: What's new. In English, then Arabic.
+function Tour([string] $prefix, [string] $okLabel) {
+    $env:FASTBOOT_STUDIO_WELCOME = 'on'
+    $env:FASTBOOT_STUDIO_FAKE_SAMSUNG_DRIVER = 'missing'
+    Launch-App
+    $next = Wait-For { Shown $root 'welcome_next' } 30 "the tour ($prefix)"
+    Wait-For { Shown $root ('welcome_language_' + $(if ($prefix -eq 'ar') { 'ar' } else { 'en' })) } 10 "the language step ($prefix)" | Out-Null
+    Start-Sleep -Milliseconds 600
+    Save-Window "$prefix-welcome-1-language"
+    Press 'welcome_next'
+    Wait-For { Shown $root 'welcome_page_samsung' } 10 "the page map ($prefix)" | Out-Null
+    Press 'welcome_page_samsung'
+    Start-Sleep -Milliseconds 600
+    Save-Window "$prefix-welcome-2-pages"
+    Press 'welcome_next'
+    # The check reads the PC: the Samsung driver is "missing", the stand-in USB list has a phone without a driver.
+    Wait-For { Shown $root 'welcome_install_samsung' } 30 "the quick check ($prefix)" | Out-Null
+    Wait-For { Shown $root 'welcome_usb_check' } 30 "the USB line of the check ($prefix)" | Out-Null
+    Start-Sleep -Milliseconds 600
+    Save-Window "$prefix-welcome-3-check"
+    Press 'welcome_next'
+    Start-Sleep -Milliseconds 800
+    Save-Window "$prefix-welcome-4-safety"
+    Press 'welcome_next'
+    # The page picked on the map is open, and the tour is gone.
+    Wait-For { Shown $root 'samsung_open' } 10 "the Samsung page after the tour ($prefix)" | Out-Null
+    if ($null -ne (Shown $root 'welcome_next')) { Fail "the tour is still showing after Start ($prefix)" }
+    Press 'help_samsung'
+    Wait-For { Shown $root 'help_close' } 10 "the Samsung help ($prefix)" | Out-Null
+    Start-Sleep -Milliseconds 800
+    Save-Window "$prefix-help-samsung"
+    # Another page while the help is open: its own help follows.
+    Go 'device_tab' | Out-Null
+    Start-Sleep -Milliseconds 800
+    Save-Window "$prefix-help-device"
+    Press 'help_close'
+    Wait-For { $null -eq (Shown $root 'help_close') } 10 "the help to close ($prefix)" | Out-Null
+    if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception in the tour ($prefix)" }
+    Stop-Process -Id $proc.Id -Force
+    Start-Sleep -Seconds 2
+
+    $env:FASTBOOT_STUDIO_WELCOME = 'whatsnew'
+    Launch-App
+    Wait-For { $n = Shown $root 'welcome_next'; $null -ne $n -and $n.Current.Name -eq $okLabel } 30 "What's new ($prefix)" | Out-Null
+    Start-Sleep -Milliseconds 600
+    Save-Window "$prefix-whats-new"
+    Press 'welcome_next'
+    Wait-For { $null -eq (Shown $root 'welcome_next') } 10 "What's new to close ($prefix)" | Out-Null
+    if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception in What's new ($prefix)" }
+    Stop-Process -Id $proc.Id -Force
+    Remove-Item Env:FASTBOOT_STUDIO_FAKE_SAMSUNG_DRIVER
+    $env:FASTBOOT_STUDIO_WELCOME = 'off'
+    Start-Sleep -Seconds 2
+}
+Tour 'en' 'OK'
+if ($Arabic) {
+    $env:FASTBOOT_STUDIO_LANG = 'ar'
+    Tour 'ar' 'تمام'
+    Remove-Item Env:FASTBOOT_STUDIO_LANG
+}
+Write-Host "tour, What's new and help: shown, the picked page opened, the help followed the page"
 
 # ---------------------------------------------------------------- the update dialog
 # A test feed stands in for GitHub: a newer release whose zip is a local file. The dialog must

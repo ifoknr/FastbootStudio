@@ -26,6 +26,15 @@ nothing to install.
 > 🆕 **A new version.** Fastboot Studio is the new generation of Fastboot Enhance: a new
 > interface from top to bottom, new pages, and more protection for the phone.
 >
+> **New in 2.8:**
+> - A **?** in the corner of every page opens its help at the side: what the page is for, the steps,
+>   what can go wrong for good, and the words it uses. In English and Arabic.
+> - A short **welcome tour** on first start (language, the pages, a quick check of the PC, safety rules),
+>   and **What's new** on the first start after an update.
+> - **Samsung USB driver** in one click: downloaded from Samsung, kept only with Samsung's signature, installed.
+> - A **rooted boot image** is named before it is flashed, and a recovery suggests *Boot once* first.
+> - The Samsung page shows **Knox**, and the Magisk steps say when to use CSC and when HOME_CSC.
+>
 > **New in 2.7:**
 > - A **Samsung** page: open Samsung firmware (AP, BL, CP, CSC, or the zip it came in), check every
 >   file's MD5, take out boot, init_boot, vbmeta, recovery or super with LZ4 undone, and see whether
@@ -82,7 +91,8 @@ nothing to install.
 
 The build is self-contained: .NET, `adb` and `fastboot` (platform-tools 37.0.1) are
 included. You only need the phone's USB driver installed in Windows
-(e.g. the [Google USB Driver](https://developer.android.com/studio/run/win-usb)).
+(e.g. the [Google USB Driver](https://developer.android.com/studio/run/win-usb)); for a Samsung,
+the app can download and install Samsung's own driver for you.
 
 An OTA or image can be opened straight away: `FastbootStudio.exe ota.zip`, or drop the
 file onto the exe.
@@ -271,7 +281,14 @@ HOME_CSC) for Odin. This page does everything around Odin, and nothing is writte
 - **Extract** any image with LZ4 undone (boot, init_boot, vbmeta, recovery, super…). super opens
   in Image Tools in one click.
 - **Root with Magisk**: a small tar of init_boot (or boot) and vbmeta goes to the phone; after
-  Magisk patches it, the patched tar is fetched and checked. Flash it with Odin in the AP slot.
+  Magisk patches it, the patched tar is fetched and checked. In Odin it goes in AP, with BL, CP and
+  CSC from the same firmware (never AP alone): **CSC** the first time, since the first Magisk install
+  needs a wipe, and **HOME_CSC** when updating a phone already rooted. It needs an unlocked bootloader
+  and trips Knox for good.
+- **Knox**: the phone's warranty bit, as it reports it (intact 0x0 or tripped 0x1).
+- **Samsung USB driver**: shows whether it is installed; *Install…* downloads it from Samsung, keeps
+  it only when Windows finds Samsung's signature on it, and runs its installer. It is the driver
+  Odin uses too.
 - **Tar for Odin**: any images (TWRP's recovery.img, a patched boot…) packed as a `.tar.md5`.
 
 **Why it helps:** the wrong firmware, a bootloader downgrade or a wiped phone are caught before
@@ -338,6 +355,8 @@ Type adb and fastboot commands and run them with the tools that come with the ap
   (English, العربية with a full right-to-left layout, 中文, 日本語, 한국어).
 - **Updates**: once a day (or with *Check now*) the app looks for a new release, shows what
   changed, and downloads it only if you say so; the zip is kept only when its SHA-256 matches.
+- **Help, tour and What's new**: every page has a **?** in its corner with its help; About opens the
+  welcome tour again, and What's new for this version.
 
 ---
 

@@ -2573,7 +2573,11 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="samsung_patched_ok" xml:space="preserve">
     <value>{0} معدّل بـ Magisk ✓
 
-فلّش {1} بـ Odin في خانة AP بس.</value>
+في Odin: حط {1} في خانة AP، ومعه BL و CP و CSC من نفس الروم. لا تفلّش AP لحاله أبداً.
+• أول مرة تركّب Magisk: CSC مو HOME_CSC. يمسح الجوال، وMagisk يحتاج هالمسح.
+• جوال مروّت من قبل وتحدّثه: HOME_CSC عشان تبقى بياناتك.
+
+يحتاج بوت لودر مفتوح، ويحرق Knox للأبد.</value>
   </data>
   <data name="samsung_patched_not" xml:space="preserve">
     <value>{0} في هذا الملف مو معدّل بـ Magisk. لا تفلشه عشان الروت.</value>
@@ -2598,5 +2602,325 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   </data>
   <data name="samsung_note" xml:space="preserve">
     <value>الصور تنحفظ ‎.img‎ عادية بعد فك LZ4. وsuper يطلع sparse زي ما هو، وتقدر تفكه من أدوات الصور. والتفليش يبقى بـ Odin.</value>
+  </data>
+  <data name="help_label" xml:space="preserve">
+    <value>شرح</value>
+  </data>
+  <data name="help_close" xml:space="preserve">
+    <value>اقفل الشرح (Esc)</value>
+  </data>
+  <data name="help_tooltip" xml:space="preserve">
+    <value>شرح هذي الصفحة</value>
+  </data>
+  <data name="help_ask" xml:space="preserve">
+    <value>اسأل في تليجرام</value>
+  </data>
+  <data name="help_ask_note" xml:space="preserve">
+    <value>لسا محتار؟ اسأل في القروب.</value>
+  </data>
+  <data name="help_missing" xml:space="preserve">
+    <value>ما فيه شرح لهذي الصفحة للحين.</value>
+  </data>
+  <data name="help_purpose" xml:space="preserve">
+    <value>وش فايدة الصفحة</value>
+  </data>
+  <data name="help_steps" xml:space="preserve">
+    <value>الخطوات</value>
+  </data>
+  <data name="help_tips" xml:space="preserve">
+    <value>معلومات تفيدك</value>
+  </data>
+  <data name="help_terms" xml:space="preserve">
+    <value>كلمات تحتاج تعرفها</value>
+  </data>
+  <data name="help_danger" xml:space="preserve">
+    <value>أشياء خطيرة: اقراها أول</value>
+  </data>
+  <data name="welcome_section" xml:space="preserve">
+    <value>الجولة والجديد</value>
+  </data>
+  <data name="welcome_show_again" xml:space="preserve">
+    <value>اعرض الجولة مرة ثانية</value>
+  </data>
+  <data name="whats_new_button" xml:space="preserve">
+    <value>الجديد في {0}</value>
+  </data>
+  <data name="whats_new_none" xml:space="preserve">
+    <value>هذا الإصدار ما فيه ملاحظات.</value>
+  </data>
+  <data name="whats_new_title" xml:space="preserve">
+    <value>الجديد في {0}</value>
+  </data>
+  <data name="whats_new_intro" xml:space="preserve">
+    <value>تم تحديث Fastboot Studio، وهذي التغييرات:</value>
+  </data>
+  <data name="whats_new_ok" xml:space="preserve">
+    <value>تمام</value>
+  </data>
+  <data name="welcome_take_tour" xml:space="preserve">
+    <value>خذ جولة</value>
+  </data>
+  <data name="welcome_skip" xml:space="preserve">
+    <value>تخطي</value>
+  </data>
+  <data name="welcome_back" xml:space="preserve">
+    <value>السابق</value>
+  </data>
+  <data name="welcome_next" xml:space="preserve">
+    <value>التالي</value>
+  </data>
+  <data name="welcome_start" xml:space="preserve">
+    <value>ابدأ</value>
+  </data>
+  <data name="welcome_title" xml:space="preserve">
+    <value>هلا فيك في Fastboot Studio</value>
+  </data>
+  <data name="welcome_intro" xml:space="preserve">
+    <value>أداة وحدة للتفليش والروت والنسخ الاحتياطي. خذ جولة قصيرة أول، ما تاخذ دقيقة، وتقدر تتخطاها.</value>
+  </data>
+  <data name="welcome_language_current" xml:space="preserve">
+    <value>المستخدمة الحين</value>
+  </data>
+  <data name="welcome_map_title" xml:space="preserve">
+    <value>وش تسوي كل صفحة</value>
+  </data>
+  <data name="welcome_map_intro" xml:space="preserve">
+    <value>كل صفحة لها شغلة، وفي زاوية كل صفحة زر ؟ يشرحها لك خطوة خطوة. اختر صفحة وتنفتح لك بعد الجولة.</value>
+  </data>
+  <data name="welcome_map_pick" xml:space="preserve">
+    <value>افتح هذي الصفحة بعد الجولة</value>
+  </data>
+  <data name="welcome_page_device" xml:space="preserve">
+    <value>الجوال في الفاست بوت: حالته وأقسامه وإعادة التشغيل</value>
+  </data>
+  <data name="welcome_page_phone" xml:space="preserve">
+    <value>الجوال وهو شغّال: مواصفاته وحمايته ونسخه</value>
+  </data>
+  <data name="welcome_page_flash" xml:space="preserve">
+    <value>فلّش روم OTA كامل، وكل صورة تنفحص قبل</value>
+  </data>
+  <data name="welcome_page_payload" xml:space="preserve">
+    <value>شوف داخل روم OTA وطلّع صوره</value>
+  </data>
+  <data name="welcome_page_images" xml:space="preserve">
+    <value>افحص صور boot، حوّل sparse، فك super</value>
+  </data>
+  <data name="welcome_page_super" xml:space="preserve">
+    <value>سوّ super.img من صور الأقسام</value>
+  </data>
+  <data name="welcome_page_samsung" xml:space="preserve">
+    <value>روم سامسونج: MD5، المطابقة، Magisk، وملف لـ Odin</value>
+  </data>
+  <data name="welcome_page_backup" xml:space="preserve">
+    <value>انسخ أقسامك وملفاتك على الكمبيوتر</value>
+  </data>
+  <data name="welcome_page_root" xml:space="preserve">
+    <value>روت بـ Magisk أو KernelSU أو APatch خطوة خطوة</value>
+  </data>
+  <data name="welcome_page_terminal" xml:space="preserve">
+    <value>أوامر adb و fastboot بنفسك</value>
+  </data>
+  <data name="welcome_page_logs" xml:space="preserve">
+    <value>كل اللي سواه التطبيق، تنسخه لو تبي مساعدة</value>
+  </data>
+  <data name="welcome_page_about" xml:space="preserve">
+    <value>الإصدار واللغة والمظهر والتحديثات</value>
+  </data>
+  <data name="welcome_check_title" xml:space="preserve">
+    <value>فحص سريع</value>
+  </data>
+  <data name="welcome_check_intro" xml:space="preserve">
+    <value>نشوف وش جاهز في الكمبيوتر قبل ما توصّل جوالك.</value>
+  </data>
+  <data name="welcome_checking" xml:space="preserve">
+    <value>جاري الفحص…</value>
+  </data>
+  <data name="welcome_check_tools" xml:space="preserve">
+    <value>adb و fastboot موجودة</value>
+  </data>
+  <data name="welcome_check_tools_detail" xml:space="preserve">
+    <value>جاية مع التطبيق (platform-tools 37.0.1)، ما تحتاج تثبّت شي.</value>
+  </data>
+  <data name="welcome_check_tools_missing" xml:space="preserve">
+    <value>adb أو fastboot ناقص</value>
+  </data>
+  <data name="welcome_check_tools_missing_detail" xml:space="preserve">
+    <value>مكانهم جنب FastbootStudio.exe. فك الملف المضغوط كامل مرة ثانية، مو الـ exe بس.</value>
+  </data>
+  <data name="welcome_check_samsung" xml:space="preserve">
+    <value>تعريف سامسونج USB مثبّت</value>
+  </data>
+  <data name="welcome_check_samsung_detail" xml:space="preserve">
+    <value>لجوالات سامسونج في وضع التحميل (Download).</value>
+  </data>
+  <data name="welcome_check_samsung_missing" xml:space="preserve">
+    <value>تعريف سامسونج USB مو مثبّت</value>
+  </data>
+  <data name="welcome_check_samsung_missing_detail" xml:space="preserve">
+    <value>تحتاجه بس لجوالات سامسونج في وضع التحميل، والتطبيق يقدر يجيبه لك من سامسونج.</value>
+  </data>
+  <data name="driver_install" xml:space="preserve">
+    <value>ثبّته…</value>
+  </data>
+  <data name="welcome_check_usb_unknown" xml:space="preserve">
+    <value>ما قدرت أقرأ أجهزة USB</value>
+  </data>
+  <data name="welcome_check_usb_trouble" xml:space="preserve">
+    <value>فيه جوال بدون تعريف شغّال</value>
+  </data>
+  <data name="welcome_check_usb_fastboot" xml:space="preserve">
+    <value>فيه جوال متصل في الفاست بوت</value>
+  </data>
+  <data name="welcome_check_usb_adb" xml:space="preserve">
+    <value>فيه جوال متصل وهو في أندرويد أو الريكفري (adb)</value>
+  </data>
+  <data name="welcome_check_usb_samsung" xml:space="preserve">
+    <value>فيه جوال سامسونج في وضع التحميل</value>
+  </data>
+  <data name="welcome_check_usb_download" xml:space="preserve">
+    <value>فيه جوال في وضع التحميل حق المعالج (EDL أو BROM…)</value>
+  </data>
+  <data name="welcome_check_usb_none" xml:space="preserve">
+    <value>ما فيه جوال متصل</value>
+  </data>
+  <data name="welcome_check_usb_none_detail" xml:space="preserve">
+    <value>عادي، وصّله بعدين. وفي أندرويد فعّل «تصحيح USB» من خيارات المطور.</value>
+  </data>
+  <data name="welcome_safety_title" xml:space="preserve">
+    <value>قبل أي تفليش</value>
+  </data>
+  <data name="welcome_safety_intro" xml:space="preserve">
+    <value>أربع قواعد تحميك من أغلب المشاكل.</value>
+  </data>
+  <data name="welcome_rule_backup" xml:space="preserve">
+    <value>خذ نسخة احتياطية أول</value>
+  </data>
+  <data name="welcome_rule_backup_detail" xml:space="preserve">
+    <value>من صفحة «النسخ الاحتياطي». لو صار شي، ترجّع جوالك مثل ما كان.</value>
+  </data>
+  <data name="welcome_rule_battery" xml:space="preserve">
+    <value>البطارية فوق 50%</value>
+  </data>
+  <data name="welcome_rule_battery_detail" xml:space="preserve">
+    <value>لو طفى الجوال وسط التفليش، ممكن ما يقلع.</value>
+  </data>
+  <data name="welcome_rule_cable" xml:space="preserve">
+    <value>لا تفصل الكيبل</value>
+  </data>
+  <data name="welcome_rule_cable_detail" xml:space="preserve">
+    <value>استخدم كيبل بيانات زين في منفذ الكمبيوتر نفسه، مو موزّع USB، وانتظر لين التطبيق يقول خلص.</value>
+  </data>
+  <data name="welcome_rule_files" xml:space="preserve">
+    <value>ملفات لجوالك بالضبط</value>
+  </data>
+  <data name="welcome_rule_files_detail" xml:space="preserve">
+    <value>نفس الموديل ونفس الإصدار. التطبيق يفحص اللي يقدر عليه ويحذّرك قبل ما يكتب.</value>
+  </data>
+  <data name="welcome_again_note" xml:space="preserve">
+    <value>تقدر تشوف هالجولة مرة ثانية من صفحة «حول».</value>
+  </data>
+  <data name="driver_samsung_title" xml:space="preserve">
+    <value>تعريف سامسونج USB</value>
+  </data>
+  <data name="driver_samsung_source" xml:space="preserve">
+    <value>من developer.samsung.com · حجمه تقريباً 37 ميجا</value>
+  </data>
+  <data name="driver_samsung_already" xml:space="preserve">
+    <value>يبان إنه مثبّت من قبل، وتثبيته مرة ثانية ما يضر.</value>
+  </data>
+  <data name="driver_samsung_offer" xml:space="preserve">
+    <value>جوالات سامسونج في وضع التحميل (Download) تحتاج تعريف سامسونج نفسه، وهو نفس التعريف اللي يستخدمه Odin.
+
+التطبيق يحمّله من سامسونج، ويتأكد إن الويندوز يلقى توقيع سامسونج عليه، وبعدين يفتح المثبّت. الويندوز بيطلب منك إذن، وهذا طبيعي لأي تعريف.</value>
+  </data>
+  <data name="driver_download_install" xml:space="preserve">
+    <value>حمّل وثبّت</value>
+  </data>
+  <data name="driver_downloading" xml:space="preserve">
+    <value>جاري تحميل تعريف سامسونج</value>
+  </data>
+  <data name="driver_downloading_note" xml:space="preserve">
+    <value>من سامسونج على طول، وينفحص قبل ما يشتغل.</value>
+  </data>
+  <data name="driver_download_failed" xml:space="preserve">
+    <value>فشل التحميل: {0}</value>
+  </data>
+  <data name="driver_not_https" xml:space="preserve">
+    <value>رابط سامسونج ما انتهى بعنوان آمن (https)، فما استخدمت الملف.</value>
+  </data>
+  <data name="driver_too_big" xml:space="preserve">
+    <value>الملف أكبر بكثير من تعريف سامسونج، فما احتفظت فيه.</value>
+  </data>
+  <data name="driver_signature_bad" xml:space="preserve">
+    <value>الويندوز ما لقى توقيع صحيح من Samsung Electronics على الملف، فانحذف وما اشتغل.</value>
+  </data>
+  <data name="driver_installing" xml:space="preserve">
+    <value>مثبّت سامسونج مفتوح</value>
+  </data>
+  <data name="driver_installing_note" xml:space="preserve">
+    <value>كمّل خطواته. لما يخلص، هالنافذة تتأكد إن التعريف تثبّت.</value>
+  </data>
+  <data name="driver_no_permission" xml:space="preserve">
+    <value>الويندوز ما أخذ إذن يشغّل المثبّت.</value>
+  </data>
+  <data name="driver_done" xml:space="preserve">
+    <value>تعريف سامسونج تثبّت</value>
+  </data>
+  <data name="driver_done_note" xml:space="preserve">
+    <value>لو فيه جوال سامسونج موصول، افصله ورجّعه.</value>
+  </data>
+  <data name="driver_close" xml:space="preserve">
+    <value>اقفل</value>
+  </data>
+  <data name="driver_not_yet" xml:space="preserve">
+    <value>التعريف للحين ما تثبّت</value>
+  </data>
+  <data name="driver_not_yet_note" xml:space="preserve">
+    <value>لو المثبّت للحين مفتوح، خلّصه أول، وبعدين اضغط «افحص مرة ثانية».</value>
+  </data>
+  <data name="driver_check_again" xml:space="preserve">
+    <value>افحص مرة ثانية</value>
+  </data>
+  <data name="driver_failed" xml:space="preserve">
+    <value>تعريف سامسونج ما تثبّت</value>
+  </data>
+  <data name="driver_failed_note" xml:space="preserve">
+    <value>تقدر تحمّله بنفسك من صفحة سامسونج.</value>
+  </data>
+  <data name="driver_try_again" xml:space="preserve">
+    <value>حاول مرة ثانية</value>
+  </data>
+  <data name="driver_open_page" xml:space="preserve">
+    <value>افتح صفحة سامسونج</value>
+  </data>
+  <data name="boot_check_question_notice" xml:space="preserve">
+    <value>تفلّشها في {0}؟</value>
+  </data>
+  <data name="boot_find_rooted" xml:space="preserve">
+    <value>هذي الصورة مروّتة بـ {0}. هذا الصح لو تبي روت؛ ولو تبي تشيل الروت، فلّش الصورة الأصلية من نفس الروم.</value>
+  </data>
+  <data name="boot_find_recovery_try" xml:space="preserve">
+    <value>جرّبها أول بزر «تشغيل صورة مؤقتاً…» في صفحة الجهاز: يشغّل الريكفري بدون ما يكتبه في {0}، فلو ما ناسب الجوال ما يتغير شي. بعض الجوالات ما تدعم التشغيل بهالطريقة.</value>
+  </data>
+  <data name="usb_samsung_driver_ask" xml:space="preserve">
+    <value>تعريف سامسونج USB مو مثبّت في هالكمبيوتر، وهالجوال يحتاجه. أحمّله من سامسونج وأثبّته الحين؟</value>
+  </data>
+  <data name="samsung_driver_ok" xml:space="preserve">
+    <value>تعريف سامسونج USB مثبّت: وضع التحميل بينشاف.</value>
+  </data>
+  <data name="samsung_driver_missing" xml:space="preserve">
+    <value>تعريف سامسونج USB مو مثبّت، ووضع التحميل يحتاجه.</value>
+  </data>
+  <data name="samsung_m_knox_ok" xml:space="preserve">
+    <value>Knox: سليم (0x0)</value>
+  </data>
+  <data name="samsung_m_knox_ok_detail" xml:space="preserve">
+    <value>حسب اللي يقوله الجوال. تفليش أي شي مو من سامسونج (روت، أو ريكفري أو كيرنل معدّل) يحرقه للأبد.</value>
+  </data>
+  <data name="samsung_m_knox_tripped" xml:space="preserve">
+    <value>Knox محروق (0x1)</value>
+  </data>
+  <data name="samsung_m_knox_tripped_detail" xml:space="preserve">
+    <value>Samsung Wallet والمجلد الآمن وSamsung Pass ما عاد تشتغل في هالجوال، وتفليش الروم الرسمي ما يرجّع Knox.</value>
   </data>
 </root>

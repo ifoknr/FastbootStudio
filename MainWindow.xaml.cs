@@ -11,7 +11,7 @@ namespace FastbootEnhance
     public partial class MainWindow : Window
     {
         public static MainWindow THIS;
-        internal const string version = "2.7.1";
+        internal const string version = "2.8.0";
 
         public MainWindow()
         {
@@ -59,6 +59,15 @@ namespace FastbootEnhance
             RootUI.init();
             PhoneUI.init();
             TerminalUI.init();
+            HelpUI.init();
+            WelcomeUI.init();
+
+            // Esc closes the tour or the help panel, whichever is on top.
+            PreviewKeyDown += (sender, e) =>
+            {
+                if (!WelcomeUI.HandleKey(e))
+                    HelpUI.HandleKey(e);
+            };
 
             // Closing mid-flash kills the worker between partitions and can leave the phone
             // half written, so it has to be a deliberate choice.
