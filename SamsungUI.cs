@@ -104,6 +104,11 @@ namespace FastbootEnhance
             W.samsung_build_tar.Click += delegate { buildTar(); };
             W.samsung_cancel.Click += delegate { cancel?.Cancel(); };
             W.samsung_driver_install.Click += delegate { DriverUI.InstallSamsung(showDriver); };
+            W.samsung_odin.Click += delegate
+            {
+                OdinWindow.Show(W);
+                showDriver();
+            };
             showDriver();
         }
 

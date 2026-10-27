@@ -56,7 +56,7 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 {
                     reading.Info = client.DumpDeviceInfo();
                 }
-                catch (OdinException e)
+                catch (Exception e) when (e is OdinException || e is System.IO.IOException || e is TimeoutException)
                 {
                     // The PIT is what matters; the link may be out of step now, so only the end is tried.
                     reading.InfoProblem = e.Message;

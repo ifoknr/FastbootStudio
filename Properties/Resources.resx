@@ -2929,4 +2929,169 @@ The app downloads it from Samsung, checks that Windows finds Samsung's signature
   <data name="samsung_m_knox_unlocked_detail" xml:space="preserve">
     <value>Unlocking alone does not trip Knox. But if anything unofficial was ever flashed (root, a custom recovery or kernel), Knox is tripped for good and a hiding module makes it read 0x0. Samsung Wallet, Secure Folder and Samsung Pass go by the real fuse.</value>
   </data>
+  <data name="samsung_odin_button" xml:space="preserve">
+    <value>Download mode</value>
+  </data>
+  <data name="samsung_odin_tip" xml:space="preserve">
+    <value>Read a phone in Download mode: its partition table (PIT), model and region</value>
+  </data>
+  <data name="odin_title" xml:space="preserve">
+    <value>Read the phone in Download mode</value>
+  </data>
+  <data name="odin_subtitle" xml:space="preserve">
+    <value>Reads the partition table (PIT), the model and the region. Nothing is written to the phone.</value>
+  </data>
+  <data name="odin_step_off" xml:space="preserve">
+    <value>Turn the phone off and unplug the cable.</value>
+  </data>
+  <data name="odin_step_keys" xml:space="preserve">
+    <value>Hold Volume Up and Volume Down together and plug the cable into the computer. Older phones with a Home button: Volume Down + Home + Power.</value>
+  </data>
+  <data name="odin_step_continue" xml:space="preserve">
+    <value>On the blue warning screen, press Volume Up once to continue. The screen then says Downloading.</value>
+  </data>
+  <data name="odin_maintenance" xml:space="preserve">
+    <value>Galaxy S26 and Z Fold 7 on One UI 8.5: Samsung may ask for Maintenance mode first (Settings › Device care › Maintenance mode).</value>
+  </data>
+  <data name="odin_looking" xml:space="preserve">
+    <value>Looking for the phone…</value>
+  </data>
+  <data name="odin_not_found" xml:space="preserve">
+    <value>No phone in Download mode yet. This updates by itself.</value>
+  </data>
+  <data name="odin_found" xml:space="preserve">
+    <value>Phone found in Download mode, on {0}.</value>
+  </data>
+  <data name="odin_found_many" xml:space="preserve">
+    <value>{0} phones are in Download mode: leave one plugged in.</value>
+  </data>
+  <data name="odin_seen_no_driver" xml:space="preserve">
+    <value>A phone is in Download mode, but Windows has no working driver for it: install Samsung's USB driver.</value>
+  </data>
+  <data name="odin_no_driver" xml:space="preserve">
+    <value>Samsung's USB driver is missing; Download mode needs it.</value>
+  </data>
+  <data name="odin_after_title" xml:space="preserve">
+    <value>After reading:</value>
+  </data>
+  <data name="odin_after_android" xml:space="preserve">
+    <value>Restart into Android</value>
+  </data>
+  <data name="odin_after_download" xml:space="preserve">
+    <value>Restart into Download mode</value>
+  </data>
+  <data name="odin_after_note" xml:space="preserve">
+    <value>A phone takes one Odin session per connection, so it restarts after reading.</value>
+  </data>
+  <data name="odin_read" xml:space="preserve">
+    <value>Read the phone</value>
+  </data>
+  <data name="odin_reading_title" xml:space="preserve">
+    <value>Reading the phone…</value>
+  </data>
+  <data name="odin_reading" xml:space="preserve">
+    <value>Keep the cable in. This takes a few seconds.</value>
+  </data>
+  <data name="odin_failed" xml:space="preserve">
+    <value>Reading failed</value>
+  </data>
+  <data name="odin_err_busy" xml:space="preserve">
+    <value>Another program has the phone's port ({0}): close Odin, Smart Switch or any flash tool, then try again.</value>
+  </data>
+  <data name="odin_err_gone" xml:space="preserve">
+    <value>The phone's port went away: was the cable pulled, or did the phone leave Download mode?</value>
+  </data>
+  <data name="odin_err_open" xml:space="preserve">
+    <value>The phone's port did not open: {0}</value>
+  </data>
+  <data name="odin_err_handshake" xml:space="preserve">
+    <value>The phone did not answer as a phone in Download mode does.</value>
+  </data>
+  <data name="odin_err_other" xml:space="preserve">
+    <value>The phone stopped answering: {0}</value>
+  </data>
+  <data name="odin_err_restart" xml:space="preserve">
+    <value>Before trying again, restart the phone into Download mode: hold Volume Down + Power for about 7 seconds, and as the screen goes dark hold the Download mode keys.</value>
+  </data>
+  <data name="odin_err_cable" xml:space="preserve">
+    <value>Use a cable that carries data, plugged straight into the computer (no hub).</value>
+  </data>
+  <data name="odin_try_again" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="odin_done" xml:space="preserve">
+    <value>Phone read</value>
+  </data>
+  <data name="odin_done_model" xml:space="preserve">
+    <value>{0} read</value>
+  </data>
+  <data name="odin_done_note" xml:space="preserve">
+    <value>Nothing was written to the phone.</value>
+  </data>
+  <data name="odin_model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="odin_serial" xml:space="preserve">
+    <value>Serial</value>
+  </data>
+  <data name="odin_region" xml:space="preserve">
+    <value>Region (CSC)</value>
+  </data>
+  <data name="odin_carrier" xml:space="preserve">
+    <value>Carrier</value>
+  </data>
+  <data name="odin_protocol" xml:space="preserve">
+    <value>Odin protocol</value>
+  </data>
+  <data name="odin_protocol_value" xml:space="preserve">
+    <value>v{0}</value>
+  </data>
+  <data name="odin_protocol_lz4" xml:space="preserve">
+    <value>v{0}, takes LZ4 firmware</value>
+  </data>
+  <data name="odin_pit" xml:space="preserve">
+    <value>Partition table</value>
+  </data>
+  <data name="odin_pit_value" xml:space="preserve">
+    <value>{0} partitions</value>
+  </data>
+  <data name="odin_info_missing" xml:space="preserve">
+    <value>This bootloader does not tell its model; the partition table was read.</value>
+  </data>
+  <data name="odin_info_failed" xml:space="preserve">
+    <value>The model could not be read; the partition table was read.</value>
+  </data>
+  <data name="odin_col_id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="odin_col_partition" xml:space="preserve">
+    <value>Partition</value>
+  </data>
+  <data name="odin_col_file" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="odin_col_blocks" xml:space="preserve">
+    <value>Blocks</value>
+  </data>
+  <data name="odin_ended_android" xml:space="preserve">
+    <value>The phone is restarting into Android.</value>
+  </data>
+  <data name="odin_ended_download" xml:space="preserve">
+    <value>The phone is restarting into Download mode.</value>
+  </data>
+  <data name="odin_not_ended" xml:space="preserve">
+    <value>The phone did not answer the end of the session: hold Volume Down + Power for about 7 seconds to restart it.</value>
+  </data>
+  <data name="odin_save_pit" xml:space="preserve">
+    <value>Save PIT…</value>
+  </data>
+  <data name="odin_saved" xml:space="preserve">
+    <value>Saved: {0}</value>
+  </data>
+  <data name="odin_copy" xml:space="preserve">
+    <value>Copy details</value>
+  </data>
+  <data name="odin_copied" xml:space="preserve">
+    <value>Copied</value>
+  </data>
 </root>

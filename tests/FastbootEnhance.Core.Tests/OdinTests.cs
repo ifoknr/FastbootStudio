@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FastbootEnhance.Core.Samsung.Odin;
+using FastbootEnhance.Core.Usb;
 
 namespace FastbootEnhance.Core.Tests
 {
@@ -324,6 +325,48 @@ namespace FastbootEnhance.Core.Tests
             byte[] answer = new byte[8];
             Assert.Equal(8, phone.Read(answer, 0, 8, 1000));
             Assert.Equal(0xFF, answer[0]);
+        }
+            // ---------------------------------------------------------------- the port on Windows
+
+        [Theory]
+        [InlineData(@"USB\VID_04E8&PID_685D\5&2A1B&0&1", true)]
+        [InlineData(@"USB\VID_04E8&PID_685D&MI_01\6&1F&0&0001", true)]
+        [InlineData(@"usb\vid_04e8&pid_685d\x", true)]
+        [InlineData(@"USB\VID_04E8&PID_6860&MI_01\x", false)]
+        [InlineData(@"USB\VID_18D1&PID_4EE0\x", false)]
+        [InlineData(@"BTHENUM\VID_04E8&PID_685D", false)]
+        [InlineData(null, false)]
+        public void Only_Samsung_Download_mode_counts(string id, bool expected)
+        {
+            Assert.Equal(expected, OdinPortFinder.IsDownloadMode(id));
+        }
+
+        [Theory]
+        [InlineData("SAMSUNG Mobile USB Modem (COM5)", "COM5")]
+        [InlineData("SAMSUNG Mobile USB Modem #2 (com12)", "COM12")]
+        [InlineData("SAMSUNG Mobile USB CDC Composite Device", null)]
+        [InlineData("Modem (COM0)", null)]
+        [InlineData("(COM5) something", null)]
+        [InlineData("", null)]
+        public void The_port_is_read_from_the_end_of_the_name(string name, string port)
+        {
+            Assert.Equal(port, OdinPortFinder.PortFromName(name));
+        }
+
+        [Fact]
+        public void Phones_are_found_once_each_and_only_with_a_working_driver()
+        {
+            var devices = new[]
+            {
+                new PnpDevice("SAMSUNG Mobile USB Composite Device", @"USB\VID_04E8&PID_685D\A", 0),
+                new PnpDevice("SAMSUNG Mobile USB Modem (COM7)", @"USB\VID_04E8&PID_685D&MI_01\B", 0),
+                new PnpDevice("SAMSUNG Mobile USB Modem (COM7)", @"USB\VID_04E8&PID_685D&MI_01\B2", 0),
+                new PnpDevice("SAMSUNG Mobile USB Modem (COM3)", @"USB\VID_04E8&PID_6860&MI_01\C", 0),
+                new PnpDevice("Gadget Serial", @"USB\VID_04E8&PID_685D\D", 28),
+                new PnpDevice("SAMSUNG Mobile USB Modem", @"USB\VID_04E8&PID_685D&MI_01\E", 0),
+            };
+            List<OdinPortInfo> ports = OdinPortFinder.Find(devices, d => d.DeviceId.EndsWith("E") ? " com9 " : d.DeviceId.EndsWith("A") ? "LPT1" : null);
+            Assert.Equal(new[] { "COM7", "COM9" }, ports.Select(p => p.Port));
         }
     }
 }

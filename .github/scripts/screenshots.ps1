@@ -1237,6 +1237,66 @@ if ($Arabic) {
 }
 Write-Host "tour, What's new and help: shown, the picked page opened, the help followed the page"
 
+# ---------------------------------------------------------------- Download mode (Odin, reading only)
+# A stand-in phone answers the Odin protocol on a made-up COM9: the window finds it, reads its
+# PIT and model, and restarts it. Then a port another program holds, which must fail clearly.
+function Save-Dialog($dialog, [string] $name) {
+    [Win32]::SetForegroundWindow([IntPtr]$dialog.Current.NativeWindowHandle) | Out-Null
+    Start-Sleep -Milliseconds 800
+    $b = $dialog.Current.BoundingRectangle
+    $bmp = New-Object System.Drawing.Bitmap ([int]$b.Width), ([int]$b.Height)
+    $g = [System.Drawing.Graphics]::FromImage($bmp)
+    $g.CopyFromScreen([int]$b.Left, [int]$b.Top, 0, 0, $bmp.Size)
+    $path = Join-Path $Out "$name.png"
+    $bmp.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
+    $g.Dispose(); $bmp.Dispose()
+    Write-Host "saved $path ($([int]$b.Width)x$([int]$b.Height))"
+}
+
+function Odin([string] $prefix, [string] $mode) {
+    $env:FASTBOOT_STUDIO_FAKE_ODIN = $mode
+    $env:FASTBOOT_STUDIO_FAKE_SAMSUNG_DRIVER = 'installed'
+    Launch-App
+    Go 'samsung_tab' | Out-Null
+    Press 'samsung_odin'
+    $dialog = Wait-For { Find-Dialog } 20 "the Download mode window ($prefix)"
+    $read = Wait-For { $b = By-Id $dialog 'odin_primary'; if ($null -ne $b -and $b.Current.IsEnabled) { $b } } 20 "the stand-in phone to be found ($prefix)"
+    Save-Dialog $dialog "$prefix-odin-1-ready"
+    $label = $read.Current.Name
+    $read.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+    if ($mode -eq 'phone') {
+        Wait-For { Shown $dialog 'odin_extra' } 30 "the reading to finish ($prefix)" | Out-Null
+        Save-Dialog $dialog "$prefix-odin-2-read"
+    } else {
+        Wait-For { $b = By-Id $dialog 'odin_primary'; $null -ne $b -and $b.Current.Name -ne $label -and -not $b.Current.IsOffscreen } 30 "the failure ($prefix)" | Out-Null
+        Save-Dialog $dialog "$prefix-odin-3-$mode"
+    }
+    $close = By-Id $dialog 'odin_secondary'
+    $close.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+    Wait-For { $null -eq (Find-Dialog) } 10 "the Download mode window to close ($prefix)" | Out-Null
+    Go 'logs_tab' | Out-Null
+    $logText = (By-Id $root 'log_text').GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern).Current.Value
+    if ($mode -eq 'phone') {
+        if ($logText -notmatch 'odin: handshake LOKE') { Fail "the Odin handshake was not logged ($prefix)" }
+        if ($logText -notmatch 'odin: PIT, \d+ bytes') { Fail "the PIT was not read ($prefix)" }
+        if ($logText -notmatch 'odin: restart Normal') { Fail "the phone was not restarted ($prefix)" }
+    } elseif ($logText -notmatch 'odin: reading failed') {
+        Fail "the failure was not logged ($prefix)"
+    }
+    if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception in the Download mode window ($prefix)" }
+    Stop-Process -Id $proc.Id -Force
+    Remove-Item Env:FASTBOOT_STUDIO_FAKE_ODIN, Env:FASTBOOT_STUDIO_FAKE_SAMSUNG_DRIVER
+    Start-Sleep -Seconds 2
+}
+Odin 'en' 'phone'
+Odin 'en' 'busy'
+if ($Arabic) {
+    $env:FASTBOOT_STUDIO_LANG = 'ar'
+    Odin 'ar' 'phone'
+    Remove-Item Env:FASTBOOT_STUDIO_LANG
+}
+Write-Host "Download mode: the stand-in phone found, read and restarted; a busy port reported"
+
 # ---------------------------------------------------------------- the update dialog
 # A test feed stands in for GitHub: a newer release whose zip is a local file. The dialog must
 # open by itself, download the zip, keep it only when its SHA-256 matches, and delete it otherwise.

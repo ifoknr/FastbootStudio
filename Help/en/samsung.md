@@ -20,6 +20,7 @@ Opens Samsung firmware (the AP, BL, CP, CSC and HOME_CSC files, or the zip they 
 ## tips
 - To enter Download mode: switch the phone off, hold Volume up and Volume down together, and plug in the USB cable (most models since 2019).
 - Download mode needs **Samsung's USB driver**; if it is missing, install it from the box on this page.
+- **Download mode** at the top of the page reads a phone in Download mode: its model, region and partition table (PIT), which you can save. It only reads, and the phone restarts afterwards. On the Galaxy S26 and Z Fold 7 with One UI 8.5, Samsung may ask for Maintenance mode first.
 - Anything unofficial needs an unlocked bootloader: Developer options → OEM unlocking, then a long press on Volume up in Download mode. Unlocking wipes the phone.
 - If Download mode shows **KG** or **RMM** as Prenormal or Locked, the phone refuses anything unofficial until that clears.
 - Knox is shown as the phone reports it; a root-hiding module can make a tripped phone read 0x0.
@@ -35,3 +36,4 @@ Binary | The bootloader's version (the 3 in S918BXXU3BWK5); a phone never goes b
 Knox | Samsung's security; it trips once, for good
 Download mode | Samsung's flashing mode, where Odin works; Samsung phones have no fastboot
 Odin | Samsung's flashing tool for Windows
+PIT | The phone's partition table: which file of the firmware goes to which partition

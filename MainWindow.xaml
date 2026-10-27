@@ -1036,6 +1036,9 @@
                             <Button x:Name="samsung_open_other" Margin="0,0,10,0" Content="{x:Static props:Resources.samsung_open}"/>
                             <Button x:Name="samsung_close" Style="{StaticResource GhostButton}" Content="{x:Static props:Resources.payload_remove_file}"/>
                         </StackPanel>
+                        <!-- A phone in Download mode: read its PIT and model (Odin protocol, reading only). -->
+                        <Button x:Name="samsung_odin" DockPanel.Dock="Right" Margin="0,0,10,0" VerticalAlignment="Center"
+                                Content="{x:Static props:Resources.samsung_odin_button}" ToolTip="{x:Static props:Resources.samsung_odin_tip}"/>
                         <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,16,0">
                             <TextBlock Style="{StaticResource PageTitle}" Text="{x:Static props:Resources.nav_samsung}"/>
                             <TextBlock Style="{StaticResource PageSubtitle}" Text="{x:Static props:Resources.samsung_subtitle}"/>

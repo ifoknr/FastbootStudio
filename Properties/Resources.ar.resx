@@ -2929,4 +2929,169 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="samsung_m_knox_unlocked_detail" xml:space="preserve">
     <value>فتح البوت لودر لحاله ما يحرق Knox. بس لو انفلش أي شي مو رسمي (روت، أو ريكفري أو كيرنل معدّل)، فـ Knox محروق للأبد، ومود إخفاء مخليه يقرأ 0x0. و Samsung Wallet والمجلد الآمن و Samsung Pass تمشي على الفيوز الحقيقي.</value>
   </data>
+  <data name="samsung_odin_button" xml:space="preserve">
+    <value>وضع التحميل</value>
+  </data>
+  <data name="samsung_odin_tip" xml:space="preserve">
+    <value>اقرأ جوال في وضع التحميل: جدول التقسيم (PIT) والموديل والمنطقة</value>
+  </data>
+  <data name="odin_title" xml:space="preserve">
+    <value>قراءة الجوال في وضع التحميل</value>
+  </data>
+  <data name="odin_subtitle" xml:space="preserve">
+    <value>يقرأ جدول التقسيم (PIT) والموديل والمنطقة. ما ينكتب أي شي على الجوال.</value>
+  </data>
+  <data name="odin_step_off" xml:space="preserve">
+    <value>طفّ الجوال وافصل الكيبل.</value>
+  </data>
+  <data name="odin_step_keys" xml:space="preserve">
+    <value>اضغط رفع الصوت وخفض الصوت مع بعض وركّب الكيبل في الكمبيوتر. الأجهزة القديمة اللي فيها زر هوم: خفض الصوت + هوم + الباور.</value>
+  </data>
+  <data name="odin_step_continue" xml:space="preserve">
+    <value>في الشاشة الزرقاء اللي فيها التحذير اضغط رفع الصوت مرة وحدة عشان يكمل، وبعدها يكتب Downloading.</value>
+  </data>
+  <data name="odin_maintenance" xml:space="preserve">
+    <value>جالكسي S26 وزد فولد 7 على One UI 8.5: ممكن سامسونج تطلب تشغيل وضع الصيانة أول (الإعدادات › العناية بالجهاز › وضع الصيانة).</value>
+  </data>
+  <data name="odin_looking" xml:space="preserve">
+    <value>أدور على الجوال…</value>
+  </data>
+  <data name="odin_not_found" xml:space="preserve">
+    <value>ما فيه جوال في وضع التحميل للحين. تتحدث لحالها.</value>
+  </data>
+  <data name="odin_found" xml:space="preserve">
+    <value>لقيت الجوال في وضع التحميل، على {0}.</value>
+  </data>
+  <data name="odin_found_many" xml:space="preserve">
+    <value>فيه {0} جوالات في وضع التحميل: خلّ واحد بس موصول.</value>
+  </data>
+  <data name="odin_seen_no_driver" xml:space="preserve">
+    <value>فيه جوال في وضع التحميل بس الويندوز ما عنده تعريف شغال له: ثبّت تعريف سامسونج.</value>
+  </data>
+  <data name="odin_no_driver" xml:space="preserve">
+    <value>تعريف سامسونج مو مثبت، ووضع التحميل يحتاجه.</value>
+  </data>
+  <data name="odin_after_title" xml:space="preserve">
+    <value>بعد القراءة:</value>
+  </data>
+  <data name="odin_after_android" xml:space="preserve">
+    <value>يعيد التشغيل للأندرويد</value>
+  </data>
+  <data name="odin_after_download" xml:space="preserve">
+    <value>يعيد التشغيل لوضع التحميل</value>
+  </data>
+  <data name="odin_after_note" xml:space="preserve">
+    <value>الجوال ياخذ جلسة أودين وحدة بكل اتصال، فيعيد التشغيل بعد القراءة.</value>
+  </data>
+  <data name="odin_read" xml:space="preserve">
+    <value>اقرأ الجوال</value>
+  </data>
+  <data name="odin_reading_title" xml:space="preserve">
+    <value>جاري قراءة الجوال…</value>
+  </data>
+  <data name="odin_reading" xml:space="preserve">
+    <value>لا تفصل الكيبل. تاخذ كم ثانية.</value>
+  </data>
+  <data name="odin_failed" xml:space="preserve">
+    <value>فشلت القراءة</value>
+  </data>
+  <data name="odin_err_busy" xml:space="preserve">
+    <value>فيه برنامج ثاني ماسك منفذ الجوال ({0}): سكّر أودين أو Smart Switch أو أي أداة تفليش، وجرب مرة ثانية.</value>
+  </data>
+  <data name="odin_err_gone" xml:space="preserve">
+    <value>منفذ الجوال اختفى: انفصل الكيبل أو طلع الجوال من وضع التحميل؟</value>
+  </data>
+  <data name="odin_err_open" xml:space="preserve">
+    <value>منفذ الجوال ما انفتح: {0}</value>
+  </data>
+  <data name="odin_err_handshake" xml:space="preserve">
+    <value>الجوال ما رد مثل ما يرد الجوال في وضع التحميل.</value>
+  </data>
+  <data name="odin_err_other" xml:space="preserve">
+    <value>الجوال وقف عن الرد: {0}</value>
+  </data>
+  <data name="odin_err_restart" xml:space="preserve">
+    <value>قبل ما تجرب مرة ثانية رجّع الجوال لوضع التحميل: اضغط خفض الصوت + الباور تقريباً ٧ ثواني، وأول ما تطفى الشاشة اضغط أزرار وضع التحميل.</value>
+  </data>
+  <data name="odin_err_cable" xml:space="preserve">
+    <value>استخدم كيبل يدعم نقل البيانات، وركّبه في الكمبيوتر مباشرة بدون موزع.</value>
+  </data>
+  <data name="odin_try_again" xml:space="preserve">
+    <value>جرب مرة ثانية</value>
+  </data>
+  <data name="odin_done" xml:space="preserve">
+    <value>انقرا الجوال</value>
+  </data>
+  <data name="odin_done_model" xml:space="preserve">
+    <value>انقرا {0}</value>
+  </data>
+  <data name="odin_done_note" xml:space="preserve">
+    <value>ما انكتب أي شي على الجوال.</value>
+  </data>
+  <data name="odin_model" xml:space="preserve">
+    <value>الموديل</value>
+  </data>
+  <data name="odin_serial" xml:space="preserve">
+    <value>الرقم التسلسلي</value>
+  </data>
+  <data name="odin_region" xml:space="preserve">
+    <value>المنطقة (CSC)</value>
+  </data>
+  <data name="odin_carrier" xml:space="preserve">
+    <value>الشبكة</value>
+  </data>
+  <data name="odin_protocol" xml:space="preserve">
+    <value>بروتوكول أودين</value>
+  </data>
+  <data name="odin_protocol_value" xml:space="preserve">
+    <value>v{0}</value>
+  </data>
+  <data name="odin_protocol_lz4" xml:space="preserve">
+    <value>v{0}، يقبل فيرموير LZ4</value>
+  </data>
+  <data name="odin_pit" xml:space="preserve">
+    <value>جدول التقسيم</value>
+  </data>
+  <data name="odin_pit_value" xml:space="preserve">
+    <value>{0} قسم</value>
+  </data>
+  <data name="odin_info_missing" xml:space="preserve">
+    <value>البوتلودر هذا ما يعطي الموديل، بس جدول التقسيم انقرا.</value>
+  </data>
+  <data name="odin_info_failed" xml:space="preserve">
+    <value>ما قدرت أقرا الموديل، بس جدول التقسيم انقرا.</value>
+  </data>
+  <data name="odin_col_id" xml:space="preserve">
+    <value>الرقم</value>
+  </data>
+  <data name="odin_col_partition" xml:space="preserve">
+    <value>القسم</value>
+  </data>
+  <data name="odin_col_file" xml:space="preserve">
+    <value>الملف</value>
+  </data>
+  <data name="odin_col_blocks" xml:space="preserve">
+    <value>البلوكات</value>
+  </data>
+  <data name="odin_ended_android" xml:space="preserve">
+    <value>الجوال يعيد التشغيل للأندرويد.</value>
+  </data>
+  <data name="odin_ended_download" xml:space="preserve">
+    <value>الجوال يعيد التشغيل لوضع التحميل.</value>
+  </data>
+  <data name="odin_not_ended" xml:space="preserve">
+    <value>الجوال ما رد على إنهاء الجلسة: اضغط خفض الصوت + الباور تقريباً ٧ ثواني عشان يعيد التشغيل.</value>
+  </data>
+  <data name="odin_save_pit" xml:space="preserve">
+    <value>حفظ PIT…</value>
+  </data>
+  <data name="odin_saved" xml:space="preserve">
+    <value>انحفظ: {0}</value>
+  </data>
+  <data name="odin_copy" xml:space="preserve">
+    <value>نسخ التفاصيل</value>
+  </data>
+  <data name="odin_copied" xml:space="preserve">
+    <value>انسخ</value>
+  </data>
 </root>

@@ -8250,5 +8250,501 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("samsung_m_knox_unlocked_detail", resourceCulture);
             }
         }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to Download mode.
+        /// </summary>
+        public static string samsung_odin_button {
+            get {
+                return ResourceManager.GetString("samsung_odin_button", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Read a phone in Download mode: its partition table (PIT), model and region.
+        /// </summary>
+        public static string samsung_odin_tip {
+            get {
+                return ResourceManager.GetString("samsung_odin_tip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Read the phone in Download mode.
+        /// </summary>
+        public static string odin_title {
+            get {
+                return ResourceManager.GetString("odin_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reads the partition table (PIT), the model and the region. Nothing is written....
+        /// </summary>
+        public static string odin_subtitle {
+            get {
+                return ResourceManager.GetString("odin_subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Turn the phone off and unplug the cable..
+        /// </summary>
+        public static string odin_step_off {
+            get {
+                return ResourceManager.GetString("odin_step_off", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hold Volume Up and Volume Down together and plug the cable into the computer.....
+        /// </summary>
+        public static string odin_step_keys {
+            get {
+                return ResourceManager.GetString("odin_step_keys", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to On the blue warning screen, press Volume Up once to continue. The screen then....
+        /// </summary>
+        public static string odin_step_continue {
+            get {
+                return ResourceManager.GetString("odin_step_continue", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Galaxy S26 and Z Fold 7 on One UI 8.5: Samsung may ask for Maintenance mode f....
+        /// </summary>
+        public static string odin_maintenance {
+            get {
+                return ResourceManager.GetString("odin_maintenance", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Looking for the phone….
+        /// </summary>
+        public static string odin_looking {
+            get {
+                return ResourceManager.GetString("odin_looking", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No phone in Download mode yet. This updates by itself..
+        /// </summary>
+        public static string odin_not_found {
+            get {
+                return ResourceManager.GetString("odin_not_found", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Phone found in Download mode, on {0}..
+        /// </summary>
+        public static string odin_found {
+            get {
+                return ResourceManager.GetString("odin_found", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} phones are in Download mode: leave one plugged in..
+        /// </summary>
+        public static string odin_found_many {
+            get {
+                return ResourceManager.GetString("odin_found_many", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A phone is in Download mode, but Windows has no working driver for it: instal....
+        /// </summary>
+        public static string odin_seen_no_driver {
+            get {
+                return ResourceManager.GetString("odin_seen_no_driver", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung's USB driver is missing; Download mode needs it..
+        /// </summary>
+        public static string odin_no_driver {
+            get {
+                return ResourceManager.GetString("odin_no_driver", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to After reading:.
+        /// </summary>
+        public static string odin_after_title {
+            get {
+                return ResourceManager.GetString("odin_after_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restart into Android.
+        /// </summary>
+        public static string odin_after_android {
+            get {
+                return ResourceManager.GetString("odin_after_android", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restart into Download mode.
+        /// </summary>
+        public static string odin_after_download {
+            get {
+                return ResourceManager.GetString("odin_after_download", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A phone takes one Odin session per connection, so it restarts after reading..
+        /// </summary>
+        public static string odin_after_note {
+            get {
+                return ResourceManager.GetString("odin_after_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Read the phone.
+        /// </summary>
+        public static string odin_read {
+            get {
+                return ResourceManager.GetString("odin_read", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reading the phone….
+        /// </summary>
+        public static string odin_reading_title {
+            get {
+                return ResourceManager.GetString("odin_reading_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keep the cable in. This takes a few seconds..
+        /// </summary>
+        public static string odin_reading {
+            get {
+                return ResourceManager.GetString("odin_reading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reading failed.
+        /// </summary>
+        public static string odin_failed {
+            get {
+                return ResourceManager.GetString("odin_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Another program has the phone's port ({0}): close Odin, Smart Switch or any f....
+        /// </summary>
+        public static string odin_err_busy {
+            get {
+                return ResourceManager.GetString("odin_err_busy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone's port went away: was the cable pulled, or did the phone leave Down....
+        /// </summary>
+        public static string odin_err_gone {
+            get {
+                return ResourceManager.GetString("odin_err_gone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone's port did not open: {0}.
+        /// </summary>
+        public static string odin_err_open {
+            get {
+                return ResourceManager.GetString("odin_err_open", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone did not answer as a phone in Download mode does..
+        /// </summary>
+        public static string odin_err_handshake {
+            get {
+                return ResourceManager.GetString("odin_err_handshake", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone stopped answering: {0}.
+        /// </summary>
+        public static string odin_err_other {
+            get {
+                return ResourceManager.GetString("odin_err_other", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Before trying again, restart the phone into Download mode: hold Volume Down +....
+        /// </summary>
+        public static string odin_err_restart {
+            get {
+                return ResourceManager.GetString("odin_err_restart", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use a cable that carries data, plugged straight into the computer (no hub)..
+        /// </summary>
+        public static string odin_err_cable {
+            get {
+                return ResourceManager.GetString("odin_err_cable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Try again.
+        /// </summary>
+        public static string odin_try_again {
+            get {
+                return ResourceManager.GetString("odin_try_again", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Phone read.
+        /// </summary>
+        public static string odin_done {
+            get {
+                return ResourceManager.GetString("odin_done", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} read.
+        /// </summary>
+        public static string odin_done_model {
+            get {
+                return ResourceManager.GetString("odin_done_model", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Nothing was written to the phone..
+        /// </summary>
+        public static string odin_done_note {
+            get {
+                return ResourceManager.GetString("odin_done_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string odin_model {
+            get {
+                return ResourceManager.GetString("odin_model", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Serial.
+        /// </summary>
+        public static string odin_serial {
+            get {
+                return ResourceManager.GetString("odin_serial", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Region (CSC).
+        /// </summary>
+        public static string odin_region {
+            get {
+                return ResourceManager.GetString("odin_region", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Carrier.
+        /// </summary>
+        public static string odin_carrier {
+            get {
+                return ResourceManager.GetString("odin_carrier", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Odin protocol.
+        /// </summary>
+        public static string odin_protocol {
+            get {
+                return ResourceManager.GetString("odin_protocol", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to v{0}.
+        /// </summary>
+        public static string odin_protocol_value {
+            get {
+                return ResourceManager.GetString("odin_protocol_value", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to v{0}, takes LZ4 firmware.
+        /// </summary>
+        public static string odin_protocol_lz4 {
+            get {
+                return ResourceManager.GetString("odin_protocol_lz4", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Partition table.
+        /// </summary>
+        public static string odin_pit {
+            get {
+                return ResourceManager.GetString("odin_pit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} partitions.
+        /// </summary>
+        public static string odin_pit_value {
+            get {
+                return ResourceManager.GetString("odin_pit_value", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This bootloader does not tell its model; the partition table was read..
+        /// </summary>
+        public static string odin_info_missing {
+            get {
+                return ResourceManager.GetString("odin_info_missing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The model could not be read; the partition table was read..
+        /// </summary>
+        public static string odin_info_failed {
+            get {
+                return ResourceManager.GetString("odin_info_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ID.
+        /// </summary>
+        public static string odin_col_id {
+            get {
+                return ResourceManager.GetString("odin_col_id", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Partition.
+        /// </summary>
+        public static string odin_col_partition {
+            get {
+                return ResourceManager.GetString("odin_col_partition", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        public static string odin_col_file {
+            get {
+                return ResourceManager.GetString("odin_col_file", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Blocks.
+        /// </summary>
+        public static string odin_col_blocks {
+            get {
+                return ResourceManager.GetString("odin_col_blocks", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone is restarting into Android..
+        /// </summary>
+        public static string odin_ended_android {
+            get {
+                return ResourceManager.GetString("odin_ended_android", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone is restarting into Download mode..
+        /// </summary>
+        public static string odin_ended_download {
+            get {
+                return ResourceManager.GetString("odin_ended_download", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone did not answer the end of the session: hold Volume Down + Power for....
+        /// </summary>
+        public static string odin_not_ended {
+            get {
+                return ResourceManager.GetString("odin_not_ended", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Save PIT….
+        /// </summary>
+        public static string odin_save_pit {
+            get {
+                return ResourceManager.GetString("odin_save_pit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Saved: {0}.
+        /// </summary>
+        public static string odin_saved {
+            get {
+                return ResourceManager.GetString("odin_saved", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copy details.
+        /// </summary>
+        public static string odin_copy {
+            get {
+                return ResourceManager.GetString("odin_copy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copied.
+        /// </summary>
+        public static string odin_copied {
+            get {
+                return ResourceManager.GetString("odin_copied", resourceCulture);
+            }
+        }
     }
 }
