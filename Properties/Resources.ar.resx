@@ -2923,4 +2923,10 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="samsung_m_knox_tripped_detail" xml:space="preserve">
     <value>Samsung Wallet والمجلد الآمن وSamsung Pass ما عاد تشتغل في هالجوال، وتفليش الروم الرسمي ما يرجّع Knox.</value>
   </data>
+  <data name="samsung_m_knox_unlocked" xml:space="preserve">
+    <value>Knox يقرأ 0x0، بس البوت لودر مفتوح</value>
+  </data>
+  <data name="samsung_m_knox_unlocked_detail" xml:space="preserve">
+    <value>فتح البوت لودر لحاله ما يحرق Knox. بس لو انفلش أي شي مو رسمي (روت، أو ريكفري أو كيرنل معدّل)، فـ Knox محروق للأبد، ومود إخفاء مخليه يقرأ 0x0. و Samsung Wallet والمجلد الآمن و Samsung Pass تمشي على الفيوز الحقيقي.</value>
+  </data>
 </root>

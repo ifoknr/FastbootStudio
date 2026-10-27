@@ -18,7 +18,9 @@ namespace FastbootEnhance.Core.Samsung
             "echo sales=$(getprop ro.csc.sales_code); " +
             "echo cscver=$(getprop ril.official_cscver); " +
             "echo warranty=$(getprop ro.boot.warranty_bit); " +
-            "echo warranty2=$(getprop ro.warranty_bit)";
+            "echo warranty2=$(getprop ro.warranty_bit); " +
+            "echo locked=$(getprop ro.boot.flash.locked); " +
+            "echo vbstate=$(getprop ro.boot.verifiedbootstate)";
 
         public string Serial { get; set; }
         public string Maker { get; set; }
@@ -37,6 +39,12 @@ namespace FastbootEnhance.Core.Samsung
         /// A root-hiding module can make a tripped phone report 0.
         /// </summary>
         public string Warranty { get; set; }
+
+        /// <summary>
+        /// True when the phone says its bootloader is unlocked (ro.boot.flash.locked 0, or
+        /// verified boot "orange"); null when it says nothing. A module can hide this too.
+        /// </summary>
+        public bool? Unlocked { get; set; }
 
         public bool IsSamsung => string.Equals(Maker, "samsung", StringComparison.OrdinalIgnoreCase);
 
@@ -84,6 +92,8 @@ namespace FastbootEnhance.Core.Samsung
                 SalesCode = get("sales"),
                 CscVersion = get("cscver"),
                 Warranty = Bit(get("warranty")) ?? Bit(get("warranty2")),
+                Unlocked = get("locked") == "0" || string.Equals(get("vbstate"), "orange", StringComparison.OrdinalIgnoreCase) ? true
+                    : get("locked") == "1" ? false : (bool?)null,
             };
         }
     }
@@ -118,6 +128,12 @@ namespace FastbootEnhance.Core.Samsung
 
         /// <summary>Knox's warranty bit reads 1: tripped for good.</summary>
         KnoxTripped,
+
+        /// <summary>
+        /// Knox reads 0, but the bootloader is unlocked: if anything unofficial was flashed since,
+        /// Knox is tripped and a module is hiding it.
+        /// </summary>
+        KnoxUnlocked,
     }
 
     public sealed class MatchFinding
@@ -203,7 +219,9 @@ namespace FastbootEnhance.Core.Samsung
 
             // Says nothing about the firmware itself; shown so a root or custom recovery is
             // never flashed without knowing what it costs.
-            if (phone.Warranty == "0")
+            if (phone.Warranty == "0" && phone.Unlocked == true)
+                add(MatchLevel.Notice, MatchCode.KnoxUnlocked, null, "0x0");
+            else if (phone.Warranty == "0")
                 add(MatchLevel.Ok, MatchCode.KnoxIntact, null, "0x0");
             else if (phone.Warranty == "1")
                 add(MatchLevel.Notice, MatchCode.KnoxTripped, null, "0x1");

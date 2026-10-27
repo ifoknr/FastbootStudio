@@ -141,7 +141,7 @@ namespace FastbootEnhance.FakeAdb
                 if (!Android)
                     return 1;
                 Console.Out.Write(File.Exists(Path.Combine(AppContext.BaseDirectory, "fake-adb.samsung"))
-                    ? "maker=samsung\nmodel=SM-S918B\nbootloader=S918BXXU3BWJ1\npda=S918BXXU3BWJ1\nandroid=14\nsales=KSA\ncscver=S918BOXM3BWJ1\nwarranty=0\nwarranty2=\n"
+                    ? "maker=samsung\nmodel=SM-S918B\nbootloader=S918BXXU3BWJ1\npda=S918BXXU3BWJ1\nandroid=14\nsales=KSA\ncscver=S918BOXM3BWJ1\nwarranty=0\nwarranty2=\nlocked=1\nvbstate=green\n"
                     : "maker=Sample\nmodel=Sample_A64\nbootloader=unknown\npda=\nandroid=14\nsales=\ncscver=\n");
                 return 0;
             }

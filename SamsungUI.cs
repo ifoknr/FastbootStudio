@@ -499,6 +499,10 @@ namespace FastbootEnhance
                     title = Properties.Resources.samsung_m_knox_ok;
                     detail = Properties.Resources.samsung_m_knox_ok_detail;
                     break;
+                case MatchCode.KnoxUnlocked:
+                    title = Properties.Resources.samsung_m_knox_unlocked;
+                    detail = Properties.Resources.samsung_m_knox_unlocked_detail;
+                    break;
                 case MatchCode.KnoxTripped:
                     title = Properties.Resources.samsung_m_knox_tripped;
                     detail = Properties.Resources.samsung_m_knox_tripped_detail;

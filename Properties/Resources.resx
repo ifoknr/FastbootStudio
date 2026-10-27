@@ -2923,4 +2923,10 @@ The app downloads it from Samsung, checks that Windows finds Samsung's signature
   <data name="samsung_m_knox_tripped_detail" xml:space="preserve">
     <value>Samsung Wallet, Secure Folder and Samsung Pass no longer work on this phone. Flashing official firmware does not bring Knox back.</value>
   </data>
+  <data name="samsung_m_knox_unlocked" xml:space="preserve">
+    <value>Knox reads 0x0, but the bootloader is unlocked</value>
+  </data>
+  <data name="samsung_m_knox_unlocked_detail" xml:space="preserve">
+    <value>Unlocking alone does not trip Knox. But if anything unofficial was ever flashed (root, a custom recovery or kernel), Knox is tripped for good and a hiding module makes it read 0x0. Samsung Wallet, Secure Folder and Samsung Pass go by the real fuse.</value>
+  </data>
 </root>

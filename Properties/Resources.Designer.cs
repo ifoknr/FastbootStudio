@@ -8231,5 +8231,24 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("samsung_m_knox_tripped_detail", resourceCulture);
             }
         }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to Knox reads 0x0, but the bootloader is unlocked.
+        /// </summary>
+        public static string samsung_m_knox_unlocked {
+            get {
+                return ResourceManager.GetString("samsung_m_knox_unlocked", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Unlocking alone does not trip Knox. But if anything unofficial was ever flash....
+        /// </summary>
+        public static string samsung_m_knox_unlocked_detail {
+            get {
+                return ResourceManager.GetString("samsung_m_knox_unlocked_detail", resourceCulture);
+            }
+        }
     }
 }
