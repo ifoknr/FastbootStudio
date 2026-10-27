@@ -4,7 +4,7 @@
 
 <p align="center">
   <b>Fastboot, OTA flashing, payload dumper, super images, Samsung firmware and backups — in one Windows app.</b><br>
-  <a href="README.ar.md">العربية</a> · <a href="#download">Download</a> · <a href="#pages">Pages</a> · <a href="CHANGELOG.md">What's new</a> · <a href="#contributing">Contributing</a>
+  <a href="README.ar.md">العربية</a> · <a href="#download">Download</a> · <a href="#supported">Supported phones</a> · <a href="#pages">Pages</a> · <a href="CHANGELOG.md">What's new</a> · <a href="#contributing">Contributing</a>
 </p>
 
 <p align="center">
@@ -103,6 +103,41 @@ file onto the exe.
 
 **Privacy:** this program will not transfer any information to other networked systems unless
 specifically requested by the user or the person installing or operating it.
+
+---
+
+<a id="supported"></a>
+## Supported phones
+
+**The rule:** Fastboot Studio works with any Android phone that has **fastboot** (the bootloader
+or fastbootd) or **adb**. Writing partitions needs an **unlocked bootloader**. How a phone is
+unlocked is decided by its maker, so the app does not do it for you. On phones that use the
+standard command, you can run `fastboot flashing unlock` from the Terminal page; the app warns
+you first that it wipes the phone.
+
+| Phone | With the app | Unlocking the bootloader | Good to know |
+|---|---|---|---|
+| Google Pixel | ✅ Everything | Developer options → OEM unlocking, then `fastboot flashing unlock` | Carrier-locked models (Verizon, for one) cannot be unlocked |
+| OnePlus | ✅ Everything | The same as Pixel | Partitions fastbootd refuses (the modem) are written from the bootloader on their own |
+| Motorola | ✅ Everything | A code from Motorola's unlock site | |
+| Xiaomi, Redmi, POCO | ✅ Once unlocked | Mi Unlock, with a waiting period; the rules depend on the region | After that, fastboot flashing as usual |
+| Sony Xperia | ✅ Once unlocked | A code from Sony's site | Unlocking erases the DRM keys for good (camera quality, some features) |
+| Infinix, Tecno, itel and other MediaTek phones | ✅ On most models | Developer options → OEM unlocking, then `fastboot flashing unlock` (varies by model) | SP Flash Tool is only for reviving a phone in BROM mode |
+| Nothing, Fairphone, ASUS, and phones close to stock Android | ✅ Usually | The standard command | |
+| Oppo, Realme, vivo | ⚠️ Depends on the model | Many models cannot be unlocked at all | adb features work on all of them |
+| Samsung | ⚠️ No fastboot | OEM unlocking, then a long press on Volume up in Download mode | The **Samsung page** checks firmware, roots with Magisk and makes tars for Odin, and the app installs Samsung's driver. Flashing is in Odin for now; built-in flashing is coming |
+| Huawei, Honor | ❌ For flashing | Unlock codes stopped in 2018 | adb features (Phone page, copying files) still work |
+
+**Without unlocking**, these work on any phone, or on no phone at all:
+- **Payload Dumper**, **Image Tools**, **Build Super** and the Samsung firmware tools, which work on files on the PC;
+- the **Phone** page, and copying files on the **Backup** page, over adb;
+- reading a phone's state in fastboot on the **Device** page.
+
+Backing up partitions needs root, which in practice needs an unlocked bootloader.
+
+**Modes fastboot cannot reach:** Qualcomm EDL (9008, for QFIL), MediaTek BROM or preloader
+(for SP Flash Tool), Unisoc download (for ResearchDownload) and Samsung Download (for Odin).
+The **USB check** on the Device page recognises each of them and says which tool it needs.
 
 ---
 
