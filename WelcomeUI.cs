@@ -429,7 +429,7 @@ namespace FastbootEnhance
                 Width = 30,
                 Height = 30,
                 CornerRadius = new CornerRadius(15),
-                Background = Palette.Get(markBack == "Raised" ? "Raised" : markBack + "Soft"),
+                Background = Palette.Get(markBack == "Raised" ? "Raised" : markBack == "Ok" ? "AccentSoft" : markBack + "Soft"),
                 Margin = new Thickness(0, 0, 14, 0),
                 VerticalAlignment = VerticalAlignment.Center,
                 Child = new TextBlock
