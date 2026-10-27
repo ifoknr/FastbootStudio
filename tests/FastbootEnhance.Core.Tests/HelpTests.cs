@@ -168,16 +168,29 @@ namespace FastbootEnhance.Core.Tests
         [Fact]
         public void Only_samsung_s_certificate_subject_passes()
         {
-            // As .NET writes the subject of the certificate on v1.9.5.0.
+            // As Windows decodes the subject of the certificate on v1.9.5.0, one attribute per line.
             Assert.True(SamsungDriver.IsSamsungSubject(
-                "SERIALNUMBER=130111-0006246, CN=\"Samsung Electronics CO., LTD.\", O=\"Samsung Electronics CO., LTD.\", L=Suwon-si, S=Gyeonggi-do, C=KR"));
-            Assert.True(SamsungDriver.IsSamsungSubject("CN=Samsung Electronics CO.\\, LTD., O=Samsung Electronics CO.\\, LTD., C=KR"));
-            Assert.False(SamsungDriver.IsSamsungSubject("CN=\"Samsung Electronics CO., LTD.\", O=Evil Ltd, C=KR"));
-            Assert.False(SamsungDriver.IsSamsungSubject("O=\"Samsung Electronics CO., LTD. Fake\", C=KR"));
-            Assert.False(SamsungDriver.IsSamsungSubject("O=\"Samsung Electronics CO., LTD.\", C=US"));
-            // A second O cannot replace the first.
-            Assert.False(SamsungDriver.IsSamsungSubject("O=Evil, O=\"Samsung Electronics CO., LTD.\", C=KR"));
+                "SERIALNUMBER=130111-0006246\r\nCN=Samsung Electronics CO., LTD.\r\nO=Samsung Electronics CO., LTD.\r\nL=Suwon-si\r\nS=Gyeonggi-do\r\nC=KR\r\nOID.1.3.6.1.4.1.311.60.2.1.3=KR"));
+            Assert.False(SamsungDriver.IsSamsungSubject("CN=Samsung Electronics CO., LTD.\nO=Evil Ltd\nC=KR"));
+            Assert.False(SamsungDriver.IsSamsungSubject("O=Samsung Electronics CO., LTD. Fake\nC=KR"));
+            Assert.False(SamsungDriver.IsSamsungSubject("O=Samsung Electronics CO., LTD.\nC=US"));
+            // Two organisations, or two countries: unclear, so refused.
+            Assert.False(SamsungDriver.IsSamsungSubject("O=Evil\nO=Samsung Electronics CO., LTD.\nC=KR"));
+            Assert.False(SamsungDriver.IsSamsungSubject("O=Samsung Electronics CO., LTD.\nC=KR\nC=US"));
+            // The comma form a value can hide another attribute in is not read as one.
+            Assert.False(SamsungDriver.IsSamsungSubject("CN=a, O=Samsung Electronics CO., LTD., C=KR"));
+            // The jurisdiction OID is not the country.
+            Assert.False(SamsungDriver.IsSamsungSubject("O=Samsung Electronics CO., LTD.\nOID.1.3.6.1.4.1.311.60.2.1.3=KR"));
             Assert.False(SamsungDriver.IsSamsungSubject(null));
+        }
+
+        [Fact]
+        public void The_installer_names_itself()
+        {
+            Assert.True(SamsungDriver.IsInstallerProduct("Samsung USB Driver for Mobile Phones"));
+            Assert.True(SamsungDriver.IsInstallerProduct(" SAMSUNG USB Driver for Mobile Phones "));
+            Assert.False(SamsungDriver.IsInstallerProduct("Samsung Smart Switch"));
+            Assert.False(SamsungDriver.IsInstallerProduct(null));
         }
     }
 }

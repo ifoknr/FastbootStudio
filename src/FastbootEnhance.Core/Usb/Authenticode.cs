@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
@@ -9,25 +10,36 @@ namespace FastbootEnhance.Core.Usb
     {
         /// <summary>
         /// Asks Windows whether the file carries a valid Authenticode signature from a trusted
-        /// publisher, and returns the signer's certificate subject; null when it does not.
+        /// publisher, and returns the signer's certificate subject, one attribute per line
+        /// ("O=Samsung Electronics CO., LTD."), without quotes; null when it does not.
+        /// The check reads the file through <paramref name="locked"/>, which the caller keeps open
+        /// without write or delete sharing, so what was checked is what later runs.
         /// Revocation is not checked online, so this works without reaching the CA.
         /// </summary>
-        public static string VerifiedSigner(string path)
+        public static string VerifiedSigner(FileStream locked)
         {
-            if (WinTrust.Verify(path) != 0)
+            if (WinTrust.Verify(locked.Name, locked.SafeFileHandle.DangerousGetHandle()) != 0)
                 return null;
             try
             {
 #pragma warning disable SYSLIB0057
-                using (X509Certificate signer = X509Certificate.CreateFromSignedFile(path))
+                using (X509Certificate signer = X509Certificate.CreateFromSignedFile(locked.Name))
 #pragma warning restore SYSLIB0057
                 using (X509Certificate2 cert = new X509Certificate2(signer))
-                    return cert.Subject;
+                    return cert.SubjectName.Decode(X500DistinguishedNameFlags.UseNewLines
+                        | X500DistinguishedNameFlags.DoNotUseQuotes | X500DistinguishedNameFlags.DoNotUsePlusSign);
             }
             catch (System.Security.Cryptography.CryptographicException)
             {
                 return null;
             }
+        }
+
+        /// <summary>The same, for a file nobody else could change (tests and tools).</summary>
+        public static string VerifiedSigner(string path)
+        {
+            using (FileStream locked = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                return VerifiedSigner(locked);
         }
 
         static class WinTrust
@@ -73,12 +85,13 @@ namespace FastbootEnhance.Core.Usb
             static extern int WinVerifyTrust(IntPtr hwnd, [MarshalAs(UnmanagedType.LPStruct)] Guid action, ref WINTRUST_DATA data);
 
             /// <summary>0 when the signature is valid and trusted; an HRESULT otherwise.</summary>
-            public static int Verify(string path)
+            public static int Verify(string path, IntPtr handle)
             {
                 WINTRUST_FILE_INFO file = new WINTRUST_FILE_INFO
                 {
                     cbStruct = (uint)Marshal.SizeOf<WINTRUST_FILE_INFO>(),
                     pcwszFilePath = path,
+                    hFile = handle,
                 };
                 IntPtr filePtr = Marshal.AllocHGlobal(Marshal.SizeOf<WINTRUST_FILE_INFO>());
                 try

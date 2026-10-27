@@ -116,20 +116,23 @@ namespace FastbootEnhance
                 render(doc);
             W.help_scroll.ScrollToTop();
 
-            // Under the page's header, so its ؟ stays in sight to close the panel again.
-            Border header = pageHeader(tab);
-            double top = 0;
-            if (header != null)
-            {
-                header.UpdateLayout();
-                top = header.ActualHeight;
-            }
-            W.help_scrim.Margin = new Thickness(0, top, 0, 0);
-            W.help_panel.Margin = new Thickness(0, top, 0, 0);
-
             shownFor = tab;
             W.help_layer.Visibility = Visibility.Visible;
+            placeUnderHeader(tab);
+            // A page shown for the first time has no size yet while its tab is being selected:
+            // placed again once it is laid out.
+            W.Dispatcher.BeginInvoke(new Action(() => { if (shownFor == tab) placeUnderHeader(tab); }),
+                System.Windows.Threading.DispatcherPriority.Loaded);
             LogStore.Append("help: " + page);
+        }
+
+        /// <summary>Under the page's header, so its ؟ stays in sight to close the panel again.</summary>
+        static void placeUnderHeader(TabItem tab)
+        {
+            Border header = pageHeader(tab);
+            double top = header != null && header.IsLoaded ? header.ActualHeight : 0;
+            W.help_scrim.Margin = new Thickness(0, top, 0, 0);
+            W.help_panel.Margin = new Thickness(0, top, 0, 0);
         }
 
         static void close()

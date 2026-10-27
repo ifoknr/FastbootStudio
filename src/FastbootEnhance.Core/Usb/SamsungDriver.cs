@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace FastbootEnhance.Core.Usb
@@ -50,69 +49,45 @@ namespace FastbootEnhance.Core.Usb
             return (displayName ?? "").IndexOf("SAMSUNG USB Driver", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
+        /// <summary>The ProductName in the installer's version resource, which its signature covers.</summary>
+        public const string ProductName = "Samsung USB Driver for Mobile Phones";
+
         /// <summary>
-        /// True when a certificate subject ("CN=…, O=…, C=KR" as Windows writes it) names
-        /// Samsung Electronics in Korea. Only meaningful for a signature Windows has verified.
+        /// True when a certificate subject, one attribute per line as <see cref="Authenticode"/>
+        /// gives it, names Samsung Electronics in Korea. Only meaningful for a signature Windows
+        /// has verified. Values are not parsed for quotes or escapes: each line is one attribute.
         /// </summary>
         public static bool IsSamsungSubject(string subject)
         {
-            Dictionary<string, string> parts = SubjectParts(subject);
-            return parts.TryGetValue("O", out string org) && string.Equals(org, Signer, StringComparison.OrdinalIgnoreCase)
-                && parts.TryGetValue("C", out string country) && string.Equals(country, "KR", StringComparison.OrdinalIgnoreCase);
+            string org = null, country = null;
+            foreach (string raw in (subject ?? "").Split('\r', '\n'))
+            {
+                int eq = raw.IndexOf('=');
+                if (eq <= 0)
+                    continue;
+                string key = raw.Substring(0, eq).Trim(), value = raw.Substring(eq + 1).Trim();
+                // A repeated attribute makes the subject unclear: it is not taken as Samsung's.
+                if (key == "O")
+                {
+                    if (org != null)
+                        return false;
+                    org = value;
+                }
+                else if (key == "C")
+                {
+                    if (country != null)
+                        return false;
+                    country = value;
+                }
+            }
+            return string.Equals(org, Signer, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(country, "KR", StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <summary>The attributes of a distinguished name; values in quotes may hold commas.</summary>
-        static Dictionary<string, string> SubjectParts(string subject)
+        /// <summary>The installer's own name for itself, from its version resource.</summary>
+        public static bool IsInstallerProduct(string productName)
         {
-            Dictionary<string, string> parts = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            string s = subject ?? "";
-            int i = 0;
-            while (i < s.Length)
-            {
-                while (i < s.Length && (s[i] == ' ' || s[i] == ',' || s[i] == ';'))
-                    i++;
-                int eq = s.IndexOf('=', i);
-                if (eq < 0)
-                    break;
-                string key = s.Substring(i, eq - i).Trim();
-                i = eq + 1;
-                StringBuilder value = new StringBuilder();
-                if (i < s.Length && s[i] == '"')
-                {
-                    i++;
-                    while (i < s.Length)
-                    {
-                        if (s[i] == '"' && i + 1 < s.Length && s[i + 1] == '"')
-                        {
-                            value.Append('"');
-                            i += 2;
-                            continue;
-                        }
-                        if (s[i] == '"')
-                        {
-                            i++;
-                            break;
-                        }
-                        value.Append(s[i++]);
-                    }
-                    while (i < s.Length && s[i] != ',' && s[i] != ';')
-                        i++;
-                }
-                else
-                {
-                    while (i < s.Length && s[i] != ',' && s[i] != ';')
-                    {
-                        // RFC 4514 style "\," keeps a comma in the value.
-                        if (s[i] == '\\' && i + 1 < s.Length)
-                            i++;
-                        value.Append(s[i++]);
-                    }
-                }
-                // The first of a repeated attribute wins; a forged later one cannot replace it.
-                if (key.Length > 0 && !parts.ContainsKey(key))
-                    parts[key] = value.ToString().Trim();
-            }
-            return parts;
+            return string.Equals((productName ?? "").Trim(), ProductName, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

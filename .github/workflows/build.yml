@@ -79,6 +79,14 @@ jobs:
           $neg = dotnet run --project $gen -c Release -- signer publish/adb.exe
           Write-Host "adb.exe: $neg"
           if (-not ($neg -match 'samsung=False')) { throw "adb.exe was taken for Samsung's driver" }
+          # A working check names Google on adb.exe; a broken one would name nobody.
+          if (-not ($neg -match 'O=Google LLC')) { throw "adb.exe's Google signature was not verified" }
+          $copy = Join-Path $env:RUNNER_TEMP 'locked-adb.exe'
+          Copy-Item publish/adb.exe $copy
+          Copy-Item publish/AdbWinApi.dll, publish/AdbWinUsbApi.dll $env:RUNNER_TEMP
+          $run = dotnet run --project $gen -c Release -- run-locked $copy version
+          Write-Host "run while held open: $run"
+          if (-not ($run -match 'exit=0')) { throw "a program held open for its check could not be started" }
           $bad = Join-Path $env:RUNNER_TEMP 'unsigned.exe'
           Copy-Item publish/adb.exe $bad
           $bytes = [IO.File]::ReadAllBytes($bad); $bytes[1024] = $bytes[1024] -bxor 0xFF; [IO.File]::WriteAllBytes($bad, $bytes)
@@ -95,6 +103,11 @@ jobs:
             Invoke-WebRequest $link -UseBasicParsing -TimeoutSec 300 -OutFile $drv
           } catch {
             Write-Warning "Samsung could not be reached: $_"
+            exit 0
+          }
+          $head = [IO.File]::ReadAllBytes($drv)
+          if ($head.Length -lt 5MB -or $head[0] -ne 0x4D -or $head[1] -ne 0x5A) {
+            Write-Warning "Samsung did not send the installer (got $($head.Length) bytes)"
             exit 0
           }
           $pos = dotnet run --project $gen -c Release -- signer $drv

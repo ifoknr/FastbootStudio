@@ -130,10 +130,19 @@ namespace FastbootEnhance
             {
                 working = null;
                 if (cancel.IsCancellationRequested)
-                    return;
-                if (task.IsFaulted)
                 {
-                    Exception e = task.Exception.GetBaseException();
+                    // Closed just as the file was checked: it is not run, and not left behind.
+                    if (task.Status == TaskStatus.RanToCompletion)
+                    {
+                        string folder = Path.GetDirectoryName(task.Result.Name);
+                        task.Result.Dispose();
+                        tryDeleteFolder(folder);
+                    }
+                    return;
+                }
+                if (task.IsFaulted || task.IsCanceled)
+                {
+                    Exception e = task.Exception?.GetBaseException() ?? new OperationCanceledException();
                     LogStore.Append("samsung driver: " + e.Message);
                     showFailure(e is DriverException ? e.Message : string.Format(Properties.Resources.driver_download_failed, e.Message));
                     return;
@@ -152,9 +161,11 @@ namespace FastbootEnhance
 
         /// <summary>
         /// Samsung's page names the current installer; its link is followed to the file, which
-        /// is kept only when Windows verifies Samsung's signature on it. Returns its path.
+        /// is kept only when Windows verifies Samsung's signature on it and it names itself as
+        /// the driver. Returns it opened without write or delete sharing, in a folder of its own:
+        /// nothing can swap it between the check and the run. The caller closes it.
         /// </summary>
-        static async Task<string> download(IProgress<(long, long)> got, CancellationToken cancel)
+        static async Task<FileStream> download(IProgress<(long, long)> got, CancellationToken cancel)
         {
             string link = null;
             try
@@ -174,10 +185,10 @@ namespace FastbootEnhance
             link = link ?? SamsungDriver.KnownFileUrl;
             LogStore.Append("samsung driver: downloading " + link);
 
-            string folder = Path.Combine(Path.GetTempPath(), "FastbootStudio", "driver");
+            string folder = Path.Combine(Path.GetTempPath(), "FastbootStudio", "driver-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(folder);
             string final = Path.Combine(folder, "SAMSUNG_USB_Driver_for_Mobile_Phones.exe");
-            string part = final + ".part";
+            FileStream locked = null;
 
             try
             {
@@ -190,7 +201,7 @@ namespace FastbootEnhance
                     if (total > SamsungDriver.MaxDownloadBytes)
                         throw new DriverException(Properties.Resources.driver_too_big);
                     using (Stream source = await response.Content.ReadAsStreamAsync(cancel))
-                    using (FileStream target = new FileStream(part, FileMode.Create, FileAccess.Write, FileShare.None))
+                    using (FileStream target = new FileStream(final, FileMode.CreateNew, FileAccess.Write, FileShare.None))
                     {
                         byte[] buffer = new byte[1 << 16];
                         long done = 0;
@@ -214,22 +225,30 @@ namespace FastbootEnhance
                     }
                 }
 
-                string signer = Authenticode.VerifiedSigner(part);
-                LogStore.Append("samsung driver: signed by " + (signer ?? "nobody Windows trusts"));
+                locked = new FileStream(final, FileMode.Open, FileAccess.Read, FileShare.Read);
+                string signer = Authenticode.VerifiedSigner(locked);
+                LogStore.Append("samsung driver: signed by " + (signer?.Replace("\r\n", ", ") ?? "nobody Windows trusts"));
                 if (signer == null || !SamsungDriver.IsSamsungSubject(signer))
                     throw new DriverException(Properties.Resources.driver_signature_bad);
-                File.Move(part, final, true);
-                return final;
+                // Read from the signed file itself, so another Samsung-signed program is not run instead.
+                string product = FileVersionInfo.GetVersionInfo(final).ProductName;
+                LogStore.Append("samsung driver: product " + (product ?? "(none)"));
+                if (!SamsungDriver.IsInstallerProduct(product))
+                    throw new DriverException(Properties.Resources.driver_signature_bad);
+                return locked;
             }
             catch (Exception)
             {
-                tryDelete(part);
+                locked?.Dispose();
+                tryDeleteFolder(folder);
                 throw;
             }
         }
 
-        void runInstaller(string path)
+        /// <summary>Runs the checked installer; <paramref name="locked"/> stays open until it has ended.</summary>
+        void runInstaller(FileStream locked)
         {
+            string path = locked.Name;
             heading.Text = Properties.Resources.driver_installing;
             subheading.Text = Path.GetFileName(path);
             message.Text = Properties.Resources.driver_installing_note;
@@ -244,6 +263,8 @@ namespace FastbootEnhance
             }
             catch (Win32Exception e)
             {
+                locked.Dispose();
+                tryDeleteFolder(Path.GetDirectoryName(path));
                 secondary.Visibility = Visibility.Visible;
                 // 1223: the person said no to Windows' permission prompt.
                 showFailure(e.NativeErrorCode == 1223 ? Properties.Resources.driver_no_permission : e.Message, retry: true);
@@ -260,6 +281,8 @@ namespace FastbootEnhance
                 finally
                 {
                     process?.Dispose();
+                    locked.Dispose();
+                    tryDeleteFolder(Path.GetDirectoryName(path));
                 }
             }).ContinueWith(_ =>
             {
@@ -339,11 +362,11 @@ namespace FastbootEnhance
             glyph.Data = Geometry.Parse(path);
         }
 
-        static void tryDelete(string path)
+        static void tryDeleteFolder(string path)
         {
             try
             {
-                File.Delete(path);
+                Directory.Delete(path, true);
             }
             catch (IOException)
             {

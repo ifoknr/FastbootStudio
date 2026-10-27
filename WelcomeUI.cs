@@ -99,7 +99,11 @@ namespace FastbootEnhance
         static void remember()
         {
             Settings.Set(TourKey, "done");
-            Settings.Set(SeenKey, MainWindow.version);
+            // An older copy started after a newer one does not lower it, or the newer one's
+            // What's new would show again on its next start.
+            string seen = Settings.Get(SeenKey);
+            if (seen == null || ReleaseFeed.IsNewer(MainWindow.version, seen))
+                Settings.Set(SeenKey, MainWindow.version);
         }
 
         /// <summary>Esc ends the tour, or closes What's new; true when one was open.</summary>
@@ -249,7 +253,13 @@ namespace FastbootEnhance
                 {
                     if (choice == Languages.CurrentOption)
                         return;
-                    // The app shows a language from its start; the tour picks up again after it.
+                    // The tour can be opened from About during a flash: a restart then would cut it.
+                    if (UpdateUI.Busy)
+                    {
+                        ThemedDialog.Show(Properties.Resources.language_busy);
+                        return;
+                    }
+                    // The app shows a language from its start; the tour starts again in the new one.
                     Languages.Save(choice.Code);
                     Settings.Set(TourKey, "started");
                     LogStore.Append("welcome: language " + choice.Code);

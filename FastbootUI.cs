@@ -689,8 +689,15 @@ namespace FastbootEnhance
             {
                 if (ThemedDialog.Show(text + "\n\n" + Properties.Resources.usb_samsung_driver_ask,
                         Properties.Resources.usb_check_title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
                     DriverUI.InstallSamsung();
-                return;
+                    return;
+                }
+                // Declined: the advice for the other phones still follows.
+                bool others = findings.Any(f => f.Vid != "04E8" && (f.Kind == UsbFindingKind.MissingDriver
+                    || f.Kind == UsbFindingKind.DriverProblem || f.Kind == UsbFindingKind.AdbReady));
+                if (!others)
+                    return;
             }
 
             if (driverTrouble)
