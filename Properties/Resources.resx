@@ -3094,4 +3094,7 @@ The app downloads it from Samsung, checks that Windows finds Samsung's signature
   <data name="odin_copied" xml:space="preserve">
     <value>Copied</value>
   </data>
+  <data name="odin_ended_android_instead" xml:space="preserve">
+    <value>This phone does not restart into Download mode by itself: it is restarting into Android.</value>
+  </data>
 </root>

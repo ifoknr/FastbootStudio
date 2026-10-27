@@ -8746,5 +8746,15 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("odin_copied", resourceCulture);
             }
         }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to This phone does not restart into Download mode by itself: it is restarting in....
+        /// </summary>
+        public static string odin_ended_android_instead {
+            get {
+                return ResourceManager.GetString("odin_ended_android_instead", resourceCulture);
+            }
+        }
     }
 }

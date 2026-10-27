@@ -170,6 +170,7 @@ namespace FastbootEnhance.Core.Tests
             Assert.Equal("SM-S911B", reading.Info.Model);
             Assert.Null(reading.InfoProblem);
             Assert.True(reading.Ended);
+            Assert.Equal(OdinReboot.Normal, reading.Restart);
             Assert.Equal("reboot", phone.Restarted);
 
             int pitBlocks = (phone.Pit.Length + 499) / 500;
@@ -263,6 +264,17 @@ namespace FastbootEnhance.Core.Tests
             OdinReading reading = OdinReader.Read(phone, OdinReboot.Normal);
             Assert.True(reading.Ended);
             Assert.Equal("reboot", phone.Restarted);
+        }
+
+        [Fact]
+        public void A_phone_that_refuses_to_restart_into_Download_mode_restarts_normally()
+        {
+            FakeOdinDevice phone = new FakeOdinDevice { RefusesDownloadRestart = true };
+            OdinReading reading = OdinReader.Read(phone, OdinReboot.Download);
+            Assert.True(reading.Ended);
+            Assert.Equal(OdinReboot.Normal, reading.Restart);
+            Assert.Equal("reboot", phone.Restarted);
+            Assert.Equal(new[] { "0x67/0", "0x67/2", "0x67/1" }, phone.Received.Skip(phone.Received.Count - 3));
         }
 
         [Fact]

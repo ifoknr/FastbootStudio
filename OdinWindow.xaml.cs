@@ -290,7 +290,8 @@ namespace FastbootEnhance
             fillPit(r.Pit);
 
             end_note.Text = !r.Ended ? Properties.Resources.odin_not_ended
-                : reboot == OdinReboot.Download ? Properties.Resources.odin_ended_download : Properties.Resources.odin_ended_android;
+                : r.Restart == OdinReboot.Download ? Properties.Resources.odin_ended_download
+                : reboot == OdinReboot.Download ? Properties.Resources.odin_ended_android_instead : Properties.Resources.odin_ended_android;
             end_note.Foreground = Palette.Get(r.Ended ? "Dim" : "Warn");
 
             primary.Visibility = Visibility.Visible;

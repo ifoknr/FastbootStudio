@@ -40,6 +40,9 @@ namespace FastbootEnhance.Core.Samsung.Odin
         /// <summary>Sends each last dump block whole (500 bytes), as some bootloaders do.</summary>
         public bool PadLastBlock { get; set; }
 
+        /// <summary>Refuses to restart into Download mode, as some bootloaders may.</summary>
+        public bool RefusesDownloadRestart { get; set; }
+
         /// <summary>Restarts without answering the restart request, as phones often do.</summary>
         public bool RestartsSilently { get; set; }
 
@@ -133,6 +136,10 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 case OdinPacket.TypeEndSession when command == OdinPacket.EndSessionPlain && inSession:
                     inSession = false;
                     Reply(type, 0);
+                    return;
+
+                case OdinPacket.TypeEndSession when command == OdinPacket.EndSessionRebootToDownload && RefusesDownloadRestart:
+                    Refuse(-1);
                     return;
 
                 case OdinPacket.TypeEndSession when command == OdinPacket.EndSessionReboot || command == OdinPacket.EndSessionRebootToDownload:

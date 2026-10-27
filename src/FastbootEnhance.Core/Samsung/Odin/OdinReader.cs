@@ -20,6 +20,9 @@ namespace FastbootEnhance.Core.Samsung.Odin
 
         /// <summary>False when the end of the session went wrong; the phone then needs restarting by hand.</summary>
         public bool Ended { get; internal set; }
+
+        /// <summary>The restart the phone was given: the one asked for, or Normal when it refused Download.</summary>
+        public OdinReboot Restart { get; internal set; }
     }
 
     /// <summary>
@@ -65,18 +68,20 @@ namespace FastbootEnhance.Core.Samsung.Odin
             }
             catch
             {
-                tryEnd(client, reboot, log);
+                tryEnd(client, reboot, log, out _);
                 throw;
             }
-            reading.Ended = tryEnd(client, reboot, log);
+            reading.Ended = tryEnd(client, reboot, log, out OdinReboot done);
+            reading.Restart = done;
             return reading;
         }
 
-        static bool tryEnd(OdinClient client, OdinReboot reboot, Action<string> log)
+        static bool tryEnd(OdinClient client, OdinReboot reboot, Action<string> log, out OdinReboot done)
         {
+            done = OdinReboot.None;
             try
             {
-                client.EndSession(reboot);
+                done = client.EndSession(reboot);
                 return true;
             }
             catch (Exception e) when (e is OdinException || e is System.IO.IOException || e is TimeoutException)

@@ -3094,4 +3094,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="odin_copied" xml:space="preserve">
     <value>انسخ</value>
   </data>
+  <data name="odin_ended_android_instead" xml:space="preserve">
+    <value>هالجوال ما يرجع لوضع التحميل لحاله، فهو يعيد التشغيل للأندرويد.</value>
+  </data>
 </root>

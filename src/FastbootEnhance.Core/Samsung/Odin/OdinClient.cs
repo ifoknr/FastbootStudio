@@ -111,13 +111,31 @@ namespace FastbootEnhance.Core.Samsung.Odin
             return info;
         }
 
-        /// <summary>Ends the session and, when asked, restarts the phone.</summary>
-        public void EndSession(OdinReboot reboot)
+        /// <summary>
+        /// Ends the session and, when asked, restarts the phone. A bootloader that refuses to
+        /// restart into Download mode is asked for a normal restart instead. Returns the restart done.
+        /// </summary>
+        public OdinReboot EndSession(OdinReboot reboot)
         {
             Command("end session", OdinPacket.TypeEndSession, OdinPacket.EndSessionPlain);
             InSession = false;
             if (reboot == OdinReboot.None)
-                return;
+                return reboot;
+            try
+            {
+                restart(reboot);
+                return reboot;
+            }
+            catch (OdinException e) when (reboot == OdinReboot.Download && e.PhoneCode != null)
+            {
+                log("odin: no restart into Download mode (" + e.Message + "), restarting normally");
+                restart(OdinReboot.Normal);
+                return OdinReboot.Normal;
+            }
+        }
+
+        void restart(OdinReboot reboot)
+        {
             int request = reboot == OdinReboot.Download ? OdinPacket.EndSessionRebootToDownload : OdinPacket.EndSessionReboot;
             Send(OdinPacket.Command(OdinPacket.TypeEndSession, request));
             // The phone may restart before its answer gets out; the restart is what was asked for.
