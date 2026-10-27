@@ -406,7 +406,7 @@ namespace FastbootEnhance
                 AutomationProperties.SetAutomationId(check, "welcome_usb_check");
                 check.Click += delegate { FastbootUI.checkUsb(); };
                 return checkRow("!", "Warn", "Warn", Properties.Resources.welcome_check_usb_trouble,
-                    string.Join("\n", trouble.Select(f => f.Device.Name + (f.UsbId != null ? "  (" + f.UsbId + ")" : ""))), check);
+                    string.Join("\n", trouble.Select(f => Helper.ltr(f.Device.Name + (f.UsbId != null ? "  (" + f.UsbId + ")" : "")))), check);
             }
             string connected =
                 usb.Any(f => f.Kind == UsbFindingKind.FastbootReady) ? Properties.Resources.welcome_check_usb_fastboot
