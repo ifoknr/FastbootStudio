@@ -257,8 +257,9 @@
         </Setter>
     </Style>
 
-    <!-- Check boxes are drawn as small switches, 44 x 26: off is outlined with a small knob, on is
-         filled in the accent with the knob at the end. FlowDirection mirrors it in Arabic. -->
+    <!-- Check boxes with a label are drawn as small switches, 44 x 26: off is outlined with a small
+         knob, on is filled in the accent with the knob at the end. FlowDirection mirrors it in
+         Arabic. A check box without a label (a row of a list) stays a small rounded box. -->
     <Style TargetType="CheckBox">
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
         <Setter Property="FontSize" Value="12.5"/>
@@ -277,6 +278,11 @@
                             <Ellipse x:Name="knob" Width="12" Height="12" Margin="5,0" HorizontalAlignment="Left"
                                      VerticalAlignment="Center" Fill="{StaticResource Faint}"/>
                         </Border>
+                        <Border x:Name="box" Width="18" Height="18" CornerRadius="6" VerticalAlignment="Center" Visibility="Collapsed"
+                                Background="Transparent" BorderBrush="{StaticResource Faint}" BorderThickness="2">
+                            <Path x:Name="mark" FlowDirection="LeftToRight" Data="M3,7.5 L6,10.5 L11,4" Stroke="{StaticResource AccentInk}"
+                                  StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Visibility="Collapsed"/>
+                        </Border>
                         <ContentPresenter Grid.Column="1" Margin="12,3,0,0" VerticalAlignment="Top" RecognizesAccessKey="True"/>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -288,6 +294,13 @@
                             <Setter TargetName="knob" Property="Margin" Value="2,0"/>
                             <Setter TargetName="knob" Property="HorizontalAlignment" Value="Right"/>
                             <Setter TargetName="knob" Property="Fill" Value="{StaticResource AccentInk}"/>
+                            <Setter TargetName="box" Property="Background" Value="{StaticResource Accent}"/>
+                            <Setter TargetName="box" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                            <Setter TargetName="mark" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="Content" Value="{x:Null}">
+                            <Setter TargetName="track" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="box" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="track" Property="Opacity" Value="0.88"/>
@@ -543,16 +556,19 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
                     <Border x:Name="bd" Background="Transparent" CornerRadius="17" Padding="16,8" Margin="0,0,2,0" Cursor="Hand">
-                        <ContentPresenter ContentSource="Header" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                        <ContentPresenter x:Name="header" ContentSource="Header" VerticalAlignment="Center" RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="{StaticResource Text}"/>
                         </Trigger>
+                        <!-- The dark ink goes on the header only: the TabItem's own Foreground would
+                             also reach every text of the page it shows. -->
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="bd" Property="Background" Value="{StaticResource Accent}"/>
-                            <Setter Property="Foreground" Value="{StaticResource AccentInk}"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter TargetName="header" Property="TextElement.Foreground" Value="{StaticResource AccentInk}"/>
+                            <Setter TargetName="header" Property="TextElement.FontWeight" Value="SemiBold"/>
+                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
