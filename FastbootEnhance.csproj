@@ -67,6 +67,7 @@
     <EmbeddedResource Include="Help\ar\*.md" LogicalName="Help.ar.%(Filename).md" />
     <EmbeddedResource Include="CHANGELOG.md" LogicalName="CHANGELOG.md" />
     <Resource Include="big_icon.png" />
+    <Resource Include="Assets\signature-*.png" />
     <!-- Roboto and Noto Kufi Arabic, embedded so the interface looks the same on every PC. -->
     <Resource Include="Fonts\*.ttf" />
   </ItemGroup>

@@ -1701,7 +1701,9 @@
                             <TextBlock Style="{StaticResource Note}" Margin="0,0,0,20" Text="{x:Static props:Resources.about_engine}"/>
 
                             <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.about_developer}"/>
-                            <TextBlock Text="IFOKNR" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                            <Image Source="{StaticResource Signature}" Height="26" HorizontalAlignment="Left" Margin="0,2,0,12"
+                                   FlowDirection="LeftToRight" RenderOptions.BitmapScalingMode="HighQuality"
+                                   AutomationProperties.Name="IFOKNR" ToolTip="IFOKNR"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,22">
                                 <Button x:Name="about_telegram" Style="{StaticResource AccentButton}" Margin="0,0,10,0" Click="Telegram_Click">
                                     <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">

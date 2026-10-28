@@ -32,4 +32,7 @@
     <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightLightBrushKey}" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#FFFFFF"/>
+
+    <!-- IFOKNR, drawn in the Swamp Ninja lettering as a picture: no font file ships with the app. -->
+    <BitmapImage x:Key="Signature" UriSource="pack://application:,,,/Assets/signature-light.png"/>
 </ResourceDictionary>
