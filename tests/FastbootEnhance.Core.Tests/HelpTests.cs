@@ -111,6 +111,22 @@ namespace FastbootEnhance.Core.Tests
             }
         }
 
+        [Fact]
+        public void Arabic_text_writes_its_numbers_in_western_digits()
+        {
+            // Arabic-Indic digits read in the wrong order next to MB, slots and versions.
+            string root = RepoRoot();
+            List<string> files = new List<string> { Path.Combine(root, "Properties", "Resources.ar.resx"), Path.Combine(root, "CHANGELOG.md") };
+            files.AddRange(Directory.GetFiles(Path.Combine(root, "Help", "ar")));
+            foreach (string file in files)
+            {
+                string text = File.ReadAllText(file);
+                Match digit = Regex.Match(text, "[\u0660-\u0669\u06F0-\u06F9]");
+                Assert.False(digit.Success, Path.GetFileName(file) + " has \"" + digit.Value + "\" near: "
+                    + (digit.Success ? text.Substring(Math.Max(0, digit.Index - 30), Math.Min(60, text.Length - Math.Max(0, digit.Index - 30))) : ""));
+            }
+        }
+
         // ---------------------------------------------------------------- what's new
 
         [Fact]

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 
 namespace FastbootEnhance
 {
@@ -74,7 +75,45 @@ namespace FastbootEnhance
             Thread.CurrentThread.CurrentUICulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
             Properties.Resources.Culture = culture;
+            UseWesternNumbers();
         }
+
+        /// <summary>
+        /// Numbers stay 0-9 with a dot whatever the language and Windows' region: Arabic-Indic
+        /// digits and the Arabic decimal sign end up in the wrong order next to "MB" or a slot
+        /// name, and sizes and versions have to read the same for everyone. Text is formatted
+        /// with Western numbers (and the Gregorian calendar), and WPF draws digits as they are.
+        /// </summary>
+        static void UseWesternNumbers()
+        {
+            CultureInfo format = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            format.NumberFormat = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            if (!(format.DateTimeFormat.Calendar is GregorianCalendar))
+                format.DateTimeFormat = (DateTimeFormatInfo)CultureInfo.InvariantCulture.DateTimeFormat.Clone();
+            Thread.CurrentThread.CurrentCulture = format;
+            CultureInfo.DefaultThreadCurrentCulture = format;
+
+            if (westernDigits)
+                return;
+            westernDigits = true;
+            try
+            {
+                // Every element, popups and tool tips included.
+                foreach (Type type in new[] { typeof(FrameworkElement), typeof(FrameworkContentElement) })
+                {
+                    NumberSubstitution.SubstitutionProperty.OverrideMetadata(type,
+                        new FrameworkPropertyMetadata(NumberSubstitutionMethod.European, FrameworkPropertyMetadataOptions.Inherits));
+                }
+            }
+            catch (Exception e) when (e is ArgumentException || e is InvalidOperationException)
+            {
+                // Each window then, which its pages inherit.
+                EventManager.RegisterClassHandler(typeof(Window), FrameworkElement.LoadedEvent, new RoutedEventHandler((sender, args) =>
+                    NumberSubstitution.SetSubstitution((DependencyObject)sender, NumberSubstitutionMethod.European)));
+            }
+        }
+
+        static bool westernDigits;
 
         static string LoadSaved()
         {

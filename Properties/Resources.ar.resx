@@ -1839,7 +1839,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>روّت جوالك بـ Magisk أو KernelSU أو APatch خطوة بخطوة</value>
   </data>
   <data name="root_step1" xml:space="preserve">
-    <value>١ · تطبيق الروت والصورة الأصلية</value>
+    <value>1 · تطبيق الروت والصورة الأصلية</value>
   </data>
   <data name="root_step1_note" xml:space="preserve">
     <value>اختار تطبيق الروت، وبعدها الصورة الأصلية للروم اللي على جوالك الحين: boot.img أو init_boot.img، أو التحديث كامل (payload.bin أو ملف zip) وأطلّع منه الصورة الصحيحة.</value>
@@ -1875,7 +1875,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>APatch يعدّل الكيرنل، وهو في boot: اختار boot.img (أو التحديث).</value>
   </data>
   <data name="root_step2" xml:space="preserve">
-    <value>٢ · أرسلها للجوال</value>
+    <value>2 · أرسلها للجوال</value>
   </data>
   <data name="root_step2_note" xml:space="preserve">
     <value>لازم الجوال يكون شغّال على أندرويد وتصحيح USB مفعّل. الصورة تنحفظ في مجلد Download باسم {0}.</value>
@@ -1893,7 +1893,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>ما قدرت أرسل الصورة: {0}</value>
   </data>
   <data name="root_step3" xml:space="preserve">
-    <value>٣ · عدّلها في الجوال</value>
+    <value>3 · عدّلها في الجوال</value>
   </data>
   <data name="root_how_magisk" xml:space="preserve">
     <value>افتح Magisk ← Install ← Select and Patch a File ← Download ← {0} ← Let's go. لما يقول All done اضغط الزر تحت.</value>
@@ -1926,7 +1926,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>الصورة المعدّلة شكلها مو سليم:</value>
   </data>
   <data name="root_step4" xml:space="preserve">
-    <value>٤ · فلّشها</value>
+    <value>4 · فلّشها</value>
   </data>
   <data name="root_step4_note" xml:space="preserve">
     <value>الجوال يعيد التشغيل للبوت لودر، والصورة المعدّلة تنكتب في {0} للخانة الشغّالة. لازم البوت لودر مفتوح. الصورة الأصلية تبقى في المجلد عشان ترجع لها بعدين.</value>
@@ -3011,7 +3011,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>الجوال وقف عن الرد: {0}</value>
   </data>
   <data name="odin_err_restart" xml:space="preserve">
-    <value>قبل ما تجرب مرة ثانية رجّع الجوال لوضع التحميل: اضغط خفض الصوت + الباور تقريباً ٧ ثواني، وأول ما تطفى الشاشة اضغط أزرار وضع التحميل.</value>
+    <value>قبل ما تجرب مرة ثانية رجّع الجوال لوضع التحميل: اضغط خفض الصوت + الباور تقريباً 7 ثواني، وأول ما تطفى الشاشة اضغط أزرار وضع التحميل.</value>
   </data>
   <data name="odin_err_cable" xml:space="preserve">
     <value>استخدم كيبل يدعم نقل البيانات، وركّبه في الكمبيوتر مباشرة بدون موزع.</value>
@@ -3080,7 +3080,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>الجوال يعيد التشغيل لوضع التحميل.</value>
   </data>
   <data name="odin_not_ended" xml:space="preserve">
-    <value>الجوال ما رد على إنهاء الجلسة: اضغط خفض الصوت + الباور تقريباً ٧ ثواني عشان يعيد التشغيل.</value>
+    <value>الجوال ما رد على إنهاء الجلسة: اضغط خفض الصوت + الباور تقريباً 7 ثواني عشان يعيد التشغيل.</value>
   </data>
   <data name="odin_save_pit" xml:space="preserve">
     <value>حفظ PIT…</value>
