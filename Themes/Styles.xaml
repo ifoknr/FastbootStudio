@@ -594,7 +594,8 @@
                                     <Image FlowDirection="LeftToRight" Source="/big_icon.png" Width="34" Height="34"
                                            RenderOptions.BitmapScalingMode="HighQuality"/>
                                     <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
-                                        <TextBlock Text="Fastboot Studio" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Text}"/>
+                                        <Image Source="{StaticResource AppName}" Height="14" HorizontalAlignment="Left" Margin="0,0,0,3" FlowDirection="LeftToRight"
+                                               RenderOptions.BitmapScalingMode="HighQuality" AutomationProperties.Name="Fastboot Studio"/>
                                         <TextBlock Text="v2.8.0" FontSize="11" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}"/>
                                     </StackPanel>
                                 </StackPanel>

@@ -35,4 +35,6 @@
 
     <!-- IFOKNR, drawn in the Swamp Ninja lettering as a picture: no font file ships with the app. -->
     <BitmapImage x:Key="Signature" UriSource="pack://application:,,,/Assets/signature-light.png"/>
+    <!-- The app name in the Prixma Bold Italic lettering, as a picture as well. -->
+    <BitmapImage x:Key="AppName" UriSource="pack://application:,,,/Assets/appname-light.png"/>
 </ResourceDictionary>
