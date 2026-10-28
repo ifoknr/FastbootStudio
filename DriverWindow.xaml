@@ -7,7 +7,7 @@
         Foreground="{StaticResource Text}" FontFamily="{StaticResource UiFont}" FontSize="13" UseLayoutRounding="True">
     <!-- Samsung's USB driver: download from Samsung, check Samsung signed it, run its installer. -->
     <Border Margin="18" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
-            BorderThickness="1" CornerRadius="12">
+            BorderThickness="1" CornerRadius="28">
         <Border.Effect>
             <DropShadowEffect BlurRadius="26" ShadowDepth="6" Opacity="0.55" Color="#000000"/>
         </Border.Effect>
@@ -18,10 +18,10 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border x:Name="strip" Height="3" VerticalAlignment="Top" CornerRadius="11,11,0,0" Background="{StaticResource Accent}"/>
+            <Border x:Name="strip" Height="0" VerticalAlignment="Top" CornerRadius="27,27,0,0" Background="{StaticResource Accent}"/>
 
             <DockPanel x:Name="header" Margin="22,20,22,0" Background="Transparent">
-                <Border x:Name="badge" DockPanel.Dock="Left" Width="34" Height="34" CornerRadius="10" BorderThickness="1"
+                <Border x:Name="badge" DockPanel.Dock="Left" Width="34" Height="34" CornerRadius="17" BorderThickness="1"
                         Margin="0,0,14,0" VerticalAlignment="Top"
                         Background="{StaticResource AccentSoft}" BorderBrush="{StaticResource AccentLine}">
                     <Path FlowDirection="LeftToRight" x:Name="glyph" Width="18" Height="18" Stretch="Uniform" StrokeThickness="2"
@@ -39,7 +39,7 @@
             </StackPanel>
 
             <Border Grid.Row="2" Margin="0,18,0,0" Padding="22,14" Background="{StaticResource Bg}"
-                    BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" CornerRadius="0,0,11,11">
+                    BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" CornerRadius="0,0,27,27">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button x:Name="secondary" MinWidth="96" Margin="0,0,10,0"/>
                     <Button x:Name="primary" MinWidth="120" Style="{StaticResource AccentButton}" IsDefault="True"/>

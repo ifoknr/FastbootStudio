@@ -11,7 +11,7 @@ namespace FastbootEnhance
     public partial class MainWindow : Window
     {
         public static MainWindow THIS;
-        internal const string version = "2.8.0";
+        internal const string version = "2.9.0";
 
         public MainWindow()
         {

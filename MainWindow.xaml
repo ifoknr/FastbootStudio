@@ -418,9 +418,9 @@
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Horizontal">
-                                                                <Button Tag="{Binding}" Style="{StaticResource AccentButton}" Height="28" Padding="9,0"
+                                                                <Button Tag="{Binding}" Style="{StaticResource AccentButton}" Height="28" MinHeight="0" Padding="12,0"
                                                                         Content="{x:Static props:Resources.phone_copy}" Visibility="{Binding CopyVisibility}" IsEnabled="{Binding Idle}"/>
-                                                                <Button Tag="{Binding}" Height="28" Padding="9,0"
+                                                                <Button Tag="{Binding}" Height="28" MinHeight="0" Padding="12,0"
                                                                         Content="{x:Static props:Resources.phone_open}" Visibility="{Binding OpenVisibility}" IsEnabled="{Binding Idle}"/>
                                                             </StackPanel>
                                                         </DataTemplate>
@@ -891,6 +891,7 @@
                         <Border Style="{StaticResource Card}">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.super_layout}"/>
+                                <Border Style="{StaticResource SegmentTrack}">
                                 <WrapPanel>
                                     <RadioButton x:Name="super_mode_vab" Style="{StaticResource Segment}" GroupName="super_mode" IsChecked="True"
                                                  Content="{x:Static props:Resources.super_mode_vab}"/>
@@ -901,6 +902,7 @@
                                     <RadioButton x:Name="super_mode_imported" Style="{StaticResource Segment}" GroupName="super_mode" Visibility="Collapsed"
                                                  Content="{x:Static props:Resources.super_mode_imported}"/>
                                 </WrapPanel>
+                                </Border>
                                 <TextBlock x:Name="super_mode_note" Style="{StaticResource Note}" Margin="0,0,0,12"/>
 
                                 <Grid>
@@ -987,12 +989,14 @@
                     <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
                         <StackPanel>
                             <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.super_output}"/>
+                            <Border Style="{StaticResource SegmentTrack}">
                             <WrapPanel x:Name="super_format_panel">
                                 <RadioButton x:Name="super_format_sparse" Style="{StaticResource Segment}" GroupName="super_format" IsChecked="True"
                                              Content="{x:Static props:Resources.super_format_sparse}"/>
                                 <RadioButton x:Name="super_format_raw" Style="{StaticResource Segment}" GroupName="super_format"
                                              Content="{x:Static props:Resources.super_format_raw}"/>
                             </WrapPanel>
+                            </Border>
                             <TextBlock Style="{StaticResource Note}" Margin="0,0,0,12" Text="{x:Static props:Resources.super_format_note}"/>
                             <CheckBox x:Name="super_verify" IsChecked="True" Margin="0,0,0,14" Content="{x:Static props:Resources.super_verify}"/>
 
@@ -1538,11 +1542,13 @@
                             <StackPanel>
                                 <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.root_step1}"/>
                                 <TextBlock Style="{StaticResource Note}" Margin="0,4,0,10" Text="{x:Static props:Resources.root_step1_note}"/>
-                                <WrapPanel x:Name="root_tools" FlowDirection="LeftToRight" Margin="0,0,0,6">
+                                <Border Style="{StaticResource SegmentTrack}" FlowDirection="LeftToRight">
+                                <WrapPanel x:Name="root_tools" FlowDirection="LeftToRight">
                                     <RadioButton x:Name="root_tool_magisk" Style="{StaticResource Segment}" GroupName="root_tool" Content="Magisk" IsChecked="True"/>
                                     <RadioButton x:Name="root_tool_kernelsu" Style="{StaticResource Segment}" GroupName="root_tool" Content="KernelSU"/>
                                     <RadioButton x:Name="root_tool_apatch" Style="{StaticResource Segment}" GroupName="root_tool" Content="APatch"/>
                                 </WrapPanel>
+                                </Border>
                                 <DockPanel>
                                     <Button x:Name="root_pick" DockPanel.Dock="Left" Style="{StaticResource AccentButton}" MinWidth="190"
                                             Content="{x:Static props:Resources.root_pick}"/>
@@ -1692,13 +1698,15 @@
                         <!-- About has no page header, so its ؟ sits in the card's corner. -->
                         <Button x:Name="about_help" Grid.Column="1" Style="{StaticResource HelpButton}" HorizontalAlignment="Right"
                                 VerticalAlignment="Top" Panel.ZIndex="1"/>
-                        <Border Width="112" Height="112" CornerRadius="22" ClipToBounds="True" VerticalAlignment="Top">
-                            <Image FlowDirection="LeftToRight" Source="big_icon.png" Stretch="UniformToFill"/>
-                        </Border>
+                        <!-- The matte grey icon on a scalloped "cookie", as in the other apps. -->
+                        <Grid Width="120" Height="120" VerticalAlignment="Top" FlowDirection="LeftToRight">
+                            <Path Fill="{StaticResource Raised}" Data="M60.0,0.0 L65.1,1.5 L69.7,5.0 L73.7,9.0 L77.6,11.5 L82.3,12.1 L87.9,11.7 L93.7,11.9 L98.6,14.0 L101.6,18.4 L102.7,24.1 L103.3,29.7 L104.7,34.2 L107.9,37.7 L112.4,40.9 L116.8,44.8 L119.1,49.6 L118.5,54.9 L115.8,60.0 L112.6,64.6 L110.8,69.0 L111.0,73.7 L112.4,79.1 L113.3,84.8 L112.0,90.0 L108.1,93.7 L102.7,95.9 L97.4,97.4 L93.2,99.5 L90.3,103.3 L87.9,108.3 L84.8,113.3 L80.5,116.4 L75.2,116.8 L69.7,115.0 L64.6,112.6 L60.0,111.6 L55.4,112.6 L50.3,115.0 L44.8,116.8 L39.5,116.4 L35.2,113.3 L32.1,108.3 L29.7,103.3 L26.8,99.5 L22.6,97.4 L17.3,95.9 L11.9,93.7 L8.0,90.0 L6.7,84.8 L7.6,79.1 L9.0,73.7 L9.2,69.0 L7.4,64.6 L4.2,60.0 L1.5,54.9 L0.9,49.6 L3.2,44.8 L7.6,40.9 L12.1,37.7 L15.3,34.2 L16.7,29.7 L17.3,24.1 L18.4,18.4 L21.4,14.0 L26.3,11.9 L32.1,11.7 L37.7,12.1 L42.4,11.5 L46.3,9.0 L50.3,5.0 L54.9,1.5 Z"/>
+                            <Image Source="/Assets/icon-themed.png" Width="78" Height="78" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Grid>
                         <StackPanel Grid.Column="1" Margin="26,4,0,0">
                             <Image Source="{StaticResource AppName}" Height="21" HorizontalAlignment="Left" Margin="0,2,0,2" FlowDirection="LeftToRight"
                                    RenderOptions.BitmapScalingMode="HighQuality" AutomationProperties.Name="Fastboot Studio"/>
-                            <TextBlock Text="v2.8.0" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}" Margin="0,2,0,10"/>
+                            <TextBlock Text="v2.9.0" FontFamily="{StaticResource Mono}" Foreground="{StaticResource Dim}" Margin="0,2,0,10"/>
                             <TextBlock Style="{StaticResource Note}" Margin="0,0,0,20" Text="{x:Static props:Resources.about_engine}"/>
 
                             <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.about_developer}"/>
