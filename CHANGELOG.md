@@ -4,6 +4,18 @@
 
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
+## v2.9.0
+- شكل جديد Material 3 Expressive: رمادي هادي وأزرق فاتح، مثل تطبيق الجوال والإضافة
+- كروت وأزرار بزوايا دائرية، ومفاتيح صغيرة بدل المربعات
+- الخيارات والتبويبات بشكل واحد في كل الصفحات
+- الأيقونة الرمادية في الشريط الجانبي وصفحة حول، واسم IFOKNR بالبنفسجي
+
+**English**
+- New Material 3 Expressive look: soft greys and light blue, like the phone app and the module
+- Rounded cards and pill buttons, and small switches instead of check boxes
+- Options and tabs share one shape on every page
+- The grey icon in the side bar and on About, and IFOKNR in violet
+
 ## v2.8.0
 - زر ؟ بكل صفحة: شرح وخطوات وتحذيرات بلغتك
 - جولة ترحيب، و«الجديد» يطلع بعد كل تحديث

@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>2.8.0</Version>
+    <Version>2.9.0</Version>
     <AssemblyTitle>Fastboot Studio</AssemblyTitle>
     <Product>Fastboot Studio</Product>
     <Authors>IFOKNR; LibXZR</Authors>
@@ -69,6 +69,7 @@
     <Resource Include="big_icon.png" />
     <Resource Include="Assets\signature-*.png" />
     <Resource Include="Assets\appname-*.png" />
+    <Resource Include="Assets\icon-themed.png" />
     <!-- Roboto and Noto Kufi Arabic, embedded so the interface looks the same on every PC. -->
     <Resource Include="Fonts\*.ttf" />
   </ItemGroup>
