@@ -96,21 +96,9 @@ namespace FastbootEnhance
             if (westernDigits)
                 return;
             westernDigits = true;
-            try
-            {
-                // Every element, popups and tool tips included.
-                foreach (Type type in new[] { typeof(FrameworkElement), typeof(FrameworkContentElement) })
-                {
-                    NumberSubstitution.SubstitutionProperty.OverrideMetadata(type,
-                        new FrameworkPropertyMetadata(NumberSubstitutionMethod.European, FrameworkPropertyMetadataOptions.Inherits));
-                }
-            }
-            catch (Exception e) when (e is ArgumentException || e is InvalidOperationException)
-            {
-                // Each window then, which its pages inherit.
-                EventManager.RegisterClassHandler(typeof(Window), FrameworkElement.LoadedEvent, new RoutedEventHandler((sender, args) =>
-                    NumberSubstitution.SetSubstitution((DependencyObject)sender, NumberSubstitutionMethod.European)));
-            }
+            // Set on each window as it appears; its pages, pop-ups and tool tips inherit it.
+            EventManager.RegisterClassHandler(typeof(Window), FrameworkElement.LoadedEvent, new RoutedEventHandler((sender, args) =>
+                NumberSubstitution.SetSubstitution((DependencyObject)sender, NumberSubstitutionMethod.European)));
         }
 
         static bool westernDigits;
