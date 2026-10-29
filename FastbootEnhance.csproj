@@ -70,6 +70,7 @@
     <Resource Include="Assets\signature-*.png" />
     <Resource Include="Assets\appname-*.png" />
     <Resource Include="Assets\icon-themed.png" />
+    <Resource Include="Assets\ifoknr-tile.png" />
     <!-- Roboto and Noto Kufi Arabic, embedded so the interface looks the same on every PC. -->
     <Resource Include="Fonts\*.ttf" />
   </ItemGroup>

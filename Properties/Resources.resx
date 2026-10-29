@@ -3097,4 +3097,76 @@ The app downloads it from Samsung, checks that Windows finds Samsung's signature
   <data name="odin_ended_android_instead" xml:space="preserve">
     <value>This phone does not restart into Download mode by itself: it is restarting into Android.</value>
   </data>
+  <data name="nav_settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="settings_subtitle" xml:space="preserve">
+    <value>Language, look and updates.</value>
+  </data>
+  <data name="settings_look" xml:space="preserve">
+    <value>Look</value>
+  </data>
+  <data name="text_size" xml:space="preserve">
+    <value>Text size</value>
+  </data>
+  <data name="text_size_note" xml:space="preserve">
+    <value>Every page follows it right away.</value>
+  </data>
+  <data name="text_size_small" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="text_size_default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="text_size_large" xml:space="preserve">
+    <value>Large</value>
+  </data>
+  <data name="text_size_larger" xml:space="preserve">
+    <value>Larger</value>
+  </data>
+  <data name="text_size_preview" xml:space="preserve">
+    <value>This is how text looks</value>
+  </data>
+  <data name="text_size_preview_note" xml:space="preserve">
+    <value>Flash, back up and root, safely.</value>
+  </data>
+  <data name="about_tagline" xml:space="preserve">
+    <value>Flash, back up and root Android phones from Windows, safely.</value>
+  </data>
+  <data name="about_free" xml:space="preserve">
+    <value>Free and open source</value>
+  </data>
+  <data name="about_check_updates" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="about_built_on" xml:space="preserve">
+    <value>Built on</value>
+  </data>
+  <data name="about_inside" xml:space="preserve">
+    <value>Inside</value>
+  </data>
+  <data name="about_checks" xml:space="preserve">
+    <value>Checks</value>
+  </data>
+  <data name="about_tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="about_telegram_group" xml:space="preserve">
+    <value>Telegram group</value>
+  </data>
+  <data name="about_all_tools" xml:space="preserve">
+    <value>All my tools</value>
+  </data>
+  <data name="phone_likely_unlocked" xml:space="preserve">
+    <value>Probably unlocked</value>
+  </data>
+  <data name="phone_likely_unlocked_note" xml:space="preserve">
+    <value>The properties say locked, but this phone has {0}, and root needs an unlocked bootloader: ROMs and hiding modules make it look locked. To read the real state, allow root for Shell in the root manager, or restart to the bootloader and open the Device page.</value>
+  </data>
+  <data name="phone_backups_sign" xml:space="preserve">
+    <value>the Companion's backups</value>
+  </data>
+  <data name="phone_root_not_for_shell" xml:space="preserve">
+    <value>{0}, not allowed for Shell</value>
+  </data>
 </root>

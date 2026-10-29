@@ -3097,4 +3097,76 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="odin_ended_android_instead" xml:space="preserve">
     <value>هالجوال ما يرجع لوضع التحميل لحاله، فهو يعيد التشغيل للأندرويد.</value>
   </data>
+  <data name="nav_settings" xml:space="preserve">
+    <value>الإعدادات</value>
+  </data>
+  <data name="settings_subtitle" xml:space="preserve">
+    <value>اللغة والشكل والتحديثات.</value>
+  </data>
+  <data name="settings_look" xml:space="preserve">
+    <value>الشكل</value>
+  </data>
+  <data name="text_size" xml:space="preserve">
+    <value>حجم الخط</value>
+  </data>
+  <data name="text_size_note" xml:space="preserve">
+    <value>كل الصفحات تتغير على طول.</value>
+  </data>
+  <data name="text_size_small" xml:space="preserve">
+    <value>صغير</value>
+  </data>
+  <data name="text_size_default" xml:space="preserve">
+    <value>افتراضي</value>
+  </data>
+  <data name="text_size_large" xml:space="preserve">
+    <value>كبير</value>
+  </data>
+  <data name="text_size_larger" xml:space="preserve">
+    <value>أكبر</value>
+  </data>
+  <data name="text_size_preview" xml:space="preserve">
+    <value>هذا شكل الخط</value>
+  </data>
+  <data name="text_size_preview_note" xml:space="preserve">
+    <value>فلّش وخذ نسخة احتياطية وروّت، بأمان.</value>
+  </data>
+  <data name="about_tagline" xml:space="preserve">
+    <value>فلّش وخذ نسخة احتياطية وروّت جوالك من الويندوز، بأمان.</value>
+  </data>
+  <data name="about_free" xml:space="preserve">
+    <value>مجاني ومفتوح المصدر</value>
+  </data>
+  <data name="about_check_updates" xml:space="preserve">
+    <value>افحص التحديثات</value>
+  </data>
+  <data name="about_built_on" xml:space="preserve">
+    <value>مبني على</value>
+  </data>
+  <data name="about_inside" xml:space="preserve">
+    <value>من الداخل</value>
+  </data>
+  <data name="about_checks" xml:space="preserve">
+    <value>الفحوصات</value>
+  </data>
+  <data name="about_tools" xml:space="preserve">
+    <value>الأدوات</value>
+  </data>
+  <data name="about_telegram_group" xml:space="preserve">
+    <value>قروب التلقرام</value>
+  </data>
+  <data name="about_all_tools" xml:space="preserve">
+    <value>كل أدواتي</value>
+  </data>
+  <data name="phone_likely_unlocked" xml:space="preserve">
+    <value>غالباً مفتوح</value>
+  </data>
+  <data name="phone_likely_unlocked_note" xml:space="preserve">
+    <value>الخصائص تقول مقفول، بس على هذا الجوال {0}، والروت ما يشتغل إلا والبوت لودر مفتوح: الرومات ومودات الإخفاء تخليه يبان مقفول. عشان تقرا الحالة الحقيقية، اسمح بالروت لـ Shell في مدير الروت، أو أعد التشغيل للبوت لودر وافتح صفحة الجهاز.</value>
+  </data>
+  <data name="phone_backups_sign" xml:space="preserve">
+    <value>النسخ الاحتياطية اللي سوّتها الإضافة</value>
+  </data>
+  <data name="phone_root_not_for_shell" xml:space="preserve">
+    <value>{0}، بدون صلاحية لـ Shell</value>
+  </data>
 </root>

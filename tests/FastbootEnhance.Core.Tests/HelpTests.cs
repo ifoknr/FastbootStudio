@@ -65,7 +65,7 @@ namespace FastbootEnhance.Core.Tests
 
         /// <summary>The pages with a ؟ button, as named in MainWindow.xaml (tab name without "_tab").</summary>
         static readonly string[] Pages =
-            { "device", "phone", "flash", "payload", "images", "super", "samsung", "backup", "root", "terminal", "logs", "about" };
+            { "device", "phone", "flash", "payload", "images", "super", "samsung", "backup", "root", "terminal", "logs", "settings", "about" };
 
         static string RepoRoot()
         {

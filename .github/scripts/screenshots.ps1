@@ -1021,6 +1021,8 @@ Go 'logs_tab' | Out-Null
 Save-Window ('{0:D2}-logs' -f $i); $i++
 Go 'about_tab' | Out-Null
 Save-Window ('{0:D2}-about' -f $i); $i++
+Go 'settings_tab' | Out-Null
+Save-Window ('{0:D2}-settings' -f $i); $i++
 
 if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception" }
 if ($proc.HasExited) { Fail "app exited while being captured, code $($proc.ExitCode)" }
@@ -1119,6 +1121,8 @@ if ($Arabic) {
     # A dialog: switching back to English asks to restart. Answer "No" (the first button).
     Go 'about_tab' | Out-Null
     Save-Window 'ar-06-about'
+    Go 'settings_tab' | Out-Null
+    Save-Window 'ar-06b-settings'
     # The language buttons sit in a panel UI Automation does not see; find "English" by name.
     $byName = New-Object System.Windows.Automation.PropertyCondition($UIA::NameProperty, 'English')
     $english = Wait-For { $root.FindFirst($Scope::Descendants, $byName) } 10 "the English button"
@@ -1351,8 +1355,8 @@ if (Test-Path "$saved.part") { Fail "the partial download was left behind" }
 Wait-For { $null -eq (Find-Dialog) } 10 "the update dialog to close" | Out-Null
 # The sidebar badge sits in the navigation template, which UI Automation does not expose; it
 # shows in this capture, and About says the same.
-Go 'about_tab' | Out-Null
-Wait-For { (By-Id $root 'update_status').Current.Name -match '9\.9\.9' } 10 "About to name the new version" | Out-Null
+Go 'settings_tab' | Out-Null
+Wait-For { (By-Id $root 'update_status').Current.Name -match '9\.9\.9' } 10 "Settings to name the new version" | Out-Null
 Start-Sleep -Milliseconds 600
 Save-Window 'update-03-about'
 if ($proc.HasExited) { Fail "the app exited during the update check" }

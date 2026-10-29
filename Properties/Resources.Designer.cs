@@ -8756,5 +8756,221 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("odin_ended_android_instead", resourceCulture);
             }
         }
+            
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string nav_settings {
+            get {
+                return ResourceManager.GetString("nav_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language, look and updates..
+        /// </summary>
+        public static string settings_subtitle {
+            get {
+                return ResourceManager.GetString("settings_subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Look.
+        /// </summary>
+        public static string settings_look {
+            get {
+                return ResourceManager.GetString("settings_look", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text size.
+        /// </summary>
+        public static string text_size {
+            get {
+                return ResourceManager.GetString("text_size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every page follows it right away..
+        /// </summary>
+        public static string text_size_note {
+            get {
+                return ResourceManager.GetString("text_size_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Small.
+        /// </summary>
+        public static string text_size_small {
+            get {
+                return ResourceManager.GetString("text_size_small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        public static string text_size_default {
+            get {
+                return ResourceManager.GetString("text_size_default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Large.
+        /// </summary>
+        public static string text_size_large {
+            get {
+                return ResourceManager.GetString("text_size_large", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Larger.
+        /// </summary>
+        public static string text_size_larger {
+            get {
+                return ResourceManager.GetString("text_size_larger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is how text looks.
+        /// </summary>
+        public static string text_size_preview {
+            get {
+                return ResourceManager.GetString("text_size_preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flash, back up and root, safely..
+        /// </summary>
+        public static string text_size_preview_note {
+            get {
+                return ResourceManager.GetString("text_size_preview_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flash, back up and root Android phones from Windows, safely..
+        /// </summary>
+        public static string about_tagline {
+            get {
+                return ResourceManager.GetString("about_tagline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free and open source.
+        /// </summary>
+        public static string about_free {
+            get {
+                return ResourceManager.GetString("about_free", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for updates.
+        /// </summary>
+        public static string about_check_updates {
+            get {
+                return ResourceManager.GetString("about_check_updates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Built on.
+        /// </summary>
+        public static string about_built_on {
+            get {
+                return ResourceManager.GetString("about_built_on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inside.
+        /// </summary>
+        public static string about_inside {
+            get {
+                return ResourceManager.GetString("about_inside", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checks.
+        /// </summary>
+        public static string about_checks {
+            get {
+                return ResourceManager.GetString("about_checks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tools.
+        /// </summary>
+        public static string about_tools {
+            get {
+                return ResourceManager.GetString("about_tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telegram group.
+        /// </summary>
+        public static string about_telegram_group {
+            get {
+                return ResourceManager.GetString("about_telegram_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All my tools.
+        /// </summary>
+        public static string about_all_tools {
+            get {
+                return ResourceManager.GetString("about_all_tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probably unlocked.
+        /// </summary>
+        public static string phone_likely_unlocked {
+            get {
+                return ResourceManager.GetString("phone_likely_unlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The properties say locked, but {0} on this phone needs an un.
+        /// </summary>
+        public static string phone_likely_unlocked_note {
+            get {
+                return ResourceManager.GetString("phone_likely_unlocked_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the Companion's backups.
+        /// </summary>
+        public static string phone_backups_sign {
+            get {
+                return ResourceManager.GetString("phone_backups_sign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, not allowed for Shell.
+        /// </summary>
+        public static string phone_root_not_for_shell {
+            get {
+                return ResourceManager.GetString("phone_root_not_for_shell", resourceCulture);
+            }
+        }
     }
 }
