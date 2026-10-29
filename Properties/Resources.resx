@@ -951,7 +951,7 @@ Back them up anyway?</value>
     <value>Close</value>
   </data>
   <data name="language" xml:space="preserve">
-    <value>LANGUAGE</value>
+    <value>Language</value>
   </data>
   <data name="language_restart" xml:space="preserve">
     <value>The new language applies after a restart. Restart Fastboot Studio now?</value>
@@ -1615,7 +1615,7 @@ Create them and continue?</value>
     <value>No phone is ready over adb. Allow USB debugging on the phone and try again.</value>
   </data>
   <data name="theme" xml:space="preserve">
-    <value>APPEARANCE</value>
+    <value>Appearance</value>
   </data>
   <data name="theme_dark" xml:space="preserve">
     <value>Dark</value>
