@@ -2054,7 +2054,7 @@ The bootloader must be unlocked. If the phone does not start afterwards, flash t
     <value>Known with the Companion</value>
   </data>
   <data name="phone_spoofed" xml:space="preserve">
-    <value>A hiding module changes ro.boot.verifiedbootstate. The state shown here is the bootloader's own.</value>
+    <value>The ROM or a hiding module changed the boot properties (ro.boot.*) to look locked. The state shown here is the real one: root only works with an unlocked bootloader.</value>
   </data>
   <data name="phone_avb_from_props" xml:space="preserve">
     <value>AVB as the phone's properties say; a hiding module can change them. The Companion reads the bootloader's own.</value>

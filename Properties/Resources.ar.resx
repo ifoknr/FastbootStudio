@@ -2054,7 +2054,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>يبان مع الإضافة</value>
   </data>
   <data name="phone_spoofed" xml:space="preserve">
-    <value>فيه مود إخفاء يغيّر ro.boot.verifiedbootstate. الحالة هنا من البوت لودر نفسه.</value>
+    <value>الروم أو مود إخفاء غيّر خصائص الإقلاع (ro.boot.*) عشان يبان الجوال مقفل. الحالة هنا هي الحقيقية: الروت ما يشتغل إلا والبوت لودر مفتوح.</value>
   </data>
   <data name="phone_avb_from_props" xml:space="preserve">
     <value>حالة AVB حسب خصائص الجوال، وممكن مود إخفاء يغيّرها. الإضافة تقرأها من البوت لودر نفسه.</value>

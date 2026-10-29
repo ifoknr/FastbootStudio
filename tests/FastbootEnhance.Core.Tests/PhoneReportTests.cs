@@ -146,6 +146,35 @@ namespace FastbootEnhance.Core.Tests
         }
 
         [Fact]
+        public void Root_means_an_unlocked_bootloader_whatever_the_properties_say()
+        {
+            // A Xiaomi msm8937 with KernelSU: the ROM sets ro.boot.* to locked and green, and
+            // the Companion is not installed, so the properties are all the report reads.
+            PhoneReport phone = PhoneReport.Parse(Basic);
+            Assert.Equal("locked", phone.DeviceState);
+            phone.ApplyCompanion(true, "fbs-missing\n");
+            Assert.Equal(CompanionState.NotInstalled, phone.Companion);
+            Assert.Equal("unlocked", phone.DeviceState);
+            Assert.Equal("orange", phone.Avb);
+            Assert.True(phone.Spoofed);
+
+            // An older Companion that still believed the properties.
+            PhoneReport old = PhoneReport.Parse(Basic);
+            old.ApplyCompanion(true, "{\"fbs\":\"2.5.1\",\"channel\":\"stable\",\"root\":\"KernelSU\"," +
+                "\"boot\":{\"vbstate\":\"orange\",\"device_state\":\"locked\",\"locked\":true,\"spoofed\":false}}\n");
+            Assert.Equal(CompanionState.Ready, old.Companion);
+            Assert.Equal("unlocked", old.DeviceState);
+            Assert.Equal("orange", old.Avb);
+            Assert.True(old.Spoofed);
+
+            // Without su nothing changes: the properties are all there is.
+            PhoneReport noRoot = PhoneReport.Parse(Basic);
+            noRoot.ApplyCompanion(false, "");
+            Assert.Equal("locked", noRoot.DeviceState);
+            Assert.False(noRoot.Spoofed);
+        }
+
+        [Fact]
         public void Tells_a_missing_module_from_a_refused_root()
         {
             PhoneReport none = PhoneReport.Parse(Basic);
@@ -159,7 +188,9 @@ namespace FastbootEnhance.Core.Tests
             PhoneReport refused = PhoneReport.Parse(Basic);
             refused.ApplyCompanion(true, "Permission denied\n");
             Assert.Equal(CompanionState.Refused, refused.Companion);
-            Assert.Equal("green", refused.Avb);
+            // su is there, so root is: the "green" and "locked" properties were set for Play Integrity.
+            Assert.Equal("orange", refused.Avb);
+            Assert.Equal("unlocked", refused.DeviceState);
 
             PhoneReport broken = PhoneReport.Parse(Basic);
             broken.ApplyCompanion(true, "{\"fbs\":\"2.4.0\",\"model\":");

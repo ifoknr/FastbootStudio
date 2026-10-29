@@ -5676,7 +5676,7 @@ namespace FastbootEnhance.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to A hiding module changes ro.boot.verifiedbootstate. The state shown here is the bootloader's own..
+        ///   Looks up a localized string similar to The ROM or a hiding module changed the boot properties (ro.boot.*) to look locked. The state shown here is the real one: root only works with an unlocked bootloader..
         /// </summary>
         public static string phone_spoofed {
             get {

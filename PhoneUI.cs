@@ -301,7 +301,7 @@ namespace FastbootEnhance
                 W.phone_avb_chip.Visibility = Visibility.Collapsed;
             }
 
-            if (ready && phone.Spoofed)
+            if (phone.Spoofed)
             {
                 W.phone_avb_note.Text = Properties.Resources.phone_spoofed;
                 W.phone_avb_note.Foreground = Palette.Get("Warn");

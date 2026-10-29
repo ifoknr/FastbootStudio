@@ -160,7 +160,7 @@ namespace FastbootEnhance.Core.Adb
         /// <summary>locked or unlocked.</summary>
         public string DeviceState { get; private set; }
 
-        /// <summary>The Companion found ro.boot.verifiedbootstate saying something else than the bootloader.</summary>
+        /// <summary>The boot properties (ro.boot.*) say something else than the bootloader or root do.</summary>
         public bool Spoofed { get; private set; }
 
         /// <summary>KernelSU, Magisk or APatch, from the Companion.</summary>
@@ -272,6 +272,7 @@ namespace FastbootEnhance.Core.Adb
             if (output.Split('\n').Any(l => l.Trim() == CompanionMissing))
             {
                 Companion = CompanionState.NotInstalled;
+                RootMeansUnlocked();
                 return;
             }
 
@@ -284,15 +285,18 @@ namespace FastbootEnhance.Core.Adb
                 if (start < 0)
                 {
                     Companion = CompanionState.Refused;
+                    RootMeansUnlocked();
                     return;
                 }
                 using (JsonDocument doc = JsonDocument.Parse(info.Substring(start).Trim()))
                     ApplyInfo(doc.RootElement);
                 Companion = CompanionState.Ready;
+                RootMeansUnlocked();
             }
             catch (JsonException)
             {
                 Companion = CompanionState.Refused;
+                RootMeansUnlocked();
                 return;
             }
 
@@ -311,6 +315,23 @@ namespace FastbootEnhance.Core.Adb
             {
                 // A module list the app cannot read leaves the rest of the report as it is.
             }
+        }
+
+        /// <summary>
+        /// su runs on the phone, so it has root, which needs a modified boot image that a locked
+        /// bootloader does not start: the bootloader is unlocked whatever the properties say.
+        /// ROMs and hiding modules set ro.boot.* to "locked" and "green" for Play Integrity, and
+        /// older bootloaders (Qualcomm msm89xx and the like) give the Companion nothing better.
+        /// </summary>
+        void RootMeansUnlocked()
+        {
+            if (DeviceState == "unlocked")
+                return;
+            if (DeviceState == "locked" || Avb == "green")
+                Spoofed = true;
+            DeviceState = "unlocked";
+            if (Avb == "green")
+                Avb = "orange";
         }
 
         void ApplyInfo(JsonElement info)
