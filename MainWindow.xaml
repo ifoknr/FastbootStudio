@@ -1693,7 +1693,7 @@
                         <Button x:Name="about_help" Grid.Column="1" Style="{StaticResource HelpButton}" HorizontalAlignment="Right"
                                 VerticalAlignment="Top" Panel.ZIndex="1"/>
                         <Border Width="112" Height="112" CornerRadius="22" ClipToBounds="True" VerticalAlignment="Top">
-                            <Image FlowDirection="LeftToRight" Source="big_icon.png" Stretch="UniformToFill"/>
+                            <Image FlowDirection="LeftToRight" Source="Assets/icon-themed.png" Stretch="UniformToFill"/>
                         </Border>
                         <StackPanel Grid.Column="1" Margin="26,4,0,0">
                             <Image Source="{StaticResource AppName}" Height="21" HorizontalAlignment="Left" Margin="0,2,0,2" FlowDirection="LeftToRight"

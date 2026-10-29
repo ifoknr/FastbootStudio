@@ -5,35 +5,37 @@
     <!-- The dark palette. Palette.Light.xaml has the same keys; Theme.cs loads one of the two
          before Styles.xaml, whose styles take their colours from whichever is loaded. -->
     <!-- One accent; amber and red are reserved for warnings and destructive actions. -->
-    <SolidColorBrush x:Key="Bg" Color="#0E1116"/>
-    <SolidColorBrush x:Key="Rail" Color="#0A0D12"/>
-    <SolidColorBrush x:Key="Well" Color="#11151C"/>
-    <SolidColorBrush x:Key="Surface" Color="#161A21"/>
-    <SolidColorBrush x:Key="Raised" Color="#1D222B"/>
-    <SolidColorBrush x:Key="Hover" Color="#252C37"/>
-    <SolidColorBrush x:Key="Line" Color="#2A313C"/>
-    <SolidColorBrush x:Key="Text" Color="#E8ECF2"/>
-    <SolidColorBrush x:Key="Dim" Color="#9AA6B6"/>
-    <SolidColorBrush x:Key="Faint" Color="#7C8899"/>
-    <SolidColorBrush x:Key="Accent" Color="#3DD6C4"/>
-    <SolidColorBrush x:Key="AccentInk" Color="#0A0D12"/>
-    <SolidColorBrush x:Key="AccentSoft" Color="#10251F"/>
-    <SolidColorBrush x:Key="AccentLine" Color="#2F6E66"/>
-    <SolidColorBrush x:Key="Warn" Color="#F0B341"/>
-    <SolidColorBrush x:Key="WarnSoft" Color="#1C1710"/>
-    <SolidColorBrush x:Key="WarnLine" Color="#5C4320"/>
-    <SolidColorBrush x:Key="Danger" Color="#F2615C"/>
-    <SolidColorBrush x:Key="DangerSoft" Color="#231315"/>
-    <SolidColorBrush x:Key="DangerLine" Color="#5C2B2B"/>
-    <SolidColorBrush x:Key="Ok" Color="#5BD97A"/>
-    <SolidColorBrush x:Key="Thumb" Color="#3A4350"/>
+    <SolidColorBrush x:Key="Bg" Color="#2A2A2C"/>
+    <SolidColorBrush x:Key="Rail" Color="#2A2A2C"/>
+    <SolidColorBrush x:Key="Well" Color="#303032"/>
+    <SolidColorBrush x:Key="Surface" Color="#353537"/>
+    <SolidColorBrush x:Key="Raised" Color="#3D3D40"/>
+    <SolidColorBrush x:Key="Hover" Color="#47474B"/>
+    <SolidColorBrush x:Key="Line" Color="#4A4A4F"/>
+    <SolidColorBrush x:Key="Text" Color="#E5E3E8"/>
+    <SolidColorBrush x:Key="Dim" Color="#C4C4CB"/>
+    <SolidColorBrush x:Key="Faint" Color="#8F8F95"/>
+    <SolidColorBrush x:Key="Accent" Color="#A8C4FF"/>
+    <SolidColorBrush x:Key="AccentInk" Color="#152C5E"/>
+    <SolidColorBrush x:Key="AccentSoft" Color="#2E4D9D"/>
+    <SolidColorBrush x:Key="AccentLine" Color="#4A68B8"/>
+    <SolidColorBrush x:Key="Warn" Color="#E9C77A"/>
+    <SolidColorBrush x:Key="WarnSoft" Color="#46402C"/>
+    <SolidColorBrush x:Key="WarnLine" Color="#6D5F34"/>
+    <SolidColorBrush x:Key="Danger" Color="#FFB4AB"/>
+    <SolidColorBrush x:Key="DangerSoft" Color="#6E2A27"/>
+    <SolidColorBrush x:Key="DangerLine" Color="#8C3A3A"/>
+    <SolidColorBrush x:Key="Ok" Color="#9BD7A8"/>
+    <SolidColorBrush x:Key="Sel" Color="#3F455A"/>
+    <SolidColorBrush x:Key="OnSel" Color="#DDE1F9"/>
+    <SolidColorBrush x:Key="Thumb" Color="#5A5A60"/>
 
     <!-- Default templates fill the corner where two scroll bars meet with the system control
          colour, which is near-white; this keeps it dark. -->
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#161A21"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#161A21"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightLightBrushKey}" Color="#161A21"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#161A21"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#353537"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#353537"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightLightBrushKey}" Color="#353537"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#353537"/>
 
 
     <!-- IFOKNR, drawn in the Swamp Ninja lettering as a picture: no font file ships with the app. -->
