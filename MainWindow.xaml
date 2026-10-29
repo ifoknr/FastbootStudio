@@ -1757,9 +1757,9 @@
                                 <StackPanel>
                                     <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,12" Text="{x:Static props:Resources.welcome_section}"/>
                                     <WrapPanel>
-                                        <Button x:Name="about_welcome" Style="{StaticResource GhostButton}" Margin="0,0,10,0"
+                                        <Button x:Name="about_welcome" Style="{StaticResource GhostButton}" Margin="0,0,10,8"
                                                 Content="{x:Static props:Resources.welcome_show_again}"/>
-                                        <Button x:Name="about_whats_new" Style="{StaticResource GhostButton}"/>
+                                        <Button x:Name="about_whats_new" Style="{StaticResource GhostButton}" Margin="0,0,0,8"/>
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
@@ -1784,7 +1784,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- The hero: the app, what it does, its version. -->
-                    <Border Grid.ColumnSpan="3" Background="{StaticResource AccentSoft}" CornerRadius="28" Padding="26,24" Margin="0,0,0,16">
+                    <Border Grid.ColumnSpan="3" Background="{StaticResource Sel}" TextElement.Foreground="{StaticResource OnSel}" CornerRadius="28" Padding="26,24" Margin="0,0,0,16">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -1799,9 +1799,9 @@
                                        RenderOptions.BitmapScalingMode="HighQuality" AutomationProperties.Name="Fastboot Studio"/>
                                 <TextBlock Text="{x:Static props:Resources.about_tagline}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,12"/>
                                 <WrapPanel>
-                                    <Border Style="{StaticResource Chip}" Margin="0,0,6,0"><TextBlock Text="v2.8.0" FontFamily="{StaticResource Mono}"/></Border>
-                                    <Border Style="{StaticResource Chip}" Margin="0,0,6,0"><TextBlock Text="MIT"/></Border>
-                                    <Border Style="{StaticResource Chip}"><TextBlock Text="{x:Static props:Resources.about_free}"/></Border>
+                                    <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}" Margin="0,0,6,0"><TextBlock Text="v2.8.0" FontFamily="{StaticResource Mono}"/></Border>
+                                    <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}" Margin="0,0,6,0"><TextBlock Text="MIT"/></Border>
+                                    <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}"><TextBlock Text="{x:Static props:Resources.about_free}"/></Border>
                                 </WrapPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
