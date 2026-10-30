@@ -5676,7 +5676,7 @@ namespace FastbootEnhance.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to A hiding module changes ro.boot.verifiedbootstate. The state shown here is the bootloader's own..
+        ///   Looks up a localized string similar to The ROM or a hiding module changed the boot properties (ro.boot.*) to look locked. The state shown here is the real one: root only works with an unlocked bootloader..
         /// </summary>
         public static string phone_spoofed {
             get {
@@ -7274,6 +7274,1702 @@ namespace FastbootEnhance.Properties {
         public static string samsung_note {
             get {
                 return ResourceManager.GetString("samsung_note", resourceCulture);
+            }
+        }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string help_label {
+            get {
+                return ResourceManager.GetString("help_label", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Close the help (Esc).
+        /// </summary>
+        public static string help_close {
+            get {
+                return ResourceManager.GetString("help_close", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Help for this page.
+        /// </summary>
+        public static string help_tooltip {
+            get {
+                return ResourceManager.GetString("help_tooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ask in Telegram.
+        /// </summary>
+        public static string help_ask {
+            get {
+                return ResourceManager.GetString("help_ask", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Still stuck? Ask in the group..
+        /// </summary>
+        public static string help_ask_note {
+            get {
+                return ResourceManager.GetString("help_ask_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No help is written for this page yet..
+        /// </summary>
+        public static string help_missing {
+            get {
+                return ResourceManager.GetString("help_missing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to What this page is for.
+        /// </summary>
+        public static string help_purpose {
+            get {
+                return ResourceManager.GetString("help_purpose", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Step by step.
+        /// </summary>
+        public static string help_steps {
+            get {
+                return ResourceManager.GetString("help_steps", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Good to know.
+        /// </summary>
+        public static string help_tips {
+            get {
+                return ResourceManager.GetString("help_tips", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Words to know.
+        /// </summary>
+        public static string help_terms {
+            get {
+                return ResourceManager.GetString("help_terms", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dangerous: read this first.
+        /// </summary>
+        public static string help_danger {
+            get {
+                return ResourceManager.GetString("help_danger", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tour and what's new.
+        /// </summary>
+        public static string welcome_section {
+            get {
+                return ResourceManager.GetString("welcome_section", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Show the tour again.
+        /// </summary>
+        public static string welcome_show_again {
+            get {
+                return ResourceManager.GetString("welcome_show_again", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to What's new in {0}.
+        /// </summary>
+        public static string whats_new_button {
+            get {
+                return ResourceManager.GetString("whats_new_button", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This version has no notes built in..
+        /// </summary>
+        public static string whats_new_none {
+            get {
+                return ResourceManager.GetString("whats_new_none", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to What's new in {0}.
+        /// </summary>
+        public static string whats_new_title {
+            get {
+                return ResourceManager.GetString("whats_new_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fastboot Studio was updated. This is what changed:.
+        /// </summary>
+        public static string whats_new_intro {
+            get {
+                return ResourceManager.GetString("whats_new_intro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string whats_new_ok {
+            get {
+                return ResourceManager.GetString("whats_new_ok", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Take the tour.
+        /// </summary>
+        public static string welcome_take_tour {
+            get {
+                return ResourceManager.GetString("welcome_take_tour", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Skip.
+        /// </summary>
+        public static string welcome_skip {
+            get {
+                return ResourceManager.GetString("welcome_skip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string welcome_back {
+            get {
+                return ResourceManager.GetString("welcome_back", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string welcome_next {
+            get {
+                return ResourceManager.GetString("welcome_next", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string welcome_start {
+            get {
+                return ResourceManager.GetString("welcome_start", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to Fastboot Studio.
+        /// </summary>
+        public static string welcome_title {
+            get {
+                return ResourceManager.GetString("welcome_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to One app for flashing, root and backups. A short tour first: it takes a minute....
+        /// </summary>
+        public static string welcome_intro {
+            get {
+                return ResourceManager.GetString("welcome_intro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to In use.
+        /// </summary>
+        public static string welcome_language_current {
+            get {
+                return ResourceManager.GetString("welcome_language_current", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to What each page does.
+        /// </summary>
+        public static string welcome_map_title {
+            get {
+                return ResourceManager.GetString("welcome_map_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Each page has one job, and every page has a ? in its corner that explains it ....
+        /// </summary>
+        public static string welcome_map_intro {
+            get {
+                return ResourceManager.GetString("welcome_map_intro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open this page when the tour ends.
+        /// </summary>
+        public static string welcome_map_pick {
+            get {
+                return ResourceManager.GetString("welcome_map_pick", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone in fastboot: its state, partitions and quick restarts.
+        /// </summary>
+        public static string welcome_page_device {
+            get {
+                return ResourceManager.GetString("welcome_page_device", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone in Android: its specs, security and backups.
+        /// </summary>
+        public static string welcome_page_phone {
+            get {
+                return ResourceManager.GetString("welcome_page_phone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Flash a whole OTA, every image checked first.
+        /// </summary>
+        public static string welcome_page_flash {
+            get {
+                return ResourceManager.GetString("welcome_page_flash", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Look inside an OTA and take out its images.
+        /// </summary>
+        public static string welcome_page_payload {
+            get {
+                return ResourceManager.GetString("welcome_page_payload", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Inspect boot images, convert sparse, unpack super.
+        /// </summary>
+        public static string welcome_page_images {
+            get {
+                return ResourceManager.GetString("welcome_page_images", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Build one super.img from partition images.
+        /// </summary>
+        public static string welcome_page_super {
+            get {
+                return ResourceManager.GetString("welcome_page_super", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung firmware: MD5, the right match, Magisk, a tar for Odin.
+        /// </summary>
+        public static string welcome_page_samsung {
+            get {
+                return ResourceManager.GetString("welcome_page_samsung", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Save partitions and files to this PC.
+        /// </summary>
+        public static string welcome_page_backup {
+            get {
+                return ResourceManager.GetString("welcome_page_backup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Root with Magisk, KernelSU or APatch, step by step.
+        /// </summary>
+        public static string welcome_page_root {
+            get {
+                return ResourceManager.GetString("welcome_page_root", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Your own adb and fastboot commands.
+        /// </summary>
+        public static string welcome_page_terminal {
+            get {
+                return ResourceManager.GetString("welcome_page_terminal", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Everything the app ran, to copy when you ask for help.
+        /// </summary>
+        public static string welcome_page_logs {
+            get {
+                return ResourceManager.GetString("welcome_page_logs", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Version, language, theme and updates.
+        /// </summary>
+        public static string welcome_page_about {
+            get {
+                return ResourceManager.GetString("welcome_page_about", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A quick check.
+        /// </summary>
+        public static string welcome_check_title {
+            get {
+                return ResourceManager.GetString("welcome_check_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to What this PC has ready before you plug a phone in..
+        /// </summary>
+        public static string welcome_check_intro {
+            get {
+                return ResourceManager.GetString("welcome_check_intro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Checking….
+        /// </summary>
+        public static string welcome_checking {
+            get {
+                return ResourceManager.GetString("welcome_checking", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to adb and fastboot are here.
+        /// </summary>
+        public static string welcome_check_tools {
+            get {
+                return ResourceManager.GetString("welcome_check_tools", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to They come with the app (platform-tools 37.0.1): nothing to install..
+        /// </summary>
+        public static string welcome_check_tools_detail {
+            get {
+                return ResourceManager.GetString("welcome_check_tools_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to adb or fastboot is missing.
+        /// </summary>
+        public static string welcome_check_tools_missing {
+            get {
+                return ResourceManager.GetString("welcome_check_tools_missing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to They belong next to FastbootStudio.exe. Unzip the whole download again, not j....
+        /// </summary>
+        public static string welcome_check_tools_missing_detail {
+            get {
+                return ResourceManager.GetString("welcome_check_tools_missing_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung USB driver is installed.
+        /// </summary>
+        public static string welcome_check_samsung {
+            get {
+                return ResourceManager.GetString("welcome_check_samsung", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to For Samsung phones in Download mode..
+        /// </summary>
+        public static string welcome_check_samsung_detail {
+            get {
+                return ResourceManager.GetString("welcome_check_samsung_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung USB driver is not installed.
+        /// </summary>
+        public static string welcome_check_samsung_missing {
+            get {
+                return ResourceManager.GetString("welcome_check_samsung_missing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Only Samsung phones in Download mode need it. The app can get it from Samsung....
+        /// </summary>
+        public static string welcome_check_samsung_missing_detail {
+            get {
+                return ResourceManager.GetString("welcome_check_samsung_missing_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Install….
+        /// </summary>
+        public static string driver_install {
+            get {
+                return ResourceManager.GetString("driver_install", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The USB devices could not be read.
+        /// </summary>
+        public static string welcome_check_usb_unknown {
+            get {
+                return ResourceManager.GetString("welcome_check_usb_unknown", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A phone has no working driver.
+        /// </summary>
+        public static string welcome_check_usb_trouble {
+            get {
+                return ResourceManager.GetString("welcome_check_usb_trouble", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A phone is connected in fastboot.
+        /// </summary>
+        public static string welcome_check_usb_fastboot {
+            get {
+                return ResourceManager.GetString("welcome_check_usb_fastboot", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A phone is connected in Android or recovery (adb).
+        /// </summary>
+        public static string welcome_check_usb_adb {
+            get {
+                return ResourceManager.GetString("welcome_check_usb_adb", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A Samsung phone is in Download mode.
+        /// </summary>
+        public static string welcome_check_usb_samsung {
+            get {
+                return ResourceManager.GetString("welcome_check_usb_samsung", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A phone is in its chip's download mode (EDL, BROM…).
+        /// </summary>
+        public static string welcome_check_usb_download {
+            get {
+                return ResourceManager.GetString("welcome_check_usb_download", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No phone is connected.
+        /// </summary>
+        public static string welcome_check_usb_none {
+            get {
+                return ResourceManager.GetString("welcome_check_usb_none", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to That's fine: plug it in later. In Android, turn on USB debugging in Developer....
+        /// </summary>
+        public static string welcome_check_usb_none_detail {
+            get {
+                return ResourceManager.GetString("welcome_check_usb_none_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Before any flash.
+        /// </summary>
+        public static string welcome_safety_title {
+            get {
+                return ResourceManager.GetString("welcome_safety_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Four rules that prevent most problems..
+        /// </summary>
+        public static string welcome_safety_intro {
+            get {
+                return ResourceManager.GetString("welcome_safety_intro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Back up first.
+        /// </summary>
+        public static string welcome_rule_backup {
+            get {
+                return ResourceManager.GetString("welcome_rule_backup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to On the Backup page. If something goes wrong, you can put the phone back as it....
+        /// </summary>
+        public static string welcome_rule_backup_detail {
+            get {
+                return ResourceManager.GetString("welcome_rule_backup_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Battery above 50%.
+        /// </summary>
+        public static string welcome_rule_battery {
+            get {
+                return ResourceManager.GetString("welcome_rule_battery", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A phone that switches off in the middle of a flash may not start again..
+        /// </summary>
+        public static string welcome_rule_battery_detail {
+            get {
+                return ResourceManager.GetString("welcome_rule_battery_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Don't unplug the cable.
+        /// </summary>
+        public static string welcome_rule_cable {
+            get {
+                return ResourceManager.GetString("welcome_rule_cable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use a good data cable in a port on the PC itself, not a hub, and wait until t....
+        /// </summary>
+        public static string welcome_rule_cable_detail {
+            get {
+                return ResourceManager.GetString("welcome_rule_cable_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Files for your exact phone.
+        /// </summary>
+        public static string welcome_rule_files {
+            get {
+                return ResourceManager.GetString("welcome_rule_files", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Same model and same software version. The app checks what it can and warns yo....
+        /// </summary>
+        public static string welcome_rule_files_detail {
+            get {
+                return ResourceManager.GetString("welcome_rule_files_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to You can take this tour again from About..
+        /// </summary>
+        public static string welcome_again_note {
+            get {
+                return ResourceManager.GetString("welcome_again_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung USB driver.
+        /// </summary>
+        public static string driver_samsung_title {
+            get {
+                return ResourceManager.GetString("driver_samsung_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to From developer.samsung.com · about 37 MB.
+        /// </summary>
+        public static string driver_samsung_source {
+            get {
+                return ResourceManager.GetString("driver_samsung_source", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to It looks installed already; installing it again does no harm..
+        /// </summary>
+        public static string driver_samsung_already {
+            get {
+                return ResourceManager.GetString("driver_samsung_already", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung phones in Download mode need Samsung's own driver; it is the same one....
+        /// </summary>
+        public static string driver_samsung_offer {
+            get {
+                return ResourceManager.GetString("driver_samsung_offer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Download and install.
+        /// </summary>
+        public static string driver_download_install {
+            get {
+                return ResourceManager.GetString("driver_download_install", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading Samsung's driver.
+        /// </summary>
+        public static string driver_downloading {
+            get {
+                return ResourceManager.GetString("driver_downloading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Straight from Samsung. It is checked before it runs..
+        /// </summary>
+        public static string driver_downloading_note {
+            get {
+                return ResourceManager.GetString("driver_downloading_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The download failed: {0}.
+        /// </summary>
+        public static string driver_download_failed {
+            get {
+                return ResourceManager.GetString("driver_download_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung's link did not end on a secure (https) address, so the file was not u....
+        /// </summary>
+        public static string driver_not_https {
+            get {
+                return ResourceManager.GetString("driver_not_https", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The file is far bigger than Samsung's driver, so it was not kept..
+        /// </summary>
+        public static string driver_too_big {
+            get {
+                return ResourceManager.GetString("driver_too_big", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Windows did not find a valid signature from Samsung Electronics on the file, ....
+        /// </summary>
+        public static string driver_signature_bad {
+            get {
+                return ResourceManager.GetString("driver_signature_bad", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung's installer is open.
+        /// </summary>
+        public static string driver_installing {
+            get {
+                return ResourceManager.GetString("driver_installing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Follow its steps. When it finishes, this window checks that the driver is the....
+        /// </summary>
+        public static string driver_installing_note {
+            get {
+                return ResourceManager.GetString("driver_installing_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Windows did not get permission to run the installer..
+        /// </summary>
+        public static string driver_no_permission {
+            get {
+                return ResourceManager.GetString("driver_no_permission", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung's driver is installed.
+        /// </summary>
+        public static string driver_done {
+            get {
+                return ResourceManager.GetString("driver_done", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to If a Samsung phone is plugged in, unplug it and plug it in again..
+        /// </summary>
+        public static string driver_done_note {
+            get {
+                return ResourceManager.GetString("driver_done_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string driver_close {
+            get {
+                return ResourceManager.GetString("driver_close", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The driver is not there yet.
+        /// </summary>
+        public static string driver_not_yet {
+            get {
+                return ResourceManager.GetString("driver_not_yet", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to If the installer is still open, finish it first, then press Check again..
+        /// </summary>
+        public static string driver_not_yet_note {
+            get {
+                return ResourceManager.GetString("driver_not_yet_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Check again.
+        /// </summary>
+        public static string driver_check_again {
+            get {
+                return ResourceManager.GetString("driver_check_again", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung's driver was not installed.
+        /// </summary>
+        public static string driver_failed {
+            get {
+                return ResourceManager.GetString("driver_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to You can download it yourself from Samsung's page..
+        /// </summary>
+        public static string driver_failed_note {
+            get {
+                return ResourceManager.GetString("driver_failed_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Try again.
+        /// </summary>
+        public static string driver_try_again {
+            get {
+                return ResourceManager.GetString("driver_try_again", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open Samsung's page.
+        /// </summary>
+        public static string driver_open_page {
+            get {
+                return ResourceManager.GetString("driver_open_page", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Flash it to {0}?.
+        /// </summary>
+        public static string boot_check_question_notice {
+            get {
+                return ResourceManager.GetString("boot_check_question_notice", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This image is rooted with {0}. That is right to root the phone; to remove roo....
+        /// </summary>
+        public static string boot_find_rooted {
+            get {
+                return ResourceManager.GetString("boot_find_rooted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Try it first with Boot image once… on the Device page: it starts the recovery....
+        /// </summary>
+        public static string boot_find_recovery_try {
+            get {
+                return ResourceManager.GetString("boot_find_recovery_try", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung's USB driver is not installed on this PC, and this phone needs it. Do....
+        /// </summary>
+        public static string usb_samsung_driver_ask {
+            get {
+                return ResourceManager.GetString("usb_samsung_driver_ask", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung USB driver is installed: Download mode can be seen..
+        /// </summary>
+        public static string samsung_driver_ok {
+            get {
+                return ResourceManager.GetString("samsung_driver_ok", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung USB driver is not installed. Download mode needs it..
+        /// </summary>
+        public static string samsung_driver_missing {
+            get {
+                return ResourceManager.GetString("samsung_driver_missing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Knox: intact (0x0).
+        /// </summary>
+        public static string samsung_m_knox_ok {
+            get {
+                return ResourceManager.GetString("samsung_m_knox_ok", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to As the phone reports it. Flashing anything not from Samsung (root, a custom r....
+        /// </summary>
+        public static string samsung_m_knox_ok_detail {
+            get {
+                return ResourceManager.GetString("samsung_m_knox_ok_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Knox is tripped (0x1).
+        /// </summary>
+        public static string samsung_m_knox_tripped {
+            get {
+                return ResourceManager.GetString("samsung_m_knox_tripped", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung Wallet, Secure Folder and Samsung Pass no longer work on this phone. ....
+        /// </summary>
+        public static string samsung_m_knox_tripped_detail {
+            get {
+                return ResourceManager.GetString("samsung_m_knox_tripped_detail", resourceCulture);
+            }
+        }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to Knox reads 0x0, but the bootloader is unlocked.
+        /// </summary>
+        public static string samsung_m_knox_unlocked {
+            get {
+                return ResourceManager.GetString("samsung_m_knox_unlocked", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Unlocking alone does not trip Knox. But if anything unofficial was ever flash....
+        /// </summary>
+        public static string samsung_m_knox_unlocked_detail {
+            get {
+                return ResourceManager.GetString("samsung_m_knox_unlocked_detail", resourceCulture);
+            }
+        }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to Download mode.
+        /// </summary>
+        public static string samsung_odin_button {
+            get {
+                return ResourceManager.GetString("samsung_odin_button", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Read a phone in Download mode: its partition table (PIT), model and region.
+        /// </summary>
+        public static string samsung_odin_tip {
+            get {
+                return ResourceManager.GetString("samsung_odin_tip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Read the phone in Download mode.
+        /// </summary>
+        public static string odin_title {
+            get {
+                return ResourceManager.GetString("odin_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reads the partition table (PIT), the model and the region. Nothing is written....
+        /// </summary>
+        public static string odin_subtitle {
+            get {
+                return ResourceManager.GetString("odin_subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Turn the phone off and unplug the cable..
+        /// </summary>
+        public static string odin_step_off {
+            get {
+                return ResourceManager.GetString("odin_step_off", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hold Volume Up and Volume Down together and plug the cable into the computer.....
+        /// </summary>
+        public static string odin_step_keys {
+            get {
+                return ResourceManager.GetString("odin_step_keys", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to On the blue warning screen, press Volume Up once to continue. The screen then....
+        /// </summary>
+        public static string odin_step_continue {
+            get {
+                return ResourceManager.GetString("odin_step_continue", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Galaxy S26 and Z Fold 7 on One UI 8.5: Samsung may ask for Maintenance mode f....
+        /// </summary>
+        public static string odin_maintenance {
+            get {
+                return ResourceManager.GetString("odin_maintenance", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Looking for the phone….
+        /// </summary>
+        public static string odin_looking {
+            get {
+                return ResourceManager.GetString("odin_looking", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No phone in Download mode yet. This updates by itself..
+        /// </summary>
+        public static string odin_not_found {
+            get {
+                return ResourceManager.GetString("odin_not_found", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Phone found in Download mode, on {0}..
+        /// </summary>
+        public static string odin_found {
+            get {
+                return ResourceManager.GetString("odin_found", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} phones are in Download mode: leave one plugged in..
+        /// </summary>
+        public static string odin_found_many {
+            get {
+                return ResourceManager.GetString("odin_found_many", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A phone is in Download mode, but Windows has no working driver for it: instal....
+        /// </summary>
+        public static string odin_seen_no_driver {
+            get {
+                return ResourceManager.GetString("odin_seen_no_driver", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung's USB driver is missing; Download mode needs it..
+        /// </summary>
+        public static string odin_no_driver {
+            get {
+                return ResourceManager.GetString("odin_no_driver", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to After reading:.
+        /// </summary>
+        public static string odin_after_title {
+            get {
+                return ResourceManager.GetString("odin_after_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restart into Android.
+        /// </summary>
+        public static string odin_after_android {
+            get {
+                return ResourceManager.GetString("odin_after_android", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restart into Download mode.
+        /// </summary>
+        public static string odin_after_download {
+            get {
+                return ResourceManager.GetString("odin_after_download", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A phone takes one Odin session per connection, so it restarts after reading..
+        /// </summary>
+        public static string odin_after_note {
+            get {
+                return ResourceManager.GetString("odin_after_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Read the phone.
+        /// </summary>
+        public static string odin_read {
+            get {
+                return ResourceManager.GetString("odin_read", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reading the phone….
+        /// </summary>
+        public static string odin_reading_title {
+            get {
+                return ResourceManager.GetString("odin_reading_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keep the cable in. This takes a few seconds..
+        /// </summary>
+        public static string odin_reading {
+            get {
+                return ResourceManager.GetString("odin_reading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reading failed.
+        /// </summary>
+        public static string odin_failed {
+            get {
+                return ResourceManager.GetString("odin_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Another program has the phone's port ({0}): close Odin, Smart Switch or any f....
+        /// </summary>
+        public static string odin_err_busy {
+            get {
+                return ResourceManager.GetString("odin_err_busy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone's port went away: was the cable pulled, or did the phone leave Down....
+        /// </summary>
+        public static string odin_err_gone {
+            get {
+                return ResourceManager.GetString("odin_err_gone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone's port did not open: {0}.
+        /// </summary>
+        public static string odin_err_open {
+            get {
+                return ResourceManager.GetString("odin_err_open", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone did not answer as a phone in Download mode does..
+        /// </summary>
+        public static string odin_err_handshake {
+            get {
+                return ResourceManager.GetString("odin_err_handshake", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone stopped answering: {0}.
+        /// </summary>
+        public static string odin_err_other {
+            get {
+                return ResourceManager.GetString("odin_err_other", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Before trying again, restart the phone into Download mode: hold Volume Down +....
+        /// </summary>
+        public static string odin_err_restart {
+            get {
+                return ResourceManager.GetString("odin_err_restart", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use a cable that carries data, plugged straight into the computer (no hub)..
+        /// </summary>
+        public static string odin_err_cable {
+            get {
+                return ResourceManager.GetString("odin_err_cable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Try again.
+        /// </summary>
+        public static string odin_try_again {
+            get {
+                return ResourceManager.GetString("odin_try_again", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Phone read.
+        /// </summary>
+        public static string odin_done {
+            get {
+                return ResourceManager.GetString("odin_done", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} read.
+        /// </summary>
+        public static string odin_done_model {
+            get {
+                return ResourceManager.GetString("odin_done_model", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Nothing was written to the phone..
+        /// </summary>
+        public static string odin_done_note {
+            get {
+                return ResourceManager.GetString("odin_done_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string odin_model {
+            get {
+                return ResourceManager.GetString("odin_model", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Serial.
+        /// </summary>
+        public static string odin_serial {
+            get {
+                return ResourceManager.GetString("odin_serial", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Region (CSC).
+        /// </summary>
+        public static string odin_region {
+            get {
+                return ResourceManager.GetString("odin_region", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Carrier.
+        /// </summary>
+        public static string odin_carrier {
+            get {
+                return ResourceManager.GetString("odin_carrier", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Odin protocol.
+        /// </summary>
+        public static string odin_protocol {
+            get {
+                return ResourceManager.GetString("odin_protocol", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to v{0}.
+        /// </summary>
+        public static string odin_protocol_value {
+            get {
+                return ResourceManager.GetString("odin_protocol_value", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to v{0}, takes LZ4 firmware.
+        /// </summary>
+        public static string odin_protocol_lz4 {
+            get {
+                return ResourceManager.GetString("odin_protocol_lz4", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Partition table.
+        /// </summary>
+        public static string odin_pit {
+            get {
+                return ResourceManager.GetString("odin_pit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} partitions.
+        /// </summary>
+        public static string odin_pit_value {
+            get {
+                return ResourceManager.GetString("odin_pit_value", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This bootloader does not tell its model; the partition table was read..
+        /// </summary>
+        public static string odin_info_missing {
+            get {
+                return ResourceManager.GetString("odin_info_missing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The model could not be read; the partition table was read..
+        /// </summary>
+        public static string odin_info_failed {
+            get {
+                return ResourceManager.GetString("odin_info_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ID.
+        /// </summary>
+        public static string odin_col_id {
+            get {
+                return ResourceManager.GetString("odin_col_id", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Partition.
+        /// </summary>
+        public static string odin_col_partition {
+            get {
+                return ResourceManager.GetString("odin_col_partition", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        public static string odin_col_file {
+            get {
+                return ResourceManager.GetString("odin_col_file", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Blocks.
+        /// </summary>
+        public static string odin_col_blocks {
+            get {
+                return ResourceManager.GetString("odin_col_blocks", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone is restarting into Android..
+        /// </summary>
+        public static string odin_ended_android {
+            get {
+                return ResourceManager.GetString("odin_ended_android", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone is restarting into Download mode..
+        /// </summary>
+        public static string odin_ended_download {
+            get {
+                return ResourceManager.GetString("odin_ended_download", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone did not answer the end of the session: hold Volume Down + Power for....
+        /// </summary>
+        public static string odin_not_ended {
+            get {
+                return ResourceManager.GetString("odin_not_ended", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Save PIT….
+        /// </summary>
+        public static string odin_save_pit {
+            get {
+                return ResourceManager.GetString("odin_save_pit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Saved: {0}.
+        /// </summary>
+        public static string odin_saved {
+            get {
+                return ResourceManager.GetString("odin_saved", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copy details.
+        /// </summary>
+        public static string odin_copy {
+            get {
+                return ResourceManager.GetString("odin_copy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copied.
+        /// </summary>
+        public static string odin_copied {
+            get {
+                return ResourceManager.GetString("odin_copied", resourceCulture);
+            }
+        }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to This phone does not restart into Download mode by itself: it is restarting in....
+        /// </summary>
+        public static string odin_ended_android_instead {
+            get {
+                return ResourceManager.GetString("odin_ended_android_instead", resourceCulture);
+            }
+        }
+            
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string nav_settings {
+            get {
+                return ResourceManager.GetString("nav_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language, look and updates..
+        /// </summary>
+        public static string settings_subtitle {
+            get {
+                return ResourceManager.GetString("settings_subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Look.
+        /// </summary>
+        public static string settings_look {
+            get {
+                return ResourceManager.GetString("settings_look", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text size.
+        /// </summary>
+        public static string text_size {
+            get {
+                return ResourceManager.GetString("text_size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every page follows it right away..
+        /// </summary>
+        public static string text_size_note {
+            get {
+                return ResourceManager.GetString("text_size_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Small.
+        /// </summary>
+        public static string text_size_small {
+            get {
+                return ResourceManager.GetString("text_size_small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        public static string text_size_default {
+            get {
+                return ResourceManager.GetString("text_size_default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Large.
+        /// </summary>
+        public static string text_size_large {
+            get {
+                return ResourceManager.GetString("text_size_large", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Larger.
+        /// </summary>
+        public static string text_size_larger {
+            get {
+                return ResourceManager.GetString("text_size_larger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is how text looks.
+        /// </summary>
+        public static string text_size_preview {
+            get {
+                return ResourceManager.GetString("text_size_preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flash, back up and root, safely..
+        /// </summary>
+        public static string text_size_preview_note {
+            get {
+                return ResourceManager.GetString("text_size_preview_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flash, back up and root Android phones from Windows, safely..
+        /// </summary>
+        public static string about_tagline {
+            get {
+                return ResourceManager.GetString("about_tagline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free and open source.
+        /// </summary>
+        public static string about_free {
+            get {
+                return ResourceManager.GetString("about_free", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for updates.
+        /// </summary>
+        public static string about_check_updates {
+            get {
+                return ResourceManager.GetString("about_check_updates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Built on.
+        /// </summary>
+        public static string about_built_on {
+            get {
+                return ResourceManager.GetString("about_built_on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inside.
+        /// </summary>
+        public static string about_inside {
+            get {
+                return ResourceManager.GetString("about_inside", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checks.
+        /// </summary>
+        public static string about_checks {
+            get {
+                return ResourceManager.GetString("about_checks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tools.
+        /// </summary>
+        public static string about_tools {
+            get {
+                return ResourceManager.GetString("about_tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telegram group.
+        /// </summary>
+        public static string about_telegram_group {
+            get {
+                return ResourceManager.GetString("about_telegram_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All my tools.
+        /// </summary>
+        public static string about_all_tools {
+            get {
+                return ResourceManager.GetString("about_all_tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probably unlocked.
+        /// </summary>
+        public static string phone_likely_unlocked {
+            get {
+                return ResourceManager.GetString("phone_likely_unlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The properties say locked, but {0} on this phone needs an un.
+        /// </summary>
+        public static string phone_likely_unlocked_note {
+            get {
+                return ResourceManager.GetString("phone_likely_unlocked_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the Companion's backups.
+        /// </summary>
+        public static string phone_backups_sign {
+            get {
+                return ResourceManager.GetString("phone_backups_sign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, not allowed for Shell.
+        /// </summary>
+        public static string phone_root_not_for_shell {
+            get {
+                return ResourceManager.GetString("phone_root_not_for_shell", resourceCulture);
             }
         }
     }

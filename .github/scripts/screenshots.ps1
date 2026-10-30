@@ -72,6 +72,8 @@ Set-Content $fakeUsb @(
 $env:FASTBOOT_STUDIO_FAKE_USB = $fakeUsb
 # No update check by itself while the screens are captured; the update dialog is tested at the end.
 $env:FASTBOOT_STUDIO_UPDATE_FEED = 'off'
+# No tour or What's new over the pages; both are captured on their own near the end.
+$env:FASTBOOT_STUDIO_WELCOME = 'off'
 Remove-Item $saveRoot -Recurse -Force -ErrorAction SilentlyContinue
 
 function Save-Desktop([string] $name) {
@@ -1019,6 +1021,8 @@ Go 'logs_tab' | Out-Null
 Save-Window ('{0:D2}-logs' -f $i); $i++
 Go 'about_tab' | Out-Null
 Save-Window ('{0:D2}-about' -f $i); $i++
+Go 'settings_tab' | Out-Null
+Save-Window ('{0:D2}-settings' -f $i); $i++
 
 if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception" }
 if ($proc.HasExited) { Fail "app exited while being captured, code $($proc.ExitCode)" }
@@ -1117,6 +1121,8 @@ if ($Arabic) {
     # A dialog: switching back to English asks to restart. Answer "No" (the first button).
     Go 'about_tab' | Out-Null
     Save-Window 'ar-06-about'
+    Go 'settings_tab' | Out-Null
+    Save-Window 'ar-06b-settings'
     # The language buttons sit in a panel UI Automation does not see; find "English" by name.
     $byName = New-Object System.Windows.Automation.PropertyCondition($UIA::NameProperty, 'English')
     $english = Wait-For { $root.FindFirst($Scope::Descendants, $byName) } 10 "the English button"
@@ -1170,6 +1176,130 @@ if ($proc.HasExited) { Fail "the light-theme app exited while being captured, co
 Stop-Process -Id $proc.Id -Force
 Remove-Item Env:FASTBOOT_STUDIO_THEME
 Write-Host "captured the light theme"
+
+# ---------------------------------------------------------------- the tour, What's new and the help panel
+# The first start: four steps, the page picked on the map opens at the end, and its ؟ opens
+# the help at the side. Then the start of a new version: What's new. In English, then Arabic.
+function Tour([string] $prefix, [string] $okLabel) {
+    $env:FASTBOOT_STUDIO_WELCOME = 'on'
+    $env:FASTBOOT_STUDIO_FAKE_SAMSUNG_DRIVER = 'missing'
+    Launch-App
+    $next = Wait-For { Shown $root 'welcome_next' } 30 "the tour ($prefix)"
+    Wait-For { Shown $root ('welcome_language_' + $(if ($prefix -eq 'ar') { 'ar' } else { 'en' })) } 10 "the language step ($prefix)" | Out-Null
+    Start-Sleep -Milliseconds 600
+    Save-Window "$prefix-welcome-1-language"
+    Press 'welcome_next'
+    Wait-For { Shown $root 'welcome_page_samsung' } 10 "the page map ($prefix)" | Out-Null
+    Press 'welcome_page_samsung'
+    Start-Sleep -Milliseconds 600
+    Save-Window "$prefix-welcome-2-pages"
+    Press 'welcome_next'
+    # The check reads the PC: the Samsung driver is "missing", the stand-in USB list has a phone without a driver.
+    Wait-For { Shown $root 'welcome_install_samsung' } 30 "the quick check ($prefix)" | Out-Null
+    Wait-For { Shown $root 'welcome_usb_check' } 30 "the USB line of the check ($prefix)" | Out-Null
+    Start-Sleep -Milliseconds 600
+    Save-Window "$prefix-welcome-3-check"
+    Press 'welcome_next'
+    Start-Sleep -Milliseconds 800
+    Save-Window "$prefix-welcome-4-safety"
+    Press 'welcome_next'
+    # The page picked on the map is open, and the tour is gone.
+    Wait-For { Shown $root 'samsung_open' } 10 "the Samsung page after the tour ($prefix)" | Out-Null
+    if ($null -ne (Shown $root 'welcome_next')) { Fail "the tour is still showing after Start ($prefix)" }
+    Press 'help_samsung'
+    Wait-For { Shown $root 'help_close' } 10 "the Samsung help ($prefix)" | Out-Null
+    Start-Sleep -Milliseconds 800
+    Save-Window "$prefix-help-samsung"
+    # Another page while the help is open: its own help follows.
+    Go 'device_tab' | Out-Null
+    Start-Sleep -Milliseconds 800
+    Save-Window "$prefix-help-device"
+    Press 'help_close'
+    Wait-For { $null -eq (Shown $root 'help_close') } 10 "the help to close ($prefix)" | Out-Null
+    if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception in the tour ($prefix)" }
+    Stop-Process -Id $proc.Id -Force
+    Start-Sleep -Seconds 2
+
+    $env:FASTBOOT_STUDIO_WELCOME = 'whatsnew'
+    Launch-App
+    Wait-For { $n = Shown $root 'welcome_next'; $null -ne $n -and $n.Current.Name -eq $okLabel } 30 "What's new ($prefix)" | Out-Null
+    Start-Sleep -Milliseconds 600
+    Save-Window "$prefix-whats-new"
+    Press 'welcome_next'
+    Wait-For { $null -eq (Shown $root 'welcome_next') } 10 "What's new to close ($prefix)" | Out-Null
+    if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception in What's new ($prefix)" }
+    Stop-Process -Id $proc.Id -Force
+    Remove-Item Env:FASTBOOT_STUDIO_FAKE_SAMSUNG_DRIVER
+    $env:FASTBOOT_STUDIO_WELCOME = 'off'
+    Start-Sleep -Seconds 2
+}
+Tour 'en' 'OK'
+if ($Arabic) {
+    $env:FASTBOOT_STUDIO_LANG = 'ar'
+    Tour 'ar' 'تمام'
+    Remove-Item Env:FASTBOOT_STUDIO_LANG
+}
+Write-Host "tour, What's new and help: shown, the picked page opened, the help followed the page"
+
+# ---------------------------------------------------------------- Download mode (Odin, reading only)
+# A stand-in phone answers the Odin protocol on a made-up COM9: the window finds it, reads its
+# PIT and model, and restarts it. Then a port another program holds, which must fail clearly.
+function Save-Dialog($dialog, [string] $name) {
+    [Win32]::SetForegroundWindow([IntPtr]$dialog.Current.NativeWindowHandle) | Out-Null
+    Start-Sleep -Milliseconds 800
+    $b = $dialog.Current.BoundingRectangle
+    $bmp = New-Object System.Drawing.Bitmap ([int]$b.Width), ([int]$b.Height)
+    $g = [System.Drawing.Graphics]::FromImage($bmp)
+    $g.CopyFromScreen([int]$b.Left, [int]$b.Top, 0, 0, $bmp.Size)
+    $path = Join-Path $Out "$name.png"
+    $bmp.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
+    $g.Dispose(); $bmp.Dispose()
+    Write-Host "saved $path ($([int]$b.Width)x$([int]$b.Height))"
+}
+
+function Odin([string] $prefix, [string] $mode) {
+    $env:FASTBOOT_STUDIO_FAKE_ODIN = $mode
+    $env:FASTBOOT_STUDIO_FAKE_SAMSUNG_DRIVER = 'installed'
+    Launch-App
+    Go 'samsung_tab' | Out-Null
+    Press 'samsung_odin'
+    $dialog = Wait-For { Find-Dialog } 20 "the Download mode window ($prefix)"
+    $read = Wait-For { $b = By-Id $dialog 'odin_primary'; if ($null -ne $b -and $b.Current.IsEnabled) { $b } } 20 "the stand-in phone to be found ($prefix)"
+    Save-Dialog $dialog "$prefix-odin-1-ready"
+    $label = $read.Current.Name
+    $read.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+    if ($mode -eq 'phone') {
+        Wait-For { Shown $dialog 'odin_extra' } 30 "the reading to finish ($prefix)" | Out-Null
+        Save-Dialog $dialog "$prefix-odin-2-read"
+    } else {
+        Wait-For { $b = By-Id $dialog 'odin_primary'; $null -ne $b -and $b.Current.Name -ne $label -and -not $b.Current.IsOffscreen } 30 "the failure ($prefix)" | Out-Null
+        Save-Dialog $dialog "$prefix-odin-3-$mode"
+    }
+    $close = By-Id $dialog 'odin_secondary'
+    $close.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+    Wait-For { $null -eq (Find-Dialog) } 10 "the Download mode window to close ($prefix)" | Out-Null
+    Go 'logs_tab' | Out-Null
+    $logText = (By-Id $root 'log_text').GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern).Current.Value
+    if ($mode -eq 'phone') {
+        if ($logText -notmatch 'odin: handshake LOKE') { Fail "the Odin handshake was not logged ($prefix)" }
+        if ($logText -notmatch 'odin: PIT, \d+ bytes') { Fail "the PIT was not read ($prefix)" }
+        if ($logText -notmatch 'odin: restart Normal') { Fail "the phone was not restarted ($prefix)" }
+    } elseif ($logText -notmatch 'odin: reading failed') {
+        Fail "the failure was not logged ($prefix)"
+    }
+    if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception in the Download mode window ($prefix)" }
+    Stop-Process -Id $proc.Id -Force
+    Remove-Item Env:FASTBOOT_STUDIO_FAKE_ODIN, Env:FASTBOOT_STUDIO_FAKE_SAMSUNG_DRIVER
+    Start-Sleep -Seconds 2
+}
+Odin 'en' 'phone'
+Odin 'en' 'busy'
+if ($Arabic) {
+    $env:FASTBOOT_STUDIO_LANG = 'ar'
+    Odin 'ar' 'phone'
+    Remove-Item Env:FASTBOOT_STUDIO_LANG
+}
+Write-Host "Download mode: the stand-in phone found, read and restarted; a busy port reported"
 
 # ---------------------------------------------------------------- the update dialog
 # A test feed stands in for GitHub: a newer release whose zip is a local file. The dialog must
@@ -1225,8 +1355,8 @@ if (Test-Path "$saved.part") { Fail "the partial download was left behind" }
 Wait-For { $null -eq (Find-Dialog) } 10 "the update dialog to close" | Out-Null
 # The sidebar badge sits in the navigation template, which UI Automation does not expose; it
 # shows in this capture, and About says the same.
-Go 'about_tab' | Out-Null
-Wait-For { (By-Id $root 'update_status').Current.Name -match '9\.9\.9' } 10 "About to name the new version" | Out-Null
+Go 'settings_tab' | Out-Null
+Wait-For { (By-Id $root 'update_status').Current.Name -match '9\.9\.9' } 10 "Settings to name the new version" | Out-Null
 Start-Sleep -Milliseconds 600
 Save-Window 'update-03-about'
 if ($proc.HasExited) { Fail "the app exited during the update check" }

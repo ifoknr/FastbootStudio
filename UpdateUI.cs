@@ -171,7 +171,7 @@ namespace FastbootEnhance
                 return;
             }
             // Skipped by the person, or not a good moment: the badge is enough.
-            if (Settings.Get(SkipKey) == release.Tag || Busy || window.OwnedWindows.Count > 0 || !window.IsActive && !FeedFile)
+            if (Settings.Get(SkipKey) == release.Tag || Busy || WelcomeUI.IsOpen || window.OwnedWindows.Count > 0 || !window.IsActive && !FeedFile)
                 return;
             UpdateWindow.Show(release);
         }

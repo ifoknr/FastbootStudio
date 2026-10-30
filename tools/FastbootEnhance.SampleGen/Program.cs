@@ -17,6 +17,36 @@ namespace FastbootEnhance.SampleGen
 
         static int Main(string[] args)
         {
+            // For CI on Windows: what the app makes of Samsung's driver page and installer.
+            if (args.Length == 2 && args[0] == "samsung-link")
+            {
+                string link = FastbootEnhance.Core.Usb.SamsungDriver.FindDownloadLink(File.ReadAllText(args[1]));
+                Console.WriteLine(link ?? "");
+                return link == null ? 2 : 0;
+            }
+            // The installer is started while the app holds it open without write or delete sharing:
+            // Windows must still start a program held that way.
+            if (args.Length == 3 && args[0] == "run-locked")
+            {
+                using (FileStream locked = new FileStream(args[1], FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    Console.WriteLine("subject=" + (FastbootEnhance.Core.Usb.Authenticode.VerifiedSigner(locked)?.Replace("\r\n", ", ") ?? "(none)"));
+                    using (var p = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(args[1], args[2]) { UseShellExecute = true }))
+                    {
+                        p.WaitForExit();
+                        Console.WriteLine("exit=" + p.ExitCode);
+                        return p.ExitCode;
+                    }
+                }
+            }
+            if (args.Length == 2 && args[0] == "signer")
+            {
+                string subject = FastbootEnhance.Core.Usb.Authenticode.VerifiedSigner(args[1]);
+                Console.WriteLine("subject=" + (subject?.Replace("\r\n", ", ") ?? "(no trusted signature)"));
+                Console.WriteLine("samsung=" + FastbootEnhance.Core.Usb.SamsungDriver.IsSamsungSubject(subject));
+                return 0;
+            }
+
             string outDir = args.Length > 0 ? args[0] : "sample";
 
             var layout = new (string name, int kilobytes, InstallOperation.Types.Type codec, bool dynamic)[]

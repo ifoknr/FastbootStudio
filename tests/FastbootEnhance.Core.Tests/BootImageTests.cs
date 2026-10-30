@@ -459,5 +459,33 @@ namespace FastbootEnhance.Core.Tests
             Assert.Equal(RootKind.APatch, BootFlashCheck.RootFromName(" apatch "));
             Assert.Equal(RootKind.None, BootFlashCheck.RootFromName(null));
         }
-    }
+    
+        [Fact]
+        public void A_rooted_image_is_said_so_before_it_is_written()
+        {
+            BootImageAnalysis magisk = Analyze(BootImage(4, new byte[0], Gzip(Cpio("init", "system/bin/init", ".backup/.magisk", ".backup/init", "overlay.d/sbin/magisk64.xz"))));
+            Assert.Equal(RootKind.Magisk, magisk.Root);
+            List<Finding> f = BootFlashCheck.Check(magisk, "init_boot_a", Phone(), true);
+            Finding rooted = Assert.Single(f, x => x.Code == FindingCode.RootSummary);
+            Assert.Equal(FindingLevel.Notice, rooted.Level);
+            Assert.Equal("Magisk", rooted.Values[0]);
+            // A notice asks, but is less than a warning: nothing here looks wrong.
+            Assert.Equal(FindingLevel.Notice, BootFlashCheck.Worst(f));
+
+            // A stock image flashes without a question, as before.
+            Assert.Equal(FindingLevel.Info, BootFlashCheck.Worst(BootFlashCheck.Check(Gki("5.10.205-android12-9-g9"), "boot_a", Phone(), true)));
+        }
+
+        [Fact]
+        public void A_recovery_image_suggests_booting_it_once_first()
+        {
+            List<Finding> f = BootFlashCheck.Check(Gki("5.10.205-android12-9-g9"), "recovery", Phone(), true);
+            Finding hint = Assert.Single(f, x => x.Code == FindingCode.RecoveryTryFirst);
+            Assert.Equal(FindingLevel.Notice, hint.Level);
+            Assert.Equal("recovery", hint.Values[0]);
+            // Only for recovery: a boot image is not asked about.
+            Assert.DoesNotContain(BootFlashCheck.Check(Gki("5.10.205-android12-9-g9"), "boot_a", Phone(), true),
+                x => x.Code == FindingCode.RecoveryTryFirst);
+        }
+}
 }

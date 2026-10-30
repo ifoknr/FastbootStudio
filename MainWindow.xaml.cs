@@ -11,7 +11,7 @@ namespace FastbootEnhance
     public partial class MainWindow : Window
     {
         public static MainWindow THIS;
-        internal const string version = "2.7.1";
+        internal const string version = "2.8.0";
 
         public MainWindow()
         {
@@ -55,10 +55,20 @@ namespace FastbootEnhance
             wireLanguages();
             wireThemes();
             wireRendering();
+            wireTextSize();
             UpdateUI.init();
             RootUI.init();
             PhoneUI.init();
             TerminalUI.init();
+            HelpUI.init();
+            WelcomeUI.init();
+
+            // Esc closes the tour or the help panel, whichever is on top.
+            PreviewKeyDown += (sender, e) =>
+            {
+                if (!WelcomeUI.HandleKey(e))
+                    HelpUI.HandleKey(e);
+            };
 
             // Closing mid-flash kills the worker between partitions and can leave the phone
             // half written, so it has to be a deliberate choice.
@@ -188,6 +198,46 @@ namespace FastbootEnhance
                 };
                 rendering_buttons.Children.Add(button);
             }
+        }
+
+        /// <summary>Small, default, large, larger: applies to every page right away.</summary>
+        void wireTextSize()
+        {
+            TextSize.Apply(root_grid);
+            string[] names = { Properties.Resources.text_size_small, Properties.Resources.text_size_default,
+                Properties.Resources.text_size_large, Properties.Resources.text_size_larger };
+            for (int i = 0; i < TextSize.Codes.Length; i++)
+            {
+                string code = TextSize.Codes[i];
+                System.Windows.Controls.Button button = new System.Windows.Controls.Button
+                {
+                    Content = names[i],
+                    Tag = code,
+                    Padding = new Thickness(14, 5, 14, 5),
+                    Margin = new Thickness(0, 0, 8, 8),
+                };
+                button.Click += delegate
+                {
+                    TextSize.Set(root_grid, code);
+                    TextSize.Save(code);
+                    paintTextSizes();
+                };
+                text_size_buttons.Children.Add(button);
+            }
+            paintTextSizes();
+
+            // The hero's button checks right away and shows the answer where updates live.
+            about_check_updates.Click += delegate
+            {
+                main_tabs.SelectedItem = settings_tab;
+                update_check_now.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+            };
+        }
+
+        void paintTextSizes()
+        {
+            foreach (System.Windows.Controls.Button button in text_size_buttons.Children)
+                button.Style = (Style)FindResource((string)button.Tag == TextSize.Chosen ? "AccentButton" : "GhostButton");
         }
 
         static bool looksLikePayload(string path)
@@ -326,6 +376,16 @@ namespace FastbootEnhance
         private void Telegram_Click(object sender, RoutedEventArgs e)
         {
             openInBrowser("https://t.me/IFOKNR1");
+        }
+
+        private void Group_Click(object sender, RoutedEventArgs e)
+        {
+            openInBrowser("https://t.me/BeNeXTBrO");
+        }
+
+        private void Site_Click(object sender, RoutedEventArgs e)
+        {
+            openInBrowser("https://ifoknr.com");
         }
 
         private void GitHub_Click(object sender, RoutedEventArgs e)

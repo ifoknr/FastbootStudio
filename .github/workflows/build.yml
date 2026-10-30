@@ -69,6 +69,51 @@ jobs:
             if (-not (Test-Path (Join-Path publish $f))) { throw "$f missing from publish output" }
           }
 
+      # The Samsung driver button keeps an installer only when Windows verifies Samsung's
+      # signature on it. Checked here with Samsung's real file; if Samsung cannot be reached,
+      # this only warns, since the check is about the app, not Samsung's servers.
+      - name: Samsung driver link and signature
+        shell: pwsh
+        run: |
+          $gen = 'tools/FastbootEnhance.SampleGen'
+          $neg = dotnet run --project $gen -c Release -- signer publish/adb.exe
+          Write-Host "adb.exe: $neg"
+          if (-not ($neg -match 'samsung=False')) { throw "adb.exe was taken for Samsung's driver" }
+          # A working check names Google on adb.exe; a broken one would name nobody.
+          if (-not ($neg -match 'O=Google LLC')) { throw "adb.exe's Google signature was not verified" }
+          $copy = Join-Path $env:RUNNER_TEMP 'locked-adb.exe'
+          Copy-Item publish/adb.exe $copy
+          Copy-Item publish/AdbWinApi.dll, publish/AdbWinUsbApi.dll $env:RUNNER_TEMP
+          $run = dotnet run --project $gen -c Release -- run-locked $copy version
+          Write-Host "run while held open: $run"
+          if (-not ($run -match 'exit=0')) { throw "a program held open for its check could not be started" }
+          $bad = Join-Path $env:RUNNER_TEMP 'unsigned.exe'
+          Copy-Item publish/adb.exe $bad
+          $bytes = [IO.File]::ReadAllBytes($bad); $bytes[1024] = $bytes[1024] -bxor 0xFF; [IO.File]::WriteAllBytes($bad, $bytes)
+          $tampered = dotnet run --project $gen -c Release -- signer $bad
+          Write-Host "tampered adb.exe: $tampered"
+          if (-not ($tampered -match 'no trusted signature')) { throw "a tampered file passed the signature check" }
+          try {
+            $page = Join-Path $env:RUNNER_TEMP 'samsung.html'
+            Invoke-WebRequest 'https://developer.samsung.com/android-usb-driver' -UseBasicParsing -TimeoutSec 60 -OutFile $page
+            $link = dotnet run --project $gen -c Release -- samsung-link $page
+            if ($LASTEXITCODE -ne 0) { Write-Warning "no download link found on Samsung's page"; $link = 'https://developer.samsung.com/SDP/file/a2fcaf64-7aa3-49f7-b06f-9e646590d528' }
+            Write-Host "link: $link"
+            $drv = Join-Path $env:RUNNER_TEMP 'samsung-driver.exe'
+            Invoke-WebRequest $link -UseBasicParsing -TimeoutSec 300 -OutFile $drv
+          } catch {
+            Write-Warning "Samsung could not be reached: $_"
+            exit 0
+          }
+          $head = [IO.File]::ReadAllBytes($drv)
+          if ($head.Length -lt 5MB -or $head[0] -ne 0x4D -or $head[1] -ne 0x5A) {
+            Write-Warning "Samsung did not send the installer (got $($head.Length) bytes)"
+            exit 0
+          }
+          $pos = dotnet run --project $gen -c Release -- signer $drv
+          Write-Host "Samsung's installer: $pos"
+          if (-not ($pos -match 'samsung=True')) { throw "Samsung's own installer did not pass the signature check" }
+
       - uses: actions/upload-artifact@v4
         with:
           name: FastbootStudio-win-x64

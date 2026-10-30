@@ -10,6 +10,9 @@ namespace FastbootEnhance.Core.Fastboot
         /// <summary>Good to know; flashing goes ahead.</summary>
         Info,
 
+        /// <summary>Worth a word before writing (a rooted image, a recovery): asks, yes by default.</summary>
+        Notice,
+
         /// <summary>Probably a mistake: asks before flashing.</summary>
         Warn,
 
@@ -32,6 +35,9 @@ namespace FastbootEnhance.Core.Fastboot
 
         /// <summary>The image is rooted with another root manager than the phone runs (from the Companion).</summary>
         RootManagerChange,
+
+        /// <summary>A recovery image: it can be tried with "boot once" before it is written.</summary>
+        RecoveryTryFirst,
     }
 
     public sealed class Finding
@@ -96,6 +102,8 @@ namespace FastbootEnhance.Core.Fastboot
             if (image.Kind == BootImageKind.VendorBoot)
                 return findings;
 
+            if (target == "recovery" && image.Kind == BootImageKind.Bootable)
+                findings.Add(new Finding(FindingLevel.Notice, FindingCode.RecoveryTryFirst, partition));
             if ((target == "boot" || target == "recovery") && image.Kind == BootImageKind.NoKernel)
                 findings.Add(new Finding(FindingLevel.Block, FindingCode.NoKernelForBoot, partition,
                     phoneHasInitBoot ? "init_boot" : ""));
@@ -124,8 +132,12 @@ namespace FastbootEnhance.Core.Fastboot
             if (root != RootKind.None && phoneRoot != RootKind.None && (root & phoneRoot) == 0)
                 findings.Add(new Finding(FindingLevel.Warn, FindingCode.RootManagerChange,
                     RootName(root, false), RootName(phoneRoot, false)));
-            if (root != RootKind.None || (kernel?.SuSFS ?? false))
-                findings.Add(new Finding(FindingLevel.Info, FindingCode.RootSummary, RootName(root, kernel?.SuSFS ?? false)));
+            // A rooted image is said so before it is written, so a stock image is not mistaken for
+            // it and the other way round; a kernel with only SuSFS is no root of its own.
+            if (root != RootKind.None)
+                findings.Add(new Finding(FindingLevel.Notice, FindingCode.RootSummary, RootName(root, kernel?.SuSFS ?? false)));
+            else if (kernel?.SuSFS ?? false)
+                findings.Add(new Finding(FindingLevel.Info, FindingCode.RootSummary, RootName(root, true)));
             else if ((kernel?.Readable ?? false) || (image.Ramdisk?.Readable ?? false))
                 findings.Add(new Finding(FindingLevel.Info, FindingCode.Stock));
             return findings;

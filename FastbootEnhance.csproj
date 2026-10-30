@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>2.7.1</Version>
+    <Version>2.8.0</Version>
     <AssemblyTitle>Fastboot Studio</AssemblyTitle>
     <Product>Fastboot Studio</Product>
     <Authors>IFOKNR; LibXZR</Authors>
@@ -62,7 +62,15 @@
   <ItemGroup>
     <Resource Include="icon.ico" />
     <EmbeddedResource Include="LICENSE" LogicalName="LICENSE.txt" />
+    <!-- Each page's help (HelpUI), and this version's notes for What's new (WelcomeUI). -->
+    <EmbeddedResource Include="Help\en\*.md" LogicalName="Help.en.%(Filename).md" />
+    <EmbeddedResource Include="Help\ar\*.md" LogicalName="Help.ar.%(Filename).md" />
+    <EmbeddedResource Include="CHANGELOG.md" LogicalName="CHANGELOG.md" />
     <Resource Include="big_icon.png" />
+    <Resource Include="Assets\signature-*.png" />
+    <Resource Include="Assets\appname-*.png" />
+    <Resource Include="Assets\icon-themed.png" />
+    <Resource Include="Assets\ifoknr-tile.png" />
     <!-- Roboto and Noto Kufi Arabic, embedded so the interface looks the same on every PC. -->
     <Resource Include="Fonts\*.ttf" />
   </ItemGroup>

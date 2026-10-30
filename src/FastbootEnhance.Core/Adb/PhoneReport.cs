@@ -113,11 +113,32 @@ namespace FastbootEnhance.Core.Adb
             "g arch ro.product.cpu.abi; g slot ro.boot.slot_suffix; g dynamic ro.boot.dynamic_partitions; " +
             "g avb ro.boot.verifiedbootstate; g device_state ro.boot.vbmeta.device_state; g locked ro.boot.flash.locked; " +
             "echo \"kernel=$(uname -r)\"; echo \"selinux=$(getenforce 2>/dev/null)\"; " +
+            // The bootloader's own words, when the shell may read them: ROMs and hiding modules
+            // change ro.boot.*, not the kernel's command line or bootconfig.
+            "echo \"bootargs=$({ cat /proc/bootconfig 2>/dev/null | tr -d ' \\\"'; tr ' ' '\\n' < /proc/cmdline 2>/dev/null; } | " +
+            "grep -E '^androidboot[.](vbmeta[.]device_state|flash[.]locked|verifiedbootstate)=' | tr '\\n' ' ')\"; " +
+            // Root managers need an unlocked bootloader; seen without root, they say it is most likely unlocked.
+            "echo \"rootapps=$(pm list packages 2>/dev/null | grep -oE '" + RootAppPattern + "' | tr '\\n' ' ')\"; " +
             "b=/sys/class/power_supply/battery; " +
             "for k in capacity cycle_count charge_full charge_full_design; do echo \"battery_$k=$(cat $b/$k 2>/dev/null)\"; done; " +
             "for d in " + BackupsFolder + "/*/; do [ -d \"$d\" ] || continue; n=${d%/}; n=${n##*/}; " +
             "f=$(cat \"${d}SHA256SUMS\" 2>/dev/null | wc -l); k=$(du -sk \"$d\" 2>/dev/null); " +
             "echo \"backup=$n|$f|${k%%[!0-9]*}|$(ls \"$d\" | tr '\\n' ' ')\"; done";
+
+        /// <summary>Root manager apps by package name, as the Phone page names them.</summary>
+        public static readonly IReadOnlyDictionary<string, string> RootApps = new Dictionary<string, string>
+        {
+            ["me.weishu.kernelsu"] = "KernelSU",
+            ["com.rifsxd.ksunext"] = "KernelSU Next",
+            ["com.sukisu.ultra"] = "SukiSU Ultra",
+            ["me.bmax.apatch"] = "APatch",
+            ["com.topjohnwu.magisk"] = "Magisk",
+            ["io.github.vvb2060.magisk"] = "Magisk Alpha",
+            ["io.github.huskydg.magisk"] = "Kitsune Magisk",
+        };
+
+        const string RootAppPattern = @"me[.]weishu[.]kernelsu|com[.]rifsxd[.]ksunext|com[.]sukisu[.]ultra|me[.]bmax[.]apatch"
+            + @"|com[.]topjohnwu[.]magisk|io[.]github[.]vvb2060[.]magisk|io[.]github[.]huskydg[.]magisk";
 
         /// <summary>
         /// Through su: the Companion's info and modules reports, separated by a line "@@", or
@@ -160,11 +181,25 @@ namespace FastbootEnhance.Core.Adb
         /// <summary>locked or unlocked.</summary>
         public string DeviceState { get; private set; }
 
-        /// <summary>The Companion found ro.boot.verifiedbootstate saying something else than the bootloader.</summary>
+        /// <summary>The boot properties (ro.boot.*) say something else than the bootloader or root do.</summary>
         public bool Spoofed { get; private set; }
 
         /// <summary>KernelSU, Magisk or APatch, from the Companion.</summary>
         public string Root { get; private set; }
+
+        /// <summary>Root manager apps installed on the phone ("KernelSU"), read without root.</summary>
+        public List<string> RootManagers { get; } = new List<string>();
+
+        /// <summary>The state came from the kernel's command line or bootconfig, read without root.</summary>
+        public bool StateFromKernel { get; private set; }
+
+        /// <summary>
+        /// Without root for the shell the properties are all the page has, and they say locked;
+        /// but a root manager is installed, or the Companion (which only runs as root) left
+        /// backups on the phone: the bootloader is most likely unlocked.
+        /// </summary>
+        public bool LikelyUnlocked => Companion == CompanionState.NoRoot && !StateFromKernel && DeviceState != "unlocked"
+            && (RootManagers.Count > 0 || Backups.Count > 0);
 
         // ---------------------------------------------------------------- health
 
@@ -247,6 +282,13 @@ namespace FastbootEnhance.Core.Adb
                 if (locked != null)
                     report.DeviceState = locked.Value ? "locked" : "unlocked";
             }
+            report.ApplyBootArgs(Get(values, "bootargs"));
+            foreach (string package in (Get(values, "rootapps") ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                string name;
+                if (RootApps.TryGetValue(package, out name) && !report.RootManagers.Contains(name))
+                    report.RootManagers.Add(name);
+            }
             report.SetKernel(Get(values, "kernel"));
             report.Selinux = Get(values, "selinux");
             report.BatteryLevel = Int(Get(values, "battery_capacity"));
@@ -272,6 +314,7 @@ namespace FastbootEnhance.Core.Adb
             if (output.Split('\n').Any(l => l.Trim() == CompanionMissing))
             {
                 Companion = CompanionState.NotInstalled;
+                RootMeansUnlocked();
                 return;
             }
 
@@ -284,15 +327,18 @@ namespace FastbootEnhance.Core.Adb
                 if (start < 0)
                 {
                     Companion = CompanionState.Refused;
+                    RootMeansUnlocked();
                     return;
                 }
                 using (JsonDocument doc = JsonDocument.Parse(info.Substring(start).Trim()))
                     ApplyInfo(doc.RootElement);
                 Companion = CompanionState.Ready;
+                RootMeansUnlocked();
             }
             catch (JsonException)
             {
                 Companion = CompanionState.Refused;
+                RootMeansUnlocked();
                 return;
             }
 
@@ -311,6 +357,57 @@ namespace FastbootEnhance.Core.Adb
             {
                 // A module list the app cannot read leaves the rest of the report as it is.
             }
+        }
+
+        /// <summary>
+        /// "androidboot.vbmeta.device_state=unlocked androidboot.verifiedbootstate=orange": the
+        /// bootloader's own words, which outrank the properties. In order: vbmeta's device
+        /// state, then flash.locked, then the boot state (orange is unlocked).
+        /// </summary>
+        void ApplyBootArgs(string args)
+        {
+            Dictionary<string, string> boot = new Dictionary<string, string>();
+            foreach (string pair in (args ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                int eq = pair.IndexOf('=');
+                if (eq > 0 && !boot.ContainsKey(pair.Substring(0, eq)))
+                    boot[pair.Substring(0, eq)] = pair.Substring(eq + 1).Trim().ToLowerInvariant();
+            }
+            string Arg(string key) => boot.TryGetValue("androidboot." + key, out string v) && v.Length > 0 ? v : null;
+
+            string vbstate = Arg("verifiedbootstate");
+            string state = Arg("vbmeta.device_state");
+            if (state != "locked" && state != "unlocked")
+            {
+                string locked = Arg("flash.locked");
+                state = locked == "0" ? "unlocked" : locked == "1" ? "locked"
+                    : vbstate == "orange" ? "unlocked" : vbstate == "green" || vbstate == "yellow" ? "locked" : null;
+            }
+            if (state == null)
+                return;
+            StateFromKernel = true;
+            if (state == "unlocked" && DeviceState == "locked")
+                Spoofed = true;
+            DeviceState = state;
+            if (vbstate != null)
+                Avb = vbstate;
+        }
+
+        /// <summary>
+        /// su runs on the phone, so it has root, which needs a modified boot image that a locked
+        /// bootloader does not start: the bootloader is unlocked whatever the properties say.
+        /// ROMs and hiding modules set ro.boot.* to "locked" and "green" for Play Integrity, and
+        /// older bootloaders (Qualcomm msm89xx and the like) give the Companion nothing better.
+        /// </summary>
+        void RootMeansUnlocked()
+        {
+            if (DeviceState == "unlocked")
+                return;
+            if (DeviceState == "locked" || Avb == "green")
+                Spoofed = true;
+            DeviceState = "unlocked";
+            if (Avb == "green")
+                Avb = "orange";
         }
 
         void ApplyInfo(JsonElement info)

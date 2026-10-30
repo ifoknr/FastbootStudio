@@ -598,17 +598,19 @@ namespace FastbootEnhance
         /// The USB check: looks at what Windows sees on USB and explains why a phone may be
         /// missing from the list (no driver, a broken driver, a download mode, Android mode).
         /// </summary>
-        static void checkUsb()
+        internal static void checkUsb()
         {
             MainWindow.THIS.fastboot_usb_check.IsEnabled = false;
             IReadOnlyList<UsbFinding> findings = null;
             Exception failure = null;
+            bool samsungDriver = true;
 
             Helper.offloadAndRun(new Action(delegate
             {
                 try
                 {
                     findings = UsbDiagnosis.Diagnose(UsbScan.Read());
+                    samsungDriver = DriverUI.SamsungInstalled();
                 }
                 catch (Exception e)
                 {
@@ -623,11 +625,11 @@ namespace FastbootEnhance
                     ThemedDialog.Show(failure.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                showUsbFindings(findings);
+                showUsbFindings(findings, samsungDriver);
             }));
         }
 
-        static void showUsbFindings(IReadOnlyList<UsbFinding> findings)
+        static void showUsbFindings(IReadOnlyList<UsbFinding> findings, bool samsungDriver)
         {
             List<string> lines = new List<string>();
             bool driverTrouble = false;
@@ -678,6 +680,25 @@ namespace FastbootEnhance
             }
 
             string text = string.Join("\n\n", lines.Select(line => "•  " + line));
+
+            // A Samsung in Download mode, or one without a working driver: Samsung's own driver is
+            // what it needs, and the app can fetch it.
+            bool samsungPhone = findings.Any(f => f.Kind == UsbFindingKind.SamsungDownload
+                || ((f.Kind == UsbFindingKind.MissingDriver || f.Kind == UsbFindingKind.DriverProblem) && f.Vid == "04E8"));
+            if (samsungPhone && !samsungDriver)
+            {
+                if (ThemedDialog.Show(text + "\n\n" + Properties.Resources.usb_samsung_driver_ask,
+                        Properties.Resources.usb_check_title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    DriverUI.InstallSamsung();
+                    return;
+                }
+                // Declined: the advice for the other phones still follows.
+                bool others = findings.Any(f => f.Vid != "04E8" && (f.Kind == UsbFindingKind.MissingDriver
+                    || f.Kind == UsbFindingKind.DriverProblem || f.Kind == UsbFindingKind.AdbReady));
+                if (!others)
+                    return;
+            }
 
             if (driverTrouble)
             {
@@ -1029,13 +1050,15 @@ namespace FastbootEnhance
                     ? string.Format(Properties.Resources.boot_check_phone_known, phone.Model ?? phone.Serial,
                         phone.Seen.ToLocalTime().ToString("yyyy-MM-dd"))
                     : Properties.Resources.boot_check_phone_unknown);
-                paragraphs.Add(string.Format(Properties.Resources.boot_check_question, target));
+                // Only notices (a rooted image, a recovery): nothing looks wrong, so it is a plain question.
+                paragraphs.Add(string.Format(worst == FindingLevel.Notice
+                    ? Properties.Resources.boot_check_question_notice : Properties.Resources.boot_check_question, target));
                 string text = string.Join("\n\n", paragraphs);
                 string title = string.Format(Properties.Resources.boot_check_title, target);
 
                 bool go = worst == FindingLevel.Block
                     ? ThemedDialog.ConfirmTyped(text, title, target)
-                    : Helper.confirm(text, title, true);
+                    : Helper.confirm(text, title, worst != FindingLevel.Notice);
                 if (go)
                     flash();
                 else
@@ -1069,7 +1092,10 @@ namespace FastbootEnhance
                 case FindingCode.KernelSummary:
                     return string.Format(Properties.Resources.boot_find_kernel, Helper.ltr(v[0] + (v[1].Length > 0 ? "  ·  KMI " + v[1] : "")));
                 case FindingCode.RootSummary:
-                    return string.Format(Properties.Resources.boot_find_root, v[0]);
+                    return string.Format(f.Level == FindingLevel.Notice ? Properties.Resources.boot_find_rooted
+                        : Properties.Resources.boot_find_root, v[0]);
+                case FindingCode.RecoveryTryFirst:
+                    return string.Format(Properties.Resources.boot_find_recovery_try, v[0]);
                 case FindingCode.Stock:
                     return Properties.Resources.boot_find_stock;
                 case FindingCode.RootManagerChange:

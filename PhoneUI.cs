@@ -279,17 +279,22 @@ namespace FastbootEnhance
             List<PhoneRow> rows = new List<PhoneRow>();
             add(rows, Properties.Resources.phone_kernel, phone.Kernel);
             add(rows, "KMI", phone.Kmi);
-            add(rows, Properties.Resources.phone_bootloader, phone.DeviceState == "unlocked" ? Properties.Resources.phone_unlocked
+            bool doubtful = !companionPending && phone.LikelyUnlocked;
+            add(rows, Properties.Resources.phone_bootloader, doubtful ? Properties.Resources.phone_likely_unlocked
+                : phone.DeviceState == "unlocked" ? Properties.Resources.phone_unlocked
                 : phone.DeviceState == "locked" ? Properties.Resources.phone_locked : phone.DeviceState);
             add(rows, "SELinux", phone.Selinux);
+            // A root manager the shell may not use: say so rather than "no root".
+            string manager = phone.RootManagers.Count > 0 ? string.Join(", ", phone.RootManagers) : null;
             add(rows, Properties.Resources.phone_root, ready ? phone.Root ?? Properties.Resources.phone_root_none
-                : phone.Companion == CompanionState.NoRoot && !companionPending ? Properties.Resources.phone_root_none
+                : phone.Companion == CompanionState.NoRoot && !companionPending
+                    ? (manager != null ? string.Format(Properties.Resources.phone_root_not_for_shell, manager) : Properties.Resources.phone_root_none)
                 : Properties.Resources.phone_root_unknown);
             W.phone_security_rows.ItemsSource = rows;
 
             if (phone.Avb != null)
             {
-                bool green = phone.Avb == "green";
+                bool green = phone.Avb == "green" && !doubtful;
                 W.phone_avb.Text = "AVB " + phone.Avb;
                 W.phone_avb.Foreground = Palette.Get(green ? "Ok" : "Warn");
                 W.phone_avb_chip.Background = Palette.Get(green ? "AccentSoft" : "WarnSoft");
@@ -301,13 +306,20 @@ namespace FastbootEnhance
                 W.phone_avb_chip.Visibility = Visibility.Collapsed;
             }
 
-            if (ready && phone.Spoofed)
+            if (doubtful)
+            {
+                string sign = manager ?? Properties.Resources.phone_backups_sign;
+                W.phone_avb_note.Text = string.Format(Properties.Resources.phone_likely_unlocked_note, sign);
+                W.phone_avb_note.Foreground = Palette.Get("Warn");
+                W.phone_avb_note.Visibility = Visibility.Visible;
+            }
+            else if (phone.Spoofed)
             {
                 W.phone_avb_note.Text = Properties.Resources.phone_spoofed;
                 W.phone_avb_note.Foreground = Palette.Get("Warn");
                 W.phone_avb_note.Visibility = Visibility.Visible;
             }
-            else if (!ready && phone.Avb != null)
+            else if (!ready && phone.Avb != null && !phone.StateFromKernel)
             {
                 W.phone_avb_note.Text = Properties.Resources.phone_avb_from_props;
                 W.phone_avb_note.Foreground = Palette.Get("Dim");

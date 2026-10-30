@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Diagnostics;
 using FastbootEnhance.Core.Adb;
 
@@ -146,6 +147,84 @@ namespace FastbootEnhance.Core.Tests
         }
 
         [Fact]
+        public void Root_means_an_unlocked_bootloader_whatever_the_properties_say()
+        {
+            // A Xiaomi msm8937 with KernelSU: the ROM sets ro.boot.* to locked and green, and
+            // the Companion is not installed, so the properties are all the report reads.
+            PhoneReport phone = PhoneReport.Parse(Basic);
+            Assert.Equal("locked", phone.DeviceState);
+            phone.ApplyCompanion(true, "fbs-missing\n");
+            Assert.Equal(CompanionState.NotInstalled, phone.Companion);
+            Assert.Equal("unlocked", phone.DeviceState);
+            Assert.Equal("orange", phone.Avb);
+            Assert.True(phone.Spoofed);
+
+            // An older Companion that still believed the properties.
+            PhoneReport old = PhoneReport.Parse(Basic);
+            old.ApplyCompanion(true, "{\"fbs\":\"2.5.1\",\"channel\":\"stable\",\"root\":\"KernelSU\"," +
+                "\"boot\":{\"vbstate\":\"orange\",\"device_state\":\"locked\",\"locked\":true,\"spoofed\":false}}\n");
+            Assert.Equal(CompanionState.Ready, old.Companion);
+            Assert.Equal("unlocked", old.DeviceState);
+            Assert.Equal("orange", old.Avb);
+            Assert.True(old.Spoofed);
+
+            // Without su nothing changes: the properties are all there is.
+            PhoneReport noRoot = PhoneReport.Parse(Basic);
+            noRoot.ApplyCompanion(false, "");
+            Assert.Equal("locked", noRoot.DeviceState);
+            Assert.False(noRoot.Spoofed);
+        }
+
+        [Fact]
+        public void Reads_the_bootloader_from_the_kernel_without_root()
+        {
+            // bootconfig readable by the shell: the bootloader's words win over ro.boot.*.
+            PhoneReport phone = PhoneReport.Parse(Basic.Replace("selinux=", "bootargs=androidboot.verifiedbootstate=orange androidboot.vbmeta.device_state=unlocked \nselinux="));
+            phone.ApplyCompanion(false, "");
+            Assert.True(phone.StateFromKernel);
+            Assert.Equal("unlocked", phone.DeviceState);
+            Assert.Equal("orange", phone.Avb);
+            Assert.True(phone.Spoofed);
+            Assert.False(phone.LikelyUnlocked);
+
+            // Only the boot state on the command line: orange means unlocked.
+            PhoneReport cmdline = PhoneReport.Parse(Basic.Replace("selinux=", "bootargs=androidboot.verifiedbootstate=orange \nselinux="));
+            Assert.Equal("unlocked", cmdline.DeviceState);
+
+            // A locked phone stays locked.
+            PhoneReport locked = PhoneReport.Parse(Basic.Replace("selinux=", "bootargs=androidboot.verifiedbootstate=green androidboot.flash.locked=1 \nselinux="));
+            Assert.Equal("locked", locked.DeviceState);
+            Assert.False(locked.Spoofed);
+        }
+
+        [Fact]
+        public void A_root_manager_or_Companion_backups_make_locked_properties_doubtful()
+        {
+            // KernelSU installed, but the shell is not allowed root: the properties say locked.
+            PhoneReport phone = PhoneReport.Parse(Basic.Replace("selinux=", "rootapps=me.weishu.kernelsu com.topjohnwu.magisk unknown.app \nselinux="));
+            phone.ApplyCompanion(false, "");
+            Assert.Equal(new[] { "KernelSU", "Magisk" }, phone.RootManagers);
+            Assert.Equal("locked", phone.DeviceState);
+            Assert.True(phone.LikelyUnlocked);
+
+            // Backups the Companion made, and no root manager seen.
+            PhoneReport backups = PhoneReport.Parse(Basic);
+            backups.ApplyCompanion(false, "");
+            Assert.True(backups.LikelyUnlocked);
+
+            // No sign of root at all: the properties stand.
+            string clean = string.Join("\n", Basic.Split('\n').Where(l => !l.StartsWith("backup=")));
+            PhoneReport plain = PhoneReport.Parse(clean);
+            plain.ApplyCompanion(false, "");
+            Assert.False(plain.LikelyUnlocked);
+
+            // With root the state is known, so there is nothing to doubt.
+            PhoneReport rooted = PhoneReport.Parse(Basic);
+            rooted.ApplyCompanion(true, "fbs-missing\n");
+            Assert.False(rooted.LikelyUnlocked);
+        }
+
+        [Fact]
         public void Tells_a_missing_module_from_a_refused_root()
         {
             PhoneReport none = PhoneReport.Parse(Basic);
@@ -159,7 +238,9 @@ namespace FastbootEnhance.Core.Tests
             PhoneReport refused = PhoneReport.Parse(Basic);
             refused.ApplyCompanion(true, "Permission denied\n");
             Assert.Equal(CompanionState.Refused, refused.Companion);
-            Assert.Equal("green", refused.Avb);
+            // su is there, so root is: the "green" and "locked" properties were set for Play Integrity.
+            Assert.Equal("orange", refused.Avb);
+            Assert.Equal("unlocked", refused.DeviceState);
 
             PhoneReport broken = PhoneReport.Parse(Basic);
             broken.ApplyCompanion(true, "{\"fbs\":\"2.4.0\",\"model\":");
