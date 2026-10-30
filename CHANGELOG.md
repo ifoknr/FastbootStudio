@@ -11,6 +11,8 @@
 - ينبهك إذا boot مروّت، ويقترح تجرب الريكفري مؤقتاً أول
 - سامسونج: حالة Knox، وخطوات Magisk أوضح (CSC أول مرة، HOME_CSC للتحديث)
 - جديد: قراءة الجوال في وضع التحميل (أودين): الموديل والمنطقة وجدول PIT
+- شكل جديد هادي وأيقونة رمادية، وصفحة «إعدادات» فيها حجم الخط، و«حول» جديدة
+- صفحة الجوال: البوت لودر يطلع صح حتى لو الروم تقول «مقفول»
 
 **English**
 - A ? on every page: help, steps and dangers in your language
@@ -19,6 +21,8 @@
 - A rooted boot image is named; a recovery suggests Boot once first
 - Samsung: Knox status; clearer Magisk steps (CSC first, HOME_CSC to update)
 - New: read a phone in Download mode (Odin): model, region and PIT
+- A calm new look and a grey icon, a Settings page with text size, and a new About
+- Phone page: the bootloader shows right even when the ROM says locked
 
 ## v2.7.1
 - القوايم ما تبيّض وقت فحص MD5 أو الاستخراج، تبقى داكنة لين يخلص الشغل
