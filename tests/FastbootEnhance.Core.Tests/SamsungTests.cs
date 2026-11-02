@@ -41,7 +41,7 @@ namespace FastbootEnhance.Core.Tests
         }
 
         /// <summary>An LZ4 frame of stored (uncompressed) blocks: valid LZ4 without a compressor.</summary>
-        static byte[] StoredFrame(byte[] data, bool checksum = true)
+        internal static byte[] StoredFrame(byte[] data, bool checksum = true)
         {
             MemoryStream ms = new MemoryStream();
             ms.Write(BitConverter.GetBytes(Lz4.FrameMagic), 0, 4);
