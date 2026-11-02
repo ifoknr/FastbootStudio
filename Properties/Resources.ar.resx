@@ -3235,7 +3235,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>فلاش الجوال</value>
   </data>
   <data name="odin_flash_intro" xml:space="preserve">
-    <value>اختر وش تبي تكتب: صورة وحدة (boot.img أو ‎.lz4)، أو tar من Magisk، أو ملفات الفيرموير BL وAP وCP وHOME_CSC. كل ملف ينفحص على جدول البارتشنات حق هالجوال وموديله قبل ما ينرسل أي شي.</value>
+    <value>اختر وش تبي تكتب: صورة وحدة (boot.img أو ‎.lz4)، أو tar من Magisk، أو ملفات الفيرموير: BL و AP و CP و HOME_CSC. كل ملف ينفحص على جدول البارتشنات حق هالجوال وموديله قبل ما ينرسل أي شي.</value>
   </data>
   <data name="odin_flash_choose" xml:space="preserve">
     <value>اختر الملفات…</value>
@@ -3335,7 +3335,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>فيه ملفين لـ {0}. خل واحد بس.</value>
   </data>
   <data name="odin_check_BothCsc" xml:space="preserve">
-    <value>اخترت CSC وHOME_CSC مع بعض. خل HOME_CSC عشان تحافظ على بياناتك، أو CSC عشان تمسح الجوال.</value>
+    <value>اخترت CSC و HOME_CSC مع بعض. خل HOME_CSC عشان تحافظ على بياناتك، أو CSC عشان تمسح الجوال.</value>
   </data>
   <data name="odin_check_OtherModel" xml:space="preserve">
     <value>الفيرموير لـ {0}، وهالجوال {1}. ما ينفلش.</value>
@@ -3344,7 +3344,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>الجوال ما قال موديله، فما أقدر أطابق الفيرموير ({0}) معه. تأكد إنه لهالجوال.</value>
   </data>
   <data name="odin_check_Mixed" xml:space="preserve">
-    <value>هالملفات من بيلد ثاني: {0}. استخدم BL وAP وCP وCSC من نفس الفيرموير.</value>
+    <value>هالملفات من بيلد ثاني: {0}. استخدم BL و AP و CP و CSC من نفس الفيرموير.</value>
   </data>
   <data name="odin_check_Bootloader" xml:space="preserve">
     <value>{0} جزء من البوتلودر. لو غلط ممكن الجوال ما يشتغل، والجوال يرفض النسخة الأقدم.</value>
