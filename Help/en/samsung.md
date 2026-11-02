@@ -1,5 +1,5 @@
 ## purpose
-Opens Samsung firmware (the AP, BL, CP, CSC and HOME_CSC files, or the zip they came in), checks every file, tells you whether it suits your phone, and prepares what Odin needs: images taken out, a Magisk root, or a tar for Odin. Nothing is written to the phone from this page.
+Opens Samsung firmware (the AP, BL, CP, CSC and HOME_CSC files, or the zip they came in), checks every file, tells you whether it suits your phone, and prepares what Odin needs: images taken out, a Magisk root, or a tar for Odin. **Download mode** flashes it from this app too, after checking every file against the phone.
 
 ## steps
 1. Download the official firmware for your exact model (for example SM-S918B), and ideally your region.
@@ -7,7 +7,7 @@ Opens Samsung firmware (the AP, BL, CP, CSC and HOME_CSC files, or the zip they 
 3. With the phone in Android and USB debugging on, press **Check the phone**: the model, bootloader binary, Android version and CSC are compared, and Knox is shown.
 4. To take images out (boot, init_boot, super…), tick them under **Inside** and press **Extract selected (undoes lz4)**.
 5. To root with Magisk, press **Root with Magisk…**, patch the file in Magisk on the phone, and the patched tar comes back checked.
-6. Flash with Odin: AP, BL and CP, and **HOME_CSC** in the CSC slot to keep your data.
+6. Flash: press **Download mode**, read the phone, then **Flash…** and choose BL, AP, CP and **HOME_CSC** (to keep your data). Every file is checked first (MD5, the phone's partition table, the model); the warnings must be read before **Flash** turns on. Odin works too: the same files, HOME_CSC in the CSC slot.
 
 ## danger
 - **CSC wipes the phone**; HOME_CSC keeps your data. Use CSC only on purpose: a first Magisk install, a region change or a clean start.
@@ -20,11 +20,11 @@ Opens Samsung firmware (the AP, BL, CP, CSC and HOME_CSC files, or the zip they 
 ## tips
 - To enter Download mode: switch the phone off, hold Volume up and Volume down together, and plug in the USB cable (most models since 2019).
 - Download mode needs **Samsung's USB driver**; if it is missing, install it from the box on this page.
-- **Download mode** at the top of the page reads a phone in Download mode: its model, region and partition table (PIT), which you can save. It only reads, and the phone restarts afterwards. On the Galaxy S26 and Z Fold 7 with One UI 8.5, Samsung may ask for Maintenance mode first.
+- **Download mode** at the top of the page reads a phone in Download mode: its model, region and partition table (PIT), which you can save. Choose **Restart into Download mode** before reading, to flash straight after it. On the Galaxy S26 and Z Fold 7 with One UI 8.5, Samsung may ask for Maintenance mode first.
 - Anything unofficial needs an unlocked bootloader: Developer options → OEM unlocking, then a long press on Volume up in Download mode. Unlocking wipes the phone.
 - If Download mode shows **KG** or **RMM** as Prenormal or Locked, the phone refuses anything unofficial until that clears.
 - Knox is shown as the phone reports it; a root-hiding module can make a tripped phone read 0x0.
-- Flashing from this app itself is coming; for now, the flashing is done in Odin.
+- **Flash…** takes one image (boot.img, .lz4), a Magisk tar, or the whole firmware. It never writes EFS (the IMEI) or a PIT, refuses firmware for another model and files that do not fit, and stops before writing anything if the phone is not the one that was read. If it stops half-way, the phone stays in Download mode: plug it in again and flash again.
 
 ## terms
 AP | The system: boot, init_boot, recovery, super and vbmeta

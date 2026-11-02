@@ -2340,7 +2340,7 @@ Partitions in super (system, vendor…) are left out. Continue?</value>
     <value>Samsung</value>
   </data>
   <data name="samsung_subtitle" xml:space="preserve">
-    <value>Open Samsung firmware, take out the images you need, and check it suits your phone. Nothing is written to the phone.</value>
+    <value>Open Samsung firmware, take out the images you need, check it suits your phone, and flash it in Download mode.</value>
   </data>
   <data name="samsung_drop_hint" xml:space="preserve">
     <value>Open Samsung firmware</value>
@@ -2939,7 +2939,7 @@ The app downloads it from Samsung, checks that Windows finds Samsung's signature
     <value>Read the phone in Download mode</value>
   </data>
   <data name="odin_subtitle" xml:space="preserve">
-    <value>Reads the partition table (PIT), the model and the region. Nothing is written to the phone.</value>
+    <value>Reads the partition table (PIT), the model and the region; then flashes, checked against them.</value>
   </data>
   <data name="odin_step_off" xml:space="preserve">
     <value>Turn the phone off and unplug the cable.</value>
@@ -3168,5 +3168,191 @@ The app downloads it from Samsung, checks that Windows finds Samsung's signature
   </data>
   <data name="phone_root_not_for_shell" xml:space="preserve">
     <value>{0}, not allowed for Shell</value>
+  </data>
+  <data name="driver_google_title" xml:space="preserve">
+    <value>Google USB driver</value>
+  </data>
+  <data name="driver_google_source" xml:space="preserve">
+    <value>From dl.google.com · about 8 MB</value>
+  </data>
+  <data name="driver_google_offer" xml:space="preserve">
+    <value>Fastboot and adb on Pixels, and on the many phones that use Google's USB ids, need Google's driver. It is the same one Android Studio installs.
+
+The app downloads it from Google, checks its size and checksum against Google's list, then asks Windows to add it. Windows asks for permission, as for any driver.</value>
+  </data>
+  <data name="driver_google_downloading" xml:space="preserve">
+    <value>Downloading Google's driver</value>
+  </data>
+  <data name="driver_google_downloading_note" xml:space="preserve">
+    <value>Straight from Google. It is checked before it is used.</value>
+  </data>
+  <data name="driver_google_check_bad" xml:space="preserve">
+    <value>The file does not match what Google lists for it ({0}), so it was deleted and not used.</value>
+  </data>
+  <data name="driver_google_installing" xml:space="preserve">
+    <value>Adding Google's driver</value>
+  </data>
+  <data name="driver_google_installing_note" xml:space="preserve">
+    <value>Windows asks for permission, then adds the driver. It takes a few seconds.</value>
+  </data>
+  <data name="driver_google_done" xml:space="preserve">
+    <value>Google's driver is installed</value>
+  </data>
+  <data name="driver_google_done_note" xml:space="preserve">
+    <value>If the phone is plugged in, unplug it and plug it in again. A phone of another maker may still need its maker's own driver.</value>
+  </data>
+  <data name="driver_google_failed" xml:space="preserve">
+    <value>Google's driver was not installed</value>
+  </data>
+  <data name="driver_google_failed_code" xml:space="preserve">
+    <value>Windows could not add the driver (pnputil ended with code {0}).</value>
+  </data>
+  <data name="driver_google_failed_note" xml:space="preserve">
+    <value>You can download it yourself from Google's page.</value>
+  </data>
+  <data name="driver_google_open_page" xml:space="preserve">
+    <value>Open Google's page</value>
+  </data>
+  <data name="driver_google_ok" xml:space="preserve">
+    <value>Google USB driver is installed: fastboot and adb on Google's USB ids are seen.</value>
+  </data>
+  <data name="driver_google_missing" xml:space="preserve">
+    <value>Google USB driver is not installed. Pixels and phones on Google's USB ids need it.</value>
+  </data>
+  <data name="driver_section" xml:space="preserve">
+    <value>USB drivers</value>
+  </data>
+  <data name="driver_section_note" xml:space="preserve">
+    <value>Windows needs a driver to see a phone in fastboot, adb or Download mode.</value>
+  </data>
+  <data name="usb_google_driver_ask" xml:space="preserve">
+    <value>Google's USB driver fits this phone (Google's USB id). Download it from Google and install it now?</value>
+  </data>
+  <data name="odin_flash" xml:space="preserve">
+    <value>Flash…</value>
+  </data>
+  <data name="odin_flash_title" xml:space="preserve">
+    <value>Flash the phone</value>
+  </data>
+  <data name="odin_flash_intro" xml:space="preserve">
+    <value>Choose what to write: one image (boot.img, .lz4), a Magisk tar, or the firmware's BL, AP, CP and HOME_CSC files. Every file is checked against this phone's partition table and model before anything is sent.</value>
+  </data>
+  <data name="odin_flash_choose" xml:space="preserve">
+    <value>Choose files…</value>
+  </data>
+  <data name="odin_flash_filter" xml:space="preserve">
+    <value>Samsung firmware and images</value>
+  </data>
+  <data name="odin_flash_reading" xml:space="preserve">
+    <value>Checking {0}</value>
+  </data>
+  <data name="odin_flash_damaged" xml:space="preserve">
+    <value>{0}
+
+The file is damaged or not complete. Download it again.</value>
+  </data>
+  <data name="odin_flash_total" xml:space="preserve">
+    <value>{0} files · {1}</value>
+  </data>
+  <data name="odin_flash_target" xml:space="preserve">
+    <value>Partition for {0}:</value>
+  </data>
+  <data name="odin_flash_ack" xml:space="preserve">
+    <value>I read the warnings above and want to go ahead</value>
+  </data>
+  <data name="odin_flash_restart" xml:space="preserve">
+    <value>Restart the phone when it is done</value>
+  </data>
+  <data name="odin_flash_waiting" xml:space="preserve">
+    <value>Put the phone in Download mode and plug it in. Flash turns on when the phone is found.</value>
+  </data>
+  <data name="odin_flash_confirm" xml:space="preserve">
+    <value>Write {0} files ({1}) to the phone?
+
+Do not unplug the phone or close this window until it ends. If it stops half-way, the phone stays in Download mode and can be flashed again.</value>
+  </data>
+  <data name="odin_flash_writing" xml:space="preserve">
+    <value>Writing {0}</value>
+  </data>
+  <data name="odin_flash_progress" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
+  <data name="odin_flash_keep" xml:space="preserve">
+    <value>Do not unplug the phone or close this window.</value>
+  </data>
+  <data name="odin_flash_done" xml:space="preserve">
+    <value>The flash is done</value>
+  </data>
+  <data name="odin_flash_done_restart" xml:space="preserve">
+    <value>The phone restarts now. The first start after a firmware can take several minutes.</value>
+  </data>
+  <data name="odin_flash_done_stay" xml:space="preserve">
+    <value>The phone stays in Download mode. To restart it, hold Power and Volume Down for 7 seconds.</value>
+  </data>
+  <data name="odin_flash_written" xml:space="preserve">
+    <value>Written: {0}</value>
+  </data>
+  <data name="odin_flash_failed" xml:space="preserve">
+    <value>The flash stopped</value>
+  </data>
+  <data name="odin_flash_failed_at" xml:space="preserve">
+    <value>It stopped while writing {0}: {1}</value>
+  </data>
+  <data name="odin_flash_failed_before" xml:space="preserve">
+    <value>It stopped before writing anything: {0}</value>
+  </data>
+  <data name="odin_flash_pit_changed" xml:space="preserve">
+    <value>This phone's partition table is not the one the files were checked against (was another phone plugged in?). Nothing was written. Read the phone again.</value>
+  </data>
+  <data name="odin_flash_failed_note" xml:space="preserve">
+    <value>The phone stays in Download mode. Do not restart it: plug it in again and flash again. If its screen shows an error, take a photo of it.</value>
+  </data>
+  <data name="odin_flash_again" xml:space="preserve">
+    <value>Flash again</value>
+  </data>
+  <data name="odin_flash_back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="odin_check_Empty" xml:space="preserve">
+    <value>Nothing to flash: none of the files has a partition on this phone.</value>
+  </data>
+  <data name="odin_check_NotInPit" xml:space="preserve">
+    <value>{0}: this phone has no partition by that name. Choose one below.</value>
+  </data>
+  <data name="odin_check_Skipped" xml:space="preserve">
+    <value>{0}: not a partition on this phone; left out, as Odin leaves it out.</value>
+  </data>
+  <data name="odin_check_PitSkipped" xml:space="preserve">
+    <value>{0}: a partition table. It is not flashed; the phone's partitions stay as they are.</value>
+  </data>
+  <data name="odin_check_TooBig" xml:space="preserve">
+    <value>{0} is bigger than {1} can hold ({2}, at most {3}).</value>
+  </data>
+  <data name="odin_check_Protected" xml:space="preserve">
+    <value>{0} holds the phone's identity (IMEI, keys). It is never flashed here.</value>
+  </data>
+  <data name="odin_check_Twice" xml:space="preserve">
+    <value>Two files for {0}. Keep one.</value>
+  </data>
+  <data name="odin_check_BothCsc" xml:space="preserve">
+    <value>CSC and HOME_CSC are both chosen. Keep HOME_CSC to keep your data, or CSC to erase the phone.</value>
+  </data>
+  <data name="odin_check_OtherModel" xml:space="preserve">
+    <value>The firmware is for {0}, but this phone is {1}. It cannot be flashed.</value>
+  </data>
+  <data name="odin_check_ModelUnknown" xml:space="preserve">
+    <value>The phone did not say its model, so the firmware ({0}) cannot be matched to it. Make sure it is for this phone.</value>
+  </data>
+  <data name="odin_check_Mixed" xml:space="preserve">
+    <value>These files come from another build: {0}. Use the BL, AP, CP and CSC of one firmware.</value>
+  </data>
+  <data name="odin_check_Bootloader" xml:space="preserve">
+    <value>{0} is part of the bootloader. A wrong one can stop the phone from starting, and the phone refuses an older one.</value>
+  </data>
+  <data name="odin_check_Modem" xml:space="preserve">
+    <value>{0} is the modem. A wrong one can leave the phone without signal.</value>
+  </data>
+  <data name="odin_check_WipesData" xml:space="preserve">
+    <value>{0} erases everything on the phone (a factory reset). Use HOME_CSC to keep your data.</value>
   </data>
 </root>
