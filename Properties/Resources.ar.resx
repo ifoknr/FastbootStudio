@@ -3169,4 +3169,63 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="phone_root_not_for_shell" xml:space="preserve">
     <value>{0}، بدون صلاحية لـ Shell</value>
   </data>
+  <data name="driver_google_title" xml:space="preserve">
+    <value>تعريف قوقل USB</value>
+  </data>
+  <data name="driver_google_source" xml:space="preserve">
+    <value>من dl.google.com · تقريباً 8 ميقا</value>
+  </data>
+  <data name="driver_google_offer" xml:space="preserve">
+    <value>الفاست بوت والـ adb على أجهزة Pixel، وعلى جوالات كثيرة تستخدم معرّفات قوقل، تحتاج تعريف قوقل. وهو نفس التعريف اللي يثبّته Android Studio.
+
+التطبيق يحمّله من قوقل، ويطابق حجمه والـ checksum حقه مع قائمة قوقل، وبعدين يطلب من الويندوز يضيفه. الويندوز بيطلب منك إذن، وهذا طبيعي لأي تعريف.</value>
+  </data>
+  <data name="driver_google_downloading" xml:space="preserve">
+    <value>جاري تحميل تعريف قوقل</value>
+  </data>
+  <data name="driver_google_downloading_note" xml:space="preserve">
+    <value>من قوقل على طول، وينفحص قبل ما ينستخدم.</value>
+  </data>
+  <data name="driver_google_check_bad" xml:space="preserve">
+    <value>الملف ما يطابق اللي تذكره قوقل عنه ({0})، فانحذف وما انستخدم.</value>
+  </data>
+  <data name="driver_google_installing" xml:space="preserve">
+    <value>جاري إضافة تعريف قوقل</value>
+  </data>
+  <data name="driver_google_installing_note" xml:space="preserve">
+    <value>الويندوز بيطلب الإذن، وبعدين يضيف التعريف. ياخذ كم ثانية.</value>
+  </data>
+  <data name="driver_google_done" xml:space="preserve">
+    <value>تعريف قوقل انثبّت</value>
+  </data>
+  <data name="driver_google_done_note" xml:space="preserve">
+    <value>لو فيه جوال موصول، افصله ورجّعه. جوال من شركة ثانية ممكن يحتاج تعريف شركته نفسها.</value>
+  </data>
+  <data name="driver_google_failed" xml:space="preserve">
+    <value>تعريف قوقل ما انثبّت</value>
+  </data>
+  <data name="driver_google_failed_code" xml:space="preserve">
+    <value>الويندوز ما قدر يضيف التعريف (pnputil طلع بالكود {0}).</value>
+  </data>
+  <data name="driver_google_failed_note" xml:space="preserve">
+    <value>تقدر تحمّله بنفسك من صفحة قوقل.</value>
+  </data>
+  <data name="driver_google_open_page" xml:space="preserve">
+    <value>افتح صفحة قوقل</value>
+  </data>
+  <data name="driver_google_ok" xml:space="preserve">
+    <value>تعريف قوقل USB مثبّت: الفاست بوت والـ adb على معرّفات قوقل بينشافون.</value>
+  </data>
+  <data name="driver_google_missing" xml:space="preserve">
+    <value>تعريف قوقل USB مو مثبّت، وأجهزة Pixel والجوالات على معرّفات قوقل تحتاجه.</value>
+  </data>
+  <data name="driver_section" xml:space="preserve">
+    <value>تعريفات USB</value>
+  </data>
+  <data name="driver_section_note" xml:space="preserve">
+    <value>الويندوز يحتاج تعريف عشان يشوف الجوال في الفاست بوت أو الـ adb أو وضع التحميل.</value>
+  </data>
+  <data name="usb_google_driver_ask" xml:space="preserve">
+    <value>تعريف قوقل USB يناسب هالجوال (معرّف قوقل). أحمّله من قوقل وأثبّته الحين؟</value>
+  </data>
 </root>

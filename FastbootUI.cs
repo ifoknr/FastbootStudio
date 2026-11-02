@@ -604,6 +604,7 @@ namespace FastbootEnhance
             IReadOnlyList<UsbFinding> findings = null;
             Exception failure = null;
             bool samsungDriver = true;
+            bool googleDriver = true;
 
             Helper.offloadAndRun(new Action(delegate
             {
@@ -611,6 +612,7 @@ namespace FastbootEnhance
                 {
                     findings = UsbDiagnosis.Diagnose(UsbScan.Read());
                     samsungDriver = DriverUI.SamsungInstalled();
+                    googleDriver = DriverUI.GoogleInstalled();
                 }
                 catch (Exception e)
                 {
@@ -625,11 +627,11 @@ namespace FastbootEnhance
                     ThemedDialog.Show(failure.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                showUsbFindings(findings, samsungDriver);
+                showUsbFindings(findings, samsungDriver, googleDriver);
             }));
         }
 
-        static void showUsbFindings(IReadOnlyList<UsbFinding> findings, bool samsungDriver)
+        static void showUsbFindings(IReadOnlyList<UsbFinding> findings, bool samsungDriver, bool googleDriver)
         {
             List<string> lines = new List<string>();
             bool driverTrouble = false;
@@ -698,6 +700,19 @@ namespace FastbootEnhance
                     || f.Kind == UsbFindingKind.DriverProblem || f.Kind == UsbFindingKind.AdbReady));
                 if (!others)
                     return;
+            }
+
+            // A phone on Google's USB ids without a working driver: Google's driver fits it.
+            bool googlePhone = findings.Any(f => (f.Kind == UsbFindingKind.MissingDriver || f.Kind == UsbFindingKind.DriverProblem)
+                && GoogleDriver.Covers(f.Vid));
+            if (googlePhone && !googleDriver)
+            {
+                if (ThemedDialog.Show(text + "\n\n" + Properties.Resources.usb_google_driver_ask,
+                        Properties.Resources.usb_check_title, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    DriverUI.InstallGoogle();
+                    return;
+                }
             }
 
             if (driverTrouble)

@@ -3169,4 +3169,63 @@ The app downloads it from Samsung, checks that Windows finds Samsung's signature
   <data name="phone_root_not_for_shell" xml:space="preserve">
     <value>{0}, not allowed for Shell</value>
   </data>
+  <data name="driver_google_title" xml:space="preserve">
+    <value>Google USB driver</value>
+  </data>
+  <data name="driver_google_source" xml:space="preserve">
+    <value>From dl.google.com · about 8 MB</value>
+  </data>
+  <data name="driver_google_offer" xml:space="preserve">
+    <value>Fastboot and adb on Pixels, and on the many phones that use Google's USB ids, need Google's driver. It is the same one Android Studio installs.
+
+The app downloads it from Google, checks its size and checksum against Google's list, then asks Windows to add it. Windows asks for permission, as for any driver.</value>
+  </data>
+  <data name="driver_google_downloading" xml:space="preserve">
+    <value>Downloading Google's driver</value>
+  </data>
+  <data name="driver_google_downloading_note" xml:space="preserve">
+    <value>Straight from Google. It is checked before it is used.</value>
+  </data>
+  <data name="driver_google_check_bad" xml:space="preserve">
+    <value>The file does not match what Google lists for it ({0}), so it was deleted and not used.</value>
+  </data>
+  <data name="driver_google_installing" xml:space="preserve">
+    <value>Adding Google's driver</value>
+  </data>
+  <data name="driver_google_installing_note" xml:space="preserve">
+    <value>Windows asks for permission, then adds the driver. It takes a few seconds.</value>
+  </data>
+  <data name="driver_google_done" xml:space="preserve">
+    <value>Google's driver is installed</value>
+  </data>
+  <data name="driver_google_done_note" xml:space="preserve">
+    <value>If the phone is plugged in, unplug it and plug it in again. A phone of another maker may still need its maker's own driver.</value>
+  </data>
+  <data name="driver_google_failed" xml:space="preserve">
+    <value>Google's driver was not installed</value>
+  </data>
+  <data name="driver_google_failed_code" xml:space="preserve">
+    <value>Windows could not add the driver (pnputil ended with code {0}).</value>
+  </data>
+  <data name="driver_google_failed_note" xml:space="preserve">
+    <value>You can download it yourself from Google's page.</value>
+  </data>
+  <data name="driver_google_open_page" xml:space="preserve">
+    <value>Open Google's page</value>
+  </data>
+  <data name="driver_google_ok" xml:space="preserve">
+    <value>Google USB driver is installed: fastboot and adb on Google's USB ids are seen.</value>
+  </data>
+  <data name="driver_google_missing" xml:space="preserve">
+    <value>Google USB driver is not installed. Pixels and phones on Google's USB ids need it.</value>
+  </data>
+  <data name="driver_section" xml:space="preserve">
+    <value>USB drivers</value>
+  </data>
+  <data name="driver_section_note" xml:space="preserve">
+    <value>Windows needs a driver to see a phone in fastboot, adb or Download mode.</value>
+  </data>
+  <data name="usb_google_driver_ask" xml:space="preserve">
+    <value>Google's USB driver fits this phone (Google's USB id). Download it from Google and install it now?</value>
+  </data>
 </root>

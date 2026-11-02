@@ -8972,5 +8972,176 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("phone_root_not_for_shell", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google USB driver.
+        /// </summary>
+        public static string driver_google_title {
+            get {
+                return ResourceManager.GetString("driver_google_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to From dl.google.com · about 8 MB.
+        /// </summary>
+        public static string driver_google_source {
+            get {
+                return ResourceManager.GetString("driver_google_source", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fastboot and adb on Pixels, and on the many phones that use Google's USB ids, need Google's driver. It is the same one Android Studio installs..
+        /// </summary>
+        public static string driver_google_offer {
+            get {
+                return ResourceManager.GetString("driver_google_offer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading Google's driver.
+        /// </summary>
+        public static string driver_google_downloading {
+            get {
+                return ResourceManager.GetString("driver_google_downloading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Straight from Google. It is checked before it is used..
+        /// </summary>
+        public static string driver_google_downloading_note {
+            get {
+                return ResourceManager.GetString("driver_google_downloading_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The file does not match what Google lists for it ({0}), so it was deleted and not used..
+        /// </summary>
+        public static string driver_google_check_bad {
+            get {
+                return ResourceManager.GetString("driver_google_check_bad", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Adding Google's driver.
+        /// </summary>
+        public static string driver_google_installing {
+            get {
+                return ResourceManager.GetString("driver_google_installing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Windows asks for permission, then adds the driver. It takes a few seconds..
+        /// </summary>
+        public static string driver_google_installing_note {
+            get {
+                return ResourceManager.GetString("driver_google_installing_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google's driver is installed.
+        /// </summary>
+        public static string driver_google_done {
+            get {
+                return ResourceManager.GetString("driver_google_done", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to If the phone is plugged in, unplug it and plug it in again. A phone of another maker may still need its maker's own driver..
+        /// </summary>
+        public static string driver_google_done_note {
+            get {
+                return ResourceManager.GetString("driver_google_done_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google's driver was not installed.
+        /// </summary>
+        public static string driver_google_failed {
+            get {
+                return ResourceManager.GetString("driver_google_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Windows could not add the driver (pnputil ended with code {0})..
+        /// </summary>
+        public static string driver_google_failed_code {
+            get {
+                return ResourceManager.GetString("driver_google_failed_code", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to You can download it yourself from Google's page..
+        /// </summary>
+        public static string driver_google_failed_note {
+            get {
+                return ResourceManager.GetString("driver_google_failed_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open Google's page.
+        /// </summary>
+        public static string driver_google_open_page {
+            get {
+                return ResourceManager.GetString("driver_google_open_page", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google USB driver is installed: fastboot and adb on Google's USB ids are seen..
+        /// </summary>
+        public static string driver_google_ok {
+            get {
+                return ResourceManager.GetString("driver_google_ok", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google USB driver is not installed. Pixels and phones on Google's USB ids need it..
+        /// </summary>
+        public static string driver_google_missing {
+            get {
+                return ResourceManager.GetString("driver_google_missing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to USB drivers.
+        /// </summary>
+        public static string driver_section {
+            get {
+                return ResourceManager.GetString("driver_section", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Windows needs a driver to see a phone in fastboot, adb or Download mode..
+        /// </summary>
+        public static string driver_section_note {
+            get {
+                return ResourceManager.GetString("driver_section_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google's USB driver fits this phone (Google's USB id). Download it from Google and install it now?.
+        /// </summary>
+        public static string usb_google_driver_ask {
+            get {
+                return ResourceManager.GetString("usb_google_driver_ask", resourceCulture);
+            }
+        }
     }
 }

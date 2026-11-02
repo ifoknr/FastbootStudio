@@ -56,6 +56,7 @@ namespace FastbootEnhance
             wireThemes();
             wireRendering();
             wireTextSize();
+            wireDrivers();
             UpdateUI.init();
             RootUI.init();
             PhoneUI.init();
@@ -198,6 +199,34 @@ namespace FastbootEnhance
                 };
                 rendering_buttons.Children.Add(button);
             }
+        }
+
+        /// <summary>Settings → USB drivers: whether Google's and Samsung's are installed, and their install windows.</summary>
+        void wireDrivers()
+        {
+            settings_google_driver.Click += delegate { DriverUI.InstallGoogle(showDrivers); };
+            settings_samsung_driver.Click += delegate { DriverUI.InstallSamsung(showDrivers); };
+            // Read again each time Settings opens: a driver may have been added since.
+            main_tabs.SelectionChanged += (sender, e) =>
+            {
+                if (e.OriginalSource == main_tabs && main_tabs.SelectedItem == settings_tab)
+                    showDrivers();
+            };
+            showDrivers();
+        }
+
+        void showDrivers()
+        {
+            bool google = false, samsung = false;
+            Helper.offloadAndRun(new Action(delegate
+            {
+                google = DriverUI.GoogleInstalled();
+                samsung = DriverUI.SamsungInstalled();
+            }), new Action(delegate
+            {
+                settings_google_driver_status.Text = google ? Properties.Resources.driver_google_ok : Properties.Resources.driver_google_missing;
+                settings_samsung_driver_status.Text = samsung ? Properties.Resources.samsung_driver_ok : Properties.Resources.samsung_driver_missing;
+            }));
         }
 
         /// <summary>Small, default, large, larger: applies to every page right away.</summary>

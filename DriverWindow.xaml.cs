@@ -15,7 +15,10 @@ namespace FastbootEnhance
     /// <summary>
     /// Downloads Samsung's USB driver from developer.samsung.com, keeps it only when Windows
     /// finds a valid signature from Samsung Electronics on it, and runs its installer, which
-    /// asks Windows for permission itself. Any step that fails offers Samsung's page instead.
+    /// asks Windows for permission itself. Google's USB driver comes from dl.google.com, is kept
+    /// only when its size and checksum match Google's list, and is added with pnputil, which asks
+    /// for permission and checks the driver's own signature. Any step that fails offers the
+    /// maker's page instead.
     /// </summary>
     public partial class DriverWindow : Window
     {
@@ -32,13 +35,19 @@ namespace FastbootEnhance
             return client;
         }
 
+        /// <summary>Google's driver instead of Samsung's.</summary>
+        readonly bool google;
+        readonly string logName;
+
         CancellationTokenSource working;
         bool installerRunning;
         Action onPrimary;
         Action onSecondary;
 
-        DriverWindow()
+        DriverWindow(bool google)
         {
+            this.google = google;
+            logName = google ? "google driver: " : "samsung driver: ";
             InitializeComponent();
             FlowDirection = Languages.Flow;
             header.MouseLeftButtonDown += delegate { DragMove(); };
@@ -66,9 +75,9 @@ namespace FastbootEnhance
             showOffer();
         }
 
-        public static void Show(Action after)
+        public static void Show(Action after, bool google)
         {
-            DriverWindow dialog = new DriverWindow();
+            DriverWindow dialog = new DriverWindow(google);
             if (MainWindow.THIS != null && MainWindow.THIS.IsVisible)
             {
                 dialog.Owner = MainWindow.THIS;
@@ -84,12 +93,12 @@ namespace FastbootEnhance
 
         void showOffer()
         {
-            Title = Properties.Resources.driver_samsung_title;
+            Title = google ? Properties.Resources.driver_google_title : Properties.Resources.driver_samsung_title;
             heading.Text = Title;
-            subheading.Text = Properties.Resources.driver_samsung_source;
+            subheading.Text = source;
             setLook("Accent", "AccentSoft", "AccentLine", GlyphDownload);
-            message.Text = DriverUI.SamsungInstalled() ? Properties.Resources.driver_samsung_already + "\n\n" + Properties.Resources.driver_samsung_offer
-                : Properties.Resources.driver_samsung_offer;
+            string offer = google ? Properties.Resources.driver_google_offer : Properties.Resources.driver_samsung_offer;
+            message.Text = installed() ? Properties.Resources.driver_samsung_already + "\n\n" + offer : offer;
             progress.Visibility = Visibility.Collapsed;
             primary.Visibility = Visibility.Visible;
             primary.Content = Properties.Resources.driver_download_install;
@@ -98,11 +107,15 @@ namespace FastbootEnhance
             onSecondary = Close;
         }
 
+        string source => google ? Properties.Resources.driver_google_source : Properties.Resources.driver_samsung_source;
+
+        bool installed() => google ? DriverUI.GoogleInstalled() : DriverUI.SamsungInstalled();
+
         void start()
         {
-            heading.Text = Properties.Resources.driver_downloading;
-            subheading.Text = Properties.Resources.driver_samsung_source;
-            message.Text = Properties.Resources.driver_downloading_note;
+            heading.Text = google ? Properties.Resources.driver_google_downloading : Properties.Resources.driver_downloading;
+            subheading.Text = source;
+            message.Text = google ? Properties.Resources.driver_google_downloading_note : Properties.Resources.driver_downloading_note;
             progress.Visibility = Visibility.Visible;
             progress.IsIndeterminate = true;
             progress.Value = 0;
@@ -126,7 +139,7 @@ namespace FastbootEnhance
                 }
             });
 
-            Task.Run(() => download(got, cancel.Token)).ContinueWith(task =>
+            Task.Run(() => google ? downloadGoogle(got, cancel.Token) : download(got, cancel.Token)).ContinueWith(task =>
             {
                 working = null;
                 if (cancel.IsCancellationRequested)
@@ -143,7 +156,7 @@ namespace FastbootEnhance
                 if (task.IsFaulted || task.IsCanceled)
                 {
                     Exception e = task.Exception?.GetBaseException() ?? new OperationCanceledException();
-                    LogStore.Append("samsung driver: " + e.Message);
+                    LogStore.Append(logName + e.Message);
                     showFailure(e is DriverException ? e.Message : string.Format(Properties.Resources.driver_download_failed, e.Message));
                     return;
                 }
@@ -245,9 +258,99 @@ namespace FastbootEnhance
             }
         }
 
+        /// <summary>
+        /// Google's catalogue names the current zip with its size and SHA-1 (r13 is pinned by
+        /// SHA-256 too); the zip is kept only when it matches, and its driver folder is unpacked
+        /// into a folder of its own. Returns the setup file opened without write or delete
+        /// sharing, so it cannot be swapped before pnputil reads it. The caller closes it.
+        /// </summary>
+        static async Task<FileStream> downloadGoogle(IProgress<(long, long)> got, CancellationToken cancel)
+        {
+            GoogleDriver.DriverArchive archive = null;
+            try
+            {
+                using (CancellationTokenSource limit = CancellationTokenSource.CreateLinkedTokenSource(cancel))
+                {
+                    limit.CancelAfter(TimeSpan.FromSeconds(20));
+                    archive = GoogleDriver.FromCatalog(await http.GetStringAsync(GoogleDriver.CatalogUrl, limit.Token));
+                }
+            }
+            catch (Exception e) when (e is HttpRequestException || e is TaskCanceledException)
+            {
+                if (cancel.IsCancellationRequested)
+                    throw;
+                LogStore.Append("google driver: catalogue not read (" + e.Message + "), using r13");
+            }
+            archive = archive ?? GoogleDriver.Known;
+            LogStore.Append("google driver: downloading r" + archive.Revision + " " + archive.Url);
+
+            string folder = Path.Combine(Path.GetTempPath(), "FastbootStudio", "driver-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(folder);
+            string zipPath = Path.Combine(folder, "usb_driver.zip");
+            FileStream locked = null;
+            try
+            {
+                using (HttpResponseMessage response = await http.GetAsync(archive.Url, HttpCompletionOption.ResponseHeadersRead, cancel))
+                {
+                    response.EnsureSuccessStatusCode();
+                    if (response.RequestMessage?.RequestUri?.Scheme != Uri.UriSchemeHttps)
+                        throw new DriverException(Properties.Resources.driver_not_https);
+                    long total = response.Content.Headers.ContentLength ?? archive.Size;
+                    if (total > GoogleDriver.MaxDownloadBytes)
+                        throw new DriverException(Properties.Resources.driver_too_big);
+                    using (Stream from = await response.Content.ReadAsStreamAsync(cancel))
+                    using (FileStream target = new FileStream(zipPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                    {
+                        byte[] buffer = new byte[1 << 16];
+                        long done = 0;
+                        DateTime shown = DateTime.MinValue;
+                        while (true)
+                        {
+                            int read = await from.ReadAsync(buffer, 0, buffer.Length, cancel);
+                            if (read == 0)
+                                break;
+                            done += read;
+                            if (done > GoogleDriver.MaxDownloadBytes)
+                                throw new DriverException(Properties.Resources.driver_too_big);
+                            await target.WriteAsync(buffer, 0, read, cancel);
+                            if (DateTime.UtcNow - shown > TimeSpan.FromMilliseconds(150))
+                            {
+                                shown = DateTime.UtcNow;
+                                got.Report((done, total));
+                            }
+                        }
+                        got.Report((done, total));
+                    }
+                }
+
+                string inf;
+                using (FileStream zip = new FileStream(zipPath, FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    string mismatch = GoogleDriver.Check(zip, archive);
+                    LogStore.Append("google driver: " + (mismatch ?? "size and checksum match"));
+                    if (mismatch != null)
+                        throw new DriverException(string.Format(Properties.Resources.driver_google_check_bad, mismatch));
+                    inf = GoogleDriver.Extract(zip, Path.Combine(folder, "usb_driver"));
+                }
+                locked = new FileStream(inf, FileMode.Open, FileAccess.Read, FileShare.Read);
+                return locked;
+            }
+            catch (Exception)
+            {
+                locked?.Dispose();
+                tryDeleteFolder(folder);
+                throw;
+            }
+        }
+
         /// <summary>Runs the checked installer; <paramref name="locked"/> stays open until it has ended.</summary>
         void runInstaller(FileStream locked)
         {
+            if (google)
+            {
+                runPnputil(locked);
+                return;
+            }
             string path = locked.Name;
             heading.Text = Properties.Resources.driver_installing;
             subheading.Text = Path.GetFileName(path);
@@ -271,7 +374,7 @@ namespace FastbootEnhance
                 return;
             }
             installerRunning = true;
-            LogStore.Append("samsung driver: installer started");
+            LogStore.Append(logName + "installer started");
             Task.Run(() =>
             {
                 try
@@ -292,16 +395,81 @@ namespace FastbootEnhance
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        /// <summary>
+        /// pnputil adds the driver to Windows' store and installs it on any plugged-in device it
+        /// fits; it asks for permission (it needs administrator rights) and refuses a driver
+        /// whose signature Windows does not trust. The unpacked folder is deleted afterwards.
+        /// </summary>
+        void runPnputil(FileStream locked)
+        {
+            string inf = locked.Name;
+            string folder = Path.GetDirectoryName(Path.GetDirectoryName(inf));
+            heading.Text = Properties.Resources.driver_google_installing;
+            subheading.Text = Path.GetFileName(inf);
+            message.Text = Properties.Resources.driver_google_installing_note;
+            progress.IsIndeterminate = true;
+            primary.Visibility = Visibility.Collapsed;
+            secondary.Visibility = Visibility.Collapsed;
+
+            Process process;
+            try
+            {
+                process = Process.Start(new ProcessStartInfo(Path.Combine(Environment.SystemDirectory, "pnputil.exe"), GoogleDriver.PnputilArguments(inf))
+                {
+                    UseShellExecute = true,
+                    Verb = "runas",
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    WorkingDirectory = Path.GetDirectoryName(inf),
+                });
+            }
+            catch (Win32Exception e)
+            {
+                locked.Dispose();
+                tryDeleteFolder(folder);
+                secondary.Visibility = Visibility.Visible;
+                showFailure(e.NativeErrorCode == 1223 ? Properties.Resources.driver_no_permission : e.Message, retry: true);
+                return;
+            }
+            installerRunning = true;
+            LogStore.Append("google driver: pnputil started");
+            Task.Run(() =>
+            {
+                try
+                {
+                    process?.WaitForExit();
+                    return process?.ExitCode ?? -1;
+                }
+                finally
+                {
+                    process?.Dispose();
+                    locked.Dispose();
+                    tryDeleteFolder(folder);
+                }
+            }).ContinueWith(task =>
+            {
+                installerRunning = false;
+                secondary.Visibility = Visibility.Visible;
+                int code = task.Status == TaskStatus.RanToCompletion ? task.Result : -1;
+                LogStore.Append("google driver: pnputil ended with " + code);
+                if (!GoogleDriver.PnputilSucceeded(code))
+                {
+                    showFailure(string.Format(Properties.Resources.driver_google_failed_code, code));
+                    return;
+                }
+                showResult();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
         void showResult()
         {
             progress.Visibility = Visibility.Collapsed;
-            if (DriverUI.SamsungInstalled())
+            if (installed())
             {
-                LogStore.Append("samsung driver: installed");
-                heading.Text = Properties.Resources.driver_done;
-                subheading.Text = Properties.Resources.driver_samsung_title;
+                LogStore.Append(logName + "installed");
+                heading.Text = google ? Properties.Resources.driver_google_done : Properties.Resources.driver_done;
+                subheading.Text = Title;
                 setLook("Ok", "AccentSoft", "AccentLine", GlyphDone);
-                message.Text = Properties.Resources.driver_done_note;
+                message.Text = google ? Properties.Resources.driver_google_done_note : Properties.Resources.driver_done_note;
                 primary.Visibility = Visibility.Visible;
                 primary.Content = Properties.Resources.driver_close;
                 onPrimary = Close;
@@ -321,11 +489,11 @@ namespace FastbootEnhance
 
         void showFailure(string why, bool retry = false)
         {
-            heading.Text = Properties.Resources.driver_failed;
-            subheading.Text = Properties.Resources.driver_samsung_title;
+            heading.Text = google ? Properties.Resources.driver_google_failed : Properties.Resources.driver_failed;
+            subheading.Text = Title;
             setLook("Danger", "DangerSoft", "DangerLine", GlyphError);
             progress.Visibility = Visibility.Collapsed;
-            message.Text = why + "\n\n" + Properties.Resources.driver_failed_note;
+            message.Text = why + "\n\n" + (google ? Properties.Resources.driver_google_failed_note : Properties.Resources.driver_failed_note);
             primary.Visibility = Visibility.Visible;
             secondary.Visibility = Visibility.Visible;
             if (retry)
@@ -335,12 +503,12 @@ namespace FastbootEnhance
             }
             else
             {
-                primary.Content = Properties.Resources.driver_open_page;
+                primary.Content = google ? Properties.Resources.driver_google_open_page : Properties.Resources.driver_open_page;
                 onPrimary = () =>
                 {
                     try
                     {
-                        Process.Start(new ProcessStartInfo(SamsungDriver.PageUrl) { UseShellExecute = true });
+                        Process.Start(new ProcessStartInfo(google ? GoogleDriver.PageUrl : SamsungDriver.PageUrl) { UseShellExecute = true });
                     }
                     catch (Exception e)
                     {

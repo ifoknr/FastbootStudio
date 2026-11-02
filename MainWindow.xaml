@@ -1755,6 +1755,30 @@
 
                             <Border Style="{StaticResource Card}" Margin="0,16,0,0">
                                 <StackPanel>
+                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,4" Text="{x:Static props:Resources.driver_section}"/>
+                                    <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="0,0,0,12" TextWrapping="Wrap"
+                                               Text="{x:Static props:Resources.driver_section_note}"/>
+                                    <DockPanel Margin="0,0,0,10">
+                                        <Button x:Name="settings_google_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Margin="12,0,0,0"
+                                                VerticalAlignment="Center" Content="{x:Static props:Resources.driver_install}"/>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="SemiBold" Text="{x:Static props:Resources.driver_google_title}"/>
+                                            <TextBlock x:Name="settings_google_driver_status" Style="{StaticResource Note}" FontSize="11.5" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <Button x:Name="settings_samsung_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Margin="12,0,0,0"
+                                                VerticalAlignment="Center" Content="{x:Static props:Resources.driver_install}"/>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="SemiBold" Text="{x:Static props:Resources.driver_samsung_title}"/>
+                                            <TextBlock x:Name="settings_samsung_driver_status" Style="{StaticResource Note}" FontSize="11.5" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                                <StackPanel>
                                     <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,12" Text="{x:Static props:Resources.welcome_section}"/>
                                     <WrapPanel>
                                         <Button x:Name="about_welcome" Style="{StaticResource GhostButton}" Margin="0,0,10,8"
