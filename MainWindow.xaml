@@ -1823,7 +1823,7 @@
                                        RenderOptions.BitmapScalingMode="HighQuality" AutomationProperties.Name="Fastboot Studio"/>
                                 <TextBlock Text="{x:Static props:Resources.about_tagline}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,12"/>
                                 <WrapPanel>
-                                    <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}" Margin="0,0,6,0"><TextBlock Text="v2.8.0" FontFamily="{StaticResource Mono}"/></Border>
+                                    <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}" Margin="0,0,6,0"><TextBlock Text="v2.9.0" FontFamily="{StaticResource Mono}"/></Border>
                                     <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}" Margin="0,0,6,0"><TextBlock Text="MIT"/></Border>
                                     <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}"><TextBlock Text="{x:Static props:Resources.about_free}"/></Border>
                                 </WrapPanel>

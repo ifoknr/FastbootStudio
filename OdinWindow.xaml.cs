@@ -439,7 +439,11 @@ namespace FastbootEnhance
             onSecondary = () => showResult(last, lastReboot);
             log("flash: choosing files");
 
-            renderPlan();
+            // The phone may have been read again since: the plan is checked against this reading.
+            if (sources != null)
+                buildPlan();
+            else
+                renderPlan();
             found = null;
             flash_status_mark.Text = "…";
             flash_status_mark.Foreground = Palette.Get("Dim");

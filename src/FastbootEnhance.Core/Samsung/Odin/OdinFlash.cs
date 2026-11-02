@@ -425,10 +425,12 @@ namespace FastbootEnhance.Core.Samsung.Odin
                     add(OdinCheckLevel.Block, OdinCheckCode.Twice, entry.Partition);
                     continue;
                 }
-                if (entry.BlockCount > 0 && source.Size > entry.BlockCount * MaxSector)
+                // PIT v1 records a block size of its own; v2 records a start, and its blocks are sectors.
+                long unit = pit.IsVersion2 ? MaxSector : Math.Max(MaxSector, entry.BlockSizeOrStart);
+                if (entry.BlockCount > 0 && source.Size > entry.BlockCount * unit)
                     add(OdinCheckLevel.Block, OdinCheckCode.TooBig, source.Name, entry.Partition,
                         source.Size.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                        (entry.BlockCount * MaxSector).ToString(System.Globalization.CultureInfo.InvariantCulture));
+                        (entry.BlockCount * unit).ToString(System.Globalization.CultureInfo.InvariantCulture));
                 if (source.Part == null && BootChain.Contains(entry.Partition))
                     add(OdinCheckLevel.Warn, OdinCheckCode.Bootloader, entry.Partition);
                 if (source.Part == null && entry.IsModem)
