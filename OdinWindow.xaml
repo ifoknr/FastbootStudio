@@ -5,7 +5,7 @@
         WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" Background="Transparent"
         SizeToContent="Height" Width="700" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
         Foreground="{StaticResource Text}" FontFamily="{StaticResource UiFont}" FontSize="13" UseLayoutRounding="True">
-    <!-- A Samsung phone in Download mode: how to get there, then a reading of its PIT and model. Reading only. -->
+    <!-- A Samsung phone in Download mode: how to get there, a reading of its PIT and model, then flashing checked against them. -->
     <Border Margin="18" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
             BorderThickness="1" CornerRadius="12">
         <Border.Effect>
@@ -68,7 +68,8 @@
 
                 <!-- Reading, or a failure -->
                 <StackPanel x:Name="work_view" Visibility="Collapsed">
-                    <ProgressBar x:Name="progress" Height="6" Margin="0,4,0,8" IsIndeterminate="True"/>
+                    <ProgressBar x:Name="progress" Height="6" Margin="0,4,0,8" IsIndeterminate="True" Maximum="100"/>
+                    <TextBlock x:Name="progress_text" FontSize="12" Margin="0,0,0,8" Foreground="{StaticResource Dim}" Visibility="Collapsed"/>
                     <TextBlock x:Name="message" TextWrapping="Wrap" FontSize="12.5" LineHeight="19"/>
                 </StackPanel>
 
@@ -91,7 +92,44 @@
                             </ScrollViewer>
                         </DockPanel>
                     </Border>
+                    <WrapPanel Margin="0,10,0,0">
+                        <Button x:Name="pit_save" Style="{StaticResource GhostButton}" Margin="0,0,10,0" Content="{x:Static props:Resources.odin_save_pit}"/>
+                    </WrapPanel>
                     <TextBlock x:Name="end_note" TextWrapping="Wrap" FontSize="12" Margin="0,10,0,0"/>
+                </StackPanel>
+
+                <!-- Flashing: the files, what they go to, the checks -->
+                <StackPanel x:Name="plan_view" Visibility="Collapsed">
+                    <TextBlock TextWrapping="Wrap" FontSize="12.5" LineHeight="19" Text="{x:Static props:Resources.odin_flash_intro}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button x:Name="flash_choose" Style="{StaticResource GhostButton}" Content="{x:Static props:Resources.odin_flash_choose}"/>
+                        <TextBlock x:Name="plan_total" VerticalAlignment="Center" Margin="12,0,0,0" FontSize="12.5" Foreground="{StaticResource Dim}"/>
+                    </StackPanel>
+                    <StackPanel x:Name="plan_reading" Margin="0,10,0,0" Visibility="Collapsed">
+                        <ProgressBar x:Name="plan_progress" Height="6" Maximum="100"/>
+                        <TextBlock x:Name="plan_reading_text" FontSize="12" Margin="0,6,0,0" Foreground="{StaticResource Dim}" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                    <Border x:Name="plan_box" Margin="0,10,0,0" CornerRadius="10" BorderThickness="1" Visibility="Collapsed"
+                            Background="{StaticResource Well}" BorderBrush="{StaticResource Line}">
+                        <ScrollViewer MaxHeight="150" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel x:Name="plan_rows" Margin="12,6,12,6"/>
+                        </ScrollViewer>
+                    </Border>
+                    <StackPanel x:Name="plan_targets" Margin="0,8,0,0"/>
+                    <ScrollViewer MaxHeight="170" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,4,0,0">
+                        <StackPanel x:Name="plan_checks"/>
+                    </ScrollViewer>
+                    <CheckBox x:Name="plan_ack" Margin="0,8,0,0" Visibility="Collapsed" Content="{x:Static props:Resources.odin_flash_ack}"/>
+                    <CheckBox x:Name="plan_restart" Margin="0,8,0,0" IsChecked="True" Content="{x:Static props:Resources.odin_flash_restart}"/>
+
+                    <Border Margin="0,12,0,0" Padding="14,9" CornerRadius="10" BorderThickness="1"
+                            Background="{StaticResource Well}" BorderBrush="{StaticResource Line}">
+                        <DockPanel>
+                            <TextBlock x:Name="flash_status_mark" DockPanel.Dock="Left" FontWeight="Bold" Margin="0,0,10,0" VerticalAlignment="Center" Text="…"/>
+                            <TextBlock x:Name="flash_status_text" FontSize="12.5" TextWrapping="Wrap" VerticalAlignment="Center"
+                                       Text="{x:Static props:Resources.odin_flash_waiting}"/>
+                        </DockPanel>
+                    </Border>
                 </StackPanel>
             </Grid>
 

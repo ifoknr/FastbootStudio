@@ -26,13 +26,19 @@ nothing to install.
 > 🆕 **A new version.** Fastboot Studio is the new generation of Fastboot Enhance: a new
 > interface from top to bottom, new pages, and more protection for the phone.
 >
+> **New in 2.9:**
+> - **Samsung flashing** in Download mode, from the app: one image, a Magisk tar, or the whole firmware
+>   (BL, AP, CP, HOME_CSC). Every file is checked first (MD5, lz4, the phone's PIT and model); EFS and
+>   firmware for another model are refused, and a flash that stops leaves the phone in Download mode.
+> - **Google USB driver** in one click, from Settings or the USB check: downloaded from Google and checked.
+>
 > **New in 2.8:**
 > - A **?** in the corner of every page opens its help at the side: what the page is for, the steps,
 >   what can go wrong for good, and the words it uses. In English and Arabic.
 > - A short **welcome tour** on first start (language, the pages, a quick check of the PC, safety rules),
 >   and **What's new** on the first start after an update.
 > - **Samsung USB driver** in one click: downloaded from Samsung, kept only with Samsung's signature, installed.
-> - **Download mode reading** (Odin protocol): a Samsung phone's model, region and partition table (PIT), read over Samsung's own driver. It only reads.
+> - **Download mode reading** (Odin protocol): a Samsung phone's model, region and partition table (PIT), read over Samsung's own driver.
 > - A **rooted boot image** is named before it is flashed, and a recovery suggests *Boot once* first.
 > - The Samsung page shows **Knox**, and the Magisk steps say when to use CSC and when HOME_CSC.
 >
