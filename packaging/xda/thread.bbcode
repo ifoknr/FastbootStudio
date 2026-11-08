@@ -5,13 +5,13 @@
 
 [URL='https://github.com/ifoknr/FastbootStudio/releases/latest'][B]⬇ Download[/B][/URL] · [URL='https://github.com/ifoknr/FastbootStudio']Source (GitHub)[/URL] · [URL='https://github.com/ifoknr/FastbootStudio/blob/master/CHANGELOG.md']Changelog[/URL] · [URL='https://t.me/IFOKNR1']Telegram[/URL]
 
-[B]New in v2.5.0:[/B] a Phone page — your phone in Android, its security and its backups, with the Companion root module
-[B]v2.4.0:[/B] a Root page (Magisk, KernelSU, APatch in four steps) and a boot image check that stops the usual bricks[/CENTER]
+[B]New in v2.9.0:[/B] Samsung flashing from Download mode, inside the app — one image, a Magisk tar or the whole firmware, every file checked first; plus Google's USB driver in one click
+[B]v2.8.0:[/B] help on every page, a welcome tour, Download-mode reading (model, CSC, PIT) and Samsung's driver in one click[/CENTER]
 
 [SIZE=5][B]What is it?[/B][/SIZE]
 Fastboot Studio is a free, open-source (MIT) rewrite of [URL='https://github.com/libxzr/FastbootEnhance']Fastboot Enhance[/URL] by LibXZR. It keeps everything the original did and adds what people who flash phones reach for every day: a safe OTA flasher, image tools that replace simg2img / lpunpack / lpmake, a super image builder, and backups of partitions and files over adb.
 
-Everything runs inside the app: no Python, no Linux tools, nothing to install. adb and fastboot (platform-tools 37.0.1) are included. English and Arabic interface, light or dark theme (or follow Windows).
+Everything runs inside the app: no Python, no Linux tools, nothing to install. adb and fastboot (platform-tools 37.0.1) are included. English and Arabic interface (Chinese, Japanese and Korean partly), light or dark theme (or follow Windows).
 
 [SIZE=5][B]Features[/B][/SIZE]
 [B]📱 Device[/B]
@@ -116,20 +116,22 @@ The stock image is kept in Documents\Fastboot Studio\Root, to undo it.
 [SPOILER="Device"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/06-device-basic-properties.png[/IMG]
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/07-device-partitions.png[/IMG]
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/05-usb-check.png[/IMG][/SPOILER]
-[SPOILER="Flash"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/10-flash.png[/IMG]
-[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/14-super-space.png[/IMG]
-[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/15a-boot-check-init-boot.png[/IMG][/SPOILER]
-[SPOILER="Phone"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/33a-phone.png[/IMG]
-[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/33b-phone-copied.png[/IMG][/SPOILER]
-[SPOILER="Root"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/32-root-patched.png[/IMG][/SPOILER]
+[SPOILER="Flash"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/11-flash.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/15-super-space.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/16a-boot-check-init-boot.png[/IMG][/SPOILER]
+[SPOILER="Phone"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/34a-phone.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/34b-phone-copied.png[/IMG][/SPOILER]
+[SPOILER="Root"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/33-root-patched.png[/IMG][/SPOILER]
 [SPOILER="Payload Dumper"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/02-payload-partitions.png[/IMG][/SPOILER]
-[SPOILER="Image Tools"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/25-images-super.png[/IMG]
-[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/28-images-qualcomm-pieces.png[/IMG]
-[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/28a-images-boot.png[/IMG][/SPOILER]
-[SPOILER="Build Super"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/31-super-built.png[/IMG][/SPOILER]
-[SPOILER="Backup"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/22-backup-partitions.png[/IMG]
-[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/18-backup-fastboot.png[/IMG][/SPOILER]
-[SPOILER="Terminal"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/34-terminal.png[/IMG][/SPOILER]
+[SPOILER="Image Tools"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/26-images-super.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/29-images-qualcomm-pieces.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/29a-images-boot.png[/IMG][/SPOILER]
+[SPOILER="Build Super"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/32-super-built.png[/IMG][/SPOILER]
+[SPOILER="Backup"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/23-backup-partitions.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/19-backup-fastboot.png[/IMG][/SPOILER]
+[SPOILER="Samsung"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/36-samsung-firmware.png[/IMG]
+[IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/en-odin-1-ready.png[/IMG][/SPOILER]
+[SPOILER="Terminal"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/35-terminal.png[/IMG][/SPOILER]
 [SPOILER="Light theme"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/light-02-device.png[/IMG]
 [IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/light-04-terminal.png[/IMG][/SPOILER]
 [SPOILER="Arabic interface"][IMG]https://raw.githubusercontent.com/ifoknr/FastbootStudio/master/docs/screenshots/ar-02-device.png[/IMG]

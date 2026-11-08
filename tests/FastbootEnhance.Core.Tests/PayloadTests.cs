@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Security.Cryptography;
 using System.Threading;
 using ChromeosUpdateEngine;
@@ -871,6 +872,70 @@ namespace FastbootEnhance.Core.Tests
                 Assert.False(info.CanExtract);
                 Assert.Contains("more than any real partition", info.UnsupportedReason);
             }
+        }
+
+        [Fact]
+        public void A_zip_whose_directory_points_past_the_file_is_refused_with_a_format_error()
+        {
+            byte[] image = Data((int)BlockSize * 2, 77);
+            TestPayloadBuilder builder = new TestPayloadBuilder { BlockSize = BlockSize };
+            builder.AddPartition("boot", image).Ops.Add(new OpSpec
+            {
+                Type = InstallOperation.Types.Type.Replace, Content = image, Dst = At((0, 2))
+            });
+            string zip = builder.WriteToZip(workDir, "cut.zip", stored: true);
+            byte[] bytes = File.ReadAllBytes(zip);
+
+            // payload.bin's central entry, its compressed size made larger than the file.
+            int central = LastIndexOf(bytes, new byte[] { 0x50, 0x4b, 0x01, 0x02 }
+                .Concat(new byte[42]).Concat(Encoding.ASCII.GetBytes("payload.bin")).ToArray(), 4, 42);
+            byte[] wrongSize = (byte[])bytes.Clone();
+            BitConverter.GetBytes(0x7FFFFFF0u).CopyTo(wrongSize, central + 20);
+            File.WriteAllBytes(zip, wrongSize);
+            PayloadFormatException a = Assert.Throws<PayloadFormatException>(() => PayloadFile.Open(zip, workDir));
+            Assert.Contains("past the end", a.Message);
+
+            // The end record's central directory offset, pointing past the file.
+            int eocd = LastIndexOf(bytes, new byte[] { 0x50, 0x4b, 0x05, 0x06 });
+            byte[] wrongOffset = (byte[])bytes.Clone();
+            BitConverter.GetBytes(0x7FFFFFF0u).CopyTo(wrongOffset, eocd + 16);
+            File.WriteAllBytes(zip, wrongOffset);
+            PayloadFormatException b = Assert.Throws<PayloadFormatException>(() => PayloadFile.Open(zip, workDir));
+            Assert.Contains("outside the file", b.Message);
+        }
+
+        /// <summary>The last place needle occurs, ignoring its bytes from skipFrom for skipCount (a wildcard).</summary>
+        static int LastIndexOf(byte[] data, byte[] needle, int skipFrom = 0, int skipCount = 0)
+        {
+            for (int i = data.Length - needle.Length; i >= 0; i--)
+            {
+                int k = 0;
+                while (k < needle.Length && (k >= skipFrom && k < skipFrom + skipCount || data[i + k] == needle[k]))
+                    k++;
+                if (k == needle.Length)
+                    return i;
+            }
+            return -1;
+        }
+
+        [Fact]
+        public void A_blob_that_inflates_past_its_blocks_is_refused_before_it_is_held_whole()
+        {
+            // 1 block of destination, a blob that inflates to 3 blocks.
+            byte[] big = Data((int)BlockSize * 3, 78);
+            byte[] expected = Data((int)BlockSize, 79);
+            TestPayloadBuilder builder = new TestPayloadBuilder { BlockSize = BlockSize };
+            PartSpec part = builder.AddPartition("system", expected);
+            part.Ops.Add(new OpSpec
+            {
+                Type = InstallOperation.Types.Type.ReplaceXz,
+                Content = big,
+                Dst = At((0, 1))
+            });
+            string path = builder.WriteToFile(workDir, "bloat.bin");
+            PayloadExtractionException error = Assert.Throws<PayloadExtractionException>(
+                () => ExtractToBytes(path, "system"));
+            Assert.Contains("more than the blocks", error.Message);
         }
 
         [Fact]

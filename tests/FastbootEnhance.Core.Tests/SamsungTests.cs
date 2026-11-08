@@ -181,6 +181,73 @@ namespace FastbootEnhance.Core.Tests
             }
         }
 
+        static byte[] TarHeader(string name, long size, char type)
+        {
+            byte[] header = new byte[512];
+            Encoding.ASCII.GetBytes(name).CopyTo(header, 0);
+            Encoding.ASCII.GetBytes("0000644\0").CopyTo(header, 100);
+            header[124] = 0x80;
+            long v = size;
+            for (int i = 135; i > 124; i--, v >>= 8)
+                header[i] = (byte)(v & 0xFF);
+            header[156] = (byte)type;
+            Encoding.ASCII.GetBytes("ustar\000").CopyTo(header, 257);
+            for (int i = 148; i < 156; i++)
+                header[i] = (byte)' ';
+            int sum = header.Sum(b => (int)b);
+            Encoding.ASCII.GetBytes(Convert.ToString(sum, 8).PadLeft(6, '0') + "\0 ").CopyTo(header, 148);
+            return header;
+        }
+
+        [Fact]
+        public void A_size_that_would_wrap_the_sum_is_a_cut_short_tar_not_a_crash()
+        {
+            string path = Path.Combine(dir, "wrap.tar");
+            using (FileStream f = File.Create(path))
+            {
+                f.Write(TarHeader("boot.img", long.MaxValue - 100, '0'), 0, 512);
+                f.SetLength(4096);
+            }
+            using (FileStream f = File.OpenRead(path))
+                Assert.Throws<InvalidDataException>(() => OdinTar.List(f));
+
+            // A long-name entry claiming gigabytes is a damaged header, not a 3 GB allocation.
+            string path2 = Path.Combine(dir, "longname.tar");
+            using (FileStream f = File.Create(path2))
+            {
+                f.Write(TarHeader("././@LongLink", 3L << 30, 'L'), 0, 512);
+                f.SetLength(512 + (3L << 30) + 1024);
+            }
+            using (FileStream f = File.OpenRead(path2))
+                Assert.Throws<InvalidDataException>(() => OdinTar.List(f));
+        }
+
+        [Fact]
+        public void A_pax_size_record_sets_the_next_entrys_size()
+        {
+            string path = Path.Combine(dir, "pax.tar");
+            byte[] data = Enumerable.Range(0, 70000).Select(i => (byte)(i % 13)).ToArray();
+            byte[] pax = Encoding.ASCII.GetBytes("18 size=70000\n");
+            using (FileStream f = File.Create(path))
+            {
+                f.Write(TarHeader("./PaxHeaders/boot.img", pax.Length, 'x'), 0, 512);
+                f.Write(pax, 0, pax.Length);
+                f.Position = 1024;
+                f.Write(TarHeader("boot.img", 0, '0'), 0, 512);   // the ustar size says 0: too small a field
+                f.Write(data, 0, data.Length);
+                f.SetLength(1536 + 70144 + 1024);
+            }
+            using (FileStream f = File.OpenRead(path))
+            {
+                TarEntry e = Assert.Single(OdinTar.List(f));
+                Assert.Equal("boot.img", e.Name);
+                Assert.Equal(70000, e.Size);
+                MemoryStream copy = new MemoryStream();
+                OdinTar.Open(f, e).CopyTo(copy);
+                Assert.Equal(data, copy.ToArray());
+            }
+        }
+
         [Fact]
         public void An_entry_of_more_than_8_GiB_is_read_from_its_base_256_size()
         {

@@ -42,6 +42,9 @@ namespace FastbootEnhance
 
         static string lastOutputFolder;
 
+        /// <summary>True while the poller sets the list's selection itself: the handler then stays out.</summary>
+        static bool choosing;
+
         static volatile bool busy;
         static volatile bool pageVisible;
         static CancellationTokenSource cancel;
@@ -79,6 +82,8 @@ namespace FastbootEnhance
 
             W.backup_devices.SelectionChanged += delegate
             {
+                if (choosing)
+                    return;
                 AdbDevice picked = W.backup_devices.SelectedItem as AdbDevice;
                 if (picked != null && (current == null || picked.Serial != current.Serial))
                     selectDevice(picked);
@@ -221,7 +226,9 @@ namespace FastbootEnhance
                 return;
             }
 
+            choosing = true;
             W.backup_devices.SelectedItem = keep;
+            choosing = false;
             if (current == null || keep.Serial != current.Serial || keep.State != current.State)
                 selectDevice(keep);
         }

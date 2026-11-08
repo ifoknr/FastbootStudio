@@ -3036,6 +3036,15 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("images_overwrite", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The payload names partitions that cannot be put on a command line: {0}. Nothing was flashed. The file may be damaged or tampered with..
+        /// </summary>
+        public static string payload_bad_names {
+            get {
+                return ResourceManager.GetString("payload_bad_names", resourceCulture);
+            }
+        }
 
         /// <summary>
         ///   Looks up a localized string similar to Done in {0} s.

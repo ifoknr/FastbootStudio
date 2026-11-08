@@ -313,6 +313,12 @@ namespace FastbootEnhance.Core.Samsung.Odin
         /// <summary>EFS and the like: the IMEI and calibration; never flashed here (args: partition).</summary>
         Protected,
 
+        /// <summary>A file with nothing in it (args: file).</summary>
+        EmptyFile,
+
+        /// <summary>A tar whose name is not Samsung's: its model cannot be checked (args: tar).</summary>
+        TarUnknown,
+
         /// <summary>Two files for one partition (args: partition).</summary>
         Twice,
 
@@ -363,7 +369,12 @@ namespace FastbootEnhance.Core.Samsung.Odin
         static readonly HashSet<string> ProtectedPartitions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "EFS", "SEC_EFS", "CPEFS", "STEADY", "PERSISTENT", "PERSIST", "KEYSTORAGE", "KEYREFUGE",
+            // The partition tables and the PIT: a wrong one and the phone has no partitions left.
+            "PGPT", "SGPT", "PIT",
         };
+
+        /// <summary>Partitions nothing here may write to (identity, keys, the partition tables).</summary>
+        public static bool IsProtected(string partition) => partition != null && ProtectedPartitions.Contains(partition);
 
         /// <summary>Partitions of the boot chain: a wrong one can leave the phone unable to start.</summary>
         static readonly HashSet<string> BootChain = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -406,6 +417,11 @@ namespace FastbootEnhance.Core.Samsung.Odin
                     add(OdinCheckLevel.Info, OdinCheckCode.PitSkipped, source.Name);
                     continue;
                 }
+                if (source.Size <= 0)
+                {
+                    add(OdinCheckLevel.Block, OdinCheckCode.EmptyFile, source.Name);
+                    continue;
+                }
                 PitEntry entry = source.Target != null ? pit.ForPartition(source.Target) : pit.ForFile(source.FileName);
                 if (entry == null)
                 {
@@ -440,6 +456,12 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 items.Add(new OdinFlashItem { Entry = entry, Source = source });
             }
 
+            // A tar whose name is not Samsung's (renamed, repacked) carries no model: nothing
+            // says it is for this phone, so the person is told, and must say yes.
+            foreach (string tar in items.Select(i => i.Source).Where(s => s.Part == null && s.DataOffset >= 0)
+                .Select(s => Path.GetFileName(s.Origin)).Distinct(StringComparer.OrdinalIgnoreCase))
+                add(OdinCheckLevel.Warn, OdinCheckCode.TarUnknown, tar);
+
             if (firmware)
             {
                 List<string> tars = sources.Where(s => s.Part != null).Select(s => s.Origin).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
@@ -458,6 +480,19 @@ namespace FastbootEnhance.Core.Samsung.Odin
                         add(OdinCheckLevel.Warn, OdinCheckCode.ModelUnknown, model);
                     else if (!sameModel(model, phoneModel))
                         add(OdinCheckLevel.Block, OdinCheckCode.OtherModel, model, phoneModel);
+                }
+                // Every part is checked on its own: a BL or CP of another model, next to the
+                // right AP, would otherwise only count as "mixed" and reach the bootloader.
+                if (!string.IsNullOrEmpty(phoneModel))
+                {
+                    foreach (FirmwareFile f in set.Files)
+                    {
+                        string own = f.Part == FirmwarePart.CSC || f.Part == FirmwarePart.HomeCsc
+                            ? SamsungBuild.ModelOfCsc(f.Build, f.CscCode) : SamsungBuild.Parse(f.Build)?.Model;
+                        if (own != null && !sameModel("SM-" + own, phoneModel)
+                            && !checks.Any(c => c.Code == OdinCheckCode.OtherModel && c.Args[0] == "SM-" + own))
+                            add(OdinCheckLevel.Block, OdinCheckCode.OtherModel, "SM-" + own, phoneModel);
+                    }
                 }
             }
 
@@ -543,7 +578,8 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 }
                 result.FailedAt = null;
             }
-            catch (Exception e) when (e is OdinException || e is IOException || e is TimeoutException || e is InvalidDataException)
+            catch (Exception e) when (e is OdinException || e is IOException || e is TimeoutException || e is InvalidDataException
+                || e is ArgumentException)
             {
                 result.Error = e;
                 log("odin: flash stopped: " + e.Message);

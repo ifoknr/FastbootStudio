@@ -113,6 +113,10 @@ namespace FastbootEnhance.Core.Payload
         /// manifest, which is untrusted input, so a name must be a plain file name and the
         /// result must stay inside the chosen directory.
         /// </summary>
+        /// <summary>Windows device names: "NUL.img" opens the device, not a file.</summary>
+        static readonly System.Text.RegularExpressions.Regex ReservedName = new System.Text.RegularExpressions.Regex(
+            @"^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\..*)?$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
         internal static string ResolveOutputPath(string outputDirectory, string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -120,7 +124,8 @@ namespace FastbootEnhance.Core.Payload
 
             if (name == "." || name == ".."
                 || name.IndexOf('/') >= 0 || name.IndexOf('\\') >= 0
-                || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+                || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
+                || ReservedName.IsMatch(name))
             {
                 throw new PayloadExtractionException(
                     name, "partition name \"" + name + "\" is not a plain file name");

@@ -14,6 +14,9 @@ namespace FastbootEnhance
         static readonly string FilePath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Fastboot Studio", "settings.json");
 
+        /// <summary>Set is read-modify-write from several threads (device facts, the UI): one at a time.</summary>
+        static readonly object gate = new object();
+
         static Dictionary<string, string> Load()
         {
             Dictionary<string, string> values = new Dictionary<string, string>(StringComparer.Ordinal);
@@ -21,7 +24,10 @@ namespace FastbootEnhance
             {
                 if (!File.Exists(FilePath))
                     return values;
-                using (JsonDocument json = JsonDocument.Parse(File.ReadAllText(FilePath)))
+                string text;
+                lock (gate)
+                    text = File.ReadAllText(FilePath);
+                using (JsonDocument json = JsonDocument.Parse(text))
                 {
                     if (json.RootElement.ValueKind != JsonValueKind.Object)
                         return values;
@@ -56,10 +62,16 @@ namespace FastbootEnhance
         {
             try
             {
-                Dictionary<string, string> values = Load();
-                values[key] = value;
-                Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
-                File.WriteAllText(FilePath, JsonSerializer.Serialize(values));
+                lock (gate)
+                {
+                    Dictionary<string, string> values = Load();
+                    values[key] = value;
+                    Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
+                    // Written beside, then moved over: a crash mid-write leaves the old file, not a torn one.
+                    string temp = FilePath + ".tmp";
+                    File.WriteAllText(temp, JsonSerializer.Serialize(values));
+                    File.Move(temp, FilePath, true);
+                }
                 return true;
             }
             catch (IOException)

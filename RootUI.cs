@@ -88,11 +88,16 @@ namespace FastbootEnhance
             W.root_open_folder.IsEnabled = folder != null;
         }
 
-        /// <summary>Runs work in the background with the page locked, then done on the UI thread.</summary>
+        /// <summary>
+        /// Runs work in the background with the page locked, then done on the UI thread. When
+        /// the work throws, done is not run: the error is shown instead, so a failed step is
+        /// never reported as a finished one.
+        /// </summary>
         static void run(Action work, Action done)
         {
             busy = true;
             refresh();
+            Exception failure = null;
             Helper.offloadAndRun(delegate
             {
                 try
@@ -101,12 +106,16 @@ namespace FastbootEnhance
                 }
                 catch (Exception e)
                 {
+                    failure = e;
                     log("failed: " + e);
                 }
             }, delegate
             {
                 busy = false;
-                done();
+                if (failure != null)
+                    ThemedDialog.Show(failure.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    done();
                 refresh();
             });
         }

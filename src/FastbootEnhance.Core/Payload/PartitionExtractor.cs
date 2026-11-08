@@ -139,7 +139,7 @@ namespace FastbootEnhance.Core.Payload
                             try
                             {
                                 OperationCodec.DecodeInto(
-                                    operation.Type, raw, (int)operation.DataLength, decoded);
+                                    operation.Type, raw, (int)operation.DataLength, decoded, destination);
                             }
                             catch (Exception e)
                             {

@@ -3355,4 +3355,13 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="odin_check_WipesData" xml:space="preserve">
     <value>{0} يمسح كل شي في الجوال (فورمات). استخدم HOME_CSC عشان تحافظ على بياناتك.</value>
   </data>
+  <data name="odin_check_EmptyFile" xml:space="preserve">
+    <value>{0} فاضي: ما فيه شي يتفلش.</value>
+  </data>
+  <data name="odin_check_TarUnknown" xml:space="preserve">
+    <value>{0} اسمه مو مثل أسماء رومات سامسونج، فما نقدر نتأكد إنه لهذا الجوال. فلّشه بس إذا متأكد إنه له.</value>
+  </data>
+  <data name="payload_bad_names" xml:space="preserve">
+    <value>ملف الـ payload فيه أسماء أقسام ما تنفع تنحط في أمر: {0}. ما انفلش شي. يمكن الملف خربان أو معدّل.</value>
+  </data>
 </root>

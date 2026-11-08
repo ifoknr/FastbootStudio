@@ -240,6 +240,35 @@ namespace FastbootEnhance.Core.Tests
         }
 
         [Fact]
+        public void A_bootloader_of_another_model_next_to_the_right_AP_is_refused()
+        {
+            string ap = File(SamsungFixtures.ApName, Convert.FromBase64String(SamsungFixtures.Ap));
+            string bl = Tar("BL_S911BXXU3BWK5_CL1_REV00_user_low_ship.tar.md5", true, ("sboot.bin", Bytes(100, 31)));
+            OdinFlashPlan plan = Plan(new[] { ap, bl }, "SM-S918B");
+            Assert.True(plan.Blocked);
+            OdinCheck check = Assert.Single(plan.Checks, c => c.Code == OdinCheckCode.OtherModel);
+            Assert.Equal(new[] { "SM-S911B", "SM-S918B" }, check.Args);
+        }
+
+        [Fact]
+        public void A_tar_whose_name_is_not_Samsungs_is_warned_about_and_an_empty_file_is_refused()
+        {
+            string tar = Tar("AP_patched.tar", false, ("boot.img", Bytes(100, 32)));
+            OdinFlashPlan plan = Plan(new[] { tar });
+            Assert.False(plan.Blocked);
+            OdinCheck warn = Assert.Single(plan.Checks, c => c.Code == OdinCheckCode.TarUnknown);
+            Assert.Equal(OdinCheckLevel.Warn, warn.Level);
+            Assert.Equal("AP_patched.tar", warn.Args[0]);
+
+            OdinFlashPlan empty = Plan(new[] { File("vbmeta.img", new byte[0]) });
+            Assert.True(empty.Blocked);
+            Assert.Contains(empty.Checks, c => c.Code == OdinCheckCode.EmptyFile && c.Args[0] == "vbmeta.img");
+            Assert.True(OdinFlashPlan.IsProtected("PGPT"));
+            Assert.True(OdinFlashPlan.IsProtected("efs"));
+            Assert.False(OdinFlashPlan.IsProtected("BOOT"));
+        }
+
+        [Fact]
         public void CSC_wipes_the_phone_and_CSC_with_HOME_CSC_is_refused()
         {
             string csc = Tar("CSC_OXM_S911BOXM3BXA1_CL1_REV00_user_low_ship.tar.md5", true, ("cache.img", Bytes(100, 19)));

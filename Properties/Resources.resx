@@ -3355,4 +3355,13 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
   <data name="odin_check_WipesData" xml:space="preserve">
     <value>{0} erases everything on the phone (a factory reset). Use HOME_CSC to keep your data.</value>
   </data>
+  <data name="odin_check_EmptyFile" xml:space="preserve">
+    <value>{0} is empty: there is nothing in it to flash.</value>
+  </data>
+  <data name="odin_check_TarUnknown" xml:space="preserve">
+    <value>{0} is not named like Samsung firmware, so the phone it is for cannot be checked. Flash it only if you are sure it is for this phone.</value>
+  </data>
+  <data name="payload_bad_names" xml:space="preserve">
+    <value>The payload names partitions that cannot be put on a command line: {0}. Nothing was flashed. The file may be damaged or tampered with.</value>
+  </data>
 </root>

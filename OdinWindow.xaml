@@ -101,10 +101,10 @@
                 <!-- Flashing: the files, what they go to, the checks -->
                 <StackPanel x:Name="plan_view" Visibility="Collapsed">
                     <TextBlock TextWrapping="Wrap" FontSize="12.5" LineHeight="19" Text="{x:Static props:Resources.odin_flash_intro}"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                        <Button x:Name="flash_choose" Style="{StaticResource GhostButton}" Content="{x:Static props:Resources.odin_flash_choose}"/>
-                        <TextBlock x:Name="plan_total" VerticalAlignment="Center" Margin="12,0,0,0" FontSize="12.5" Foreground="{StaticResource Dim}"/>
-                    </StackPanel>
+                    <DockPanel Margin="0,10,0,0">
+                        <Button x:Name="flash_choose" DockPanel.Dock="Left" Style="{StaticResource GhostButton}" Content="{x:Static props:Resources.odin_flash_choose}"/>
+                        <TextBlock x:Name="plan_total" VerticalAlignment="Center" Margin="12,0,0,0" FontSize="12.5" TextWrapping="Wrap" Foreground="{StaticResource Dim}"/>
+                    </DockPanel>
                     <StackPanel x:Name="plan_reading" Margin="0,10,0,0" Visibility="Collapsed">
                         <ProgressBar x:Name="plan_progress" Height="6" Maximum="100"/>
                         <TextBlock x:Name="plan_reading_text" FontSize="12" Margin="0,6,0,0" Foreground="{StaticResource Dim}" TextTrimming="CharacterEllipsis"/>

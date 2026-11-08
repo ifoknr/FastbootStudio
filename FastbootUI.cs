@@ -60,6 +60,8 @@ namespace FastbootEnhance
         {
             using (Fastboot fastboot = new Fastboot(null, "devices"))
             {
+                // stderr is drained alongside: a full pipe would otherwise stall fastboot.
+                System.Threading.Tasks.Task<string> errors = fastboot.stderr.ReadToEndAsync();
                 while (true)
                 {
                     string line = fastboot.stdout.ReadLine();
@@ -839,6 +841,7 @@ namespace FastbootEnhance
             // Locked here, on the click, so a second click cannot start the command again
             // before the worker gets going.
             action_lock();
+            flashing = true;
             if (param.step_count <= 0)
                 MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = true;
 
@@ -896,6 +899,7 @@ namespace FastbootEnhance
 
             MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
             {
+                flashing = false;
                 MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = false;
                 action_unlock();
 
@@ -1020,7 +1024,10 @@ namespace FastbootEnhance
 
             BootImageAnalysis image = null;
             Exception failure = null;
-            MainWindow.THIS.fastboot_flash.IsEnabled = false;
+            // Locked, and the phone remembered: while the image is read nothing else may run,
+            // and if the phone was removed or swapped meanwhile the flash does not start.
+            string serial = cur_serial;
+            action_lock();
             Helper.offloadAndRun(delegate
             {
                 try
@@ -1033,7 +1040,13 @@ namespace FastbootEnhance
                 }
             }, delegate
             {
-                MainWindow.THIS.fastboot_flash.IsEnabled = true;
+                action_unlock();
+                if (serial == null || serial != cur_serial || fastbootData == null)
+                {
+                    appendLog("boot image check: the phone changed while " + path + " was being read; nothing flashed");
+                    ThemedDialog.Show(Properties.Resources.fastboot_device_not_exist);
+                    return;
+                }
                 if (failure != null)
                 {
                     appendLog("boot image check: cannot read " + path + ": " + failure.Message);
@@ -1246,6 +1259,18 @@ namespace FastbootEnhance
                         }
                     }
 
+                    List<string> odd = opened.Partitions.Select(part => part.Name)
+                        .Where(name => !AdbCommand.IsSafePartitionName(name)).ToList();
+                    if (odd.Count > 0)
+                    {
+                        appendLog("payload refused: partition names that cannot go on a command line: " + string.Join(", ", odd));
+                        ThemedDialog.Show(string.Format(Properties.Resources.payload_bad_names, string.Join(", ", odd)),
+                            Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
+                        opened.Dispose();
+                        action_unlock();
+                        return;
+                    }
+
                     List<string> blocked = opened.Partitions
                         .Where(part => !part.CanExtract)
                         .Select(part => part.Name)
@@ -1348,7 +1373,7 @@ namespace FastbootEnhance
                 appendLog("Creating logical partition " + name);
                 int? exitCode;
                 using (Fastboot fastboot = new Fastboot(serial,
-                    "create-logical-partition \"" + name + "\" 0", Fastboot.LongCommand))
+                    "create-logical-partition " + AdbCommand.WindowsArgument(name) + " 0", Fastboot.LongCommand))
                 {
                     while (true)
                     {
@@ -1565,7 +1590,7 @@ namespace FastbootEnhance
                                 output.Clear();
                                 cancel.Token.ThrowIfCancellationRequested();
                                 using (Fastboot fastboot = new Fastboot(serial,
-                                    "flash \"" + target + "\" \"" + result.OutputPath + "\"", Fastboot.NoLimit))
+                                    "flash " + AdbCommand.WindowsArgument(target) + " " + AdbCommand.WindowsArgument(result.OutputPath), Fastboot.NoLimit))
                                 {
                                     activeFlash = fastboot;
                                     // abortFlash may have looked for a process just before this one started.
@@ -1603,8 +1628,9 @@ namespace FastbootEnhance
                             {
                                 File.Delete(result.OutputPath);
                             }
-                            catch (IOException)
+                            catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
                             {
+                                appendLog("could not delete " + result.OutputPath + ": " + e.Message);
                             }
                             return (0, output.ToString());
                         }
@@ -1891,7 +1917,8 @@ namespace FastbootEnhance
                 if (!checkCurDevExist())
                     return;
 
-                string target = fastbootData.current_slot == "a" ? "b" : fastbootData.current_slot == "b" ? "a" : null;
+                string slot = fastbootData.current_slot?.TrimStart('_');
+                string target = slot == "a" ? "b" : slot == "b" ? "a" : null;
                 if (target == null)
                 {
                     ThemedDialog.Show(Properties.Resources.operation_not_supported);
@@ -1960,7 +1987,7 @@ namespace FastbootEnhance
 
                     string ext_arg = "";
 
-                    if (target == "vbmeta" || target == "vbmeta_" + fastbootData.current_slot
+                    if (target == "vbmeta" || target == "vbmeta_" + fastbootData.current_slot?.TrimStart('_')
                     || target == "vbmeta_a" || target == "vbmeta_b")
                     {
                         if (Helper.confirm(Properties.Resources.fastboot_vbmeta_disable_verify,
@@ -1969,7 +1996,7 @@ namespace FastbootEnhance
                             ext_arg += "--disable-verity --disable-verification";
                         }
                     }
-                    string command = "flash " + ext_arg + " \"" + target + "\" \"" + path + "\"";
+                    string command = "flash " + ext_arg + " " + AdbCommand.WindowsArgument(target) + " " + AdbCommand.WindowsArgument(path);
                     checkBootImage(target, path, delegate { runStep(new StepCmdRunnerParam(command, -1, true)); });
                 }), "Image File|*.img;*.image");
             };
@@ -1991,7 +2018,7 @@ namespace FastbootEnhance
                 if (!confirmed)
                     return;
 
-                runStep(new StepCmdRunnerParam("erase \"" + target + "\"", 2, false));
+                runStep(new StepCmdRunnerParam("erase " + AdbCommand.WindowsArgument(target), 2, false));
             };
 
             MainWindow.THIS.fastboot_partition_list.SelectionChanged += delegate
@@ -2051,7 +2078,7 @@ namespace FastbootEnhance
                 if (!Helper.confirm(string.Format(Properties.Resources.confirm_delete, target), Properties.Resources.confirm_title, true))
                     return;
 
-                runStep(new StepCmdRunnerParam("delete-logical-partition \"" + target + "\"", 2, false));
+                runStep(new StepCmdRunnerParam("delete-logical-partition " + AdbCommand.WindowsArgument(target), 2, false));
             };
 
             MainWindow.THIS.fastboot_logical_create.Click += delegate
@@ -2062,8 +2089,13 @@ namespace FastbootEnhance
                 new FastbootActionWindow(FastbootActionWindow.StartType.CREATE, "", 0,
                     delegate (string name, ulong size)
                    {
+                       if (!AdbCommand.IsSafePartitionName(name))
+                       {
+                           ThemedDialog.Show(Properties.Resources.operation_not_supported);
+                           return;
+                       }
                        runStep(new StepCmdRunnerParam(
-                            "create-logical-partition \"" + name + "\" \"" + size.ToString() + "\"", 2, false));
+                            "create-logical-partition " + AdbCommand.WindowsArgument(name) + " " + size.ToString(), 2, false));
                    }).ShowDialog();
             };
 

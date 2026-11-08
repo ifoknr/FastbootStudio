@@ -241,6 +241,10 @@ namespace FastbootEnhance.Core.Images
             long start = Number(Attribute(program, "start_sector"), -1);
             if (string.IsNullOrEmpty(label) || start < 0)
                 return null;
+            long sectorBytes = Number(Attribute(program, "SECTOR_SIZE_IN_BYTES"), 512);
+            if (sectorBytes <= 0 || sectorBytes % 512 != 0 || sectorBytes > 65536)
+                return null;
+            int sectorSize = (int)sectorBytes;
             return new Entry
             {
                 File = Attribute(program, "filename") ?? "",
@@ -248,7 +252,7 @@ namespace FastbootEnhance.Core.Images
                 Start = start,
                 Sectors = Number(Attribute(program, "num_partition_sectors"), 0),
                 FileSectorOffset = Number(Attribute(program, "file_sector_offset"), 0),
-                SectorSize = (int)Number(Attribute(program, "SECTOR_SIZE_IN_BYTES"), 512),
+                SectorSize = sectorSize,
                 Lun = Attribute(program, "physical_partition_number") ?? "0",
                 Sparse = string.Equals(Attribute(program, "sparse"), "true", StringComparison.OrdinalIgnoreCase),
                 Xml = xml,

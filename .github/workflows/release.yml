@@ -21,8 +21,9 @@ on:
         type: boolean
         default: false
 
+# Only the release job writes to the repository (the release, the tag); the rest read.
 permissions:
-  contents: write
+  contents: read
 
 env:
   DOTNET_NOLOGO: true
@@ -160,6 +161,8 @@ jobs:
     name: publish and announce
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 

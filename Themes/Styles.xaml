@@ -740,19 +740,23 @@
                                            Foreground="{StaticResource Dim}"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button x:Name="minimize" Style="{StaticResource ChromeButton}"
-                                            Command="{x:Static SystemCommands.MinimizeWindowCommand}" ToolTip="{x:Static props:Resources.chrome_minimize}">
+                                            Command="{x:Static SystemCommands.MinimizeWindowCommand}" ToolTip="{x:Static props:Resources.chrome_minimize}"
+                                            AutomationProperties.Name="{x:Static props:Resources.chrome_minimize}">
                                         <Path Style="{StaticResource ChromeGlyph}" Data="M0,5.5 H10"/>
                                     </Button>
                                     <Button x:Name="maximize" Style="{StaticResource ChromeButton}"
-                                            Command="{x:Static SystemCommands.MaximizeWindowCommand}" ToolTip="{x:Static props:Resources.chrome_maximize}">
+                                            Command="{x:Static SystemCommands.MaximizeWindowCommand}" ToolTip="{x:Static props:Resources.chrome_maximize}"
+                                            AutomationProperties.Name="{x:Static props:Resources.chrome_maximize}">
                                         <Path Style="{StaticResource ChromeGlyph}" Data="M0.5,0.5 H9.5 V9.5 H0.5 Z"/>
                                     </Button>
                                     <Button x:Name="restore" Style="{StaticResource ChromeButton}" Visibility="Collapsed"
-                                            Command="{x:Static SystemCommands.RestoreWindowCommand}" ToolTip="{x:Static props:Resources.chrome_restore}">
+                                            Command="{x:Static SystemCommands.RestoreWindowCommand}" ToolTip="{x:Static props:Resources.chrome_restore}"
+                                            AutomationProperties.Name="{x:Static props:Resources.chrome_restore}">
                                         <Path Style="{StaticResource ChromeGlyph}" Data="M2.5,2.5 V0.5 H9.5 V7.5 H7.5 M0.5,2.5 H7.5 V9.5 H0.5 Z"/>
                                     </Button>
                                     <Button x:Name="close" Style="{StaticResource ChromeCloseButton}"
-                                            Command="{x:Static SystemCommands.CloseWindowCommand}" ToolTip="{x:Static props:Resources.chrome_close}">
+                                            Command="{x:Static SystemCommands.CloseWindowCommand}" ToolTip="{x:Static props:Resources.chrome_close}"
+                                            AutomationProperties.Name="{x:Static props:Resources.chrome_close}">
                                         <Path Style="{StaticResource ChromeGlyph}" Data="M0.5,0.5 L9.5,9.5 M9.5,0.5 L0.5,9.5"/>
                                     </Button>
                                 </StackPanel>

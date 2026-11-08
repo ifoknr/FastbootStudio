@@ -53,7 +53,7 @@ namespace FastbootEnhance
             process.StartInfo.FileName = ExecutablePath;
             process.StartInfo.Arguments = serial == null
                 ? action
-                : "-s \"" + serial + "\" " + action;
+                : "-s " + FastbootEnhance.Core.Adb.AdbCommand.WindowsArgument(serial) + " " + action;
             process.StartInfo.WorkingDirectory = AppContext.BaseDirectory;
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.RedirectStandardError = true;

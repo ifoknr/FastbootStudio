@@ -67,6 +67,17 @@ namespace FastbootEnhance.Core.Tests
             return ms.ToArray();
         }
 
+        [Fact]
+        public void A_cpio_entry_with_a_hostile_size_ends_the_listing_instead_of_throwing()
+        {
+            byte[] cpio = Cpio("init", "system/bin/init");
+            // The first entry's filesize field: 7FFFFFF0 would wrap "pos + size" in 32-bit math.
+            Encoding.ASCII.GetBytes("7FFFFFF0").CopyTo(cpio, 54);
+            List<string> names = FastbootEnhance.Core.Images.Cpio.ListNames(cpio);
+            Assert.DoesNotContain("system/bin/init", names);
+            Assert.Empty(names);
+        }
+
         static uint OsVersion(int a, int b, int c, int year, int month)
         {
             return (uint)((((a << 14) | (b << 7) | c) << 11) | ((year - 2000) << 4) | month);
