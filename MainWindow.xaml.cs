@@ -12,9 +12,9 @@ namespace FastbootEnhance
     public partial class MainWindow : Window
     {
         public static MainWindow THIS;
-        internal const string version = "2.9.0";
+        internal const string version = "3.0.0";
 
-        /// <summary>"v2.9.0", for the rail and About.</summary>
+        /// <summary>"v3.0.0", for the rail and About.</summary>
         public static string versionLabel => "v" + version;
 
         public MainWindow()

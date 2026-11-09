@@ -4,7 +4,7 @@
 
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
-## Unreleased
+## v3.0.0
 - شكل زجاجي جديد: رمادي زجاجي بالليلي وثلجي بالنهاري، وأيقونة جديدة، وزوايا موحّدة
 - القائمة بمجموعات، وشريط فوق يبيّن الجوال ووضعه، وشريط حالة تحت
 - قبل الفلاش ملخص واحد فيه الجوال وكل النقاط، والنتيجة شريط فوق السجل بدل نافذة
