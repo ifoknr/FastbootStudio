@@ -205,13 +205,17 @@
         <Setter Property="Background" Value="{StaticResource Glass2}"/>
         <Setter Property="BorderBrush" Value="{StaticResource GlassLine2}"/>
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
-        <Setter Property="Content">
+        <!-- A template, not a Content element: one Path set as Content is shared, so only the last button showed its icon. -->
+        <Setter Property="ContentTemplate">
             <Setter.Value>
-                <Path Data="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}" Width="18" Height="18" Stretch="Uniform"
-                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.7"
-                      StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" FlowDirection="LeftToRight"/>
+                <DataTemplate>
+                    <Path Data="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}" Width="18" Height="18" Stretch="Uniform"
+                          Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.7"
+                          StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" FlowDirection="LeftToRight"/>
+                </DataTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Content" Value=" "/>
     </Style>
 
     <!-- The question mark in the corner of each page: opens that page's help at the side. -->
