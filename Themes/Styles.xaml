@@ -116,8 +116,9 @@
         <Setter Property="Background" Value="{StaticResource Glass2}"/>
         <Setter Property="BorderBrush" Value="{StaticResource GlassLine2}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="99"/>
-        <Setter Property="Padding" Value="12,5"/>
+        <!-- 11 px, about half a chip's height: WPF draws a radius bigger than half the height as an oval. -->
+        <Setter Property="CornerRadius" Value="11"/>
+        <Setter Property="Padding" Value="12,4"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 

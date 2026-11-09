@@ -518,7 +518,6 @@ namespace FastbootEnhance
                 fastbootData.HasPendingUpdate ? Visibility.Visible : Visibility.Collapsed;
 
             MainWindow.THIS.fastboot_mode_text.Text = fastbootData.fastbootd ? "fastbootd" : "bootloader";
-            MainWindow.THIS.fastboot_mode_badge.Visibility = Visibility.Visible;
 
             MainWindow.THIS.fastboot_checks.ItemsSource = buildChecks();
             showSuperSpace();
@@ -839,8 +838,7 @@ namespace FastbootEnhance
 
             MainWindow.THIS.fastboot_devices_page.Visibility = showActions ? Visibility.Collapsed : Visibility.Visible;
             MainWindow.THIS.fastboot_actions_page.Visibility = showActions ? Visibility.Visible : Visibility.Collapsed;
-            MainWindow.THIS.fastboot_device_chip.Visibility = showActions ? Visibility.Visible : Visibility.Collapsed;
-            MainWindow.THIS.fastboot_remove.Visibility = showActions ? Visibility.Visible : Visibility.Collapsed;
+            // The device bar above the page shows the phone, its mode and Disconnect; the page header no longer repeats them.
             MainWindow.THIS.flash_target_device.Text = showActions && cur_serial != null
                 ? string.Format(Properties.Resources.flash_target, cur_serial)
                 : Properties.Resources.flash_target_none;
