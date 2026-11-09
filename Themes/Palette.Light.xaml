@@ -36,31 +36,11 @@
     <SolidColorBrush x:Key="Glass2" Color="#E6FFFFFF"/>
     <SolidColorBrush x:Key="GlassLine" Color="#1F1E2B48"/>
     <SolidColorBrush x:Key="GlassLine2" Color="#2E1E2B48"/>
-    <DrawingBrush x:Key="SkyBrush" Stretch="Fill" Viewbox="0,0,1,1" ViewboxUnits="Absolute">
-        <DrawingBrush.Drawing>
-            <DrawingGroup>
-                <GeometryDrawing Brush="#EEF0F5"><GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,1,1"/></GeometryDrawing.Geometry></GeometryDrawing>
-                <GeometryDrawing>
-                    <GeometryDrawing.Brush>
-                        <RadialGradientBrush Center="0.12,0" GradientOrigin="0.12,0" RadiusX="0.7" RadiusY="0.55">
-                            <GradientStop Color="#2E2F6BFF" Offset="0"/>
-                            <GradientStop Color="#002F6BFF" Offset="1"/>
-                        </RadialGradientBrush>
-                    </GeometryDrawing.Brush>
-                    <GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,1,1"/></GeometryDrawing.Geometry>
-                </GeometryDrawing>
-                <GeometryDrawing>
-                    <GeometryDrawing.Brush>
-                        <RadialGradientBrush Center="0.92,1" GradientOrigin="0.92,1" RadiusX="0.55" RadiusY="0.5">
-                            <GradientStop Color="#CCFFFFFF" Offset="0"/>
-                            <GradientStop Color="#00FFFFFF" Offset="1"/>
-                        </RadialGradientBrush>
-                    </GeometryDrawing.Brush>
-                    <GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,1,1"/></GeometryDrawing.Geometry>
-                </GeometryDrawing>
-            </DrawingGroup>
-        </DrawingBrush.Drawing>
-    </DrawingBrush>
+    <LinearGradientBrush x:Key="SkyBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#E3E9F8" Offset="0"/>
+        <GradientStop Color="#EEF0F5" Offset="0.45"/>
+        <GradientStop Color="#F5F6F9" Offset="1"/>
+    </LinearGradientBrush>
     <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#4A80FF" Offset="0"/>
         <GradientStop Color="#245BE0" Offset="1"/>

@@ -39,32 +39,13 @@
     <SolidColorBrush x:Key="Glass2" Color="#14FFFFFF"/>
     <SolidColorBrush x:Key="GlassLine" Color="#17FFFFFF"/>
     <SolidColorBrush x:Key="GlassLine2" Color="#26FFFFFF"/>
-    <!-- Behind everything: near-black with a blue glow at the top start and a grey one at the bottom end. -->
-    <DrawingBrush x:Key="SkyBrush" Stretch="Fill" Viewbox="0,0,1,1" ViewboxUnits="Absolute">
-        <DrawingBrush.Drawing>
-            <DrawingGroup>
-                <GeometryDrawing Brush="#0B0B0F"><GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,1,1"/></GeometryDrawing.Geometry></GeometryDrawing>
-                <GeometryDrawing>
-                    <GeometryDrawing.Brush>
-                        <RadialGradientBrush Center="0.12,0" GradientOrigin="0.12,0" RadiusX="0.7" RadiusY="0.55">
-                            <GradientStop Color="#2E5B8CFF" Offset="0"/>
-                            <GradientStop Color="#005B8CFF" Offset="1"/>
-                        </RadialGradientBrush>
-                    </GeometryDrawing.Brush>
-                    <GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,1,1"/></GeometryDrawing.Geometry>
-                </GeometryDrawing>
-                <GeometryDrawing>
-                    <GeometryDrawing.Brush>
-                        <RadialGradientBrush Center="0.92,1" GradientOrigin="0.92,1" RadiusX="0.55" RadiusY="0.5">
-                            <GradientStop Color="#227882A0" Offset="0"/>
-                            <GradientStop Color="#007882A0" Offset="1"/>
-                        </RadialGradientBrush>
-                    </GeometryDrawing.Brush>
-                    <GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,1,1"/></GeometryDrawing.Geometry>
-                </GeometryDrawing>
-            </DrawingGroup>
-        </DrawingBrush.Drawing>
-    </DrawingBrush>
+    <!-- Behind everything: a diagonal gradient, blue-tinted at the top start. A plain gradient, because
+         a DrawingBrush draws black under software rendering, which is the app's default. -->
+    <LinearGradientBrush x:Key="SkyBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#141826" Offset="0"/>
+        <GradientStop Color="#0B0B0F" Offset="0.45"/>
+        <GradientStop Color="#0E1014" Offset="1"/>
+    </LinearGradientBrush>
     <!-- The accent button: a slight gradient so it reads as a glass pill, not a flat block. -->
     <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#6A98FF" Offset="0"/>
