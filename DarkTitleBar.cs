@@ -28,8 +28,13 @@ namespace FastbootEnhance
         /// <summary>Windows 11 22H2 and later draw Mica; older systems have nothing to turn on.</summary>
         public static bool BackdropAvailable => Environment.OSVersion.Version.Build >= 22621;
 
-        /// <summary>On where available, unless turned off in Settings.</summary>
-        public static bool BackdropWanted => BackdropAvailable && Settings.Get(BackdropKey) != "off";
+        /// <summary>
+        /// Off unless turned on in Settings, and only with graphics-card drawing: under software
+        /// drawing (the app's default) Windows paints nothing behind a clear window, so the page
+        /// turned black.
+        /// </summary>
+        public static bool BackdropWanted => BackdropAvailable && Rendering.Chosen == Rendering.Mode.Gpu
+            && Settings.Get(BackdropKey) == "on";
 
         /// <summary>COLORREF (0x00BBGGRR) of one of the theme's brushes: Bg, Line or Text.</summary>
         static int ColorRef(string key)

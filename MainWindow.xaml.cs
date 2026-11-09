@@ -76,7 +76,7 @@ namespace FastbootEnhance
             };
 
             backdrop.IsChecked = DarkTitleBar.BackdropWanted;
-            backdrop.IsEnabled = DarkTitleBar.BackdropAvailable;
+            backdrop.IsEnabled = DarkTitleBar.BackdropAvailable && Rendering.Chosen == Rendering.Mode.Gpu;
             backdrop.Click += delegate
             {
                 Settings.Set(DarkTitleBar.BackdropKey, backdrop.IsChecked == true ? "on" : "off");

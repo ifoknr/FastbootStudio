@@ -3497,7 +3497,7 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
     <value>Glass backdrop behind the window (Windows 11)</value>
   </data>
   <data name="settings_backdrop_note" xml:space="preserve">
-    <value>The desktop shows through the window, blurred. Off, the window keeps its own gradient.</value>
+    <value>The desktop shows through the window, blurred. Needs Graphics card drawing below; off, the window keeps its own colour.</value>
   </data>
   <data name="settings_shortcuts" xml:space="preserve">
     <value>Keyboard shortcuts</value>

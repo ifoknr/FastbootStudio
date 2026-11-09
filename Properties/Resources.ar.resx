@@ -3497,7 +3497,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>خلفية زجاجية خلف النافذة (Windows 11)</value>
   </data>
   <data name="settings_backdrop_note" xml:space="preserve">
-    <value>سطح المكتب يبان من وراء النافذة مع تمويه. لو مطفأ، النافذة تحتفظ بتدرجها.</value>
+    <value>سطح المكتب يبان من وراء النافذة مع تمويه. يحتاج رسم «كرت الشاشة» تحت؛ لو مطفأ، النافذة تحتفظ بلونها.</value>
   </data>
   <data name="settings_shortcuts" xml:space="preserve">
     <value>اختصارات الكيبورد</value>
