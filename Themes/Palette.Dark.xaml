@@ -7,20 +7,20 @@
          Surfaces are translucent so the sky gradient behind them shows through, which is what
          reads as glass; lines are white at low alpha. -->
     <!-- One accent; amber and red are reserved for warnings and destructive actions. -->
-    <SolidColorBrush x:Key="Bg" Color="#0B0B0F"/>
-    <SolidColorBrush x:Key="Rail" Color="#0F0F14"/>
-    <SolidColorBrush x:Key="Well" Color="#0D0D12"/>
-    <SolidColorBrush x:Key="Surface" Color="#17171D"/>
-    <SolidColorBrush x:Key="Raised" Color="#212129"/>
-    <SolidColorBrush x:Key="Hover" Color="#2B2B35"/>
-    <SolidColorBrush x:Key="Line" Color="#2A2A33"/>
-    <SolidColorBrush x:Key="Text" Color="#F1F1F4"/>
-    <SolidColorBrush x:Key="Dim" Color="#A6A6B0"/>
-    <SolidColorBrush x:Key="Faint" Color="#6E6E78"/>
-    <SolidColorBrush x:Key="Accent" Color="#5B8CFF"/>
+    <SolidColorBrush x:Key="Bg" Color="#121214"/>
+    <SolidColorBrush x:Key="Rail" Color="#161619"/>
+    <SolidColorBrush x:Key="Well" Color="#101012"/>
+    <SolidColorBrush x:Key="Surface" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="Raised" Color="#26262B"/>
+    <SolidColorBrush x:Key="Hover" Color="#303036"/>
+    <SolidColorBrush x:Key="Line" Color="#2C2C32"/>
+    <SolidColorBrush x:Key="Text" Color="#ECECF1"/>
+    <SolidColorBrush x:Key="Dim" Color="#A2A2AD"/>
+    <SolidColorBrush x:Key="Faint" Color="#6D6D78"/>
+    <SolidColorBrush x:Key="Accent" Color="#7AA2FF"/>
     <SolidColorBrush x:Key="AccentInk" Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="AccentSoft" Color="#1A2746"/>
-    <SolidColorBrush x:Key="AccentLine" Color="#2F4A8F"/>
+    <SolidColorBrush x:Key="AccentSoft" Color="#1E2840"/>
+    <SolidColorBrush x:Key="AccentLine" Color="#34497A"/>
     <SolidColorBrush x:Key="Warn" Color="#FBBF24"/>
     <SolidColorBrush x:Key="WarnSoft" Color="#3A2E12"/>
     <SolidColorBrush x:Key="WarnLine" Color="#6B5320"/>
@@ -30,34 +30,30 @@
     <SolidColorBrush x:Key="Ok" Color="#4ADE80"/>
     <SolidColorBrush x:Key="OkSoft" Color="#15301F"/>
     <SolidColorBrush x:Key="OkLine" Color="#1F5A35"/>
-    <SolidColorBrush x:Key="Sel" Color="#23232E"/>
-    <SolidColorBrush x:Key="OnSel" Color="#F1F1F4"/>
-    <SolidColorBrush x:Key="Thumb" Color="#45454F"/>
+    <SolidColorBrush x:Key="Sel" Color="#26262B"/>
+    <SolidColorBrush x:Key="OnSel" Color="#ECECF1"/>
+    <SolidColorBrush x:Key="Thumb" Color="#3E3E46"/>
 
-    <!-- Glass: the cards and bars, see-through enough for the sky to tint them. -->
-    <SolidColorBrush x:Key="Glass" Color="#0BFFFFFF"/>
-    <SolidColorBrush x:Key="Glass2" Color="#14FFFFFF"/>
-    <SolidColorBrush x:Key="GlassLine" Color="#17FFFFFF"/>
-    <SolidColorBrush x:Key="GlassLine2" Color="#26FFFFFF"/>
+    <!-- The cards and bars: solid charcoal one step above the page (IFOKNR chose solid over see-through, 9 Nov). -->
+    <SolidColorBrush x:Key="Glass" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="Glass2" Color="#26262B"/>
+    <SolidColorBrush x:Key="GlassLine" Color="#2C2C32"/>
+    <SolidColorBrush x:Key="GlassLine2" Color="#3A3A42"/>
     <!-- Behind everything: a diagonal gradient, blue-tinted at the top start. A plain gradient, because
          a DrawingBrush draws black under software rendering, which is the app's default. -->
-    <LinearGradientBrush x:Key="SkyBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#141826" Offset="0"/>
-        <GradientStop Color="#0B0B0F" Offset="0.45"/>
-        <GradientStop Color="#0E1014" Offset="1"/>
-    </LinearGradientBrush>
+    <SolidColorBrush x:Key="SkyBrush" Color="#121214"/>
     <!-- The accent button: a slight gradient so it reads as a glass pill, not a flat block. -->
     <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#6A98FF" Offset="0"/>
-        <GradientStop Color="#3F6FE6" Offset="1"/>
+        <GradientStop Color="#7AA2FF" Offset="0"/>
+        <GradientStop Color="#4A74E6" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Default templates fill the corner where two scroll bars meet with the system control
          colour, which is near-white; this keeps it dark. -->
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#17171D"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#17171D"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightLightBrushKey}" Color="#17171D"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#17171D"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightLightBrushKey}" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#1B1B1F"/>
 
     <!-- The app icon: grey glass with the bolt on a screen (tools/icon/glass-dark.svg). -->
     <BitmapImage x:Key="AppIcon" UriSource="pack://application:,,,/Assets/icon-themed.png"/>
