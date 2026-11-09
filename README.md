@@ -404,7 +404,7 @@ Type adb and fastboot commands and run them with the tools that come with the ap
 
 ### ⚙️ Settings
 
-- **Language** (English, العربية with a full right-to-left layout), **appearance** (dark, light, or as
+- **Language** (English, العربية with a full right-to-left layout, 中文, 日本語, 한국어), **appearance** (dark, light, or as
   Windows), **text size**, and the **glass backdrop** on Windows 11.
 - **Phone**: whether a phone connected over ADB is asked for root (off by default).
 - **Shortcuts**: Ctrl+O opens a file on the page, Ctrl+L the log, F1 the page's help, Ctrl+, Settings.

@@ -2,7 +2,7 @@
 The app's settings: the language, the appearance, the text size, the glass backdrop, the drawing mode, update checks, USB drivers, and whether a connected phone is asked for root. The welcome tour, What's new and the keyboard shortcuts are here too.
 
 ## steps
-1. **Language**: English or Arabic; the app restarts in it. Arabic turns the whole window right to left. (Chinese, Japanese and Korean return once their translations are complete.)
+1. **Language**: English, Arabic, Chinese, Japanese or Korean; the app restarts in it. Arabic turns the whole window right to left.
 2. **Appearance**: Dark, Light, or As Windows. It applies after a restart.
 3. **Text size**: Small, Default, Large or Larger. Every page follows it right away, so the page is its own preview.
    **Glass backdrop** (Windows 11): the desktop shows through the window, blurred; off, the window keeps its own gradient.
