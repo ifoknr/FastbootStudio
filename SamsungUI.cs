@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 using FastbootEnhance.Core.Adb;
 using FastbootEnhance.Core.Fastboot;
 using FastbootEnhance.Core.Samsung;
@@ -316,6 +317,7 @@ namespace FastbootEnhance
             if (set.Unknown.Count > 0)
                 info.Add(new InfoRow(Properties.Resources.samsung_info_other, string.Join(", ", set.Unknown.Select(Path.GetFileName))));
             W.samsung_info.ItemsSource = info;
+            W.samsung_match_fw.Text = set.Model ?? (build?.Text ?? "—");
 
             // Next to the firmware, in a folder named after its build.
             outputFolder = Path.Combine(Path.GetDirectoryName(set.Files[0].Path), (build?.Text ?? "firmware") + "_files");
@@ -432,10 +434,12 @@ namespace FastbootEnhance
             {
                 W.samsung_verdict.Visibility = Visibility.Collapsed;
                 W.samsung_phone_note.Text = phoneProblem ?? Properties.Resources.samsung_phone_none;
+                showMatchRow(null, null);
                 return;
             }
             MatchLevel overall = FirmwareMatch.Overall(findings);
             string brush = overall == MatchLevel.Block ? "Danger" : overall == MatchLevel.Warn ? "Warn" : "Ok";
+            showMatchRow(phone.Model, brush);
             W.samsung_verdict.Visibility = Visibility.Visible;
             W.samsung_verdict.Background = Palette.Get(brush == "Ok" ? "AccentSoft" : brush + "Soft");
             W.samsung_verdict.BorderBrush = Palette.Get(brush == "Ok" ? "AccentLine" : brush + "Line");
@@ -448,6 +452,28 @@ namespace FastbootEnhance
                 : Properties.Resources.samsung_verdict_ok_text;
             W.samsung_phone_note.Text = string.Format(Properties.Resources.samsung_phone_read, Helper.ltr(phone.Model),
                 Helper.ltr(phone.Serial));
+        }
+
+        /// <summary>The row at the top: the firmware's model, a mark, the phone's model (or "not read yet").</summary>
+        static void showMatchRow(string phoneModel, string brush)
+        {
+            if (phoneModel == null)
+            {
+                W.samsung_match_phone.Text = Properties.Resources.samsung_match_unknown;
+                W.samsung_match_phone.Foreground = Palette.Get("Dim");
+                W.samsung_match_glyph.Data = Geometry.Parse("M6,12 H18");
+                W.samsung_match_glyph.Stroke = Palette.Get("Faint");
+                W.samsung_match_mark.Background = Palette.Get("Glass2");
+                W.samsung_match_mark.BorderBrush = Palette.Get("GlassLine2");
+                return;
+            }
+            W.samsung_match_phone.Text = phoneModel;
+            W.samsung_match_phone.Foreground = Palette.Get("Text");
+            W.samsung_match_glyph.Data = Geometry.Parse(brush == "Ok" ? "M5,12.5 L10,17.5 L19.5,7"
+                : brush == "Warn" ? "M12,4 V14 M12,18 V18.5" : "M7,7 L17,17 M17,7 L7,17");
+            W.samsung_match_glyph.Stroke = Palette.Get(brush);
+            W.samsung_match_mark.Background = Palette.Get(brush + "Soft");
+            W.samsung_match_mark.BorderBrush = Palette.Get(brush + "Line");
         }
 
         static void describe(MatchFinding f, out string title, out string detail)

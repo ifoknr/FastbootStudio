@@ -3454,4 +3454,67 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
   <data name="flash_critical" xml:space="preserve">
     <value>critical</value>
   </data>
+  <data name="drop_title" xml:space="preserve">
+    <value>Drop a file here, or choose one</value>
+  </data>
+  <data name="samsung_match_phone_label" xml:space="preserve">
+    <value>Phone (Download mode)</value>
+  </data>
+  <data name="samsung_match_unknown" xml:space="preserve">
+    <value>not read yet</value>
+  </data>
+  <data name="samsung_details" xml:space="preserve">
+    <value>About the firmware</value>
+  </data>
+  <data name="super_drop_hint" xml:space="preserve">
+    <value>Drop partition images here, or import them</value>
+  </data>
+  <data name="super_drop_detail" xml:space="preserve">
+    <value>system, vendor, product… as raw or sparse images; or read the layout from a phone in fastbootd.</value>
+  </data>
+  <data name="root_prereq" xml:space="preserve">
+    <value>Before you start</value>
+  </data>
+  <data name="root_prereq_unlock" xml:space="preserve">
+    <value>Bootloader unlocked</value>
+  </data>
+  <data name="root_prereq_adb" xml:space="preserve">
+    <value>USB debugging on, phone in Android</value>
+  </data>
+  <data name="root_prereq_image" xml:space="preserve">
+    <value>The stock image of the firmware on the phone</value>
+  </data>
+  <data name="root_prereq_backup" xml:space="preserve">
+    <value>A backup of boot and the data you care about</value>
+  </data>
+  <data name="root_step_done" xml:space="preserve">
+    <value>done</value>
+  </data>
+  <data name="root_step_current" xml:space="preserve">
+    <value>now</value>
+  </data>
+  <data name="settings_backdrop" xml:space="preserve">
+    <value>Glass backdrop behind the window (Windows 11)</value>
+  </data>
+  <data name="settings_backdrop_note" xml:space="preserve">
+    <value>The desktop shows through the window, blurred. Off, the window keeps its own gradient.</value>
+  </data>
+  <data name="settings_shortcuts" xml:space="preserve">
+    <value>Keyboard shortcuts</value>
+  </data>
+  <data name="shortcut_open" xml:space="preserve">
+    <value>Open a file on this page</value>
+  </data>
+  <data name="shortcut_log" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="shortcut_help" xml:space="preserve">
+    <value>Help for this page</value>
+  </data>
+  <data name="shortcut_settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="about_links" xml:space="preserve">
+    <value>Links</value>
+  </data>
 </root>

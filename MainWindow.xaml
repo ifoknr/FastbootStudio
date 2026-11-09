@@ -934,14 +934,28 @@
                     </DockPanel>
                 </Border>
 
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="28,16,28,20">
-
-                        <!-- 1: the app and the stock image -->
-                        <Border Style="{StaticResource Card}" Padding="20,16" Margin="0,0,0,12">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <Grid Margin="28,16,28,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="300"/>
+                        </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <Border x:Name="root_step1" Style="{StaticResource Card}" Padding="18,14" Margin="0,0,0,10">
                             <StackPanel>
-                                <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.root_step1}"/>
-                                <TextBlock Style="{StaticResource Note}" Margin="0,4,0,10" Text="{x:Static props:Resources.root_step1_note}"/>
+                                <DockPanel Margin="0,0,0,8">
+                                    <Border x:Name="root_step1_no" Style="{StaticResource StepNo}">
+                                        <Grid>
+                                            <TextBlock x:Name="root_step1_num" Text="1" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <Path x:Name="root_step1_tick" FlowDirection="LeftToRight" Data="M5,12.5 L10,17.5 L19.5,7" Stroke="{StaticResource Ok}" StrokeThickness="2.4"
+                                                  Width="12" Height="12" Stretch="Uniform" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Visibility="Collapsed"/>
+                                        </Grid>
+                                    </Border>
+                                    <TextBlock x:Name="root_step1_state" DockPanel.Dock="Right" Style="{StaticResource Note}" FontSize="11.5" VerticalAlignment="Center"/>
+                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0" VerticalAlignment="Center" Text="{x:Static props:Resources.root_step1}"/>
+                                </DockPanel>
+                                <TextBlock Style="{StaticResource Note}" Margin="0,0,0,10" Text="{x:Static props:Resources.root_step1_note}"/>
                                 <WrapPanel x:Name="root_tools" FlowDirection="LeftToRight" Margin="0,0,0,6">
                                     <RadioButton x:Name="root_tool_magisk" Style="{StaticResource Segment}" GroupName="root_tool" Content="Magisk" IsChecked="True"/>
                                     <RadioButton x:Name="root_tool_kernelsu" Style="{StaticResource Segment}" GroupName="root_tool" Content="KernelSU"/>
@@ -955,12 +969,20 @@
                                 </DockPanel>
                             </StackPanel>
                         </Border>
-
-                        <!-- 2: send it to the phone -->
-                        <Border Style="{StaticResource Card}" Padding="20,16" Margin="0,0,0,12">
+                        <Border x:Name="root_step2" Style="{StaticResource Card}" Padding="18,14" Margin="0,0,0,10">
                             <StackPanel>
-                                <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.root_step2}"/>
-                                <TextBlock x:Name="root_step2_note" Style="{StaticResource Note}" Margin="0,4,0,10"/>
+                                <DockPanel Margin="0,0,0,8">
+                                    <Border x:Name="root_step2_no" Style="{StaticResource StepNo}">
+                                        <Grid>
+                                            <TextBlock x:Name="root_step2_num" Text="2" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <Path x:Name="root_step2_tick" FlowDirection="LeftToRight" Data="M5,12.5 L10,17.5 L19.5,7" Stroke="{StaticResource Ok}" StrokeThickness="2.4"
+                                                  Width="12" Height="12" Stretch="Uniform" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Visibility="Collapsed"/>
+                                        </Grid>
+                                    </Border>
+                                    <TextBlock x:Name="root_step2_state" DockPanel.Dock="Right" Style="{StaticResource Note}" FontSize="11.5" VerticalAlignment="Center"/>
+                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0" VerticalAlignment="Center" Text="{x:Static props:Resources.root_step2}"/>
+                                </DockPanel>
+                                <TextBlock x:Name="root_step2_note" Style="{StaticResource Note}" Margin="0,0,0,10"/>
                                 <DockPanel>
                                     <Button x:Name="root_push" DockPanel.Dock="Left" MinWidth="190" IsEnabled="False"
                                             Content="{x:Static props:Resources.root_push}"/>
@@ -969,12 +991,20 @@
                                 </DockPanel>
                             </StackPanel>
                         </Border>
-
-                        <!-- 3: patch it in the root app, then bring it back -->
-                        <Border Style="{StaticResource Card}" Padding="20,16" Margin="0,0,0,12">
+                        <Border x:Name="root_step3" Style="{StaticResource Card}" Padding="18,14" Margin="0,0,0,10">
                             <StackPanel>
-                                <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.root_step3}"/>
-                                <TextBlock x:Name="root_how" Style="{StaticResource Note}" Margin="0,4,0,10"/>
+                                <DockPanel Margin="0,0,0,8">
+                                    <Border x:Name="root_step3_no" Style="{StaticResource StepNo}">
+                                        <Grid>
+                                            <TextBlock x:Name="root_step3_num" Text="3" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <Path x:Name="root_step3_tick" FlowDirection="LeftToRight" Data="M5,12.5 L10,17.5 L19.5,7" Stroke="{StaticResource Ok}" StrokeThickness="2.4"
+                                                  Width="12" Height="12" Stretch="Uniform" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Visibility="Collapsed"/>
+                                        </Grid>
+                                    </Border>
+                                    <TextBlock x:Name="root_step3_state" DockPanel.Dock="Right" Style="{StaticResource Note}" FontSize="11.5" VerticalAlignment="Center"/>
+                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0" VerticalAlignment="Center" Text="{x:Static props:Resources.root_step3}"/>
+                                </DockPanel>
+                                <TextBlock x:Name="root_how" Style="{StaticResource Note}" Margin="0,0,0,10"/>
                                 <DockPanel>
                                     <Button x:Name="root_pull" DockPanel.Dock="Left" MinWidth="190" IsEnabled="False"
                                             Content="{x:Static props:Resources.root_pull}"/>
@@ -983,12 +1013,20 @@
                                 </DockPanel>
                             </StackPanel>
                         </Border>
-
-                        <!-- 4: flash -->
-                        <Border Style="{StaticResource Card}" Padding="20,16">
+                        <Border x:Name="root_step4" Style="{StaticResource Card}" Padding="18,14" Margin="0,0,0,10">
                             <StackPanel>
-                                <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.root_step4}"/>
-                                <TextBlock x:Name="root_step4_note" Style="{StaticResource Note}" Margin="0,4,0,10"/>
+                                <DockPanel Margin="0,0,0,8">
+                                    <Border x:Name="root_step4_no" Style="{StaticResource StepNo}">
+                                        <Grid>
+                                            <TextBlock x:Name="root_step4_num" Text="4" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <Path x:Name="root_step4_tick" FlowDirection="LeftToRight" Data="M5,12.5 L10,17.5 L19.5,7" Stroke="{StaticResource Ok}" StrokeThickness="2.4"
+                                                  Width="12" Height="12" Stretch="Uniform" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Visibility="Collapsed"/>
+                                        </Grid>
+                                    </Border>
+                                    <TextBlock x:Name="root_step4_state" DockPanel.Dock="Right" Style="{StaticResource Note}" FontSize="11.5" VerticalAlignment="Center"/>
+                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0" VerticalAlignment="Center" Text="{x:Static props:Resources.root_step4}"/>
+                                </DockPanel>
+                                <TextBlock x:Name="root_step4_note" Style="{StaticResource Note}" Margin="0,0,0,10"/>
                                 <WrapPanel>
                                     <Button x:Name="root_flash" Style="{StaticResource AccentButton}" MinWidth="190" Margin="0,0,10,0" IsEnabled="False"
                                             Content="{x:Static props:Resources.root_flash}"/>
@@ -1001,6 +1039,18 @@
                             </StackPanel>
                         </Border>
                     </StackPanel>
+
+                        <!-- What has to be true before any of it. -->
+                        <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.root_prereq}"/>
+                                <TextBlock Style="{StaticResource Note}" Margin="0,0,0,8" Text="{x:Static props:Resources.root_prereq_unlock}"/>
+                                <TextBlock Style="{StaticResource Note}" Margin="0,0,0,8" Text="{x:Static props:Resources.root_prereq_adb}"/>
+                                <TextBlock Style="{StaticResource Note}" Margin="0,0,0,8" Text="{x:Static props:Resources.root_prereq_image}"/>
+                                <TextBlock Style="{StaticResource Note}" Text="{x:Static props:Resources.root_prereq_backup}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                 </ScrollViewer>
             </Grid>
         </TabItem>
@@ -1032,23 +1082,27 @@
 
                 <Grid Grid.Row="1" Margin="28,20,28,20">
                     <Grid x:Name="payload_before_load" AllowDrop="True" Background="Transparent">
-                        <Border Style="{StaticResource Card}" Width="560" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Padding="40,36" BorderBrush="{StaticResource AccentLine}">
-                            <StackPanel HorizontalAlignment="Center">
-                                <Border Width="56" Height="56" CornerRadius="14" Background="{StaticResource AccentSoft}" HorizontalAlignment="Center" Margin="0,0,0,18">
-                                    <Path Data="{StaticResource IconPayload}" Stroke="{StaticResource Accent}" StrokeThickness="1.8"
-                                          StrokeLineJoin="Round" Stretch="Uniform" Margin="15"/>
+                        <Grid Width="560" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Rectangle RadiusX="16" RadiusY="16" Stroke="{StaticResource GlassLine2}" StrokeThickness="1.5" StrokeDashArray="5 4" Fill="{StaticResource Glass}"/>
+                            <StackPanel HorizontalAlignment="Center" Margin="40,36">
+                                <Border Style="{StaticResource EmptyIcon}">
+                                    <Path Data="{StaticResource IconPayload}" Stroke="{StaticResource Accent}" StrokeThickness="1.6"
+                                          StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stretch="Uniform" Margin="21"/>
                                 </Border>
-                                <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold" Text="{x:Static props:Resources.payload_drop_hint}"/>
-                                <TextBlock Style="{StaticResource Note}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,6,0,22"
+                                <TextBlock HorizontalAlignment="Center" FontSize="16" FontWeight="SemiBold" Text="{x:Static props:Resources.drop_title}"/>
+                                <TextBlock Style="{StaticResource Note}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,6,0,14" MaxWidth="440"
                                            Text="{x:Static props:Resources.payload_no_file_str}"/>
+                                <WrapPanel HorizontalAlignment="Center" Margin="0,0,0,18" FlowDirection="LeftToRight">
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="payload.bin"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text=".zip (OTA)"/></Border>
+                                </WrapPanel>
                                 <Grid HorizontalAlignment="Center">
                                     <Button x:Name="payload_load_btn" Style="{StaticResource AccentButton}" MinWidth="180" MinHeight="40"
                                             Content="{x:Static props:Resources.payload_browse}"/>
                                     <ProgressBar x:Name="payload_opening" Width="260" IsIndeterminate="True" Visibility="Hidden" VerticalAlignment="Center"/>
                                 </Grid>
                             </StackPanel>
-                        </Border>
+                        </Grid>
                     </Grid>
 
                     <Grid x:Name="payload_after_load" Visibility="Collapsed">
@@ -1164,23 +1218,31 @@
                 <Grid Grid.Row="1" Margin="28,20,28,20">
                     <!-- Nothing open: drop zone -->
                     <Grid x:Name="images_empty" AllowDrop="True" Background="Transparent">
-                        <Border Style="{StaticResource Card}" Width="600" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Padding="40,34" BorderBrush="{StaticResource AccentLine}">
-                            <StackPanel HorizontalAlignment="Center">
-                                <Border Width="56" Height="56" CornerRadius="14" Background="{StaticResource AccentSoft}" HorizontalAlignment="Center" Margin="0,0,0,18">
-                                    <Path Data="{StaticResource IconLayers}" Stroke="{StaticResource Accent}" StrokeThickness="1.8"
-                                          StrokeLineJoin="Round" Stretch="Uniform" Margin="15"/>
+                        <Grid Width="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Rectangle RadiusX="16" RadiusY="16" Stroke="{StaticResource GlassLine2}" StrokeThickness="1.5" StrokeDashArray="5 4" Fill="{StaticResource Glass}"/>
+                            <StackPanel HorizontalAlignment="Center" Margin="40,36">
+                                <Border Style="{StaticResource EmptyIcon}">
+                                    <Path Data="{StaticResource IconLayers}" Stroke="{StaticResource Accent}" StrokeThickness="1.6"
+                                          StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stretch="Uniform" Margin="21"/>
                                 </Border>
-                                <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold" Text="{x:Static props:Resources.images_drop_hint}"/>
-                                <TextBlock Style="{StaticResource Note}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,6,0,22"
+                                <TextBlock HorizontalAlignment="Center" FontSize="16" FontWeight="SemiBold" Text="{x:Static props:Resources.drop_title}"/>
+                                <TextBlock Style="{StaticResource Note}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,6,0,14" MaxWidth="440"
                                            Text="{x:Static props:Resources.images_drop_detail}"/>
+                                <WrapPanel HorizontalAlignment="Center" Margin="0,0,0,18" FlowDirection="LeftToRight">
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text=".img"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="super.img"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="boot.img"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="sparse"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="rawprogram.xml"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text=".zip"/></Border>
+                                </WrapPanel>
                                 <Grid HorizontalAlignment="Center">
                                     <Button x:Name="images_open" Style="{StaticResource AccentButton}" MinWidth="180" MinHeight="40"
                                             Content="{x:Static props:Resources.images_open}"/>
                                     <ProgressBar x:Name="images_opening" Width="260" IsIndeterminate="True" Visibility="Hidden" VerticalAlignment="Center"/>
                                 </Grid>
                             </StackPanel>
-                        </Border>
+                        </Grid>
                     </Grid>
 
                     <!-- An image is open -->
@@ -1419,9 +1481,26 @@
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
-                                    <TextBlock x:Name="super_partitions_empty" Style="{StaticResource Note}" Margin="14,44,14,0" TextAlignment="Center"
-                                               HorizontalAlignment="Center" MaxWidth="460" IsHitTestVisible="False"
-                                               Text="{x:Static props:Resources.super_empty_hint}"/>
+                                    <!-- Nothing imported yet: the drop frame, over the empty list. -->
+                                    <Grid x:Name="super_partitions_empty" IsHitTestVisible="False" Margin="14,24,14,14" VerticalAlignment="Top">
+                                        <Rectangle RadiusX="16" RadiusY="16" Stroke="{StaticResource GlassLine2}" StrokeThickness="1.5" StrokeDashArray="5 4" Fill="{StaticResource Glass}"/>
+                                        <StackPanel HorizontalAlignment="Center" Margin="30,28">
+                                            <Border Style="{StaticResource EmptyIcon}" Width="60" Height="60" CornerRadius="16" Margin="0,0,0,14">
+                                                <Path Data="{StaticResource IconBricks}" Stroke="{StaticResource Accent}" StrokeThickness="1.6"
+                                                      StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stretch="Uniform" Margin="17"/>
+                                            </Border>
+                                            <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold" Text="{x:Static props:Resources.super_drop_hint}"/>
+                                            <TextBlock Style="{StaticResource Note}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,6,0,10" MaxWidth="420"
+                                                       Text="{x:Static props:Resources.super_drop_detail}"/>
+                                            <WrapPanel HorizontalAlignment="Center" FlowDirection="LeftToRight">
+                                                <Border Style="{StaticResource FormatChip}"><TextBlock Text="system.img"/></Border>
+                                                <Border Style="{StaticResource FormatChip}"><TextBlock Text="vendor.img"/></Border>
+                                                <Border Style="{StaticResource FormatChip}"><TextBlock Text="product.img"/></Border>
+                                                <Border Style="{StaticResource FormatChip}"><TextBlock Text="sparse"/></Border>
+                                                <Border Style="{StaticResource FormatChip}"><TextBlock Text="raw"/></Border>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Grid>
                                 </Grid>
                             </DockPanel>
                         </Border>
@@ -1476,9 +1555,6 @@
                             <Button x:Name="samsung_open_other" Margin="0,0,10,0" Content="{x:Static props:Resources.samsung_open}"/>
                             <Button x:Name="samsung_close" Style="{StaticResource GhostButton}" Content="{x:Static props:Resources.payload_remove_file}"/>
                         </StackPanel>
-                        <!-- A phone in Download mode: read its PIT and model (Odin protocol, reading only). -->
-                        <Button x:Name="samsung_odin" DockPanel.Dock="Right" Margin="0,0,10,0" VerticalAlignment="Center"
-                                Content="{x:Static props:Resources.samsung_odin_button}" ToolTip="{x:Static props:Resources.samsung_odin_tip}"/>
                         <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,16,0">
                             <TextBlock Style="{StaticResource PageTitle}" Text="{x:Static props:Resources.nav_samsung}"/>
                             <TextBlock Style="{StaticResource PageSubtitle}" Text="{x:Static props:Resources.samsung_subtitle}"/>
@@ -1489,16 +1565,24 @@
                 <Grid Grid.Row="1" Margin="28,20,28,20">
                     <!-- Nothing open -->
                     <Grid x:Name="samsung_empty" AllowDrop="True" Background="Transparent">
-                        <Border Style="{StaticResource Card}" Width="620" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Padding="40,34" BorderBrush="{StaticResource AccentLine}">
-                            <StackPanel HorizontalAlignment="Center">
-                                <Border Width="56" Height="56" CornerRadius="14" Background="{StaticResource AccentSoft}" HorizontalAlignment="Center" Margin="0,0,0,18">
-                                    <Path Data="{StaticResource IconSamsung}" Stroke="{StaticResource Accent}" StrokeThickness="1.8"
-                                          StrokeLineJoin="Round" Stretch="Uniform" Margin="15"/>
+                        <Grid Width="620" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Rectangle RadiusX="16" RadiusY="16" Stroke="{StaticResource GlassLine2}" StrokeThickness="1.5" StrokeDashArray="5 4" Fill="{StaticResource Glass}"/>
+                            <StackPanel HorizontalAlignment="Center" Margin="40,36">
+                                <Border Style="{StaticResource EmptyIcon}">
+                                    <Path Data="{StaticResource IconSamsung}" Stroke="{StaticResource Accent}" StrokeThickness="1.6"
+                                          StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stretch="Uniform" Margin="21"/>
                                 </Border>
-                                <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="SemiBold" Text="{x:Static props:Resources.samsung_drop_hint}"/>
-                                <TextBlock Style="{StaticResource Note}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,6,0,22"
+                                <TextBlock HorizontalAlignment="Center" FontSize="16" FontWeight="SemiBold" Text="{x:Static props:Resources.drop_title}"/>
+                                <TextBlock Style="{StaticResource Note}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,6,0,14" MaxWidth="440"
                                            Text="{x:Static props:Resources.samsung_drop_detail}"/>
+                                <WrapPanel HorizontalAlignment="Center" Margin="0,0,0,18" FlowDirection="LeftToRight">
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="AP_….tar.md5"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="BL"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="CP"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="CSC"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text="HOME_CSC"/></Border>
+                                    <Border Style="{StaticResource FormatChip}"><TextBlock Text=".lz4"/></Border>
+                                </WrapPanel>
                                 <Grid HorizontalAlignment="Center">
                                     <StackPanel x:Name="samsung_open_buttons" Orientation="Horizontal">
                                         <Button x:Name="samsung_open" Style="{StaticResource AccentButton}" MinWidth="170" MinHeight="40" Margin="0,0,10,0"
@@ -1513,7 +1597,7 @@
                                 </Grid>
                                 <!-- Samsung's USB driver, which Download mode needs: installed, or a button to get it. -->
                                 <Border Margin="0,24,0,0" Padding="14,8" CornerRadius="10" BorderThickness="1"
-                                        Background="{StaticResource Well}" BorderBrush="{StaticResource Line}">
+                                        Background="{StaticResource Glass2}" BorderBrush="{StaticResource GlassLine}">
                                     <DockPanel>
                                         <TextBlock x:Name="samsung_driver_mark" DockPanel.Dock="Left" FontWeight="Bold" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                         <Button x:Name="samsung_driver_install" DockPanel.Dock="Right" MinHeight="30" Margin="12,0,0,0" Visibility="Collapsed"
@@ -1523,7 +1607,7 @@
                                     </DockPanel>
                                 </Border>
                             </StackPanel>
-                        </Border>
+                        </Grid>
                     </Grid>
 
                     <!-- Firmware open -->
@@ -1540,18 +1624,48 @@
 
                         <ScrollViewer Grid.RowSpan="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                             <StackPanel>
+                                <!-- The firmware's model against the phone's, in one glance. -->
+                                <Border x:Name="samsung_match" Style="{StaticResource Card}" Padding="16,10" Margin="0,0,0,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource SectionLabel}" Margin="0,0,0,2" Text="{x:Static props:Resources.samsung_info_model}"/>
+                                            <TextBlock x:Name="samsung_match_fw" FontWeight="SemiBold" FontSize="14" FlowDirection="LeftToRight" HorizontalAlignment="Left" Text="—"/>
+                                        </StackPanel>
+                                        <Border Grid.Column="1" x:Name="samsung_match_mark" Width="30" Height="30" CornerRadius="15" Margin="16,0"
+                                                Background="{StaticResource Glass2}" BorderBrush="{StaticResource GlassLine2}" BorderThickness="1" VerticalAlignment="Center">
+                                            <Path x:Name="samsung_match_glyph" FlowDirection="LeftToRight" Data="M6,12 H18" Stroke="{StaticResource Faint}" StrokeThickness="2.4"
+                                                  Width="14" Height="14" Stretch="Uniform" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                            <TextBlock Style="{StaticResource SectionLabel}" Margin="0,0,0,2" TextAlignment="Right" Text="{x:Static props:Resources.samsung_match_phone_label}"/>
+                                            <TextBlock x:Name="samsung_match_phone" FontWeight="SemiBold" FontSize="14" FlowDirection="LeftToRight" HorizontalAlignment="Right"
+                                                       Foreground="{StaticResource Dim}" Text="{x:Static props:Resources.samsung_match_unknown}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
                                 <Border Style="{StaticResource Card}" Margin="0,0,0,12">
                                     <StackPanel>
                                         <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,8" Text="{x:Static props:Resources.samsung_files}"/>
                                         <ItemsControl x:Name="samsung_files">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <DockPanel Margin="0,3">
-                                                        <TextBlock DockPanel.Dock="Left" Width="86" Text="{Binding Part}" FontWeight="SemiBold" FlowDirection="LeftToRight"/>
-                                                        <TextBlock DockPanel.Dock="Right" Text="{Binding State}" Foreground="{Binding StateBrush}" Margin="8,0,0,0"/>
-                                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Size}" Foreground="{StaticResource Dim}" Margin="8,0,0,0" MinWidth="64" TextAlignment="Right" FlowDirection="LeftToRight"/>
-                                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="11"
-                                                                   Foreground="{StaticResource Dim}" TextTrimming="CharacterEllipsis" FlowDirection="LeftToRight"
+                                                    <DockPanel Margin="0,5">
+                                                        <Border DockPanel.Dock="Left" Style="{StaticResource Badge}" Padding="8,2" Margin="0,0,10,0" MinWidth="86" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding Part}" FontWeight="SemiBold" FontSize="12" FlowDirection="LeftToRight" HorizontalAlignment="Center"/>
+                                                        </Border>
+                                                        <Border DockPanel.Dock="Right" Style="{StaticResource Chip}" Padding="9,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding State}" Foreground="{Binding StateBrush}" FontSize="11.5"/>
+                                                        </Border>
+                                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Size}" Foreground="{StaticResource Dim}" Margin="8,0,0,0" MinWidth="64"
+                                                                   TextAlignment="Right" FlowDirection="LeftToRight" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="12.5"
+                                                                   Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" FlowDirection="LeftToRight"
                                                                    VerticalAlignment="Center"/>
                                                     </DockPanel>
                                                 </DataTemplate>
@@ -1632,7 +1746,7 @@
                                             <GridViewColumn Header="{x:Static props:Resources.samsung_column_file}" Width="160">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="11.5" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="12.5" TextTrimming="CharacterEllipsis"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
@@ -1660,15 +1774,17 @@
                                     <TextBlock x:Name="samsung_out_folder" FlowDirection="LeftToRight" FontFamily="{StaticResource Mono}" FontSize="11.5"
                                                Foreground="{StaticResource Dim}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,0,8,0"/>
                                 </DockPanel>
-                                <Button x:Name="samsung_extract" Style="{StaticResource AccentButton}" Margin="0,0,0,8"
-                                        Content="{x:Static props:Resources.samsung_extract}"/>
+                                <!-- One main action: a phone in Download mode, its PIT and model read, then the flash checked against them. -->
+                                <Button x:Name="samsung_odin" Style="{StaticResource AccentButton}" MinHeight="42" Margin="0,0,0,10"
+                                        Content="{x:Static props:Resources.samsung_odin_button}" ToolTip="{x:Static props:Resources.samsung_odin_tip}"/>
                                 <UniformGrid Columns="2" Margin="0,0,0,8">
-                                    <Button x:Name="samsung_magisk" Margin="0,0,4,4" Content="{x:Static props:Resources.samsung_magisk}"/>
-                                    <Button x:Name="samsung_check_patched" Margin="4,0,0,4" Content="{x:Static props:Resources.samsung_check_patched}"/>
+                                    <Button x:Name="samsung_extract" Margin="0,0,4,4" Content="{x:Static props:Resources.samsung_extract}"/>
+                                    <Button x:Name="samsung_magisk" Margin="4,0,0,4" Content="{x:Static props:Resources.samsung_magisk}"/>
                                     <Button x:Name="samsung_build_tar" Margin="0,4,4,0" Content="{x:Static props:Resources.samsung_build_tar}"/>
-                                    <Button x:Name="samsung_open_out" Style="{StaticResource GhostButton}" Margin="4,4,0,0"
-                                            Content="{x:Static props:Resources.backup_open_folder}"/>
+                                    <Button x:Name="samsung_check_patched" Style="{StaticResource GhostButton}" Margin="4,4,0,0" Content="{x:Static props:Resources.samsung_check_patched}"/>
                                 </UniformGrid>
+                                <Button x:Name="samsung_open_out" Style="{StaticResource GhostButton}" Margin="0,0,0,8"
+                                        Content="{x:Static props:Resources.backup_open_folder}"/>
                                 <Button x:Name="samsung_super_tools" Style="{StaticResource GhostButton}" Margin="0,0,0,8" Visibility="Collapsed"
                                         Content="{x:Static props:Resources.samsung_super_tools}"/>
                                 <Button x:Name="samsung_cancel" Style="{StaticResource DangerButton}" Margin="0,0,0,8" Visibility="Collapsed"
@@ -1705,30 +1821,30 @@
 
                 <Grid Grid.Row="1" Margin="28,16,28,18">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Common commands; a click fills the line, Enter runs it. -->
-                    <WrapPanel x:Name="terminal_quick" FlowDirection="LeftToRight" Margin="0,0,0,4"/>
-
-                    <Border Grid.Row="1" Style="{StaticResource Card}" Background="{StaticResource Well}" BorderThickness="1" Padding="14,12">
+                    <Border Grid.Row="0" Style="{StaticResource Card}" Background="{StaticResource Well}" BorderThickness="1" Padding="14,12">
                         <TextBox FlowDirection="LeftToRight" x:Name="terminal_output" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0"
                                  FontFamily="{StaticResource Mono}" FontSize="12" Foreground="{StaticResource Text}"
                                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
                     </Border>
 
-                    <DockPanel Grid.Row="2" Margin="0,12,0,0" FlowDirection="LeftToRight">
+                    <DockPanel Grid.Row="1" Margin="0,12,0,0" FlowDirection="LeftToRight">
                         <Button x:Name="terminal_stop" DockPanel.Dock="Right" Style="{StaticResource DangerButton}" Margin="8,0,0,0" MinWidth="80"
                                 IsEnabled="False" Content="{x:Static props:Resources.terminal_stop}"/>
                         <Button x:Name="terminal_run" DockPanel.Dock="Right" Style="{StaticResource AccentButton}" Margin="8,0,0,0" MinWidth="80"
                                 Content="{x:Static props:Resources.terminal_run}"/>
-                        <TextBox x:Name="terminal_input" FontFamily="{StaticResource Mono}" FontSize="13" VerticalContentAlignment="Center" MinHeight="36"/>
+                        <TextBox x:Name="terminal_input" FontFamily="{StaticResource Mono}" FontSize="13" VerticalContentAlignment="Center" MinHeight="38"/>
                     </DockPanel>
 
-                    <TextBlock Grid.Row="3" x:Name="terminal_folder_text" Style="{StaticResource Note}" FontSize="11.5" Margin="0,6,0,0"
+                    <!-- Common commands; a click fills the line, Enter runs it. -->
+                    <WrapPanel Grid.Row="2" x:Name="terminal_quick" FlowDirection="LeftToRight" Margin="0,8,0,0"/>
+
+                    <TextBlock Grid.Row="3" x:Name="terminal_folder_text" Style="{StaticResource Note}" FontSize="11.5" Margin="0,4,0,0"
                                FlowDirection="LeftToRight" TextTrimming="CharacterEllipsis"/>
                 </Grid>
             </Grid>
@@ -1777,24 +1893,23 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- The hero: the app, what it does, its version. -->
-                    <Border Grid.ColumnSpan="3" Background="{StaticResource Sel}" TextElement.Foreground="{StaticResource OnSel}" CornerRadius="28" Padding="26,24" Margin="0,0,0,16">
+                    <Border Grid.ColumnSpan="3" Style="{StaticResource Card}" Background="{StaticResource Glass2}" BorderBrush="{StaticResource GlassLine2}" Padding="26,24" Margin="0,0,0,16">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Border Width="96" Height="96" CornerRadius="24" ClipToBounds="True" VerticalAlignment="Center">
-                                <Image FlowDirection="LeftToRight" Source="Assets/icon-themed.png" Stretch="UniformToFill"/>
-                            </Border>
+                            <Image FlowDirection="LeftToRight" Source="{StaticResource AppIcon}" Width="96" Height="96" VerticalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
                             <StackPanel Grid.Column="1" Margin="22,0,16,0" VerticalAlignment="Center">
                                 <Image Source="{StaticResource AppName}" Height="24" HorizontalAlignment="Left" Margin="0,0,0,6" FlowDirection="LeftToRight"
                                        RenderOptions.BitmapScalingMode="HighQuality" AutomationProperties.Name="Fastboot Studio"/>
                                 <TextBlock Text="{x:Static props:Resources.about_tagline}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,12"/>
                                 <WrapPanel>
-                                    <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}" Margin="0,0,6,0"><TextBlock Text="v2.9.0" FontFamily="{StaticResource Mono}"/></Border>
-                                    <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}" Margin="0,0,6,0"><TextBlock Text="MIT"/></Border>
-                                    <Border Style="{StaticResource Chip}" Background="{StaticResource Rail}"><TextBlock Text="{x:Static props:Resources.about_free}"/></Border>
+                                    <Border Style="{StaticResource Chip}" Margin="0,0,6,0"><TextBlock Text="{x:Static local:MainWindow.versionLabel}" FontFamily="{StaticResource Mono}"/></Border>
+                                    <Border Style="{StaticResource Chip}" Margin="0,0,6,0"><TextBlock Text="MIT"/></Border>
+                                    <Border Style="{StaticResource Chip}"><TextBlock Text="{x:Static props:Resources.about_free}"/></Border>
                                 </WrapPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
@@ -1810,7 +1925,7 @@
                     <Border Grid.Row="1" Style="{StaticResource Card}" VerticalAlignment="Top">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                                <Border Width="58" Height="58" CornerRadius="18" ClipToBounds="True">
+                                <Border Width="58" Height="58" CornerRadius="16" ClipToBounds="True">
                                     <Image FlowDirection="LeftToRight" Source="Assets/ifoknr-tile.png" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
                                 </Border>
                                 <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
@@ -1819,18 +1934,17 @@
                                     <TextBlock Style="{StaticResource Note}" Margin="0,2,0,0" Text="{x:Static props:Resources.about_developer}"/>
                                 </StackPanel>
                             </StackPanel>
-                            <Button x:Name="about_telegram" Style="{StaticResource LinkRow}" Click="Telegram_Click" Tag="{StaticResource IconSend}">
-                                <StackPanel><TextBlock Text="Telegram" FontWeight="SemiBold"/><TextBlock Text="@IFOKNR1" Style="{StaticResource Note}" FontFamily="{StaticResource Mono}"/></StackPanel>
-                            </Button>
-                            <Button Style="{StaticResource LinkRow}" Click="Group_Click" Tag="{StaticResource IconGroup}">
-                                <StackPanel><TextBlock Text="{x:Static props:Resources.about_telegram_group}" FontWeight="SemiBold"/><TextBlock Text="t.me/BeNeXTBrO" Style="{StaticResource Note}" FontFamily="{StaticResource Mono}"/></StackPanel>
-                            </Button>
-                            <Button x:Name="about_github" Style="{StaticResource LinkRow}" Click="GitHub_Click" Tag="{StaticResource IconGitHub}">
-                                <StackPanel><TextBlock Text="GitHub" FontWeight="SemiBold"/><TextBlock Text="github.com/ifoknr" Style="{StaticResource Note}" FontFamily="{StaticResource Mono}"/></StackPanel>
-                            </Button>
-                            <Button Style="{StaticResource LinkRow}" Click="Site_Click" Tag="{StaticResource IconGlobe}">
-                                <StackPanel><TextBlock Text="{x:Static props:Resources.about_all_tools}" FontWeight="SemiBold"/><TextBlock Text="ifoknr.com" Style="{StaticResource Note}" FontFamily="{StaticResource Mono}"/></StackPanel>
-                            </Button>
+                            <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.about_links}"/>
+                            <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">
+                                <Button x:Name="about_telegram" Style="{StaticResource IconButton}" Click="Telegram_Click" Tag="{StaticResource IconSend}"
+                                        ToolTip="Telegram · @IFOKNR1" AutomationProperties.Name="Telegram"/>
+                                <Button Style="{StaticResource IconButton}" Click="Group_Click" Tag="{StaticResource IconGroup}"
+                                        ToolTip="{x:Static props:Resources.about_telegram_group}" AutomationProperties.Name="{x:Static props:Resources.about_telegram_group}"/>
+                                <Button x:Name="about_github" Style="{StaticResource IconButton}" Click="GitHub_Click" Tag="{StaticResource IconGitHub}"
+                                        ToolTip="GitHub · github.com/ifoknr" AutomationProperties.Name="GitHub"/>
+                                <Button Style="{StaticResource IconButton}" Click="Site_Click" Tag="{StaticResource IconGlobe}"
+                                        ToolTip="{x:Static props:Resources.about_all_tools}" AutomationProperties.Name="{x:Static props:Resources.about_all_tools}"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
 
@@ -1899,6 +2013,10 @@
                             <ColumnDefinition Width="16"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
                         <Border Style="{StaticResource Card}" VerticalAlignment="Top">
                             <StackPanel>
@@ -1908,24 +2026,43 @@
 
                                 <TextBlock FontWeight="SemiBold" Text="{x:Static props:Resources.text_size}"/>
                                 <TextBlock Style="{StaticResource Note}" FontSize="11.5" TextWrapping="Wrap" Text="{x:Static props:Resources.text_size_note}"/>
-                                <WrapPanel x:Name="text_size_buttons" Margin="0,8,0,4"/>
-                                <Border Background="{StaticResource Raised}" CornerRadius="16" Padding="14,10" Margin="0,0,0,14">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Aa" FontSize="26" FontWeight="SemiBold" Foreground="{StaticResource Accent}" VerticalAlignment="Center" Margin="0,0,14,0"/>
-                                        <StackPanel VerticalAlignment="Center">
-                                            <TextBlock FontWeight="SemiBold" Text="{x:Static props:Resources.text_size_preview}"/>
-                                            <TextBlock Style="{StaticResource Note}" Text="{x:Static props:Resources.text_size_preview_note}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Border>
+                                <WrapPanel x:Name="text_size_buttons" Margin="0,8,0,14"/>
+
+                                <CheckBox x:Name="backdrop" Margin="0,0,0,2" Content="{x:Static props:Resources.settings_backdrop}"/>
+                                <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="26,0,0,14" TextWrapping="Wrap" Text="{x:Static props:Resources.settings_backdrop_note}"/>
 
                                 <TextBlock FontWeight="SemiBold" Text="{x:Static props:Resources.rendering}"/>
                                 <WrapPanel x:Name="rendering_buttons" Margin="0,8,0,0"/>
                                 <TextBlock Style="{StaticResource Note}" FontSize="11.5" TextWrapping="Wrap" Text="{x:Static props:Resources.rendering_note}"/>
                             </StackPanel>
                         </Border>
+                        <Border Grid.Row="1" Style="{StaticResource Card}" VerticalAlignment="Top" Margin="0,16,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.settings_shortcuts}"/>
+                                <Grid FlowDirection="LeftToRight">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Border Style="{StaticResource FormatChip}" Margin="0,0,12,8"><TextBlock Text="Ctrl+O"/></Border>
+                                    <TextBlock Grid.Column="1" Style="{StaticResource Note}" Margin="0,0,0,8" VerticalAlignment="Center" Text="{x:Static props:Resources.shortcut_open}"/>
+                                    <Border Grid.Row="1" Style="{StaticResource FormatChip}" Margin="0,0,12,8"><TextBlock Text="Ctrl+L"/></Border>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource Note}" Margin="0,0,0,8" VerticalAlignment="Center" Text="{x:Static props:Resources.shortcut_log}"/>
+                                    <Border Grid.Row="2" Style="{StaticResource FormatChip}" Margin="0,0,12,8"><TextBlock Text="F1"/></Border>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource Note}" Margin="0,0,0,8" VerticalAlignment="Center" Text="{x:Static props:Resources.shortcut_help}"/>
+                                    <Border Grid.Row="3" Style="{StaticResource FormatChip}" Margin="0,0,12,0"><TextBlock Text="Ctrl+,"/></Border>
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource Note}" VerticalAlignment="Center" Text="{x:Static props:Resources.shortcut_settings}"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
-                        <StackPanel Grid.Column="2">
+                        <StackPanel Grid.Column="2" Grid.RowSpan="2">
                             <Border Style="{StaticResource Card}">
                                 <StackPanel>
                                     <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,12" Text="{x:Static props:Resources.language}"/>
@@ -1935,16 +2072,18 @@
 
                             <Border Style="{StaticResource Card}" Margin="0,16,0,0">
                                 <StackPanel>
-                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,12" Text="{x:Static props:Resources.update_section}"/>
+                                    <DockPanel Margin="0,0,0,10">
+                                        <Button x:Name="update_check_now" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" MinHeight="32" Margin="12,0,0,0"
+                                                VerticalAlignment="Center" Content="{x:Static props:Resources.update_check_now}"/>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Style="{StaticResource CardTitle}" Margin="0" Text="{x:Static props:Resources.update_section}"/>
+                                            <TextBlock Text="{x:Static local:MainWindow.versionLabel}" FontFamily="{StaticResource Mono}" FontSize="12" Foreground="{StaticResource Dim}" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                    </DockPanel>
                                     <CheckBox x:Name="update_auto" Margin="0,0,0,2" Content="{x:Static props:Resources.update_auto}"/>
-                                    <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="26,0,0,10" TextWrapping="Wrap"
+                                    <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="26,0,0,8" TextWrapping="Wrap"
                                                Text="{x:Static props:Resources.update_auto_note}"/>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button x:Name="update_check_now" Style="{StaticResource GhostButton}" Margin="0,0,12,0"
-                                                Content="{x:Static props:Resources.update_check_now}"/>
-                                        <TextBlock x:Name="update_status" VerticalAlignment="Center" Foreground="{StaticResource Dim}"
-                                                   TextWrapping="Wrap" MaxWidth="300"/>
-                                    </StackPanel>
+                                    <TextBlock x:Name="update_status" Foreground="{StaticResource Dim}" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </Border>
 
@@ -1954,17 +2093,19 @@
                                     <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="0,0,0,12" TextWrapping="Wrap"
                                                Text="{x:Static props:Resources.driver_section_note}"/>
                                     <DockPanel Margin="0,0,0,10">
-                                        <Button x:Name="settings_google_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Margin="12,0,0,0"
+                                        <Button x:Name="settings_google_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" MinHeight="32" Margin="12,0,0,0"
                                                 VerticalAlignment="Center" Content="{x:Static props:Resources.driver_install}"/>
-                                        <StackPanel>
+                                        <Ellipse x:Name="settings_google_driver_dot" DockPanel.Dock="Left" Width="9" Height="9" Fill="{StaticResource Faint}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                        <StackPanel VerticalAlignment="Center">
                                             <TextBlock FontWeight="SemiBold" Text="{x:Static props:Resources.driver_google_title}"/>
                                             <TextBlock x:Name="settings_google_driver_status" Style="{StaticResource Note}" FontSize="11.5" TextWrapping="Wrap"/>
                                         </StackPanel>
                                     </DockPanel>
                                     <DockPanel>
-                                        <Button x:Name="settings_samsung_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" Margin="12,0,0,0"
+                                        <Button x:Name="settings_samsung_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" MinHeight="32" Margin="12,0,0,0"
                                                 VerticalAlignment="Center" Content="{x:Static props:Resources.driver_install}"/>
-                                        <StackPanel>
+                                        <Ellipse x:Name="settings_samsung_driver_dot" DockPanel.Dock="Left" Width="9" Height="9" Fill="{StaticResource Faint}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                        <StackPanel VerticalAlignment="Center">
                                             <TextBlock FontWeight="SemiBold" Text="{x:Static props:Resources.driver_samsung_title}"/>
                                             <TextBlock x:Name="settings_samsung_driver_status" Style="{StaticResource Note}" FontSize="11.5" TextWrapping="Wrap"/>
                                         </StackPanel>

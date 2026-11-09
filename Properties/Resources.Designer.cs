@@ -9795,5 +9795,195 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("flash_critical", resourceCulture);
             }
         }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to Drop a file here, or choose one.
+        /// </summary>
+        public static string drop_title {
+            get {
+                return ResourceManager.GetString("drop_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Phone (Download mode).
+        /// </summary>
+        public static string samsung_match_phone_label {
+            get {
+                return ResourceManager.GetString("samsung_match_phone_label", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to not read yet.
+        /// </summary>
+        public static string samsung_match_unknown {
+            get {
+                return ResourceManager.GetString("samsung_match_unknown", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to About the firmware.
+        /// </summary>
+        public static string samsung_details {
+            get {
+                return ResourceManager.GetString("samsung_details", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Drop partition images here, or import them.
+        /// </summary>
+        public static string super_drop_hint {
+            get {
+                return ResourceManager.GetString("super_drop_hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to system, vendor, product… as raw or sparse images; or read the layout from a phone in fastbootd..
+        /// </summary>
+        public static string super_drop_detail {
+            get {
+                return ResourceManager.GetString("super_drop_detail", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Before you start.
+        /// </summary>
+        public static string root_prereq {
+            get {
+                return ResourceManager.GetString("root_prereq", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Bootloader unlocked.
+        /// </summary>
+        public static string root_prereq_unlock {
+            get {
+                return ResourceManager.GetString("root_prereq_unlock", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to USB debugging on, phone in Android.
+        /// </summary>
+        public static string root_prereq_adb {
+            get {
+                return ResourceManager.GetString("root_prereq_adb", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The stock image of the firmware on the phone.
+        /// </summary>
+        public static string root_prereq_image {
+            get {
+                return ResourceManager.GetString("root_prereq_image", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A backup of boot and the data you care about.
+        /// </summary>
+        public static string root_prereq_backup {
+            get {
+                return ResourceManager.GetString("root_prereq_backup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to done.
+        /// </summary>
+        public static string root_step_done {
+            get {
+                return ResourceManager.GetString("root_step_done", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to now.
+        /// </summary>
+        public static string root_step_current {
+            get {
+                return ResourceManager.GetString("root_step_current", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Glass backdrop behind the window (Windows 11).
+        /// </summary>
+        public static string settings_backdrop {
+            get {
+                return ResourceManager.GetString("settings_backdrop", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The desktop shows through the window, blurred. Off, the window keeps its own gradient..
+        /// </summary>
+        public static string settings_backdrop_note {
+            get {
+                return ResourceManager.GetString("settings_backdrop_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard shortcuts.
+        /// </summary>
+        public static string settings_shortcuts {
+            get {
+                return ResourceManager.GetString("settings_shortcuts", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open a file on this page.
+        /// </summary>
+        public static string shortcut_open {
+            get {
+                return ResourceManager.GetString("shortcut_open", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Log.
+        /// </summary>
+        public static string shortcut_log {
+            get {
+                return ResourceManager.GetString("shortcut_log", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Help for this page.
+        /// </summary>
+        public static string shortcut_help {
+            get {
+                return ResourceManager.GetString("shortcut_help", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string shortcut_settings {
+            get {
+                return ResourceManager.GetString("shortcut_settings", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Links.
+        /// </summary>
+        public static string about_links {
+            get {
+                return ResourceManager.GetString("about_links", resourceCulture);
+            }
+        }
     }
 }

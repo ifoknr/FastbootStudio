@@ -67,11 +67,19 @@ namespace FastbootEnhance
             HelpUI.init();
             WelcomeUI.init();
 
-            // Esc closes the tour or the help panel, whichever is on top.
+            // Esc closes the tour or the help panel, whichever is on top; then the shortcuts.
             PreviewKeyDown += (sender, e) =>
             {
-                if (!WelcomeUI.HandleKey(e))
-                    HelpUI.HandleKey(e);
+                if (!WelcomeUI.HandleKey(e) && !HelpUI.HandleKey(e))
+                    handleShortcut(e);
+            };
+
+            backdrop.IsChecked = DarkTitleBar.BackdropWanted;
+            backdrop.IsEnabled = DarkTitleBar.BackdropAvailable;
+            backdrop.Click += delegate
+            {
+                Settings.Set(DarkTitleBar.BackdropKey, backdrop.IsChecked == true ? "on" : "off");
+                DarkTitleBar.Apply(this);
             };
 
             // Closing mid-flash kills the worker between partitions and can leave the phone
@@ -229,6 +237,10 @@ namespace FastbootEnhance
             {
                 settings_google_driver_status.Text = google ? Properties.Resources.driver_google_ok : Properties.Resources.driver_google_missing;
                 settings_samsung_driver_status.Text = samsung ? Properties.Resources.samsung_driver_ok : Properties.Resources.samsung_driver_missing;
+                settings_google_driver_dot.Fill = Palette.Get(google ? "Ok" : "Danger");
+                settings_samsung_driver_dot.Fill = Palette.Get(samsung ? "Ok" : "Danger");
+                settings_google_driver.Visibility = google ? Visibility.Collapsed : Visibility.Visible;
+                settings_samsung_driver.Visibility = samsung ? Visibility.Collapsed : Visibility.Visible;
             }));
         }
 
@@ -264,6 +276,49 @@ namespace FastbootEnhance
                 main_tabs.SelectedItem = settings_tab;
                 update_check_now.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             };
+        }
+
+        /// <summary>
+        /// Ctrl+O opens a file on the page that takes one, Ctrl+L the log, F1 this page's help,
+        /// Ctrl+, the settings. Nothing fires while a text box has the keyboard, except F1.
+        /// </summary>
+        void handleShortcut(System.Windows.Input.KeyEventArgs e)
+        {
+            bool ctrl = (System.Windows.Input.Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) != 0;
+            if (e.Key == System.Windows.Input.Key.F1)
+            {
+                HelpUI.Open(main_tabs.SelectedItem as System.Windows.Controls.TabItem);
+                e.Handled = true;
+                return;
+            }
+            if (!ctrl || System.Windows.Input.Keyboard.FocusedElement is System.Windows.Controls.TextBox)
+                return;
+            if (e.Key == System.Windows.Input.Key.L)
+            {
+                main_tabs.SelectedItem = logs_tab;
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.OemComma)
+            {
+                main_tabs.SelectedItem = settings_tab;
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.O)
+            {
+                System.Windows.Controls.Button open =
+                    main_tabs.SelectedItem == payload_tab ? payload_load_btn
+                    : main_tabs.SelectedItem == images_tab ? images_open
+                    : main_tabs.SelectedItem == samsung_tab ? samsung_open
+                    : main_tabs.SelectedItem == super_tab ? super_import
+                    : main_tabs.SelectedItem == root_tab ? root_pick
+                    : main_tabs.SelectedItem == flash_tab ? fastboot_flash_payload
+                    : null;
+                if (open != null && open.IsEnabled && open.IsVisible)
+                {
+                    open.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+                    e.Handled = true;
+                }
+            }
         }
 
         void paintTextSizes()

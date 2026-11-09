@@ -66,7 +66,7 @@ namespace FastbootEnhance
                     FontSize = 12,
                     MinHeight = 30,
                     Padding = new Thickness(10, 2, 10, 2),
-                    Margin = new Thickness(0, 0, 8, 8),
+                    Margin = new Thickness(0, 0, 8, 6),
                     Style = (Style)W.FindResource("GhostButton"),
                 };
                 // Fills the line rather than running it, so nothing happens by a stray click.

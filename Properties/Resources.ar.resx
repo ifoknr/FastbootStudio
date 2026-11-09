@@ -3454,4 +3454,67 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="flash_critical" xml:space="preserve">
     <value>حرج</value>
   </data>
+  <data name="drop_title" xml:space="preserve">
+    <value>اسحب ملف هنا أو اختر…</value>
+  </data>
+  <data name="samsung_match_phone_label" xml:space="preserve">
+    <value>الجوال (وضع التحميل)</value>
+  </data>
+  <data name="samsung_match_unknown" xml:space="preserve">
+    <value>ما انقرأ بعد</value>
+  </data>
+  <data name="samsung_details" xml:space="preserve">
+    <value>عن الروم</value>
+  </data>
+  <data name="super_drop_hint" xml:space="preserve">
+    <value>اسحب صور الأقسام هنا أو استوردها</value>
+  </data>
+  <data name="super_drop_detail" xml:space="preserve">
+    <value>system وvendor وproduct… صور raw أو sparse؛ أو اقرأ التوزيع من جوال بوضع fastbootd.</value>
+  </data>
+  <data name="root_prereq" xml:space="preserve">
+    <value>قبل ما تبدأ</value>
+  </data>
+  <data name="root_prereq_unlock" xml:space="preserve">
+    <value>البوت لودر مفتوح</value>
+  </data>
+  <data name="root_prereq_adb" xml:space="preserve">
+    <value>تصحيح USB شغّال والجوال بالنظام</value>
+  </data>
+  <data name="root_prereq_image" xml:space="preserve">
+    <value>صورة النظام الأصلية للروم اللي على الجوال</value>
+  </data>
+  <data name="root_prereq_backup" xml:space="preserve">
+    <value>نسخة احتياطية من boot ومن البيانات المهمة</value>
+  </data>
+  <data name="root_step_done" xml:space="preserve">
+    <value>تم</value>
+  </data>
+  <data name="root_step_current" xml:space="preserve">
+    <value>الحين</value>
+  </data>
+  <data name="settings_backdrop" xml:space="preserve">
+    <value>خلفية زجاجية خلف النافذة (Windows 11)</value>
+  </data>
+  <data name="settings_backdrop_note" xml:space="preserve">
+    <value>سطح المكتب يبان من وراء النافذة مع تمويه. لو مطفأ، النافذة تحتفظ بتدرجها.</value>
+  </data>
+  <data name="settings_shortcuts" xml:space="preserve">
+    <value>اختصارات الكيبورد</value>
+  </data>
+  <data name="shortcut_open" xml:space="preserve">
+    <value>فتح ملف في هالصفحة</value>
+  </data>
+  <data name="shortcut_log" xml:space="preserve">
+    <value>السجل</value>
+  </data>
+  <data name="shortcut_help" xml:space="preserve">
+    <value>مساعدة هالصفحة</value>
+  </data>
+  <data name="shortcut_settings" xml:space="preserve">
+    <value>الإعدادات</value>
+  </data>
+  <data name="about_links" xml:space="preserve">
+    <value>الروابط</value>
+  </data>
 </root>
