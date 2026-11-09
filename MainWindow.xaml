@@ -21,7 +21,7 @@
 
         <!-- The device bar above every page: which phone, in which mode, and the actions that apply to it. -->
         <local:Rail.TopBar>
-            <Border x:Name="device_bar" Height="58" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,0,0,1" Padding="20,0">
+            <Border x:Name="device_bar" Height="52" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,0,0,1" Padding="20,0">
                 <DockPanel VerticalAlignment="Center">
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="bar_cancel" Style="{StaticResource DangerButton}" MinHeight="32" Margin="0,0,8,0" Visibility="Collapsed"
@@ -67,7 +67,7 @@
 
         <!-- The status bar: how many phones fastboot sees, the last command, the tools' versions. -->
         <local:Rail.BottomBar>
-            <Border x:Name="status_bar" Height="28" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,1,0,0" Padding="16,0">
+            <Border x:Name="status_bar" Height="26" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,1,0,0" Padding="16,0">
                 <DockPanel VerticalAlignment="Center">
                     <TextBlock x:Name="status_tools" DockPanel.Dock="Right" Style="{StaticResource StatusText}" FlowDirection="LeftToRight" FontFamily="{StaticResource Mono}"/>
                     <TextBlock x:Name="status_devices" Style="{StaticResource StatusText}"/>
@@ -1379,7 +1379,8 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="28,20,28,20">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="28,20,28,20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="18"/>
@@ -1390,7 +1391,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="16"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*" MinHeight="260"/>
                         </Grid.RowDefinitions>
 
                         <!-- Layout: slots, size, group -->
@@ -1537,6 +1538,7 @@
                         </StackPanel>
                     </Border>
                 </Grid>
+                </ScrollViewer>
             </Grid>
         </TabItem>
         <TabItem x:Name="samsung_tab" Header="{x:Static props:Resources.nav_samsung}" Tag="{StaticResource IconSamsung}">

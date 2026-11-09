@@ -612,6 +612,7 @@
          The content column carries the device bar on top (Rail.TopBar) and the status bar
          below (Rail.BottomBar); both are set in MainWindow.xaml so their parts have names. -->
     <Style x:Key="NavItem" TargetType="TabItem">
+        <Setter Property="DockPanel.Dock" Value="Top"/>
         <Setter Property="Foreground" Value="{StaticResource Dim}"/>
         <Setter Property="FontSize" Value="13.5"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -647,6 +648,7 @@
 
     <!-- A heading between groups of pages: a label, nothing to click or select. -->
     <Style x:Key="NavGroup" TargetType="TabItem">
+        <Setter Property="DockPanel.Dock" Value="Top"/>
         <Setter Property="IsEnabled" Value="False"/>
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="IsHitTestVisible" Value="False"/>
