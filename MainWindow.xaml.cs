@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace FastbootEnhance
@@ -115,7 +116,7 @@ namespace FastbootEnhance
         void wireLanguages()
         {
             Languages.Option current = Languages.CurrentOption;
-            foreach (Languages.Option option in Languages.All)
+            foreach (Languages.Option option in Languages.Offered.Concat(new[] { current }).Distinct())
             {
                 Languages.Option choice = option;
                 System.Windows.Controls.Button button = new System.Windows.Controls.Button

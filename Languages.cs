@@ -37,6 +37,13 @@ namespace FastbootEnhance
             new Option("ko-KR", "한국어"),
         };
 
+        /// <summary>
+        /// The languages Settings offers: the complete ones. Chinese, Japanese and Korean have
+        /// about an eighth of the strings and are kept out of the list until they are done; a
+        /// choice saved earlier still applies.
+        /// </summary>
+        public static readonly Option[] Offered = { All[0], All[1] };
+
         /// <summary>For automated runs: overrides the saved choice without touching it.</summary>
         const string OverrideVariable = "FASTBOOT_STUDIO_LANG";
 
