@@ -5,6 +5,7 @@ Everything the app ran in this session, and every answer from fastboot and adb. 
 1. Do what went wrong once more, so it is in the log.
 2. Press **Copy**, and paste it in your message to the group or in a GitHub issue.
 3. **Clear** empties the log; it starts again empty with each start of the app.
+4. **Open log folder**: every payload flash is also saved as a file there (flash-date-serial.log, the newest 30 kept), so what happened to a phone can be read after the app is closed.
 
 ## tips
 - The log shows serial numbers of your phones. Remove them before posting in public if you prefer.

@@ -26,6 +26,10 @@ nothing to install.
 > 🆕 **A new version.** Fastboot Studio is the new generation of Fastboot Enhance: a new
 > interface from top to bottom, new pages, and more protection for the phone.
 >
+> **Next (unreleased):** a new glass look (grey glass in dark, frosted in light, a new icon), the pages in
+> groups with a device bar above and a status bar below, one summary before a flash and the result on the
+> page, a log file per flash, a Stop for a hung command, and keyboard shortcuts.
+>
 > **New in 2.9:**
 > - **Samsung flashing** in Download mode, from the app: one image, a Magisk tar, or the whole firmware
 >   (BL, AP, CP, HOME_CSC). Every file is checked first (MD5, lz4, the phone's PIT and model); EFS and
@@ -400,8 +404,10 @@ Type adb and fastboot commands and run them with the tools that come with the ap
 
 ### ⚙️ Settings
 
-- **Language** (English, العربية with a full right-to-left layout, 中文, 日本語, 한국어), **appearance**
-  (dark, light, or as Windows) and **text size**.
+- **Language** (English, العربية with a full right-to-left layout), **appearance** (dark, light, or as
+  Windows), **text size**, and the **glass backdrop** on Windows 11.
+- **Phone**: whether a phone connected over ADB is asked for root (off by default).
+- **Shortcuts**: Ctrl+O opens a file on the page, Ctrl+L the log, F1 the page's help, Ctrl+, Settings.
 - **Updates**: once a day (or with *Check now*) the app looks for a new release, shows what
   changed, and downloads it only if you say so; the zip is kept only when its SHA-256 matches.
 - **USB drivers**: Google's (Pixels and phones on Google's USB ids) and Samsung's, downloaded,

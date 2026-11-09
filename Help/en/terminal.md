@@ -10,6 +10,7 @@ Runs your own adb and fastboot commands with the tools that come with the app, w
 - Commands here go straight to the phone. A flash or erase of a critical partition asks you to type its name, **lock** asks you to type lock, and dd to a partition asks you to type dd.
 - Locking the bootloader on a phone that runs anything but its own stock software can leave it unable to start.
 - fastboot -w, and erasing userdata, metadata or cache, wipe the phone; you are asked first.
+- flashall and update write every partition in a package, set_active changes the slot the phone starts from, delete-logical-partition and snapshot-update touch super: each asks first.
 
 ## tips
 - Only adb and fastboot run here; an interactive adb shell is not supported, so add the command after adb shell.
