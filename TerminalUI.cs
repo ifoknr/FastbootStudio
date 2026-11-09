@@ -218,6 +218,8 @@ namespace FastbootEnhance
                     return ThemedDialog.ConfirmTyped(Properties.Resources.terminal_dd, Properties.Resources.critical_title, "dd");
                 case TerminalRisk.WipesData:
                     return Helper.confirm(Properties.Resources.terminal_wipe, Properties.Resources.confirm_title, true);
+                case TerminalRisk.ChangesSlot:
+                    return Helper.confirm(Properties.Resources.terminal_slot, Properties.Resources.confirm_title, false);
                 default:
                     return true;
             }

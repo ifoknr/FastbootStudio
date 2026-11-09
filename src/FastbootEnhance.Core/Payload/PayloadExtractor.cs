@@ -173,10 +173,12 @@ namespace FastbootEnhance.Core.Payload
                 };
             }
 
-            FileStream output;
+            // Written as "<name>.img.part" and renamed once complete, so a stopped run never
+            // leaves an image that looks whole.
+            AtomicFile output;
             try
             {
-                output = new FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, WriteBufferSize);
+                output = AtomicFile.Create(path, FileAccess.ReadWrite, WriteBufferSize);
             }
             catch (Exception e)
             {
@@ -198,7 +200,8 @@ namespace FastbootEnhance.Core.Payload
                 {
                     int skipped;
                     long size = PartitionExtractor.Extract(
-                        payload, name, output, options, progress, cancellationToken, out skipped);
+                        payload, name, output.Stream, options, progress, cancellationToken, out skipped);
+                    output.Commit();
 
                     watch.Stop();
                     return new PartitionResult
@@ -214,13 +217,11 @@ namespace FastbootEnhance.Core.Payload
             catch (OperationCanceledException)
             {
                 watch.Stop();
-                TryDelete(path);
                 throw;
             }
             catch (Exception e)
             {
                 watch.Stop();
-                TryDelete(path);
                 return new PartitionResult
                 {
                     Partition = name,
@@ -229,21 +230,6 @@ namespace FastbootEnhance.Core.Payload
                     Elapsed = watch.Elapsed,
                     Error = e.Message
                 };
-            }
-        }
-
-        static void TryDelete(string path)
-        {
-            try
-            {
-                if (File.Exists(path))
-                    File.Delete(path);
-            }
-            catch (IOException)
-            {
-            }
-            catch (UnauthorizedAccessException)
-            {
             }
         }
     }

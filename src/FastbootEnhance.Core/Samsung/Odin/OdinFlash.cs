@@ -310,6 +310,12 @@ namespace FastbootEnhance.Core.Samsung.Odin
         /// <summary>Bigger than the partition can be (args: file, partition, size, most).</summary>
         TooBig,
 
+        /// <summary>
+        /// Fits the partition on a UFS phone but not on an eMMC one, and the PIT does not say which
+        /// this is (args: file, partition, size, most on eMMC).
+        /// </summary>
+        MayNotFit,
+
         /// <summary>EFS and the like: the IMEI and calibration; never flashed here (args: partition).</summary>
         Protected,
 
@@ -385,6 +391,45 @@ namespace FastbootEnhance.Core.Samsung.Odin
         /// <summary>The largest sector there is (UFS): no partition holds more than its block count times this.</summary>
         const long MaxSector = 4096;
 
+        /// <summary>The smallest (eMMC): a partition may hold as little as its block count times this.</summary>
+        const long MinSector = 512;
+
+        /// <summary>Where a firmware part comes in Odin's flash order; plain images go last.</summary>
+        static int PartOrder(FirmwarePart? part)
+        {
+            switch (part)
+            {
+                case FirmwarePart.BL: return 0;
+                case FirmwarePart.AP: return 1;
+                case FirmwarePart.CP: return 2;
+                case FirmwarePart.CSC: return 3;
+                case FirmwarePart.HomeCsc: return 3;
+                case FirmwarePart.Userdata: return 4;
+                default: return 5;
+            }
+        }
+
+        /// <summary>
+        /// The bytes one PIT block of <paramref name="entry"/> stands for, when the PIT says: a v1
+        /// PIT records the block size itself; a v2 PIT's device type names the storage (2 = eMMC,
+        /// as Heimdall reads it, 512-byte sectors; 8 = UFS, 4096). Null when it says neither.
+        /// </summary>
+        internal static long? SectorSize(SamsungPit pit, PitEntry entry)
+        {
+            if (!pit.IsVersion2)
+            {
+                long size = entry.BlockSizeOrStart;
+                // A sane block size: a power of two from a sector to 64 KiB.
+                return size >= MinSector && size <= 65536 && (size & (size - 1)) == 0 ? size : (long?)null;
+            }
+            switch (entry.DeviceType)
+            {
+                case 2: return MinSector;
+                case 8: return MaxSector;
+                default: return null;
+            }
+        }
+
         public IReadOnlyList<OdinFlashItem> Items { get; private set; }
         public IReadOnlyList<OdinCheck> Checks { get; private set; }
 
@@ -441,12 +486,19 @@ namespace FastbootEnhance.Core.Samsung.Odin
                     add(OdinCheckLevel.Block, OdinCheckCode.Twice, entry.Partition);
                     continue;
                 }
-                // PIT v1 records a block size of its own; v2 records a start, and its blocks are sectors.
-                long unit = pit.IsVersion2 ? MaxSector : Math.Max(MaxSector, entry.BlockSizeOrStart);
-                if (entry.BlockCount > 0 && source.Size > entry.BlockCount * unit)
+                // PIT v1 records a block size of its own; v2 records a start, and its blocks are
+                // sectors: 512 bytes on eMMC, 4096 on UFS. The entry's device type says which;
+                // when it says neither, the UFS size is certain and the eMMC one a warning.
+                long? sector = SectorSize(pit, entry);
+                long most = entry.BlockCount * (sector ?? MaxSector);
+                if (entry.BlockCount > 0 && source.Size > most)
                     add(OdinCheckLevel.Block, OdinCheckCode.TooBig, source.Name, entry.Partition,
                         source.Size.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                        (entry.BlockCount * unit).ToString(System.Globalization.CultureInfo.InvariantCulture));
+                        most.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                else if (entry.BlockCount > 0 && sector == null && source.Size > entry.BlockCount * MinSector)
+                    add(OdinCheckLevel.Warn, OdinCheckCode.MayNotFit, source.Name, entry.Partition,
+                        source.Size.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                        (entry.BlockCount * MinSector).ToString(System.Globalization.CultureInfo.InvariantCulture));
                 if (source.Part == null && BootChain.Contains(entry.Partition))
                     add(OdinCheckLevel.Warn, OdinCheckCode.Bootloader, entry.Partition);
                 if (source.Part == null && entry.IsModem)
@@ -455,6 +507,12 @@ namespace FastbootEnhance.Core.Samsung.Odin
                     add(OdinCheckLevel.Warn, OdinCheckCode.WipesData, source.Name);
                 items.Add(new OdinFlashItem { Entry = entry, Source = source });
             }
+
+            // Written in Odin's order whatever order the files were picked in: the bootloader
+            // first, then AP, CP, CSC, userdata, and plain images last; each file's own order kept.
+            items = items.Select((item, index) => new { item, index })
+                .OrderBy(x => PartOrder(x.item.Source.Part)).ThenBy(x => x.index)
+                .Select(x => x.item).ToList();
 
             // A tar whose name is not Samsung's (renamed, repacked) carries no model: nothing
             // says it is for this phone, so the person is told, and must say yes.

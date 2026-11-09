@@ -3364,4 +3364,10 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="payload_bad_names" xml:space="preserve">
     <value>ملف الـ payload فيه أسماء أقسام ما تنفع تنحط في أمر: {0}. ما انفلش شي. يمكن الملف خربان أو معدّل.</value>
   </data>
+  <data name="odin_check_MayNotFit" xml:space="preserve">
+    <value>{0} يتسع في {1} على جوال UFS بس مو على eMMC ({2}، وقسم eMMC يتحمل {3} بالكثير)، والـ PIT ما يقول نوع هالجوال. على جوال eMMC البوت لودر يرفضه بنص الفلاش.</value>
+  </data>
+  <data name="terminal_slot" xml:space="preserve">
+    <value>هذا الأمر يغيّر السلوت الفعّال: الجوال يقلع من السلوت الثاني المرة الجاية، أياً كان اللي عليه. لو فيه نظام أقدم أو خربان ممكن ما يقلع. تنفيذه؟</value>
+  </data>
 </root>

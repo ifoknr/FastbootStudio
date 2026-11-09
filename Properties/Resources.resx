@@ -3364,4 +3364,10 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
   <data name="payload_bad_names" xml:space="preserve">
     <value>The payload names partitions that cannot be put on a command line: {0}. Nothing was flashed. The file may be damaged or tampered with.</value>
   </data>
+  <data name="odin_check_MayNotFit" xml:space="preserve">
+    <value>{0} fits {1} on a UFS phone but not on an eMMC one ({2}; an eMMC partition holds at most {3}), and the PIT does not say which this phone is. On an eMMC phone the bootloader refuses it mid-flash.</value>
+  </data>
+  <data name="terminal_slot" xml:space="preserve">
+    <value>This command changes the active slot: the phone starts from the other slot next time, whatever is on it. If that slot holds an older or broken system, the phone may not boot. Run it?</value>
+  </data>
 </root>

@@ -9521,5 +9521,24 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("odin_check_WipesData", resourceCulture);
             }
         }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} fits {1} on a UFS phone but not on an eMMC one ({2}; an eMMC partition holds at most {3}), and the PIT does not say which this phone is. On an eMMC phone the bootloader refuses it mid-flash..
+        /// </summary>
+        public static string odin_check_MayNotFit {
+            get {
+                return ResourceManager.GetString("odin_check_MayNotFit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This command changes the active slot: the phone starts from the other slot next time, whatever is on it. If that slot holds an older or broken system, the phone may not boot. Run it?.
+        /// </summary>
+        public static string terminal_slot {
+            get {
+                return ResourceManager.GetString("terminal_slot", resourceCulture);
+            }
+        }
     }
 }
