@@ -9540,5 +9540,114 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("terminal_slot", resourceCulture);
             }
         }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to I have read this.
+        /// </summary>
+        public static string summary_ack {
+            get {
+                return ResourceManager.GetString("summary_ack", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm the flash.
+        /// </summary>
+        public static string flash_summary_title {
+            get {
+                return ResourceManager.GetString("flash_summary_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: {1} partitions, {2}. Nothing is written until every image is extracted and its hash checks out..
+        /// </summary>
+        public static string flash_summary {
+            get {
+                return ResourceManager.GetString("flash_summary", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Flash.
+        /// </summary>
+        public static string flash_summary_go {
+            get {
+                return ResourceManager.GetString("flash_summary_go", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Phone: {0} · {1} · slot {2} · {3}.
+        /// </summary>
+        public static string confirm_device_line {
+            get {
+                return ResourceManager.GetString("confirm_device_line", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open log folder.
+        /// </summary>
+        public static string logs_open_folder {
+            get {
+                return ResourceManager.GetString("logs_open_folder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Every flash is also saved as a file in the log folder (the newest 30 are kept)..
+        /// </summary>
+        public static string logs_file_note {
+            get {
+                return ResourceManager.GetString("logs_file_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped by you. The phone may hold a half-written partition; flash it again before restarting..
+        /// </summary>
+        public static string step_cancelled {
+            get {
+                return ResourceManager.GetString("step_cancelled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string bar_cancel {
+            get {
+                return ResourceManager.GetString("bar_cancel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        public static string settings_phone {
+            get {
+                return ResourceManager.GetString("settings_phone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ask the phone for root when it connects over ADB.
+        /// </summary>
+        public static string root_probe {
+            get {
+                return ResourceManager.GetString("root_probe", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reads the Companion's report (root state, AVB, module conflicts). Magisk shows a prompt on the phone the first time. Off, the Phone page asks only when you read the phone yourself..
+        /// </summary>
+        public static string root_probe_note {
+            get {
+                return ResourceManager.GetString("root_probe_note", resourceCulture);
+            }
+        }
     }
 }

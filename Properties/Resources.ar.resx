@@ -3370,4 +3370,40 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="terminal_slot" xml:space="preserve">
     <value>هذا الأمر يغيّر السلوت الفعّال: الجوال يقلع من السلوت الثاني المرة الجاية، أياً كان اللي عليه. لو فيه نظام أقدم أو خربان ممكن ما يقلع. تنفيذه؟</value>
   </data>
+  <data name="summary_ack" xml:space="preserve">
+    <value>قريت هذا</value>
+  </data>
+  <data name="flash_summary_title" xml:space="preserve">
+    <value>تأكيد التفليش</value>
+  </data>
+  <data name="flash_summary" xml:space="preserve">
+    <value>{0}: {1} قسم، {2}. ما ينكتب شي لين تنستخرج كل الصور ويتأكد الهاش حقها.</value>
+  </data>
+  <data name="flash_summary_go" xml:space="preserve">
+    <value>فلّش</value>
+  </data>
+  <data name="confirm_device_line" xml:space="preserve">
+    <value>الجوال: {0} · {1} · السلوت {2} · {3}</value>
+  </data>
+  <data name="logs_open_folder" xml:space="preserve">
+    <value>فتح مجلد السجلات</value>
+  </data>
+  <data name="logs_file_note" xml:space="preserve">
+    <value>كل فلاش ينحفظ كمان كملف في مجلد السجلات (آخر 30 ملف تبقى).</value>
+  </data>
+  <data name="step_cancelled" xml:space="preserve">
+    <value>وقّفته أنت. ممكن يكون في الجوال قسم نص مكتوب، فلّشه مرة ثانية قبل ما تعيد التشغيل.</value>
+  </data>
+  <data name="bar_cancel" xml:space="preserve">
+    <value>إيقاف</value>
+  </data>
+  <data name="settings_phone" xml:space="preserve">
+    <value>الجوال</value>
+  </data>
+  <data name="root_probe" xml:space="preserve">
+    <value>اطلب صلاحيات الروت من الجوال لما يتصل بـ ADB</value>
+  </data>
+  <data name="root_probe_note" xml:space="preserve">
+    <value>يقرأ تقرير Companion (حالة الروت وAVB وتعارض الموديولات). Magisk يطلع طلب على الجوال أول مرة. لو مطفأ، صفحة الجوال تسأل بس لما تقرأ الجوال بنفسك.</value>
+  </data>
 </root>

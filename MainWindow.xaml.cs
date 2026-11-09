@@ -317,6 +317,26 @@ namespace FastbootEnhance
             }));
 
             log_clear.Click += delegate { LogStore.Clear(); };
+            log_open_folder.Click += delegate
+            {
+                try
+                {
+                    Directory.CreateDirectory(LogStore.Folder);
+                    Process.Start(new ProcessStartInfo("explorer.exe", FastbootEnhance.Core.Adb.AdbCommand.WindowsArgument(LogStore.Folder))
+                    {
+                        UseShellExecute = true
+                    });
+                }
+                catch (Exception e) when (e is IOException || e is UnauthorizedAccessException || e is System.ComponentModel.Win32Exception)
+                {
+                    ThemedDialog.Show(e.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+            root_probe.IsChecked = AdbFacts.RootProbe;
+            root_probe.Click += delegate
+            {
+                Settings.Set(AdbFacts.RootProbeKey, root_probe.IsChecked == true ? "on" : "off");
+            };
             log_copy.Click += delegate
             {
                 try

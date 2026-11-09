@@ -3370,4 +3370,40 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
   <data name="terminal_slot" xml:space="preserve">
     <value>This command changes the active slot: the phone starts from the other slot next time, whatever is on it. If that slot holds an older or broken system, the phone may not boot. Run it?</value>
   </data>
+  <data name="summary_ack" xml:space="preserve">
+    <value>I have read this</value>
+  </data>
+  <data name="flash_summary_title" xml:space="preserve">
+    <value>Confirm the flash</value>
+  </data>
+  <data name="flash_summary" xml:space="preserve">
+    <value>{0}: {1} partitions, {2}. Nothing is written until every image is extracted and its hash checks out.</value>
+  </data>
+  <data name="flash_summary_go" xml:space="preserve">
+    <value>Flash</value>
+  </data>
+  <data name="confirm_device_line" xml:space="preserve">
+    <value>Phone: {0} · {1} · slot {2} · {3}</value>
+  </data>
+  <data name="logs_open_folder" xml:space="preserve">
+    <value>Open log folder</value>
+  </data>
+  <data name="logs_file_note" xml:space="preserve">
+    <value>Every flash is also saved as a file in the log folder (the newest 30 are kept).</value>
+  </data>
+  <data name="step_cancelled" xml:space="preserve">
+    <value>Stopped by you. The phone may hold a half-written partition; flash it again before restarting.</value>
+  </data>
+  <data name="bar_cancel" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="settings_phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="root_probe" xml:space="preserve">
+    <value>Ask the phone for root when it connects over ADB</value>
+  </data>
+  <data name="root_probe_note" xml:space="preserve">
+    <value>Reads the Companion's report (root state, AVB, module conflicts). Magisk shows a prompt on the phone the first time. Off, the Phone page asks only when you read the phone yourself.</value>
+  </data>
 </root>

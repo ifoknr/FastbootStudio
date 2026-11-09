@@ -26,15 +26,24 @@
                     <Path FlowDirection="LeftToRight" x:Name="glyph" Width="18" Height="18" Stretch="Uniform" StrokeThickness="2"
                           StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
                 </Border>
-                <TextBlock x:Name="heading" Style="{StaticResource CardTitle}" FontSize="15"
-                           VerticalAlignment="Center" TextWrapping="Wrap"/>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="heading" Style="{StaticResource CardTitle}" FontSize="15" TextWrapping="Wrap"/>
+                    <!-- Which phone a flash or erase goes to: serial, product, slot, mode. -->
+                    <TextBlock x:Name="device_line" Visibility="Collapsed" Margin="0,3,0,0" FontSize="12"
+                               Foreground="{StaticResource Dim}" TextWrapping="Wrap"/>
+                </StackPanel>
             </DockPanel>
 
             <StackPanel Grid.Row="1" Margin="70,10,22,0">
                 <ScrollViewer MaxHeight="380" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <TextBlock x:Name="message" TextWrapping="Wrap" Foreground="{StaticResource Dim}"
-                               LineHeight="19"/>
+                    <StackPanel>
+                        <TextBlock x:Name="message" TextWrapping="Wrap" Foreground="{StaticResource Dim}"
+                                   LineHeight="19"/>
+                        <!-- A summary: one row per point to know before going ahead. -->
+                        <StackPanel x:Name="items" Visibility="Collapsed" Margin="0,10,0,0"/>
+                    </StackPanel>
                 </ScrollViewer>
+                <CheckBox x:Name="ack" Visibility="Collapsed" Margin="0,12,0,0" FontWeight="SemiBold"/>
                 <!-- For the riskiest actions: the main button waits until a word is typed. -->
                 <StackPanel x:Name="typed_panel" Margin="0,14,0,0" Visibility="Collapsed">
                     <TextBlock x:Name="typed_prompt" TextWrapping="Wrap" FontWeight="SemiBold" Margin="0,0,0,6"/>

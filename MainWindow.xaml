@@ -1663,6 +1663,8 @@
                     <DockPanel LastChildFill="True">
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
                             <Button x:Name="log_copy" Margin="0,0,10,0" Content="{x:Static props:Resources.logs_copy}"/>
+                            <Button x:Name="log_open_folder" Style="{StaticResource GhostButton}" Margin="0,0,10,0"
+                                    Content="{x:Static props:Resources.logs_open_folder}" ToolTip="{x:Static props:Resources.logs_file_note}"/>
                             <Button x:Name="log_clear" Style="{StaticResource GhostButton}" Content="{x:Static props:Resources.logs_clear}"/>
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,16,0">
@@ -1774,6 +1776,15 @@
                                             <TextBlock x:Name="settings_samsung_driver_status" Style="{StaticResource Note}" FontSize="11.5" TextWrapping="Wrap"/>
                                         </StackPanel>
                                     </DockPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,12" Text="{x:Static props:Resources.settings_phone}"/>
+                                    <CheckBox x:Name="root_probe" Margin="0,0,0,2" Content="{x:Static props:Resources.root_probe}"/>
+                                    <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="26,0,0,0" TextWrapping="Wrap"
+                                               Text="{x:Static props:Resources.root_probe_note}"/>
                                 </StackPanel>
                             </Border>
 

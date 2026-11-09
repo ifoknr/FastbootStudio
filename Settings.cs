@@ -11,8 +11,11 @@ namespace FastbootEnhance
     /// </summary>
     static class Settings
     {
-        static readonly string FilePath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Fastboot Studio", "settings.json");
+        /// <summary>The app's folder under %APPDATA%: the settings and the flash logs.</summary>
+        public static readonly string Folder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Fastboot Studio");
+
+        static readonly string FilePath = Path.Combine(Folder, "settings.json");
 
         /// <summary>Set is read-modify-write from several threads (device facts, the UI): one at a time.</summary>
         static readonly object gate = new object();
