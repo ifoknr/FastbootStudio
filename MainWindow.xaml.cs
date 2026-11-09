@@ -13,6 +13,9 @@ namespace FastbootEnhance
         public static MainWindow THIS;
         internal const string version = "2.9.0";
 
+        /// <summary>"v2.9.0", for the rail and About.</summary>
+        public static string versionLabel => "v" + version;
+
         public MainWindow()
         {
             InitializeComponent();

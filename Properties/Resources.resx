@@ -3406,4 +3406,52 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
   <data name="root_probe_note" xml:space="preserve">
     <value>Reads the Companion's report (root state, AVB, module conflicts). Magisk shows a prompt on the phone the first time. Off, the Phone page asks only when you read the phone yourself.</value>
   </data>
+  <data name="nav_group_phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="nav_group_files" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="nav_group_more" xml:space="preserve">
+    <value>More tools</value>
+  </data>
+  <data name="bar_reboot" xml:space="preserve">
+    <value>Restart ▾</value>
+  </data>
+  <data name="bar_no_device" xml:space="preserve">
+    <value>No phone connected</value>
+  </data>
+  <data name="bar_no_device_hint" xml:space="preserve">
+    <value>Plug a phone in fastboot in; Android phones over ADB are read on the Phone page.</value>
+  </data>
+  <data name="bar_serial" xml:space="preserve">
+    <value>SN {0}</value>
+  </data>
+  <data name="bar_slot" xml:space="preserve">
+    <value>slot {0}</value>
+  </data>
+  <data name="bar_unlocked" xml:space="preserve">
+    <value>unlocked</value>
+  </data>
+  <data name="bar_locked" xml:space="preserve">
+    <value>locked</value>
+  </data>
+  <data name="status_last" xml:space="preserve">
+    <value>last: fastboot {0} · {1}</value>
+  </data>
+  <data name="status_seconds" xml:space="preserve">
+    <value>{0} s</value>
+  </data>
+  <data name="flash_result_title" xml:space="preserve">
+    <value>{0} of {1} partitions written</value>
+  </data>
+  <data name="flash_result_log" xml:space="preserve">
+    <value>Open the log</value>
+  </data>
+  <data name="flash_result_reboot" xml:space="preserve">
+    <value>Restart the phone</value>
+  </data>
+  <data name="flash_critical" xml:space="preserve">
+    <value>critical</value>
+  </data>
 </root>

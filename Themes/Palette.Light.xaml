@@ -2,39 +2,78 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:props="clr-namespace:FastbootEnhance.Properties">
 
-    <!-- The light palette: the same keys as Palette.Dark.xaml. The accent, amber and red are
-         darker here so they keep their contrast on white. -->
-    <SolidColorBrush x:Key="Bg" Color="#FAF9FD"/>
-    <SolidColorBrush x:Key="Rail" Color="#FAF9FD"/>
-    <SolidColorBrush x:Key="Well" Color="#F3F1F6"/>
-    <SolidColorBrush x:Key="Surface" Color="#EFEDF1"/>
-    <SolidColorBrush x:Key="Raised" Color="#E6E4EA"/>
-    <SolidColorBrush x:Key="Hover" Color="#DCDAE0"/>
-    <SolidColorBrush x:Key="Line" Color="#C6C5CD"/>
-    <SolidColorBrush x:Key="Text" Color="#1B1B1F"/>
-    <SolidColorBrush x:Key="Dim" Color="#46464F"/>
-    <SolidColorBrush x:Key="Faint" Color="#77767E"/>
-    <SolidColorBrush x:Key="Accent" Color="#2E4D9D"/>
+    <!-- The light palette: frosted glass, the same keys as Palette.Dark.xaml. The accent, amber
+         and red are darker here so they keep their contrast on white. -->
+    <SolidColorBrush x:Key="Bg" Color="#EEF0F5"/>
+    <SolidColorBrush x:Key="Rail" Color="#F3F5F9"/>
+    <SolidColorBrush x:Key="Well" Color="#F7F8FB"/>
+    <SolidColorBrush x:Key="Surface" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Raised" Color="#E6E9F0"/>
+    <SolidColorBrush x:Key="Hover" Color="#DCE0E9"/>
+    <SolidColorBrush x:Key="Line" Color="#D3D8E2"/>
+    <SolidColorBrush x:Key="Text" Color="#151821"/>
+    <SolidColorBrush x:Key="Dim" Color="#5A6070"/>
+    <SolidColorBrush x:Key="Faint" Color="#8C92A3"/>
+    <SolidColorBrush x:Key="Accent" Color="#2F6BFF"/>
     <SolidColorBrush x:Key="AccentInk" Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="AccentSoft" Color="#DAE2FF"/>
-    <SolidColorBrush x:Key="AccentLine" Color="#A8C4FF"/>
-    <SolidColorBrush x:Key="Warn" Color="#7A5900"/>
-    <SolidColorBrush x:Key="WarnSoft" Color="#FFEFC8"/>
-    <SolidColorBrush x:Key="WarnLine" Color="#E9C77A"/>
-    <SolidColorBrush x:Key="Danger" Color="#BA1A1A"/>
-    <SolidColorBrush x:Key="DangerSoft" Color="#FFDAD6"/>
-    <SolidColorBrush x:Key="DangerLine" Color="#F0ABA4"/>
-    <SolidColorBrush x:Key="Ok" Color="#1F7A3A"/>
-    <SolidColorBrush x:Key="Sel" Color="#DDE1F9"/>
-    <SolidColorBrush x:Key="OnSel" Color="#2B3042"/>
-    <SolidColorBrush x:Key="Thumb" Color="#B9B8C0"/>
+    <SolidColorBrush x:Key="AccentSoft" Color="#DEE7FF"/>
+    <SolidColorBrush x:Key="AccentLine" Color="#A9C0FF"/>
+    <SolidColorBrush x:Key="Warn" Color="#B45309"/>
+    <SolidColorBrush x:Key="WarnSoft" Color="#FFF1D6"/>
+    <SolidColorBrush x:Key="WarnLine" Color="#F3C77A"/>
+    <SolidColorBrush x:Key="Danger" Color="#DC2626"/>
+    <SolidColorBrush x:Key="DangerSoft" Color="#FFE1E1"/>
+    <SolidColorBrush x:Key="DangerLine" Color="#F3A9A9"/>
+    <SolidColorBrush x:Key="Ok" Color="#16A34A"/>
+    <SolidColorBrush x:Key="OkSoft" Color="#DCF5E5"/>
+    <SolidColorBrush x:Key="OkLine" Color="#9ED9B4"/>
+    <SolidColorBrush x:Key="Sel" Color="#E3E8F3"/>
+    <SolidColorBrush x:Key="OnSel" Color="#151821"/>
+    <SolidColorBrush x:Key="Thumb" Color="#B9BEC9"/>
+
+    <!-- Glass: white at partial alpha over the pale sky. -->
+    <SolidColorBrush x:Key="Glass" Color="#9EFFFFFF"/>
+    <SolidColorBrush x:Key="Glass2" Color="#E6FFFFFF"/>
+    <SolidColorBrush x:Key="GlassLine" Color="#1F1E2B48"/>
+    <SolidColorBrush x:Key="GlassLine2" Color="#2E1E2B48"/>
+    <DrawingBrush x:Key="SkyBrush" Stretch="Fill" Viewbox="0,0,1,1" ViewboxUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#EEF0F5"><GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,1,1"/></GeometryDrawing.Geometry></GeometryDrawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <RadialGradientBrush Center="0.12,0" GradientOrigin="0.12,0" RadiusX="0.7" RadiusY="0.55">
+                            <GradientStop Color="#2E2F6BFF" Offset="0"/>
+                            <GradientStop Color="#002F6BFF" Offset="1"/>
+                        </RadialGradientBrush>
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,1,1"/></GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Brush>
+                        <RadialGradientBrush Center="0.92,1" GradientOrigin="0.92,1" RadiusX="0.55" RadiusY="0.5">
+                            <GradientStop Color="#CCFFFFFF" Offset="0"/>
+                            <GradientStop Color="#00FFFFFF" Offset="1"/>
+                        </RadialGradientBrush>
+                    </GeometryDrawing.Brush>
+                    <GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,1,1"/></GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+    <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#4A80FF" Offset="0"/>
+        <GradientStop Color="#245BE0" Offset="1"/>
+    </LinearGradientBrush>
 
     <!-- Scroll bar corners and other bits WPF draws in system colours. -->
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#EFEDF1"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#EFEDF1"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightLightBrushKey}" Color="#EFEDF1"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#EFEDF1"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#EEF0F5"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#EEF0F5"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightLightBrushKey}" Color="#EEF0F5"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#EEF0F5"/>
 
+    <!-- The app icon: frosted glass with a blue bolt (tools/icon/glass-light.svg). -->
+    <BitmapImage x:Key="AppIcon" UriSource="pack://application:,,,/Assets/icon-light.png"/>
     <!-- IFOKNR, drawn in the Swamp Ninja lettering as a picture: no font file ships with the app. -->
     <BitmapImage x:Key="Signature" UriSource="pack://application:,,,/Assets/signature-light.png"/>
     <!-- The app name in the Prixma Bold Italic lettering, as a picture as well. -->

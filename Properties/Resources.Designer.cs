@@ -9649,5 +9649,151 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("root_probe_note", resourceCulture);
             }
         }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        public static string nav_group_phone {
+            get {
+                return ResourceManager.GetString("nav_group_phone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string nav_group_files {
+            get {
+                return ResourceManager.GetString("nav_group_files", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to More tools.
+        /// </summary>
+        public static string nav_group_more {
+            get {
+                return ResourceManager.GetString("nav_group_more", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restart ▾.
+        /// </summary>
+        public static string bar_reboot {
+            get {
+                return ResourceManager.GetString("bar_reboot", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No phone connected.
+        /// </summary>
+        public static string bar_no_device {
+            get {
+                return ResourceManager.GetString("bar_no_device", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Plug a phone in fastboot in; Android phones over ADB are read on the Phone page..
+        /// </summary>
+        public static string bar_no_device_hint {
+            get {
+                return ResourceManager.GetString("bar_no_device_hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to SN {0}.
+        /// </summary>
+        public static string bar_serial {
+            get {
+                return ResourceManager.GetString("bar_serial", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to slot {0}.
+        /// </summary>
+        public static string bar_slot {
+            get {
+                return ResourceManager.GetString("bar_slot", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to unlocked.
+        /// </summary>
+        public static string bar_unlocked {
+            get {
+                return ResourceManager.GetString("bar_unlocked", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to locked.
+        /// </summary>
+        public static string bar_locked {
+            get {
+                return ResourceManager.GetString("bar_locked", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to last: fastboot {0} · {1}.
+        /// </summary>
+        public static string status_last {
+            get {
+                return ResourceManager.GetString("status_last", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} s.
+        /// </summary>
+        public static string status_seconds {
+            get {
+                return ResourceManager.GetString("status_seconds", resourceCulture);
+            }
+        }
+    
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1} partitions written.
+        /// </summary>
+        public static string flash_result_title {
+            get {
+                return ResourceManager.GetString("flash_result_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open the log.
+        /// </summary>
+        public static string flash_result_log {
+            get {
+                return ResourceManager.GetString("flash_result_log", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restart the phone.
+        /// </summary>
+        public static string flash_result_reboot {
+            get {
+                return ResourceManager.GetString("flash_result_reboot", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to critical.
+        /// </summary>
+        public static string flash_critical {
+            get {
+                return ResourceManager.GetString("flash_critical", resourceCulture);
+            }
+        }
     }
 }

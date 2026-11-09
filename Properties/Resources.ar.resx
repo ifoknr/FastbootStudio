@@ -3406,4 +3406,52 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="root_probe_note" xml:space="preserve">
     <value>يقرأ تقرير Companion (حالة الروت وAVB وتعارض الموديولات). Magisk يطلع طلب على الجوال أول مرة. لو مطفأ، صفحة الجوال تسأل بس لما تقرأ الجوال بنفسك.</value>
   </data>
+  <data name="nav_group_phone" xml:space="preserve">
+    <value>الجوال</value>
+  </data>
+  <data name="nav_group_files" xml:space="preserve">
+    <value>الملفات</value>
+  </data>
+  <data name="nav_group_more" xml:space="preserve">
+    <value>أدوات أكثر</value>
+  </data>
+  <data name="bar_reboot" xml:space="preserve">
+    <value>إعادة تشغيل ▾</value>
+  </data>
+  <data name="bar_no_device" xml:space="preserve">
+    <value>ما فيه جوال متصل</value>
+  </data>
+  <data name="bar_no_device_hint" xml:space="preserve">
+    <value>وصّل جوال بوضع fastboot؛ جوالات أندرويد عبر ADB تنقرأ من صفحة الجوال.</value>
+  </data>
+  <data name="bar_serial" xml:space="preserve">
+    <value>الرقم {0}</value>
+  </data>
+  <data name="bar_slot" xml:space="preserve">
+    <value>السلوت {0}</value>
+  </data>
+  <data name="bar_unlocked" xml:space="preserve">
+    <value>مفتوح</value>
+  </data>
+  <data name="bar_locked" xml:space="preserve">
+    <value>مقفول</value>
+  </data>
+  <data name="status_last" xml:space="preserve">
+    <value>آخر أمر: fastboot {0} · {1}</value>
+  </data>
+  <data name="status_seconds" xml:space="preserve">
+    <value>{0} ث</value>
+  </data>
+  <data name="flash_result_title" xml:space="preserve">
+    <value>انكتب {0} من {1} قسم</value>
+  </data>
+  <data name="flash_result_log" xml:space="preserve">
+    <value>فتح السجل</value>
+  </data>
+  <data name="flash_result_reboot" xml:space="preserve">
+    <value>إعادة تشغيل الجوال</value>
+  </data>
+  <data name="flash_critical" xml:space="preserve">
+    <value>حرج</value>
+  </data>
 </root>

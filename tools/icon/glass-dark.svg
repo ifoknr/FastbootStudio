@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs>
+<clipPath id="cwin800034"><rect width="512" height="512" rx="116"/></clipPath>
+<clipPath id="cfwin800034"><path d="M150 150 H362 A40 40 0 0 1 402 190 V312 A40 40 0 0 1 362 352 H150 A40 40 0 0 1 110 312 V190 A40 40 0 0 1 150 150 Z"/></clipPath>
+<linearGradient id="tlwin800034" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a4a4f"/><stop offset="1" stop-color="#2c2c2f"/></linearGradient>
+<linearGradient id="bkwin800034" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c7d0e6"/><stop offset="1" stop-color="#7d879f"/></linearGradient>
+<linearGradient id="veilwin800034" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.30000000000000004"/><stop offset="1" stop-color="#fff" stop-opacity="0.08"/></linearGradient>
+<linearGradient id="rimwin800034" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.75"/><stop offset=".5" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#fff" stop-opacity="0.375"/></linearGradient>
+<linearGradient id="bowin800034" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6fc"/><stop offset="1" stop-color="#c9d1e6"/></linearGradient>
+<filter id="fbwin800034" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22"/></filter>
+<filter id="bbwin800034" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="50"/></filter>
+<filter id="shwin800034" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="16"/></filter>
+<filter id="bswin800034" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity=".25"/></filter>
+</defs>
+<g clip-path="url(#cwin800034)"><rect width="512" height="512" fill="url(#tlwin800034)"/><circle cx="80" cy="70" r="210" fill="#aab4cc" opacity="0.45" filter="url(#bbwin800034)"/><circle cx="470" cy="480" r="200" fill="#7d879f" opacity="0.5" filter="url(#bbwin800034)"/><path d="M150 150 H362 A40 40 0 0 1 402 190 V312 A40 40 0 0 1 362 352 H150 A40 40 0 0 1 110 312 V190 A40 40 0 0 1 150 150 Z" fill="#000" opacity=".28" filter="url(#shwin800034)" transform="translate(0 14)"/><g clip-path="url(#cfwin800034)"><rect width="512" height="512" fill="url(#tlwin800034)"/><circle cx="80" cy="70" r="210" fill="#aab4cc" opacity="0.45" filter="url(#bbwin800034)"/><circle cx="470" cy="480" r="200" fill="#7d879f" opacity="0.5" filter="url(#bbwin800034)"/><rect width="512" height="512" fill="url(#veilwin800034)"/></g><path d="M150 150 H362 A40 40 0 0 1 402 190 V312 A40 40 0 0 1 362 352 H150 A40 40 0 0 1 110 312 V190 A40 40 0 0 1 150 150 Z" fill="none" stroke="url(#rimwin800034)" stroke-width="4"/><path d="M226 352 H286 L296 392 H216 Z M190 392 H322 A10 10 0 0 1 322 412 H190 A10 10 0 0 1 190 392 Z" fill="url(#veilwin800034)" stroke="url(#rimwin800034)" stroke-width="2"/><g fill="url(#bowin800034)" stroke="url(#bowin800034)" stroke-width="10" stroke-linejoin="round" filter="url(#bswin800034)"><path d="M286 150 L196 286 H258 L238 372 L330 232 H268 Z" transform="translate(256 251) scale(.74) translate(-263 -261)" /></g></g>
+<rect x="1.5" y="1.5" width="509" height="509" rx="115" fill="none" stroke="#fff" stroke-opacity=".10" stroke-width="3"/>
+</svg>

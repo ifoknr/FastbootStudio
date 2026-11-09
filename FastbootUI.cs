@@ -88,7 +88,7 @@ namespace FastbootEnhance
                 }
                 MainWindow.THIS.fastboot_devices_empty.Visibility =
                     devices.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-                MainWindow.THIS.main_tabs.Tag = string.Format(Properties.Resources.rail_devices, devices.Count);
+                setStatus(string.Format(Properties.Resources.rail_devices, devices.Count));
             }));
         }
 
@@ -149,7 +149,7 @@ namespace FastbootEnhance
                     // rather than letting the exception take the whole app down.
                     MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
                     {
-                        MainWindow.THIS.main_tabs.Tag = Properties.Resources.rail_no_fastboot;
+                        setStatus(Properties.Resources.rail_no_fastboot);
                         ThemedDialog.Show(e.Message + "\n" + e.FileName, Properties.Resources.error,
                             MessageBoxButton.OK, MessageBoxImage.Error);
                     }));
@@ -522,6 +522,7 @@ namespace FastbootEnhance
 
             MainWindow.THIS.fastboot_checks.ItemsSource = buildChecks();
             showSuperSpace();
+            updateDeviceBar();
         }
 
         /// <summary>What to look at before writing anything to this device.</summary>
@@ -843,6 +844,115 @@ namespace FastbootEnhance
             MainWindow.THIS.flash_target_device.Text = showActions && cur_serial != null
                 ? string.Format(Properties.Resources.flash_target, cur_serial)
                 : Properties.Resources.flash_target_none;
+            updateDeviceBar();
+        }
+
+        /// <summary>The status bar's device count, the same text the rail used to show.</summary>
+        static void setStatus(string text)
+        {
+            MainWindow.THIS.status_devices.Text = text;
+            if (cur_status != FastbootStatus.show_actions)
+                MainWindow.THIS.bar_device_detail.Text = text + " · " + Properties.Resources.bar_no_device_hint;
+        }
+
+        /// <summary>
+        /// The bar above every page: the phone that is open (product, serial, slot, mode,
+        /// lock state) and what can be done to it; or that none is.
+        /// </summary>
+        static void updateDeviceBar()
+        {
+            MainWindow window = MainWindow.THIS;
+            bool open = cur_status == FastbootStatus.show_actions && cur_serial != null;
+            FastbootData data = fastbootData;
+
+            window.bar_disconnect.Visibility = open ? Visibility.Visible : Visibility.Collapsed;
+            window.bar_reboot.Visibility = open ? Visibility.Visible : Visibility.Collapsed;
+            window.bar_usb_check.Visibility = open ? Visibility.Collapsed : Visibility.Visible;
+            window.bar_icon.Stroke = Palette.Get(open ? "Accent" : "Dim");
+
+            if (!open)
+            {
+                window.bar_device_name.Text = Properties.Resources.bar_no_device;
+                window.bar_device_detail.Text = window.status_devices.Text.Length > 0
+                    ? window.status_devices.Text + " · " + Properties.Resources.bar_no_device_hint
+                    : Properties.Resources.bar_no_device_hint;
+                window.bar_mode_chip.Visibility = Visibility.Collapsed;
+                window.bar_lock_chip.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            string product = data != null && !string.IsNullOrEmpty(data.product) ? data.product : null;
+            window.bar_device_name.Text = product ?? cur_serial;
+            List<string> detail = new List<string>();
+            if (product != null)
+                detail.Add(string.Format(Properties.Resources.bar_serial, cur_serial));
+            if (data != null && !string.IsNullOrEmpty(data.current_slot))
+                detail.Add(string.Format(Properties.Resources.bar_slot, data.current_slot.TrimStart('_')));
+            window.bar_device_detail.Text = detail.Count > 0 ? string.Join(" · ", detail) : cur_serial;
+
+            if (data != null)
+            {
+                window.bar_mode_text.Text = data.fastbootd ? "fastbootd" : "bootloader";
+                window.bar_mode_chip.Visibility = Visibility.Visible;
+                window.bar_lock_text.Text = data.unlocked == true ? Properties.Resources.bar_unlocked
+                    : data.unlocked == false ? Properties.Resources.bar_locked : null;
+                window.bar_lock_text.Foreground = Palette.Get(data.unlocked == false ? "Warn" : "Dim");
+                window.bar_lock_chip.Visibility = window.bar_lock_text.Text == null ? Visibility.Collapsed : Visibility.Visible;
+            }
+            else
+            {
+                window.bar_mode_chip.Visibility = Visibility.Collapsed;
+                window.bar_lock_chip.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>The status bar's "last: fastboot flash boot · 1.2 s".</summary>
+        static void setLastCommand(string command, TimeSpan took)
+        {
+            string shown = command.Length > 48 ? command.Substring(0, 45) + "…" : command;
+            MainWindow.THIS.status_last.Text = string.Format(Properties.Resources.status_last, shown,
+                string.Format(Properties.Resources.status_seconds, took.TotalSeconds.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)));
+        }
+
+        /// <summary>Reads "fastboot --version" and "adb --version" once, for the status bar.</summary>
+        static void readToolVersions()
+        {
+            Thread reader = new Thread(delegate ()
+            {
+                string fastbootVersion = null, adbVersion = null;
+                try
+                {
+                    string output;
+                    Fastboot.Run(null, "--version", Fastboot.ShortCommand, out output);
+                    fastbootVersion = firstVersion(output);
+                }
+                catch (Exception)
+                {
+                }
+                try
+                {
+                    adbVersion = firstVersion(Adb.Run("--version", Adb.ShortCommand).Output);
+                }
+                catch (Exception)
+                {
+                }
+                string text = string.Join(" · ", new[] { fastbootVersion != null ? "fastboot " + fastbootVersion : null,
+                    adbVersion != null ? "adb " + adbVersion : null }.Where(v => v != null));
+                MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate { MainWindow.THIS.status_tools.Text = text; }));
+            });
+            reader.IsBackground = true;
+            reader.Start();
+        }
+
+        /// <summary>"35.0.2" out of "fastboot version 35.0.2-12147458" or "Android Debug Bridge version 1.0.41 / Version 35.0.2-…".</summary>
+        static string firstVersion(string output)
+        {
+            if (string.IsNullOrEmpty(output))
+                return null;
+            System.Text.RegularExpressions.Match match = System.Text.RegularExpressions.Regex.Match(output, @"(?im)^(?:Version|fastboot version)\s+(\d+(?:\.\d+)+)");
+            if (!match.Success)
+                match = System.Text.RegularExpressions.Regex.Match(output, @"(\d+\.\d+\.\d+)");
+            return match.Success ? match.Groups[1].Value : null;
         }
 
         class StepCmdRunnerParam
@@ -887,6 +997,7 @@ namespace FastbootEnhance
             // before the worker gets going.
             action_lock();
             flashing = true;
+            MainWindow.THIS.bar_cancel.Visibility = Visibility.Visible;
             if (param.step_count <= 0)
                 MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = true;
 
@@ -901,6 +1012,7 @@ namespace FastbootEnhance
 
             appendLog("> fastboot " + param.cmd);
             string failure = null;
+            System.Diagnostics.Stopwatch took = System.Diagnostics.Stopwatch.StartNew();
 
             try
             {
@@ -947,10 +1059,13 @@ namespace FastbootEnhance
             }
             activeStep = null;
 
+            took.Stop();
             MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
             {
                 flashing = false;
                 MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = false;
+                MainWindow.THIS.bar_cancel.Visibility = Visibility.Collapsed;
+                setLastCommand(param.cmd, took.Elapsed);
                 action_unlock();
 
                 if (failure != null)
@@ -1498,6 +1613,7 @@ namespace FastbootEnhance
             MainWindow.THIS.flash_overall_progress.Value = 0;
             MainWindow.THIS.flash_log.Clear();
             MainWindow.forgetLength(MainWindow.THIS.flash_log);
+            MainWindow.THIS.flash_result.Visibility = Visibility.Collapsed;
             string logFile = LogStore.BeginFile(serial);
             appendLog("flash of " + Path.GetFileName(payload.Source.ContainerPath) + " to " + serial
                 + (fastbootData != null && !string.IsNullOrEmpty(fastbootData.product) ? " (" + fastbootData.product + ")" : "")
@@ -1566,6 +1682,7 @@ namespace FastbootEnhance
 
             // The lock taken by openPayloadThenFlash carries over and is released when this ends.
             flashing = true;
+            MainWindow.THIS.bar_cancel.Visibility = Visibility.Visible;
 
             CancellationTokenSource cancel = new CancellationTokenSource();
             flashCancel = cancel;
@@ -1808,6 +1925,8 @@ namespace FastbootEnhance
                     ticker.Stop();
                     clock.Stop();
                     MainWindow.THIS.flash_elapsed.Text = clock.Elapsed.ToString(@"mm\:ss");
+                    MainWindow.THIS.bar_cancel.Visibility = Visibility.Collapsed;
+                    setLastCommand("flash (" + parts.Count + " partitions)", clock.Elapsed);
                     action_unlock();
                     appendLog(summary == null ? "flash finished: " + flashedCount + " of " + parts.Count + " written in "
                         + clock.Elapsed.ToString(@"mm\:ss") : "flash failed after " + flashedCount + " of " + parts.Count);
@@ -1819,12 +1938,17 @@ namespace FastbootEnhance
                     {
                         setPhase(Properties.Resources.flash_phase_done, "Ok");
                         MainWindow.THIS.flash_overall_progress.Value = 100;
-                        string done = Properties.Resources.operation_completed;
+                        // The result stays on the page, over the log, instead of a box that hides it.
+                        List<string> detail = new List<string>();
+                        detail.Add(clock.Elapsed.ToString(@"mm\:ss"));
                         if (otherSlot.Count > 0)
-                            done += "\n\n" + string.Format(Properties.Resources.flash_both_slots_done, string.Join(", ", otherSlot.Values));
+                            detail.Add(string.Format(Properties.Resources.flash_both_slots_done, string.Join(", ", otherSlot.Values)));
                         if (lateNames != null)
-                            done += "\n\n" + string.Format(Properties.Resources.flash_deferred_done, lateNames);
-                        ThemedDialog.Done(done);
+                            detail.Add(string.Format(Properties.Resources.flash_deferred_done, lateNames));
+                        MainWindow.THIS.flash_result_title.Text = string.Format(Properties.Resources.flash_result_title, flashedCount, parts.Count);
+                        MainWindow.THIS.flash_result_detail.Text = string.Join(" · ", detail);
+                        MainWindow.THIS.flash_result_reboot.IsEnabled = cur_serial == serial;
+                        MainWindow.THIS.flash_result.Visibility = Visibility.Visible;
                         return;
                     }
 
@@ -1920,7 +2044,7 @@ namespace FastbootEnhance
             Thread refresher = new Thread(new ThreadStart(devicesListRefresher));
             refresher.IsBackground = true;
             refresher.Start();
-            MainWindow.THIS.main_tabs.Tag = string.Format(Properties.Resources.rail_devices, 0);
+            setStatus(string.Format(Properties.Resources.rail_devices, 0));
 
             MainWindow.THIS.fastboot_usb_check.Click += delegate
             {
@@ -1945,6 +2069,51 @@ namespace FastbootEnhance
             {
                 leaveDevice();
             };
+            MainWindow.THIS.flash_result_log.Click += delegate { MainWindow.THIS.main_tabs.SelectedItem = MainWindow.THIS.logs_tab; };
+            MainWindow.THIS.flash_result_reboot.Click += delegate
+            {
+                MainWindow.THIS.flash_result.Visibility = Visibility.Collapsed;
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot", 0, false, true));
+                leaveDevice();
+            };
+            MainWindow.THIS.bar_disconnect.Click += delegate { leaveDevice(); };
+            MainWindow.THIS.bar_usb_check.Click += delegate { checkUsb(); };
+            MainWindow.THIS.bar_cancel.Click += delegate { cancelCurrent(); };
+            MainWindow.THIS.bar_reboot.Click += delegate
+            {
+                System.Windows.Controls.ContextMenu menu = MainWindow.THIS.bar_reboot.ContextMenu;
+                menu.PlacementTarget = MainWindow.THIS.bar_reboot;
+                menu.IsOpen = true;
+            };
+            MainWindow.THIS.bar_reboot_system.Click += delegate
+            {
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot", 0, false, true));
+                leaveDevice();
+            };
+            MainWindow.THIS.bar_reboot_recovery.Click += delegate
+            {
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot recovery", 0, false, true));
+                leaveDevice();
+            };
+            MainWindow.THIS.bar_reboot_bootloader.Click += delegate
+            {
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot bootloader", 2, false));
+            };
+            MainWindow.THIS.bar_reboot_fastbootd.Click += delegate
+            {
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot fastboot", 3, false));
+            };
+            readToolVersions();
 
             MainWindow.THIS.fastboot_reboot_d.Click += delegate
             {
