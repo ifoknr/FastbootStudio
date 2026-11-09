@@ -31,16 +31,12 @@
     <SolidColorBrush x:Key="OnSel" Color="#151821"/>
     <SolidColorBrush x:Key="Thumb" Color="#B9BEC9"/>
 
-    <!-- Glass: white at partial alpha over the pale sky. -->
-    <SolidColorBrush x:Key="Glass" Color="#9EFFFFFF"/>
-    <SolidColorBrush x:Key="Glass2" Color="#E6FFFFFF"/>
-    <SolidColorBrush x:Key="GlassLine" Color="#1F1E2B48"/>
-    <SolidColorBrush x:Key="GlassLine2" Color="#2E1E2B48"/>
-    <LinearGradientBrush x:Key="SkyBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#E3E9F8" Offset="0"/>
-        <GradientStop Color="#EEF0F5" Offset="0.45"/>
-        <GradientStop Color="#F5F6F9" Offset="1"/>
-    </LinearGradientBrush>
+    <!-- The cards and bars: solid white on a pale grey page, like the dark theme's solid charcoal. -->
+    <SolidColorBrush x:Key="Glass" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="Glass2" Color="#F2F4F8"/>
+    <SolidColorBrush x:Key="GlassLine" Color="#DDE1E9"/>
+    <SolidColorBrush x:Key="GlassLine2" Color="#CDD3DE"/>
+    <SolidColorBrush x:Key="SkyBrush" Color="#EEF0F5"/>
     <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#4A80FF" Offset="0"/>
         <GradientStop Color="#245BE0" Offset="1"/>
