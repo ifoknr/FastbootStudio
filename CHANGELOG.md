@@ -5,7 +5,7 @@
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
 ## v3.0.0
-- شكل زجاجي جديد وأيقونة جديدة: رمادي زجاجي بالليلي، ثلجي بالنهاري
+- شكل جديد وأيقونة زجاجية جديدة: فحمي بالليلي، أبيض بالنهاري
 - القائمة بمجموعات، وشريط فوق يبيّن الجوال ووضعه، وشريط حالة تحت
 - قبل الفلاش ملخص واحد فيه الجوال وكل النقاط، والنتيجة على الصفحة بدل نافذة
 - سجل لكل فلاش ينحفظ كملف، وزر إيقاف للأمر المعلّق
@@ -13,7 +13,7 @@
 - اختصارات كيبورد، والصيني والياباني والكوري كاملين
 
 **English**
-- A new glass look and icon: grey glass in dark, frosted in light
+- A new look and a new glass icon: charcoal in dark, white in light
 - Pages in groups, a bar above with the phone and its mode, a status bar below
 - One summary before a flash with the phone and every point; the result on the page
 - A log file per flash, and a Stop for a hung command
