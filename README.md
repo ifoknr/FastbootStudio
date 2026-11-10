@@ -23,68 +23,45 @@ reach for every day: a safe OTA flasher, image tools that replace `simg2img` / `
 Everything runs inside the app, in managed code, with no Python, no Linux tools and
 nothing to install.
 
-> 🆕 **A new version.** Fastboot Studio is the new generation of Fastboot Enhance: a new
-> interface from top to bottom, new pages, and more protection for the phone.
->
-> **New in 3.0:** a new look (charcoal in dark, white in light) and a new glass icon, the pages in
-> groups with a device bar above and a status bar below, one summary before a flash and the result on the
-> page, a log file per flash, a Stop for a hung command, and keyboard shortcuts.
->
-> **New in 2.9:**
-> - **Samsung flashing** in Download mode, from the app: one image, a Magisk tar, or the whole firmware
->   (BL, AP, CP, HOME_CSC). Every file is checked first (MD5, lz4, the phone's PIT and model); EFS and
->   firmware for another model are refused, and a flash that stops leaves the phone in Download mode.
-> - **Google USB driver** in one click, from Settings or the USB check: downloaded from Google and checked.
->
-> **New in 2.8:**
-> - A **?** in the corner of every page opens its help at the side: what the page is for, the steps,
->   what can go wrong for good, and the words it uses. In English and Arabic.
-> - A short **welcome tour** on first start (language, the pages, a quick check of the PC, safety rules),
->   and **What's new** on the first start after an update.
-> - **Samsung USB driver** in one click: downloaded from Samsung, kept only with Samsung's signature, installed.
-> - **Download mode reading** (Odin protocol): a Samsung phone's model, region and partition table (PIT), read over Samsung's own driver.
-> - A **rooted boot image** is named before it is flashed, and a recovery suggests *Boot once* first.
-> - The Samsung page shows **Knox**, and the Magisk steps say when to use CSC and when HOME_CSC.
->
-> **New in 2.7:**
-> - A **Samsung** page: open Samsung firmware (AP, BL, CP, CSC, or the zip it came in), check every
->   file's MD5, take out boot, init_boot, vbmeta, recovery or super with LZ4 undone, and see whether
->   the firmware suits your phone (model, bootloader binary, Android, CSC) before you open Odin.
-> - **Root a Samsung with Magisk**: a small tar of init_boot and vbmeta goes to the phone, and the
->   patched tar comes back checked, ready for Odin's AP slot. Also **Tar for Odin** for any images.
->
-> **New in 2.6:**
-> - **Update notice**: the app tells you when a new version is out, shows what changed, and downloads
->   it only if you want (checked against its SHA-256).
-> - **Flash both slots**: firmware partitions such as modem and boot are written to slot a and b.
-> - A partition fastbootd refuses (a OnePlus modem) is written from the bootloader after the rest.
->
-> **New in 2.5:**
-> - A **Phone** page for the phone in Android: specs, kernel, security and battery; with the
->   Companion module, the bootloader's own AVB state, module conflicts and its backups.
->
-> **New in 2.4:**
-> - A **Root** page: Magisk, KernelSU or APatch in four steps, with the right image (boot or init_boot) picked for you.
-> - Boot images are read before flashing: kernel, KMI, security patch and root, with a stop on the usual bricks.
->
-> **New in 2.3:**
-> - Light and dark appearance (or as Windows).
-> - A **Terminal** page for your own adb and fastboot commands, with the same safety questions.
->
-> **New in 2.2:**
-> - A Super space card, and a check that images fit in super before flashing.
-> - Partitions an update needs but the phone lacks are created for you.
-> - A **USB check** that finds missing drivers and EDL / BROM modes.
->
-> **New in 2.1:**
-> - Slot switch protection: warns about, or refuses, a slot that is empty or will not boot.
-> - Critical partitions (xbl, abl, modem, persist, preloader…) are written only after you type their name.
-> - A **Boot once** button that refuses init_boot and vendor_boot.
->
-> Everything is in the [changelog](CHANGELOG.md).
->
-> 🤝 **Want to help? You are welcome.** The project is open to everyone: testing on your
-> phone, bug reports, ideas, translations or code. See [Contributing](#contributing).
+## What's new in 3.0
+
+<p align="center">
+  <img src="docs/screenshots/11-flash.png" alt="Flashing an OTA, dark" width="49%">
+  <img src="docs/screenshots/light-02-device.png" alt="The Device page, light" width="49%">
+</p>
+
+- **A new look.** Charcoal in dark, white in light, a new glass icon. The pages sit in groups
+  (Phone, Files, More tools); a bar above every page names the phone, its mode, slot and lock
+  state; a status bar below counts the phones and times the last command.
+- **One question before a flash.** The file, the phone (serial, product, slot, mode) and every
+  point worth knowing in one summary; a point that can cost data needs *I have read this*. The
+  result stays on the page, and every flash is also saved as a log file.
+- **Stop.** A fastboot command that hangs can be stopped from the bar; each one has a deadline.
+- **Samsung, safer.** The size limit of each partition comes from the phone's storage type
+  (eMMC or UFS), and a firmware is always written in Odin's order: BL, AP, CP, CSC.
+- **Five languages**, every screen translated: English, العربية, 中文, 日本語, 한국어.
+- Keyboard shortcuts: Ctrl+O opens a file, Ctrl+L the log, F1 the page's help.
+
+### Samsung: flash in Download mode, inside the app
+
+<p align="center">
+  <img src="docs/screenshots/36-samsung-firmware.png" alt="Samsung firmware checked against the phone" width="49%">
+  <img src="docs/screenshots/en-odin-4-plan.png" alt="The flash plan in Download mode" width="49%">
+</p>
+
+No Odin needed. Open the firmware (AP, BL, CP, CSC or HOME_CSC, or the zip it came in), and
+the app checks every file's MD5, undoes LZ4, and compares the firmware's model with the phone's.
+Then, with the phone in Download mode, it reads the phone's partition table (PIT) and flashes
+one image, a Magisk-patched tar, or the whole firmware:
+
+- **Refused:** EFS and the other identity partitions, a new PIT, firmware for another model, a file
+  bigger than its partition, CSC together with HOME_CSC.
+- **Warned:** a bootloader or modem on its own, CSC (it wipes the phone), mixed builds.
+- **Safe stop:** if a flash stops half way, the phone stays in Download mode, ready to flash again.
+- **Root:** a small tar of init_boot and vbmeta goes to Magisk on the phone, and the patched tar
+  comes back checked. Samsung's USB driver installs in one click.
+
+All earlier versions: [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -133,7 +110,7 @@ you first that it wipes the phone.
 | Infinix, Tecno, itel and other MediaTek phones | ✅ On most models | Developer options → OEM unlocking, then `fastboot flashing unlock` (varies by model) | SP Flash Tool is only for reviving a phone in BROM mode |
 | Nothing, Fairphone, ASUS, and phones close to stock Android | ✅ Usually | The standard command | |
 | Oppo, Realme, vivo | ⚠️ Depends on the model | Many models cannot be unlocked at all | adb features work on all of them |
-| Samsung | ⚠️ No fastboot | OEM unlocking, then a long press on Volume up in Download mode | The **Samsung page** checks firmware, roots with Magisk, makes tars for Odin and flashes from Download mode in the app; the app installs Samsung's driver |
+| Samsung | ✅ Through Download mode | OEM unlocking, then a long press on Volume up in Download mode | No fastboot: the **Samsung page** checks the firmware and flashes it from Download mode inside the app (no Odin), roots with Magisk, and installs Samsung's driver |
 | Huawei, Honor | ❌ For flashing | Unlock codes stopped in 2018 | adb features (Phone page, copying files) still work |
 
 **Without unlocking**, these work on any phone, or on no phone at all:
