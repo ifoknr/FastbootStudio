@@ -26,7 +26,7 @@ nothing to install.
 > 🆕 **A new version.** Fastboot Studio is the new generation of Fastboot Enhance: a new
 > interface from top to bottom, new pages, and more protection for the phone.
 >
-> **New in 3.0:** a new glass look (grey glass in dark, frosted in light, a new icon), the pages in
+> **New in 3.0:** a new look (charcoal in dark, white in light) and a new glass icon, the pages in
 > groups with a device bar above and a status bar below, one summary before a flash and the result on the
 > page, a log file per flash, a Stop for a hung command, and keyboard shortcuts.
 >
