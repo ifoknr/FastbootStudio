@@ -4,6 +4,18 @@
 
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
+## v2.9.0
+- جديد: فلاش سامسونج من التطبيق في وضع التحميل: صورة وحدة، tar من Magisk، أو الروم كامل
+- قبل ما يكتب: يفحص MD5 والـ lz4، وجدول PIT والموديل، ويرفض EFS وروم موديل ثاني
+- لو وقف بالنص، الجوال يبقى في وضع التحميل وتفلّش مرة ثانية
+- تعريف قوقل USB: يتحمّل من قوقل ويتفحص ويتثبّت، من «الإعدادات» أو فحص USB
+
+**English**
+- New: Samsung flashing in Download mode: one image, a Magisk tar, or the whole firmware
+- Before writing: MD5 and lz4 checked, the PIT and model matched; EFS and other models refused
+- If it stops half-way, the phone stays in Download mode, ready to flash again
+- Google USB driver: downloaded from Google, checked and installed, from Settings or the USB check
+
 ## v2.8.0
 - زر ؟ بكل صفحة: شرح وخطوات وتحذيرات بلغتك
 - جولة ترحيب، و«الجديد» يطلع بعد كل تحديث

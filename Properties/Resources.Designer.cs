@@ -8972,5 +8972,545 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("phone_root_not_for_shell", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google USB driver.
+        /// </summary>
+        public static string driver_google_title {
+            get {
+                return ResourceManager.GetString("driver_google_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to From dl.google.com · about 8 MB.
+        /// </summary>
+        public static string driver_google_source {
+            get {
+                return ResourceManager.GetString("driver_google_source", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fastboot and adb on Pixels, and on the many phones that use Google's USB ids, need Google's driver. It is the same one Android Studio installs..
+        /// </summary>
+        public static string driver_google_offer {
+            get {
+                return ResourceManager.GetString("driver_google_offer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading Google's driver.
+        /// </summary>
+        public static string driver_google_downloading {
+            get {
+                return ResourceManager.GetString("driver_google_downloading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Straight from Google. It is checked before it is used..
+        /// </summary>
+        public static string driver_google_downloading_note {
+            get {
+                return ResourceManager.GetString("driver_google_downloading_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The file does not match what Google lists for it ({0}), so it was deleted and not used..
+        /// </summary>
+        public static string driver_google_check_bad {
+            get {
+                return ResourceManager.GetString("driver_google_check_bad", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Adding Google's driver.
+        /// </summary>
+        public static string driver_google_installing {
+            get {
+                return ResourceManager.GetString("driver_google_installing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Windows asks for permission, then adds the driver. It takes a few seconds..
+        /// </summary>
+        public static string driver_google_installing_note {
+            get {
+                return ResourceManager.GetString("driver_google_installing_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google's driver is installed.
+        /// </summary>
+        public static string driver_google_done {
+            get {
+                return ResourceManager.GetString("driver_google_done", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to If the phone is plugged in, unplug it and plug it in again. A phone of another maker may still need its maker's own driver..
+        /// </summary>
+        public static string driver_google_done_note {
+            get {
+                return ResourceManager.GetString("driver_google_done_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google's driver was not installed.
+        /// </summary>
+        public static string driver_google_failed {
+            get {
+                return ResourceManager.GetString("driver_google_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Windows could not add the driver (pnputil ended with code {0})..
+        /// </summary>
+        public static string driver_google_failed_code {
+            get {
+                return ResourceManager.GetString("driver_google_failed_code", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to You can download it yourself from Google's page..
+        /// </summary>
+        public static string driver_google_failed_note {
+            get {
+                return ResourceManager.GetString("driver_google_failed_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open Google's page.
+        /// </summary>
+        public static string driver_google_open_page {
+            get {
+                return ResourceManager.GetString("driver_google_open_page", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google USB driver is installed: fastboot and adb on Google's USB ids are seen..
+        /// </summary>
+        public static string driver_google_ok {
+            get {
+                return ResourceManager.GetString("driver_google_ok", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google USB driver is not installed. Pixels and phones on Google's USB ids need it..
+        /// </summary>
+        public static string driver_google_missing {
+            get {
+                return ResourceManager.GetString("driver_google_missing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to USB drivers.
+        /// </summary>
+        public static string driver_section {
+            get {
+                return ResourceManager.GetString("driver_section", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Windows needs a driver to see a phone in fastboot, adb or Download mode..
+        /// </summary>
+        public static string driver_section_note {
+            get {
+                return ResourceManager.GetString("driver_section_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Google's USB driver fits this phone (Google's USB id). Download it from Google and install it now?.
+        /// </summary>
+        public static string usb_google_driver_ask {
+            get {
+                return ResourceManager.GetString("usb_google_driver_ask", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Flash….
+        /// </summary>
+        public static string odin_flash {
+            get {
+                return ResourceManager.GetString("odin_flash", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Flash the phone.
+        /// </summary>
+        public static string odin_flash_title {
+            get {
+                return ResourceManager.GetString("odin_flash_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Choose what to write: one image (boot.img, .lz4), a Magisk tar, or the firmware's BL, AP, CP and HOME_CSC files. Every file is checked against this phone's partition table and model before anything is sent..
+        /// </summary>
+        public static string odin_flash_intro {
+            get {
+                return ResourceManager.GetString("odin_flash_intro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Choose files….
+        /// </summary>
+        public static string odin_flash_choose {
+            get {
+                return ResourceManager.GetString("odin_flash_choose", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Samsung firmware and images.
+        /// </summary>
+        public static string odin_flash_filter {
+            get {
+                return ResourceManager.GetString("odin_flash_filter", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Checking {0}.
+        /// </summary>
+        public static string odin_flash_reading {
+            get {
+                return ResourceManager.GetString("odin_flash_reading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.
+        /// </summary>
+        public static string odin_flash_damaged {
+            get {
+                return ResourceManager.GetString("odin_flash_damaged", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} files · {1}.
+        /// </summary>
+        public static string odin_flash_total {
+            get {
+                return ResourceManager.GetString("odin_flash_total", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Partition for {0}:.
+        /// </summary>
+        public static string odin_flash_target {
+            get {
+                return ResourceManager.GetString("odin_flash_target", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to I read the warnings above and want to go ahead.
+        /// </summary>
+        public static string odin_flash_ack {
+            get {
+                return ResourceManager.GetString("odin_flash_ack", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restart the phone when it is done.
+        /// </summary>
+        public static string odin_flash_restart {
+            get {
+                return ResourceManager.GetString("odin_flash_restart", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Put the phone in Download mode and plug it in. Flash turns on when the phone is found..
+        /// </summary>
+        public static string odin_flash_waiting {
+            get {
+                return ResourceManager.GetString("odin_flash_waiting", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Write {0} files ({1}) to the phone?.
+        /// </summary>
+        public static string odin_flash_confirm {
+            get {
+                return ResourceManager.GetString("odin_flash_confirm", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Writing {0}.
+        /// </summary>
+        public static string odin_flash_writing {
+            get {
+                return ResourceManager.GetString("odin_flash_writing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1}.
+        /// </summary>
+        public static string odin_flash_progress {
+            get {
+                return ResourceManager.GetString("odin_flash_progress", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Do not unplug the phone or close this window..
+        /// </summary>
+        public static string odin_flash_keep {
+            get {
+                return ResourceManager.GetString("odin_flash_keep", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The flash is done.
+        /// </summary>
+        public static string odin_flash_done {
+            get {
+                return ResourceManager.GetString("odin_flash_done", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone restarts now. The first start after a firmware can take several minutes..
+        /// </summary>
+        public static string odin_flash_done_restart {
+            get {
+                return ResourceManager.GetString("odin_flash_done_restart", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone stays in Download mode. To restart it, hold Power and Volume Down for 7 seconds..
+        /// </summary>
+        public static string odin_flash_done_stay {
+            get {
+                return ResourceManager.GetString("odin_flash_done_stay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Written: {0}.
+        /// </summary>
+        public static string odin_flash_written {
+            get {
+                return ResourceManager.GetString("odin_flash_written", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The flash stopped.
+        /// </summary>
+        public static string odin_flash_failed {
+            get {
+                return ResourceManager.GetString("odin_flash_failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to It stopped while writing {0}: {1}.
+        /// </summary>
+        public static string odin_flash_failed_at {
+            get {
+                return ResourceManager.GetString("odin_flash_failed_at", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to It stopped before writing anything: {0}.
+        /// </summary>
+        public static string odin_flash_failed_before {
+            get {
+                return ResourceManager.GetString("odin_flash_failed_before", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This phone's partition table is not the one the files were checked against (was another phone plugged in?). Nothing was written. Read the phone again..
+        /// </summary>
+        public static string odin_flash_pit_changed {
+            get {
+                return ResourceManager.GetString("odin_flash_pit_changed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone stays in Download mode. Do not restart it: plug it in again and flash again. If its screen shows an error, take a photo of it..
+        /// </summary>
+        public static string odin_flash_failed_note {
+            get {
+                return ResourceManager.GetString("odin_flash_failed_note", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Flash again.
+        /// </summary>
+        public static string odin_flash_again {
+            get {
+                return ResourceManager.GetString("odin_flash_again", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string odin_flash_back {
+            get {
+                return ResourceManager.GetString("odin_flash_back", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Nothing to flash: none of the files has a partition on this phone..
+        /// </summary>
+        public static string odin_check_Empty {
+            get {
+                return ResourceManager.GetString("odin_check_Empty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: this phone has no partition by that name. Choose one below..
+        /// </summary>
+        public static string odin_check_NotInPit {
+            get {
+                return ResourceManager.GetString("odin_check_NotInPit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: not a partition on this phone; left out, as Odin leaves it out..
+        /// </summary>
+        public static string odin_check_Skipped {
+            get {
+                return ResourceManager.GetString("odin_check_Skipped", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: a partition table. It is not flashed; the phone's partitions stay as they are..
+        /// </summary>
+        public static string odin_check_PitSkipped {
+            get {
+                return ResourceManager.GetString("odin_check_PitSkipped", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is bigger than {1} can hold ({2}, at most {3})..
+        /// </summary>
+        public static string odin_check_TooBig {
+            get {
+                return ResourceManager.GetString("odin_check_TooBig", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} holds the phone's identity (IMEI, keys). It is never flashed here..
+        /// </summary>
+        public static string odin_check_Protected {
+            get {
+                return ResourceManager.GetString("odin_check_Protected", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Two files for {0}. Keep one..
+        /// </summary>
+        public static string odin_check_Twice {
+            get {
+                return ResourceManager.GetString("odin_check_Twice", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to CSC and HOME_CSC are both chosen. Keep HOME_CSC to keep your data, or CSC to erase the phone..
+        /// </summary>
+        public static string odin_check_BothCsc {
+            get {
+                return ResourceManager.GetString("odin_check_BothCsc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The firmware is for {0}, but this phone is {1}. It cannot be flashed..
+        /// </summary>
+        public static string odin_check_OtherModel {
+            get {
+                return ResourceManager.GetString("odin_check_OtherModel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The phone did not say its model, so the firmware ({0}) cannot be matched to it. Make sure it is for this phone..
+        /// </summary>
+        public static string odin_check_ModelUnknown {
+            get {
+                return ResourceManager.GetString("odin_check_ModelUnknown", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to These files come from another build: {0}. Use the BL, AP, CP and CSC of one firmware..
+        /// </summary>
+        public static string odin_check_Mixed {
+            get {
+                return ResourceManager.GetString("odin_check_Mixed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is part of the bootloader. A wrong one can stop the phone from starting, and the phone refuses an older one..
+        /// </summary>
+        public static string odin_check_Bootloader {
+            get {
+                return ResourceManager.GetString("odin_check_Bootloader", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is the modem. A wrong one can leave the phone without signal..
+        /// </summary>
+        public static string odin_check_Modem {
+            get {
+                return ResourceManager.GetString("odin_check_Modem", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} erases everything on the phone (a factory reset). Use HOME_CSC to keep your data..
+        /// </summary>
+        public static string odin_check_WipesData {
+            get {
+                return ResourceManager.GetString("odin_check_WipesData", resourceCulture);
+            }
+        }
     }
 }

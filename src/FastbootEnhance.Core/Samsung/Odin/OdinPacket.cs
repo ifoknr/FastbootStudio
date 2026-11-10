@@ -46,6 +46,26 @@ namespace FastbootEnhance.Core.Samsung.Odin
         public const int EndSessionReboot = 0x01;
         public const int EndSessionRebootToDownload = 0x02;
 
+        // Writing (Heimdall's names: SessionSetupPacket, FileTransferPacket, EndFileTransferPacket).
+        public const int SessionTotalBytes = 0x02;
+        public const int SessionFilePartSize = 0x05;
+        public const int FileFlash = 0x00;
+        public const int FilePart = 0x02;
+        public const int FileEnd = 0x03;
+        public const int DestinationPhone = 0x00;
+        public const int DestinationModem = 0x01;
+
+        /// <summary>The answer to each file part: type 0, then the part's index in its sequence.</summary>
+        public const int TypeFilePartAnswer = 0x00;
+
+        /// <summary>Parts of 128 KiB, 800 to a sequence, for bootloaders that keep the default.</summary>
+        public const int DefaultPartSize = 128 * 1024;
+        public const int DefaultSequenceParts = 800;
+
+        /// <summary>Parts of 1 MiB, 30 to a sequence, once a bootloader that offers it agrees.</summary>
+        public const int LargePartSize = 1024 * 1024;
+        public const int LargeSequenceParts = 30;
+
         /// <summary>The protocol version this app asks for; the phone answers with the lower of it and its own.</summary>
         public const int RequestedProtocol = 4;
 

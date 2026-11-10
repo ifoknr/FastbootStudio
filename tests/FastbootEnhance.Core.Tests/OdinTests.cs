@@ -332,8 +332,8 @@ namespace FastbootEnhance.Core.Tests
             client.BeginSession();
             Assert.Throws<OdinException>(() => client.BeginSession());
 
-            // A write request (0x66) is refused by the stand-in like any packet it does not know.
-            phone.Write(OdinPacket.Command(OdinPacket.TypeFile, 0), 0, OdinPacket.CommandSize, 1000);
+            // A packet it does not know is refused, as a bootloader refuses it.
+            phone.Write(OdinPacket.Command(0x70, 0), 0, OdinPacket.CommandSize, 1000);
             byte[] answer = new byte[8];
             Assert.Equal(8, phone.Read(answer, 0, 8, 1000));
             Assert.Equal(0xFF, answer[0]);

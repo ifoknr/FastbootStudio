@@ -2340,7 +2340,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>سامسونج</value>
   </data>
   <data name="samsung_subtitle" xml:space="preserve">
-    <value>افتح روم سامسونج، طلّع منه الصور اللي تحتاجها، وتأكد إنه يناسب جوالك. ما يكتب شي على الجوال.</value>
+    <value>افتح روم سامسونج، طلّع منه الصور اللي تحتاجها، تأكد إنه يناسب جوالك، وفلّشه في وضع التحميل.</value>
   </data>
   <data name="samsung_drop_hint" xml:space="preserve">
     <value>افتح روم سامسونج</value>
@@ -2939,7 +2939,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>قراءة الجوال في وضع التحميل</value>
   </data>
   <data name="odin_subtitle" xml:space="preserve">
-    <value>يقرأ جدول التقسيم (PIT) والموديل والمنطقة. ما ينكتب أي شي على الجوال.</value>
+    <value>يقرأ جدول التقسيم (PIT) والموديل والمنطقة، وبعدها يفلّش بعد ما يفحص الملفات عليها.</value>
   </data>
   <data name="odin_step_off" xml:space="preserve">
     <value>طفّ الجوال وافصل الكيبل.</value>
@@ -3168,5 +3168,191 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   </data>
   <data name="phone_root_not_for_shell" xml:space="preserve">
     <value>{0}، بدون صلاحية لـ Shell</value>
+  </data>
+  <data name="driver_google_title" xml:space="preserve">
+    <value>تعريف قوقل USB</value>
+  </data>
+  <data name="driver_google_source" xml:space="preserve">
+    <value>من dl.google.com · تقريباً 8 ميقا</value>
+  </data>
+  <data name="driver_google_offer" xml:space="preserve">
+    <value>الفاست بوت والـ adb على أجهزة Pixel، وعلى جوالات كثيرة تستخدم معرّفات قوقل، تحتاج تعريف قوقل. وهو نفس التعريف اللي يثبّته Android Studio.
+
+التطبيق يحمّله من قوقل، ويطابق حجمه والـ checksum حقه مع قائمة قوقل، وبعدين يطلب من الويندوز يضيفه. الويندوز بيطلب منك إذن، وهذا طبيعي لأي تعريف.</value>
+  </data>
+  <data name="driver_google_downloading" xml:space="preserve">
+    <value>جاري تحميل تعريف قوقل</value>
+  </data>
+  <data name="driver_google_downloading_note" xml:space="preserve">
+    <value>من قوقل على طول، وينفحص قبل ما ينستخدم.</value>
+  </data>
+  <data name="driver_google_check_bad" xml:space="preserve">
+    <value>الملف ما يطابق اللي تذكره قوقل عنه ({0})، فانحذف وما انستخدم.</value>
+  </data>
+  <data name="driver_google_installing" xml:space="preserve">
+    <value>جاري إضافة تعريف قوقل</value>
+  </data>
+  <data name="driver_google_installing_note" xml:space="preserve">
+    <value>الويندوز بيطلب الإذن، وبعدين يضيف التعريف. ياخذ كم ثانية.</value>
+  </data>
+  <data name="driver_google_done" xml:space="preserve">
+    <value>تعريف قوقل انثبّت</value>
+  </data>
+  <data name="driver_google_done_note" xml:space="preserve">
+    <value>لو فيه جوال موصول، افصله ورجّعه. جوال من شركة ثانية ممكن يحتاج تعريف شركته نفسها.</value>
+  </data>
+  <data name="driver_google_failed" xml:space="preserve">
+    <value>تعريف قوقل ما انثبّت</value>
+  </data>
+  <data name="driver_google_failed_code" xml:space="preserve">
+    <value>الويندوز ما قدر يضيف التعريف (pnputil طلع بالكود {0}).</value>
+  </data>
+  <data name="driver_google_failed_note" xml:space="preserve">
+    <value>تقدر تحمّله بنفسك من صفحة قوقل.</value>
+  </data>
+  <data name="driver_google_open_page" xml:space="preserve">
+    <value>افتح صفحة قوقل</value>
+  </data>
+  <data name="driver_google_ok" xml:space="preserve">
+    <value>تعريف قوقل USB مثبّت: الفاست بوت والـ adb على معرّفات قوقل بينشافون.</value>
+  </data>
+  <data name="driver_google_missing" xml:space="preserve">
+    <value>تعريف قوقل USB مو مثبّت، وأجهزة Pixel والجوالات على معرّفات قوقل تحتاجه.</value>
+  </data>
+  <data name="driver_section" xml:space="preserve">
+    <value>تعريفات USB</value>
+  </data>
+  <data name="driver_section_note" xml:space="preserve">
+    <value>الويندوز يحتاج تعريف عشان يشوف الجوال في الفاست بوت أو الـ adb أو وضع التحميل.</value>
+  </data>
+  <data name="usb_google_driver_ask" xml:space="preserve">
+    <value>تعريف قوقل USB يناسب هالجوال (معرّف قوقل). أحمّله من قوقل وأثبّته الحين؟</value>
+  </data>
+  <data name="odin_flash" xml:space="preserve">
+    <value>فلاش…</value>
+  </data>
+  <data name="odin_flash_title" xml:space="preserve">
+    <value>فلاش الجوال</value>
+  </data>
+  <data name="odin_flash_intro" xml:space="preserve">
+    <value>اختر وش تبي تكتب: صورة وحدة (boot.img أو ‎.lz4)، أو tar من Magisk، أو ملفات الفيرموير: BL و AP و CP و HOME_CSC. كل ملف ينفحص على جدول البارتشنات حق هالجوال وموديله قبل ما ينرسل أي شي.</value>
+  </data>
+  <data name="odin_flash_choose" xml:space="preserve">
+    <value>اختر الملفات…</value>
+  </data>
+  <data name="odin_flash_filter" xml:space="preserve">
+    <value>فيرموير سامسونج والصور</value>
+  </data>
+  <data name="odin_flash_reading" xml:space="preserve">
+    <value>جاري فحص {0}</value>
+  </data>
+  <data name="odin_flash_damaged" xml:space="preserve">
+    <value>{0}
+
+الملف خربان أو ناقص. حمّله مرة ثانية.</value>
+  </data>
+  <data name="odin_flash_total" xml:space="preserve">
+    <value>الملفات: {0} · {1}</value>
+  </data>
+  <data name="odin_flash_target" xml:space="preserve">
+    <value>البارتشن حق {0}:</value>
+  </data>
+  <data name="odin_flash_ack" xml:space="preserve">
+    <value>قريت التحذيرات اللي فوق وأبي أكمّل</value>
+  </data>
+  <data name="odin_flash_restart" xml:space="preserve">
+    <value>أعد تشغيل الجوال لما يخلص</value>
+  </data>
+  <data name="odin_flash_waiting" xml:space="preserve">
+    <value>دخّل الجوال وضع التحميل ووصّله. زر الفلاش يشتغل أول ما ينلقى الجوال.</value>
+  </data>
+  <data name="odin_flash_confirm" xml:space="preserve">
+    <value>تكتب على الجوال؟ الملفات: {0} ({1}).
+
+لا تفصل الجوال ولا تقفل هالنافذة لين يخلص. لو وقف بالنص، الجوال يبقى في وضع التحميل وتقدر تفلّشه مرة ثانية.</value>
+  </data>
+  <data name="odin_flash_writing" xml:space="preserve">
+    <value>جاري كتابة {0}</value>
+  </data>
+  <data name="odin_flash_progress" xml:space="preserve">
+    <value>{0} من {1}</value>
+  </data>
+  <data name="odin_flash_keep" xml:space="preserve">
+    <value>لا تفصل الجوال ولا تقفل هالنافذة.</value>
+  </data>
+  <data name="odin_flash_done" xml:space="preserve">
+    <value>الفلاش خلص</value>
+  </data>
+  <data name="odin_flash_done_restart" xml:space="preserve">
+    <value>الجوال يعيد التشغيل الحين. أول تشغيل بعد الفيرموير ممكن ياخذ كم دقيقة.</value>
+  </data>
+  <data name="odin_flash_done_stay" xml:space="preserve">
+    <value>الجوال باقي في وضع التحميل. عشان تعيد تشغيله، اضغط زر التشغيل وخفض الصوت 7 ثواني.</value>
+  </data>
+  <data name="odin_flash_written" xml:space="preserve">
+    <value>انكتب: {0}</value>
+  </data>
+  <data name="odin_flash_failed" xml:space="preserve">
+    <value>الفلاش وقف</value>
+  </data>
+  <data name="odin_flash_failed_at" xml:space="preserve">
+    <value>وقف وهو يكتب {0}: {1}</value>
+  </data>
+  <data name="odin_flash_failed_before" xml:space="preserve">
+    <value>وقف قبل ما يكتب أي شي: {0}</value>
+  </data>
+  <data name="odin_flash_pit_changed" xml:space="preserve">
+    <value>جدول البارتشنات في هالجوال مو نفس اللي انفحصت عليه الملفات (وصّلت جوال ثاني؟). ما انكتب شي. اقرا الجوال مرة ثانية.</value>
+  </data>
+  <data name="odin_flash_failed_note" xml:space="preserve">
+    <value>الجوال يبقى في وضع التحميل. لا تعيد تشغيله: وصّله مرة ثانية وفلّش مرة ثانية. لو طلع خطأ على شاشته، صوّره.</value>
+  </data>
+  <data name="odin_flash_again" xml:space="preserve">
+    <value>فلّش مرة ثانية</value>
+  </data>
+  <data name="odin_flash_back" xml:space="preserve">
+    <value>رجوع</value>
+  </data>
+  <data name="odin_check_Empty" xml:space="preserve">
+    <value>ما فيه شي ينفلش: ولا ملف له بارتشن في هالجوال.</value>
+  </data>
+  <data name="odin_check_NotInPit" xml:space="preserve">
+    <value>{0}: ما فيه بارتشن بهالاسم في هالجوال. اختر واحد تحت.</value>
+  </data>
+  <data name="odin_check_Skipped" xml:space="preserve">
+    <value>{0}: مو بارتشن في هالجوال، فينترك مثل ما Odin يتركه.</value>
+  </data>
+  <data name="odin_check_PitSkipped" xml:space="preserve">
+    <value>{0}: جدول بارتشنات. ما ينفلش، وبارتشنات الجوال تبقى على حالها.</value>
+  </data>
+  <data name="odin_check_TooBig" xml:space="preserve">
+    <value>{0} أكبر من اللي يتحمله {1} ({2}، والحد {3}).</value>
+  </data>
+  <data name="odin_check_Protected" xml:space="preserve">
+    <value>{0} فيه هوية الجوال (الـ IMEI والمفاتيح). ما ينفلش من هنا أبداً.</value>
+  </data>
+  <data name="odin_check_Twice" xml:space="preserve">
+    <value>فيه ملفين لـ {0}. خل واحد بس.</value>
+  </data>
+  <data name="odin_check_BothCsc" xml:space="preserve">
+    <value>اخترت CSC و HOME_CSC مع بعض. خل HOME_CSC عشان تحافظ على بياناتك، أو CSC عشان تمسح الجوال.</value>
+  </data>
+  <data name="odin_check_OtherModel" xml:space="preserve">
+    <value>الفيرموير لـ {0}، وهالجوال {1}. ما ينفلش.</value>
+  </data>
+  <data name="odin_check_ModelUnknown" xml:space="preserve">
+    <value>الجوال ما قال موديله، فما أقدر أطابق الفيرموير ({0}) معه. تأكد إنه لهالجوال.</value>
+  </data>
+  <data name="odin_check_Mixed" xml:space="preserve">
+    <value>هالملفات من بيلد ثاني: {0}. استخدم BL و AP و CP و CSC من نفس الفيرموير.</value>
+  </data>
+  <data name="odin_check_Bootloader" xml:space="preserve">
+    <value>{0} جزء من البوتلودر. لو غلط ممكن الجوال ما يشتغل، والجوال يرفض النسخة الأقدم.</value>
+  </data>
+  <data name="odin_check_Modem" xml:space="preserve">
+    <value>{0} هو المودم. لو غلط ممكن الجوال يبقى بدون شبكة.</value>
+  </data>
+  <data name="odin_check_WipesData" xml:space="preserve">
+    <value>{0} يمسح كل شي في الجوال (فورمات). استخدم HOME_CSC عشان تحافظ على بياناتك.</value>
   </data>
 </root>
