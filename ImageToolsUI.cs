@@ -712,13 +712,14 @@ namespace FastbootEnhance
                         long start = before;
                         try
                         {
-                            using (FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, 1 << 20))
+                            using (AtomicFile part = AtomicFile.Create(path, FileAccess.Write, 1 << 20))
                             {
-                                SuperImage.Extract(stream, row.Partition, file, new Progress(done =>
+                                SuperImage.Extract(stream, row.Partition, part.Stream, new Progress(done =>
                                 {
                                     report(start + done, total);
                                     ui(delegate { row.Progress = size > 0 ? done * 100.0 / size : 100; });
                                 }), token);
+                                part.Commit();
                             }
                             log("  " + row.Name + ": " + ByteSize.Format(size) + " -> " + path);
                             ui(delegate

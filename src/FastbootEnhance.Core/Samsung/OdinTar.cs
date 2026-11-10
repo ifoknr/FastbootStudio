@@ -31,6 +31,8 @@ namespace FastbootEnhance.Core.Samsung
     public static class OdinTar
     {
         const int Block = 512;
+        /// <summary>The most a long-name or pax header may hold: names, not data.</summary>
+        const long HeaderDataMax = 1 << 20;
 
         /// <summary>The MD5 line at the end of a .tar.md5: the hash, and how many bytes it covers.</summary>
         public sealed class Md5Trailer
@@ -107,6 +109,7 @@ namespace FastbootEnhance.Core.Samsung
             byte[] header = new byte[Block];
             long pos = 0;
             string longName = null;
+            long? paxSize = null;
             long limit = tar.Length;
             while (pos + Block <= limit)
             {
@@ -122,26 +125,40 @@ namespace FastbootEnhance.Core.Samsung
                 }
                 char type = (char)header[156];
                 long size = Number(header, 124, 12);
-                long data = pos + Block;
-                long next = data + (size + Block - 1) / Block * Block;
-                if (size < 0 || data + size > limit)
-                    throw new InvalidDataException("The tar is cut short.");
-
-                if (type == 'L')
+                if (paxSize != null && type != 'x' && type != 'g' && type != 'L')
                 {
-                    // GNU long name: the next entry's name is this entry's data.
-                    byte[] name = new byte[size];
-                    ReadExactly(tar, name, 0, (int)size);
-                    longName = Text(name, 0, name.Length);
+                    size = paxSize.Value;
+                    paxSize = null;
                 }
-                else if (type == 'x' || type == 'g')
+                long data = pos + Block;
+                // Checked this way round: "data + size" would wrap for a size near long.MaxValue.
+                if (size < 0 || size > limit - data)
+                    throw new InvalidDataException("The tar is cut short.");
+                long next = data + (size + Block - 1) / Block * Block;
+
+                if (type == 'L' || type == 'x' || type == 'g')
                 {
-                    // pax headers: only "path" matters here.
-                    byte[] pax = new byte[size];
-                    ReadExactly(tar, pax, 0, (int)size);
-                    Match p = Regex.Match(Encoding.UTF8.GetString(pax), @"\d+ path=([^\n]*)\n");
-                    if (p.Success && type == 'x')
-                        longName = p.Groups[1].Value;
+                    // Names and pax headers are small; a size in the gigabytes is a damaged header.
+                    if (size > HeaderDataMax)
+                        throw new InvalidDataException("The tar has a damaged header.");
+                    byte[] text = new byte[size];
+                    ReadExactly(tar, text, 0, (int)size);
+                    if (type == 'L')
+                    {
+                        // GNU long name: the next entry's name is this entry's data.
+                        longName = Text(text, 0, text.Length);
+                    }
+                    else
+                    {
+                        // pax headers: "path" and "size" (an entry over 8 GiB) matter here.
+                        string pax = Encoding.UTF8.GetString(text);
+                        Match p = Regex.Match(pax, @"\d+ path=([^\n]*)\n");
+                        if (p.Success && type == 'x')
+                            longName = p.Groups[1].Value;
+                        Match z = Regex.Match(pax, @"\d+ size=(\d{1,18})\n");
+                        if (z.Success && type == 'x')
+                            paxSize = long.Parse(z.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture);
+                    }
                 }
                 else
                 {

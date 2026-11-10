@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using FastbootEnhance.Core.Adb;
 using FastbootEnhance.Core.Fastboot;
 using FastbootEnhance.Core.Images;
@@ -86,13 +87,39 @@ namespace FastbootEnhance
             W.root_boot_once.Visibility = partition == "boot" ? Visibility.Visible : Visibility.Collapsed;
             W.root_boot_once.IsEnabled = !busy && patchedPath != null && partition == "boot";
             W.root_open_folder.IsEnabled = folder != null;
+
+            // The current step is lit, the ones done carry a tick, the ones ahead are dimmed.
+            int current = patchedPath != null ? 4 : adbSerial != null ? 3 : stockPath != null ? 2 : 1;
+            paintStep(W.root_step1, W.root_step1_no, W.root_step1_num, W.root_step1_tick, W.root_step1_state, 1, current);
+            paintStep(W.root_step2, W.root_step2_no, W.root_step2_num, W.root_step2_tick, W.root_step2_state, 2, current);
+            paintStep(W.root_step3, W.root_step3_no, W.root_step3_num, W.root_step3_tick, W.root_step3_state, 3, current);
+            paintStep(W.root_step4, W.root_step4_no, W.root_step4_num, W.root_step4_tick, W.root_step4_state, 4, current);
         }
 
-        /// <summary>Runs work in the background with the page locked, then done on the UI thread.</summary>
+        static void paintStep(Border card, Border circle, TextBlock number, System.Windows.Shapes.Path tick, TextBlock state, int step, int current)
+        {
+            bool done = step < current, now = step == current;
+            card.Opacity = done || now ? 1 : 0.6;
+            card.BorderBrush = Palette.Get(now ? "AccentLine" : "GlassLine");
+            circle.Background = Palette.Get(done ? "OkSoft" : now ? "Accent" : "Glass2");
+            circle.BorderBrush = Palette.Get(done ? "OkLine" : now ? "Accent" : "GlassLine2");
+            number.Foreground = Palette.Get(now ? "AccentInk" : "Dim");
+            number.Visibility = done ? Visibility.Collapsed : Visibility.Visible;
+            tick.Visibility = done ? Visibility.Visible : Visibility.Collapsed;
+            state.Text = done ? Properties.Resources.root_step_done : now ? Properties.Resources.root_step_current : "";
+            state.Foreground = Palette.Get(done ? "Ok" : "Accent");
+        }
+
+        /// <summary>
+        /// Runs work in the background with the page locked, then done on the UI thread. When
+        /// the work throws, done is not run: the error is shown instead, so a failed step is
+        /// never reported as a finished one.
+        /// </summary>
         static void run(Action work, Action done)
         {
             busy = true;
             refresh();
+            Exception failure = null;
             Helper.offloadAndRun(delegate
             {
                 try
@@ -101,12 +128,16 @@ namespace FastbootEnhance
                 }
                 catch (Exception e)
                 {
+                    failure = e;
                     log("failed: " + e);
                 }
             }, delegate
             {
                 busy = false;
-                done();
+                if (failure != null)
+                    ThemedDialog.Show(failure.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    done();
                 refresh();
             });
         }

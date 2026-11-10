@@ -66,7 +66,7 @@ namespace FastbootEnhance
                     FontSize = 12,
                     MinHeight = 30,
                     Padding = new Thickness(10, 2, 10, 2),
-                    Margin = new Thickness(0, 0, 8, 8),
+                    Margin = new Thickness(0, 0, 8, 6),
                     Style = (Style)W.FindResource("GhostButton"),
                 };
                 // Fills the line rather than running it, so nothing happens by a stray click.
@@ -218,6 +218,8 @@ namespace FastbootEnhance
                     return ThemedDialog.ConfirmTyped(Properties.Resources.terminal_dd, Properties.Resources.critical_title, "dd");
                 case TerminalRisk.WipesData:
                     return Helper.confirm(Properties.Resources.terminal_wipe, Properties.Resources.confirm_title, true);
+                case TerminalRisk.ChangesSlot:
+                    return Helper.confirm(Properties.Resources.terminal_slot, Properties.Resources.confirm_title, false);
                 default:
                     return true;
             }

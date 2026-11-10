@@ -113,6 +113,10 @@ namespace FastbootEnhance.Core.Payload
         /// manifest, which is untrusted input, so a name must be a plain file name and the
         /// result must stay inside the chosen directory.
         /// </summary>
+        /// <summary>Windows device names: "NUL.img" opens the device, not a file.</summary>
+        static readonly System.Text.RegularExpressions.Regex ReservedName = new System.Text.RegularExpressions.Regex(
+            @"^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\..*)?$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
         internal static string ResolveOutputPath(string outputDirectory, string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -120,7 +124,8 @@ namespace FastbootEnhance.Core.Payload
 
             if (name == "." || name == ".."
                 || name.IndexOf('/') >= 0 || name.IndexOf('\\') >= 0
-                || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+                || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
+                || ReservedName.IsMatch(name))
             {
                 throw new PayloadExtractionException(
                     name, "partition name \"" + name + "\" is not a plain file name");
@@ -168,10 +173,12 @@ namespace FastbootEnhance.Core.Payload
                 };
             }
 
-            FileStream output;
+            // Written as "<name>.img.part" and renamed once complete, so a stopped run never
+            // leaves an image that looks whole.
+            AtomicFile output;
             try
             {
-                output = new FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, WriteBufferSize);
+                output = AtomicFile.Create(path, FileAccess.ReadWrite, WriteBufferSize);
             }
             catch (Exception e)
             {
@@ -193,7 +200,8 @@ namespace FastbootEnhance.Core.Payload
                 {
                     int skipped;
                     long size = PartitionExtractor.Extract(
-                        payload, name, output, options, progress, cancellationToken, out skipped);
+                        payload, name, output.Stream, options, progress, cancellationToken, out skipped);
+                    output.Commit();
 
                     watch.Stop();
                     return new PartitionResult
@@ -209,13 +217,11 @@ namespace FastbootEnhance.Core.Payload
             catch (OperationCanceledException)
             {
                 watch.Stop();
-                TryDelete(path);
                 throw;
             }
             catch (Exception e)
             {
                 watch.Stop();
-                TryDelete(path);
                 return new PartitionResult
                 {
                     Partition = name,
@@ -224,21 +230,6 @@ namespace FastbootEnhance.Core.Payload
                     Elapsed = watch.Elapsed,
                     Error = e.Message
                 };
-            }
-        }
-
-        static void TryDelete(string path)
-        {
-            try
-            {
-                if (File.Exists(path))
-                    File.Delete(path);
-            }
-            catch (IOException)
-            {
-            }
-            catch (UnauthorizedAccessException)
-            {
             }
         }
     }

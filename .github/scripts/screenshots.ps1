@@ -347,27 +347,29 @@ if ($ExpectedFlashes -gt 0) {
     # The file dialog takes a moment to go away; it must not be mistaken for the result.
     Wait-For { $d = Find-Dialog; $null -eq $d -or $d.Current.NativeWindowHandle -ne $fileHwnd } 20 "the file dialog to close" | Out-Null
 
-    # The stand-in phone has no odm: the app offers to create it in super first.
-    $create = Wait-For { Find-Dialog } 30 "the missing partition question"
+    # One summary before the flash: the phone, the file, and every point to know. Here the
+    # stand-in has no odm (created in super first) and the six physical partitions also go to
+    # slot b. A point that could cost data adds an "I have read this" box; tick it if it is there.
+    $summary = Wait-For { Find-Dialog } 30 "the flash summary"
     Start-Sleep -Milliseconds 600
-    Save-Window ('{0:D2}-create-missing' -f $i); $i++
-    Answer-Dialog $create 'Yes'
+    Save-Window ('{0:D2}-flash-summary' -f $i); $i++
+    $i++   # the both-slots question used to be its own screen; the number is kept so later links hold
+    $ackCond = New-Object System.Windows.Automation.PropertyCondition($UIA::ControlTypeProperty, $Type::CheckBox)
+    $ack = @($summary.FindAll($Scope::Descendants, $ackCond)) | Select-Object -First 1
+    if ($null -ne $ack) { $ack.GetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern).Toggle() }
+    Answer-Dialog $summary 'Flash'
 
-    $slots = Wait-For { Find-Dialog } 30 "the both-slots question"
-    Start-Sleep -Milliseconds 600
-    Save-Window ('{0:D2}-both-slots' -f $i); $i++
-    Answer-Dialog $slots 'Yes'
-
-    # The app shows "operation completed" (or an error) when it is done. With the file dialog
-    # gone, the next window to appear is that box. A message box does not expose its text to
-    # UI Automation, so the fastboot log below is what proves the flash.
-    $done = Wait-For { Find-Dialog } 240 "flashing to finish"
+    # The result is a strip on the Flash page (an error is still a box). The fastboot log below
+    # is what proves the flash.
+    $result = Wait-For { $d = Find-Dialog; if ($null -ne $d) { $d } else { Shown $root 'flash_result_title' } } 240 "flashing to finish"
+    if ($result.Current.ControlType -eq $Type::Window) {
+        $message = ($result.FindAll($Scope::Descendants, [System.Windows.Automation.Condition]::TrueCondition) |
+            ForEach-Object { $_.Current.Name } | Where-Object { $_ }) -join ' | '
+        Fail "flashing ended with a box: $message"
+    }
     Start-Sleep -Milliseconds 800
-    $message = ($done.FindAll($Scope::Descendants, [System.Windows.Automation.Condition]::TrueCondition) |
-        ForEach-Object { $_.Current.Name } | Where-Object { $_ }) -join ' | '
-    Write-Host "dialog after flashing: $message"
+    Write-Host "after flashing: $((By-Id $root 'flash_result_title').Current.Name)"
     Save-Window ('{0:D2}-flash' -f $i); $i++
-    Close-Dialog $done
 
     Remove-Item $fastbootRefuse -ErrorAction SilentlyContinue
     $flashes = @(Get-Content $fakeLog | Where-Object { $_ -match ' flash ' }).Count

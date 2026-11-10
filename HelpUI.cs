@@ -99,6 +99,13 @@ namespace FastbootEnhance
             return (tab.Content as Panel)?.Children.OfType<Border>().FirstOrDefault(b => b.Style == style);
         }
 
+        /// <summary>Opens the help of <paramref name="tab"/> (F1); a page without help does nothing.</summary>
+        public static void Open(TabItem tab)
+        {
+            if (tab != null)
+                open(tab);
+        }
+
         static void open(TabItem tab)
         {
             string page;

@@ -29,6 +29,42 @@ namespace FastbootEnhance
         /// <summary>True while a payload is being extracted or written; the window asks before closing.</summary>
         public static volatile bool flashing;
 
+        /// <summary>The fastboot started by <see cref="runStep"/> and still running; null otherwise.</summary>
+        static volatile Fastboot activeStep;
+
+        /// <summary>
+        /// Which phone a question is about: "Phone: serial · product · slot a · fastbootd". Every
+        /// flash or erase confirmation ends with it, so a phone swapped mid-way is noticed.
+        /// </summary>
+        internal static string deviceLine()
+        {
+            FastbootData data = fastbootData;
+            string slot = data == null || string.IsNullOrEmpty(data.current_slot) ? "-" : data.current_slot.TrimStart('_');
+            return string.Format(Properties.Resources.confirm_device_line, cur_serial ?? "?",
+                data == null || string.IsNullOrEmpty(data.product) ? "?" : data.product, slot,
+                data != null && data.fastbootd ? "fastbootd" : "bootloader");
+        }
+
+        /// <summary>
+        /// Stops whatever fastboot command is running: a step command (flash, erase, boot…) or
+        /// the payload flash. The command's own error path reports what was stopped.
+        /// </summary>
+        public static void cancelCurrent()
+        {
+            Fastboot step = activeStep;
+            if (step != null)
+            {
+                appendLog("stopped by the user");
+                step.Abort();
+                return;
+            }
+            if (flashWorker != null)
+            {
+                appendLog("flash stopped by the user");
+                abortFlash();
+            }
+        }
+
         static void appendLog(string logs)
         {
             LogStore.Append(logs);
@@ -52,7 +88,7 @@ namespace FastbootEnhance
                 }
                 MainWindow.THIS.fastboot_devices_empty.Visibility =
                     devices.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-                MainWindow.THIS.main_tabs.Tag = string.Format(Properties.Resources.rail_devices, devices.Count);
+                setStatus(string.Format(Properties.Resources.rail_devices, devices.Count));
             }));
         }
 
@@ -60,6 +96,8 @@ namespace FastbootEnhance
         {
             using (Fastboot fastboot = new Fastboot(null, "devices"))
             {
+                // stderr is drained alongside: a full pipe would otherwise stall fastboot.
+                System.Threading.Tasks.Task<string> errors = fastboot.stderr.ReadToEndAsync();
                 while (true)
                 {
                     string line = fastboot.stdout.ReadLine();
@@ -111,7 +149,7 @@ namespace FastbootEnhance
                     // rather than letting the exception take the whole app down.
                     MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
                     {
-                        MainWindow.THIS.main_tabs.Tag = Properties.Resources.rail_no_fastboot;
+                        setStatus(Properties.Resources.rail_no_fastboot);
                         ThemedDialog.Show(e.Message + "\n" + e.FileName, Properties.Resources.error,
                             MessageBoxButton.OK, MessageBoxImage.Error);
                     }));
@@ -480,10 +518,10 @@ namespace FastbootEnhance
                 fastbootData.HasPendingUpdate ? Visibility.Visible : Visibility.Collapsed;
 
             MainWindow.THIS.fastboot_mode_text.Text = fastbootData.fastbootd ? "fastbootd" : "bootloader";
-            MainWindow.THIS.fastboot_mode_badge.Visibility = Visibility.Visible;
 
             MainWindow.THIS.fastboot_checks.ItemsSource = buildChecks();
             showSuperSpace();
+            updateDeviceBar();
         }
 
         /// <summary>What to look at before writing anything to this device.</summary>
@@ -567,15 +605,26 @@ namespace FastbootEnhance
         /// </summary>
         static bool superSpaceAllowed(IEnumerable<KeyValuePair<string, long>> writes, IEnumerable<string> created = null)
         {
+            string problem = superSpaceProblem(writes, created);
+            return problem == null || Helper.confirm(problem + "\n\n" + Properties.Resources.super_full_ask + "\n\n" + deviceLine(),
+                Properties.Resources.super_full_title, true);
+        }
+
+        /// <summary>
+        /// When super is known to be too small for the images: by how much, and what could make
+        /// room. Null when they fit (or the phone is not in fastbootd, where nothing is resized).
+        /// </summary>
+        static string superSpaceProblem(IEnumerable<KeyValuePair<string, long>> writes, IEnumerable<string> created = null)
+        {
             if (fastbootData == null || !fastbootData.fastbootd)
-                return true;
+                return null;
 
             SuperSpace space = SuperSpace.From(fastbootData);
             SuperFit fit = space.Check(writes, created);
             appendLog("super space: " + (space.Known ? Helper.byte2AUnit(space.Free) + " free" : "size unknown")
                 + ", writes need " + Helper.byte2AUnit(fit.Needed) + (fit.Fits ? "" : " (does not fit)"));
             if (fit.Fits)
-                return true;
+                return null;
 
             List<string> ways = new List<string>();
             if (space.OtherSlotPartitions.Count > 0)
@@ -587,11 +636,9 @@ namespace FastbootEnhance
             if (ways.Count == 0)
                 ways.Add(Properties.Resources.super_full_nothing);
 
-            string text = string.Format(Properties.Resources.super_full,
+            return string.Format(Properties.Resources.super_full,
                     Helper.byte2AUnit(fit.Needed), string.Join(", ", fit.Growing), Helper.byte2AUnit(fit.Free))
-                + "\n\n" + string.Join("\n\n", ways.Select(w => "•  " + w))
-                + "\n\n" + Properties.Resources.super_full_ask;
-            return Helper.confirm(text, Properties.Resources.super_full_title, true);
+                + "\n" + string.Join("\n", ways.Select(w => "•  " + w));
         }
 
         /// <summary>
@@ -791,11 +838,119 @@ namespace FastbootEnhance
 
             MainWindow.THIS.fastboot_devices_page.Visibility = showActions ? Visibility.Collapsed : Visibility.Visible;
             MainWindow.THIS.fastboot_actions_page.Visibility = showActions ? Visibility.Visible : Visibility.Collapsed;
-            MainWindow.THIS.fastboot_device_chip.Visibility = showActions ? Visibility.Visible : Visibility.Collapsed;
-            MainWindow.THIS.fastboot_remove.Visibility = showActions ? Visibility.Visible : Visibility.Collapsed;
+            // The device bar above the page shows the phone, its mode and Disconnect; the page header no longer repeats them.
             MainWindow.THIS.flash_target_device.Text = showActions && cur_serial != null
                 ? string.Format(Properties.Resources.flash_target, cur_serial)
                 : Properties.Resources.flash_target_none;
+            updateDeviceBar();
+        }
+
+        /// <summary>The status bar's device count, the same text the rail used to show.</summary>
+        static void setStatus(string text)
+        {
+            MainWindow.THIS.status_devices.Text = text;
+            if (cur_status != FastbootStatus.show_actions)
+                MainWindow.THIS.bar_device_detail.Text = text + " · " + Properties.Resources.bar_no_device_hint;
+        }
+
+        /// <summary>
+        /// The bar above every page: the phone that is open (product, serial, slot, mode,
+        /// lock state) and what can be done to it; or that none is.
+        /// </summary>
+        static void updateDeviceBar()
+        {
+            MainWindow window = MainWindow.THIS;
+            bool open = cur_status == FastbootStatus.show_actions && cur_serial != null;
+            FastbootData data = fastbootData;
+
+            window.bar_disconnect.Visibility = open ? Visibility.Visible : Visibility.Collapsed;
+            window.bar_reboot.Visibility = open ? Visibility.Visible : Visibility.Collapsed;
+            window.bar_usb_check.Visibility = open ? Visibility.Collapsed : Visibility.Visible;
+            window.bar_icon.Stroke = Palette.Get(open ? "Accent" : "Dim");
+
+            if (!open)
+            {
+                window.bar_device_name.Text = Properties.Resources.bar_no_device;
+                window.bar_device_detail.Text = window.status_devices.Text.Length > 0
+                    ? window.status_devices.Text + " · " + Properties.Resources.bar_no_device_hint
+                    : Properties.Resources.bar_no_device_hint;
+                window.bar_mode_chip.Visibility = Visibility.Collapsed;
+                window.bar_lock_chip.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            string product = data != null && !string.IsNullOrEmpty(data.product) ? data.product : null;
+            window.bar_device_name.Text = product ?? cur_serial;
+            List<string> detail = new List<string>();
+            if (product != null)
+                detail.Add(string.Format(Properties.Resources.bar_serial, cur_serial));
+            if (data != null && !string.IsNullOrEmpty(data.current_slot))
+                detail.Add(string.Format(Properties.Resources.bar_slot, data.current_slot.TrimStart('_')));
+            window.bar_device_detail.Text = detail.Count > 0 ? string.Join(" · ", detail) : cur_serial;
+
+            if (data != null)
+            {
+                window.bar_mode_text.Text = data.fastbootd ? "fastbootd" : "bootloader";
+                window.bar_mode_chip.Visibility = Visibility.Visible;
+                window.bar_lock_text.Text = data.unlocked == true ? Properties.Resources.bar_unlocked
+                    : data.unlocked == false ? Properties.Resources.bar_locked : null;
+                window.bar_lock_text.Foreground = Palette.Get(data.unlocked == false ? "Warn" : "Dim");
+                window.bar_lock_chip.Visibility = window.bar_lock_text.Text == null ? Visibility.Collapsed : Visibility.Visible;
+            }
+            else
+            {
+                window.bar_mode_chip.Visibility = Visibility.Collapsed;
+                window.bar_lock_chip.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>The status bar's "last: fastboot flash boot · 1.2 s".</summary>
+        static void setLastCommand(string command, TimeSpan took)
+        {
+            string shown = command.Length > 48 ? command.Substring(0, 45) + "…" : command;
+            MainWindow.THIS.status_last.Text = string.Format(Properties.Resources.status_last, shown,
+                string.Format(Properties.Resources.status_seconds, took.TotalSeconds.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)));
+        }
+
+        /// <summary>Reads "fastboot --version" and "adb --version" once, for the status bar.</summary>
+        static void readToolVersions()
+        {
+            Thread reader = new Thread(delegate ()
+            {
+                string fastbootVersion = null, adbVersion = null;
+                try
+                {
+                    string output;
+                    Fastboot.Run(null, "--version", Fastboot.ShortCommand, out output);
+                    fastbootVersion = firstVersion(output);
+                }
+                catch (Exception)
+                {
+                }
+                try
+                {
+                    adbVersion = firstVersion(Adb.Run("--version", Adb.ShortCommand).Output);
+                }
+                catch (Exception)
+                {
+                }
+                string text = string.Join(" · ", new[] { fastbootVersion != null ? "fastboot " + fastbootVersion : null,
+                    adbVersion != null ? "adb " + adbVersion : null }.Where(v => v != null));
+                MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate { MainWindow.THIS.status_tools.Text = text; }));
+            });
+            reader.IsBackground = true;
+            reader.Start();
+        }
+
+        /// <summary>"35.0.2" out of "fastboot version 35.0.2-12147458" or "Android Debug Bridge version 1.0.41 / Version 35.0.2-…".</summary>
+        static string firstVersion(string output)
+        {
+            if (string.IsNullOrEmpty(output))
+                return null;
+            System.Text.RegularExpressions.Match match = System.Text.RegularExpressions.Regex.Match(output, @"(?im)^(?:Version|fastboot version)\s+(\d+(?:\.\d+)+)");
+            if (!match.Success)
+                match = System.Text.RegularExpressions.Regex.Match(output, @"(\d+\.\d+\.\d+)");
+            return match.Success ? match.Groups[1].Value : null;
         }
 
         class StepCmdRunnerParam
@@ -823,9 +978,9 @@ namespace FastbootEnhance
 
             public StepCmdRunnerParam(string cmd, int step_count, bool hint_on_done, bool skip_var_refresh = false)
             {
-                this.timeout = cmd.StartsWith("reboot") || cmd.StartsWith("set_active") || cmd.StartsWith("snapshot-update")
-                    ? Fastboot.LongCommand
-                    : Fastboot.NoLimit;
+                // Every step command gets a deadline: a phone that stops answering mid-flash no
+                // longer hangs the app for good. Fifteen minutes is far beyond any image over USB.
+                this.timeout = Fastboot.LongCommand;
                 this.cmd = cmd;
                 this.step_count = step_count;
                 this.show_dialog_on_done = hint_on_done;
@@ -839,6 +994,8 @@ namespace FastbootEnhance
             // Locked here, on the click, so a second click cannot start the command again
             // before the worker gets going.
             action_lock();
+            flashing = true;
+            MainWindow.THIS.bar_cancel.Visibility = Visibility.Visible;
             if (param.step_count <= 0)
                 MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = true;
 
@@ -853,11 +1010,13 @@ namespace FastbootEnhance
 
             appendLog("> fastboot " + param.cmd);
             string failure = null;
+            System.Diagnostics.Stopwatch took = System.Diagnostics.Stopwatch.StartNew();
 
             try
             {
                 using (Fastboot fastboot = new Fastboot(param.serial, param.cmd, param.timeout))
                 {
+                    activeStep = fastboot;
                     int count = 0;
                     while (true)
                     {
@@ -879,11 +1038,14 @@ namespace FastbootEnhance
                     }
 
                     int? exitCode = fastboot.WaitForExit();
+                    activeStep = null;
                     if (exitCode != 0)
                     {
                         failure = "fastboot " + param.cmd + ": " + (exitCode == null
                             ? "did not finish within " + param.timeout.TotalMinutes + " minutes and was stopped"
                             : "exited with code " + exitCode);
+                        if (fastboot.Aborted)
+                            failure = Properties.Resources.step_cancelled;
                         appendLog(failure);
                     }
                 }
@@ -893,10 +1055,15 @@ namespace FastbootEnhance
                 failure = e.Message;
                 appendLog("fastboot " + param.cmd + " failed: " + e.Message);
             }
+            activeStep = null;
 
+            took.Stop();
             MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
             {
+                flashing = false;
                 MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = false;
+                MainWindow.THIS.bar_cancel.Visibility = Visibility.Collapsed;
+                setLastCommand(param.cmd, took.Elapsed);
                 action_unlock();
 
                 if (failure != null)
@@ -952,11 +1119,11 @@ namespace FastbootEnhance
                         Properties.Resources.slot_switch_title, MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
                 case SlotCheckLevel.Danger:
-                    return Helper.confirm(string.Format(Properties.Resources.slot_switch_danger, target) + "\n\n" + details,
-                        Properties.Resources.slot_switch_title, true);
+                    return Helper.confirm(string.Format(Properties.Resources.slot_switch_danger, target) + "\n\n" + details
+                        + "\n\n" + deviceLine(), Properties.Resources.slot_switch_title, true);
                 case SlotCheckLevel.Warn:
-                    return Helper.confirm(string.Format(Properties.Resources.slot_switch_warn, target) + "\n\n" + details,
-                        Properties.Resources.slot_switch_title);
+                    return Helper.confirm(string.Format(Properties.Resources.slot_switch_warn, target) + "\n\n" + details
+                        + "\n\n" + deviceLine(), Properties.Resources.slot_switch_title);
                 default:
                     return true;
             }
@@ -992,7 +1159,7 @@ namespace FastbootEnhance
 
             if (fastbootData.fastbootd)
             {
-                if (Helper.confirm(Properties.Resources.boot_once_fastbootd, Properties.Resources.fastboot_boot_once_title))
+                if (Helper.confirm(Properties.Resources.boot_once_fastbootd + "\n\n" + deviceLine(), Properties.Resources.fastboot_boot_once_title))
                     runStep(new StepCmdRunnerParam("reboot bootloader", 2, false));
                 return;
             }
@@ -1020,7 +1187,10 @@ namespace FastbootEnhance
 
             BootImageAnalysis image = null;
             Exception failure = null;
-            MainWindow.THIS.fastboot_flash.IsEnabled = false;
+            // Locked, and the phone remembered: while the image is read nothing else may run,
+            // and if the phone was removed or swapped meanwhile the flash does not start.
+            string serial = cur_serial;
+            action_lock();
             Helper.offloadAndRun(delegate
             {
                 try
@@ -1033,7 +1203,13 @@ namespace FastbootEnhance
                 }
             }, delegate
             {
-                MainWindow.THIS.fastboot_flash.IsEnabled = true;
+                action_unlock();
+                if (serial == null || serial != cur_serial || fastbootData == null)
+                {
+                    appendLog("boot image check: the phone changed while " + path + " was being read; nothing flashed");
+                    ThemedDialog.Show(Properties.Resources.fastboot_device_not_exist);
+                    return;
+                }
                 if (failure != null)
                 {
                     appendLog("boot image check: cannot read " + path + ": " + failure.Message);
@@ -1152,37 +1328,35 @@ namespace FastbootEnhance
             return false;
         }
 
+        /// <summary>True when the user said no to one of the pending-update questions.</summary>
         static bool vabStagingCheck()
         {
-            if (fastbootData.HasPendingUpdate)
+            foreach (KeyValuePair<string, string> problem in vabStagingProblems())
             {
-                bool proceed = Helper.confirm(
+                if (!Helper.confirm(problem.Value + "\n\n" + deviceLine(), problem.Key, true))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// A Virtual A/B update still pending on the phone, and COW partitions left in super:
+        /// each as (title, text), empty when neither applies.
+        /// </summary>
+        static List<KeyValuePair<string, string>> vabStagingProblems()
+        {
+            List<KeyValuePair<string, string>> problems = new List<KeyValuePair<string, string>>();
+            if (fastbootData.HasPendingUpdate)
+                problems.Add(new KeyValuePair<string, string>(Properties.Resources.fastboot_vab_staging_str0,
                     Properties.Resources.fastboot_vab_staging_str1 + "\n" +
                     Properties.Resources.fastboot_vab_staging_str2 + "\n" +
-                    Properties.Resources.fastboot_vab_staging_str3,
-                    Properties.Resources.fastboot_vab_staging_str0, true);
-
-                if (!proceed)
-                {
-                    return true;
-                }
-            }
-
+                    Properties.Resources.fastboot_vab_staging_str3));
             if (fastbootData.HasCowPartitions)
-            {
-                bool proceed = Helper.confirm(
+                problems.Add(new KeyValuePair<string, string>(Properties.Resources.fastboot_cow_exist_str0,
                     Properties.Resources.fastboot_cow_exist_str1 + "\n" +
                     Properties.Resources.fastboot_cow_exist_str2 + "\n" +
-                    Properties.Resources.fastboot_cow_exist_str3,
-                    Properties.Resources.fastboot_cow_exist_str0, true);
-
-                if (!proceed)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+                    Properties.Resources.fastboot_cow_exist_str3));
+            return problems;
         }
 
         /// <summary>
@@ -1233,17 +1407,31 @@ namespace FastbootEnhance
                         return;
                     }
 
+                    // Everything worth knowing is gathered here and asked once, at the end.
+                    List<ThemedDialog.SummaryItem> points = new List<ThemedDialog.SummaryItem>();
+                    foreach (KeyValuePair<string, string> problem in vabStagingProblems())
+                        points.Add(new ThemedDialog.SummaryItem { Text = problem.Key + "\n" + problem.Value, Destructive = true });
+
                     // Logical partitions the update adds (or the phone lost) are created first.
                     if (missing.Create.Count > 0)
                     {
                         appendLog("missing logical partitions: " + string.Join(", ", missing.Create));
-                        if (!Helper.confirm(string.Format(Properties.Resources.create_missing,
-                                string.Join(", ", missing.Create)), Properties.Resources.create_missing_title))
+                        points.Add(new ThemedDialog.SummaryItem
                         {
-                            opened.Dispose();
-                            action_unlock();
-                            return;
-                        }
+                            Text = string.Format(Properties.Resources.create_missing, string.Join(", ", missing.Create)),
+                        });
+                    }
+
+                    List<string> odd = opened.Partitions.Select(part => part.Name)
+                        .Where(name => !AdbCommand.IsSafePartitionName(name)).ToList();
+                    if (odd.Count > 0)
+                    {
+                        appendLog("payload refused: partition names that cannot go on a command line: " + string.Join(", ", odd));
+                        ThemedDialog.Show(string.Format(Properties.Resources.payload_bad_names, string.Join(", ", odd)),
+                            Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
+                        opened.Dispose();
+                        action_unlock();
+                        return;
                     }
 
                     List<string> blocked = opened.Partitions
@@ -1265,14 +1453,12 @@ namespace FastbootEnhance
                         .Select(part => part.Name)
                         .ToList();
 
-                    if (unverifiable.Count > 0 && !Helper.confirm(
-                            string.Format(Properties.Resources.flash_unverified, string.Join(", ", unverifiable)),
-                            Properties.Resources.confirm_title, true))
-                    {
-                        opened.Dispose();
-                        action_unlock();
-                        return;
-                    }
+                    if (unverifiable.Count > 0)
+                        points.Add(new ThemedDialog.SummaryItem
+                        {
+                            Text = string.Format(Properties.Resources.flash_unverified, string.Join(", ", unverifiable)),
+                            Destructive = true,
+                        });
 
                     // The device must still be the one the user picked when they clicked flash.
                     if (serial == null || serial != cur_serial || fastbootData == null)
@@ -1292,12 +1478,9 @@ namespace FastbootEnhance
                         .Select(part => new KeyValuePair<string, long>(
                             createdAs.ContainsKey(part.Name) ? createdAs[part.Name] : part.Name, part.UnpackedSize))
                         .ToList();
-                    if (!superSpaceAllowed(writes, missing.Create))
-                    {
-                        opened.Dispose();
-                        action_unlock();
-                        return;
-                    }
+                    string superProblem = superSpaceProblem(writes, missing.Create);
+                    if (superProblem != null)
+                        points.Add(new ThemedDialog.SummaryItem { Text = superProblem, Destructive = true });
 
                     // "Flash both slots": physical A/B partitions also go to the other slot.
                     IReadOnlyDictionary<string, string> otherSlot = new Dictionary<string, string>();
@@ -1306,17 +1489,34 @@ namespace FastbootEnhance
                         otherSlot = BothSlots.OtherSlotTargets(fastbootData, opened.Partitions.Select(part => part.Name),
                             new HashSet<string>(opened.LogicalPartitionNames(), StringComparer.Ordinal));
                         if (otherSlot.Count == 0)
-                        {
                             appendLog("flash both slots: nothing to write to another slot on this phone");
-                        }
-                        else if (!Helper.confirm(string.Format(Properties.Resources.flash_both_slots_confirm,
-                                BothSlots.Other(fastbootData.current_slot.TrimStart('_')), string.Join(", ", otherSlot.Keys)),
-                                Properties.Resources.flash_both_slots))
-                        {
-                            opened.Dispose();
-                            action_unlock();
-                            return;
-                        }
+                        else
+                            points.Add(new ThemedDialog.SummaryItem
+                            {
+                                Text = string.Format(Properties.Resources.flash_both_slots_confirm,
+                                    BothSlots.Other(fastbootData.current_slot.TrimStart('_')), string.Join(", ", otherSlot.Keys)),
+                            });
+                    }
+
+                    long total = opened.Partitions.Sum(part => part.UnpackedSize);
+                    string summary = string.Format(Properties.Resources.flash_summary, Path.GetFileName(path),
+                        opened.Partitions.Count, Helper.byte2AUnit(total));
+                    if (!ThemedDialog.Summary(Properties.Resources.flash_summary_title, summary, deviceLine(), points,
+                            Properties.Resources.flash_summary_go))
+                    {
+                        appendLog("flash not confirmed");
+                        opened.Dispose();
+                        action_unlock();
+                        return;
+                    }
+
+                    // The phone may have gone while the summary was open.
+                    if (serial != cur_serial || fastbootData == null)
+                    {
+                        opened.Dispose();
+                        action_unlock();
+                        ThemedDialog.Show(Properties.Resources.flash_no_device);
+                        return;
                     }
 
                     flashPayload(opened, serial, missing.Create, otherSlot);
@@ -1348,7 +1548,7 @@ namespace FastbootEnhance
                 appendLog("Creating logical partition " + name);
                 int? exitCode;
                 using (Fastboot fastboot = new Fastboot(serial,
-                    "create-logical-partition \"" + name + "\" 0", Fastboot.LongCommand))
+                    "create-logical-partition " + AdbCommand.WindowsArgument(name) + " 0", Fastboot.LongCommand))
                 {
                     while (true)
                     {
@@ -1411,6 +1611,11 @@ namespace FastbootEnhance
             MainWindow.THIS.flash_overall_progress.Value = 0;
             MainWindow.THIS.flash_log.Clear();
             MainWindow.forgetLength(MainWindow.THIS.flash_log);
+            MainWindow.THIS.flash_result.Visibility = Visibility.Collapsed;
+            string logFile = LogStore.BeginFile(serial);
+            appendLog("flash of " + Path.GetFileName(payload.Source.ContainerPath) + " to " + serial
+                + (fastbootData != null && !string.IsNullOrEmpty(fastbootData.product) ? " (" + fastbootData.product + ")" : "")
+                + (logFile != null ? "; log file " + logFile : ""));
             setPhase(Properties.Resources.flash_phase_extract, "Accent");
             MainWindow.THIS.main_tabs.SelectedItem = MainWindow.THIS.flash_tab;
 
@@ -1475,6 +1680,7 @@ namespace FastbootEnhance
 
             // The lock taken by openPayloadThenFlash carries over and is released when this ends.
             flashing = true;
+            MainWindow.THIS.bar_cancel.Visibility = Visibility.Visible;
 
             CancellationTokenSource cancel = new CancellationTokenSource();
             flashCancel = cancel;
@@ -1565,7 +1771,7 @@ namespace FastbootEnhance
                                 output.Clear();
                                 cancel.Token.ThrowIfCancellationRequested();
                                 using (Fastboot fastboot = new Fastboot(serial,
-                                    "flash \"" + target + "\" \"" + result.OutputPath + "\"", Fastboot.NoLimit))
+                                    "flash " + AdbCommand.WindowsArgument(target) + " " + AdbCommand.WindowsArgument(result.OutputPath), Fastboot.NoLimit))
                                 {
                                     activeFlash = fastboot;
                                     // abortFlash may have looked for a process just before this one started.
@@ -1603,8 +1809,9 @@ namespace FastbootEnhance
                             {
                                 File.Delete(result.OutputPath);
                             }
-                            catch (IOException)
+                            catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
                             {
+                                appendLog("could not delete " + result.OutputPath + ": " + e.Message);
                             }
                             return (0, output.ToString());
                         }
@@ -1716,7 +1923,12 @@ namespace FastbootEnhance
                     ticker.Stop();
                     clock.Stop();
                     MainWindow.THIS.flash_elapsed.Text = clock.Elapsed.ToString(@"mm\:ss");
+                    MainWindow.THIS.bar_cancel.Visibility = Visibility.Collapsed;
+                    setLastCommand("flash (" + parts.Count + " partitions)", clock.Elapsed);
                     action_unlock();
+                    appendLog(summary == null ? "flash finished: " + flashedCount + " of " + parts.Count + " written in "
+                        + clock.Elapsed.ToString(@"mm\:ss") : "flash failed after " + flashedCount + " of " + parts.Count);
+                    LogStore.EndFile();
                     if (cur_serial == serial)
                         load_fastboot_vars();
 
@@ -1724,12 +1936,17 @@ namespace FastbootEnhance
                     {
                         setPhase(Properties.Resources.flash_phase_done, "Ok");
                         MainWindow.THIS.flash_overall_progress.Value = 100;
-                        string done = Properties.Resources.operation_completed;
+                        // The result stays on the page, over the log, instead of a box that hides it.
+                        List<string> detail = new List<string>();
+                        detail.Add(clock.Elapsed.ToString(@"mm\:ss"));
                         if (otherSlot.Count > 0)
-                            done += "\n\n" + string.Format(Properties.Resources.flash_both_slots_done, string.Join(", ", otherSlot.Values));
+                            detail.Add(string.Format(Properties.Resources.flash_both_slots_done, string.Join(", ", otherSlot.Values)));
                         if (lateNames != null)
-                            done += "\n\n" + string.Format(Properties.Resources.flash_deferred_done, lateNames);
-                        ThemedDialog.Done(done);
+                            detail.Add(string.Format(Properties.Resources.flash_deferred_done, lateNames));
+                        MainWindow.THIS.flash_result_title.Text = string.Format(Properties.Resources.flash_result_title, flashedCount, parts.Count);
+                        MainWindow.THIS.flash_result_detail.Text = string.Join(" · ", detail);
+                        MainWindow.THIS.flash_result_reboot.IsEnabled = cur_serial == serial;
+                        MainWindow.THIS.flash_result.Visibility = Visibility.Visible;
                         return;
                     }
 
@@ -1825,7 +2042,7 @@ namespace FastbootEnhance
             Thread refresher = new Thread(new ThreadStart(devicesListRefresher));
             refresher.IsBackground = true;
             refresher.Start();
-            MainWindow.THIS.main_tabs.Tag = string.Format(Properties.Resources.rail_devices, 0);
+            setStatus(string.Format(Properties.Resources.rail_devices, 0));
 
             MainWindow.THIS.fastboot_usb_check.Click += delegate
             {
@@ -1850,6 +2067,51 @@ namespace FastbootEnhance
             {
                 leaveDevice();
             };
+            MainWindow.THIS.flash_result_log.Click += delegate { MainWindow.THIS.main_tabs.SelectedItem = MainWindow.THIS.logs_tab; };
+            MainWindow.THIS.flash_result_reboot.Click += delegate
+            {
+                MainWindow.THIS.flash_result.Visibility = Visibility.Collapsed;
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot", 0, false, true));
+                leaveDevice();
+            };
+            MainWindow.THIS.bar_disconnect.Click += delegate { leaveDevice(); };
+            MainWindow.THIS.bar_usb_check.Click += delegate { checkUsb(); };
+            MainWindow.THIS.bar_cancel.Click += delegate { cancelCurrent(); };
+            MainWindow.THIS.bar_reboot.Click += delegate
+            {
+                System.Windows.Controls.ContextMenu menu = MainWindow.THIS.bar_reboot.ContextMenu;
+                menu.PlacementTarget = MainWindow.THIS.bar_reboot;
+                menu.IsOpen = true;
+            };
+            MainWindow.THIS.bar_reboot_system.Click += delegate
+            {
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot", 0, false, true));
+                leaveDevice();
+            };
+            MainWindow.THIS.bar_reboot_recovery.Click += delegate
+            {
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot recovery", 0, false, true));
+                leaveDevice();
+            };
+            MainWindow.THIS.bar_reboot_bootloader.Click += delegate
+            {
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot bootloader", 2, false));
+            };
+            MainWindow.THIS.bar_reboot_fastbootd.Click += delegate
+            {
+                if (!checkCurDevExist())
+                    return;
+                runStep(new StepCmdRunnerParam("reboot fastboot", 3, false));
+            };
+            readToolVersions();
 
             MainWindow.THIS.fastboot_reboot_d.Click += delegate
             {
@@ -1891,7 +2153,8 @@ namespace FastbootEnhance
                 if (!checkCurDevExist())
                     return;
 
-                string target = fastbootData.current_slot == "a" ? "b" : fastbootData.current_slot == "b" ? "a" : null;
+                string slot = fastbootData.current_slot?.TrimStart('_');
+                string target = slot == "a" ? "b" : slot == "b" ? "a" : null;
                 if (target == null)
                 {
                     ThemedDialog.Show(Properties.Resources.operation_not_supported);
@@ -1932,7 +2195,8 @@ namespace FastbootEnhance
                 string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
 
                 if (PartitionSafety.IsBrickRisk(target) && !ThemedDialog.ConfirmTyped(
-                        string.Format(Properties.Resources.confirm_critical_flash, target), Properties.Resources.critical_title, target))
+                        string.Format(Properties.Resources.confirm_critical_flash, target) + "\n\n" + deviceLine(),
+                        Properties.Resources.critical_title, target))
                 {
                     appendLog("flash of critical partition " + target + " not confirmed");
                     return;
@@ -1960,16 +2224,16 @@ namespace FastbootEnhance
 
                     string ext_arg = "";
 
-                    if (target == "vbmeta" || target == "vbmeta_" + fastbootData.current_slot
+                    if (target == "vbmeta" || target == "vbmeta_" + fastbootData.current_slot?.TrimStart('_')
                     || target == "vbmeta_a" || target == "vbmeta_b")
                     {
-                        if (Helper.confirm(Properties.Resources.fastboot_vbmeta_disable_verify,
+                        if (Helper.confirm(Properties.Resources.fastboot_vbmeta_disable_verify + "\n\n" + deviceLine(),
                                 Properties.Resources.fastboot_vbmeta_disable_verify_title))
                         {
                             ext_arg += "--disable-verity --disable-verification";
                         }
                     }
-                    string command = "flash " + ext_arg + " \"" + target + "\" \"" + path + "\"";
+                    string command = "flash " + ext_arg + " " + AdbCommand.WindowsArgument(target) + " " + AdbCommand.WindowsArgument(path);
                     checkBootImage(target, path, delegate { runStep(new StepCmdRunnerParam(command, -1, true)); });
                 }), "Image File|*.img;*.image");
             };
@@ -1985,13 +2249,14 @@ namespace FastbootEnhance
                 string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
 
                 bool confirmed = PartitionSafety.IsBrickRisk(target)
-                    ? ThemedDialog.ConfirmTyped(string.Format(Properties.Resources.confirm_critical_erase, target),
+                    ? ThemedDialog.ConfirmTyped(string.Format(Properties.Resources.confirm_critical_erase, target) + "\n\n" + deviceLine(),
                         Properties.Resources.critical_title, target)
-                    : Helper.confirm(string.Format(Properties.Resources.confirm_erase, target), Properties.Resources.confirm_title, true);
+                    : Helper.confirm(string.Format(Properties.Resources.confirm_erase, target) + "\n\n" + deviceLine(),
+                        Properties.Resources.confirm_title, true);
                 if (!confirmed)
                     return;
 
-                runStep(new StepCmdRunnerParam("erase \"" + target + "\"", 2, false));
+                runStep(new StepCmdRunnerParam("erase " + AdbCommand.WindowsArgument(target), 2, false));
             };
 
             MainWindow.THIS.fastboot_partition_list.SelectionChanged += delegate
@@ -2048,10 +2313,11 @@ namespace FastbootEnhance
 
                 string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
 
-                if (!Helper.confirm(string.Format(Properties.Resources.confirm_delete, target), Properties.Resources.confirm_title, true))
+                if (!Helper.confirm(string.Format(Properties.Resources.confirm_delete, target) + "\n\n" + deviceLine(),
+                        Properties.Resources.confirm_title, true))
                     return;
 
-                runStep(new StepCmdRunnerParam("delete-logical-partition \"" + target + "\"", 2, false));
+                runStep(new StepCmdRunnerParam("delete-logical-partition " + AdbCommand.WindowsArgument(target), 2, false));
             };
 
             MainWindow.THIS.fastboot_logical_create.Click += delegate
@@ -2062,8 +2328,13 @@ namespace FastbootEnhance
                 new FastbootActionWindow(FastbootActionWindow.StartType.CREATE, "", 0,
                     delegate (string name, ulong size)
                    {
+                       if (!AdbCommand.IsSafePartitionName(name))
+                       {
+                           ThemedDialog.Show(Properties.Resources.operation_not_supported);
+                           return;
+                       }
                        runStep(new StepCmdRunnerParam(
-                            "create-logical-partition \"" + name + "\" \"" + size.ToString() + "\"", 2, false));
+                            "create-logical-partition " + AdbCommand.WindowsArgument(name) + " " + size.ToString(), 2, false));
                    }).ShowDialog();
             };
 
@@ -2098,9 +2369,7 @@ namespace FastbootEnhance
                 if (!checkCurDevExist())
                     return;
 
-                if (vabStagingCheck())
-                    return;
-
+                // The pending-update questions are part of the one summary shown before the flash.
                 string serial = cur_serial;
                 Helper.fileSelect(new Helper.PathSelectCallback(delegate (string path)
                 {

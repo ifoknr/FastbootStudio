@@ -156,7 +156,8 @@ namespace FastbootEnhance.Core.Tests
             string csc = Tar("HOME_CSC_OXM_S911BOXM3BXA1_CL1_REV00_user_low_ship.tar.md5", true,
                 ("SM8550_EUR_OPEN.pit", Pit), ("cache.img", Bytes(3000, 11)));
 
-            OdinFlashPlan plan = Plan(new[] { bl, ap, cp, csc });
+            // Picked in any order, flashed in Odin's: BL, AP, CP, CSC.
+            OdinFlashPlan plan = Plan(new[] { csc, cp, ap, bl });
             Assert.False(plan.Blocked);
             Assert.Equal(new[] { "BOOTLOADER", "PARAM", "BOOT", "RADIO", "CACHE" }, plan.Items.Select(i => i.Entry.Partition));
             Assert.Contains(plan.Checks, c => c.Code == OdinCheckCode.Skipped && c.Args[0] == "fota.zip");
@@ -201,11 +202,47 @@ namespace FastbootEnhance.Core.Tests
         [Fact]
         public void An_image_bigger_than_its_partition_is_refused()
         {
-            // VBMETA is 16 blocks: 64 KiB at most.
+            // VBMETA is 16 blocks on UFS (device type 8): 64 KiB at most.
             OdinFlashPlan plan = Plan(new[] { File("vbmeta.img", Bytes(70000, 14)) });
             OdinCheck check = Assert.Single(plan.Checks, c => c.Code == OdinCheckCode.TooBig);
             Assert.Equal(OdinCheckLevel.Block, check.Level);
             Assert.Equal("VBMETA", check.Args[1]);
+            Assert.Equal("65536", check.Args[3]);
+        }
+
+        [Fact]
+        public void The_size_limit_follows_the_PIT_device_type()
+        {
+            // The sample PIT's BOOTLOADER is on eMMC (device type 2): 8192 blocks of 512 bytes, 4 MiB.
+            OdinFlashPlan mmc = Plan(new[] { File("sboot.bin", Bytes(4 * 1024 * 1024 + 1, 14)) });
+            OdinCheck tooBig = Assert.Single(mmc.Checks, c => c.Code == OdinCheckCode.TooBig);
+            Assert.Equal(OdinCheckLevel.Block, tooBig.Level);
+            Assert.Equal((8192L * 512).ToString(), tooBig.Args[3]);
+            Assert.DoesNotContain(Plan(new[] { File("sboot.bin", Bytes(4 * 1024 * 1024, 14)) }).Checks, c => c.Code == OdinCheckCode.TooBig);
+
+            // A PIT that names neither storage: the UFS size blocks, the eMMC size only warns.
+            byte[] pit = SamsungPit.Build("COM_TAR2", "", new[]
+            {
+                SamsungPit.Entry(1, "BOOT", "boot.img", 1000, 16, deviceType: 0),
+                SamsungPit.Entry(2, "DTBO", "dtbo.img", 2000, 16, deviceType: 0),
+            });
+            OdinFlashPlan warned = OdinFlashPlan.Build(OdinSources.Read(new[] { File("boot.img", Bytes(16 * 512 + 1, 15)) }), pit, null);
+            OdinCheck mayNot = Assert.Single(warned.Checks, c => c.Code == OdinCheckCode.MayNotFit);
+            Assert.Equal(OdinCheckLevel.Warn, mayNot.Level);
+            Assert.Equal("8192", mayNot.Args[3]);
+            Assert.False(warned.Blocked);
+            OdinFlashPlan blocked = OdinFlashPlan.Build(OdinSources.Read(new[] { File("boot.img", Bytes(16 * 4096 + 1, 16)) }), pit, null);
+            Assert.Contains(blocked.Checks, c => c.Code == OdinCheckCode.TooBig && c.Level == OdinCheckLevel.Block);
+            Assert.DoesNotContain(blocked.Checks, c => c.Code == OdinCheckCode.MayNotFit);
+
+            // PIT v1 records the block size itself.
+            byte[] v1 = SamsungPit.Build("COM_TAR2", "", new[]
+            {
+                SamsungPit.Entry(1, "BOOT", "boot.img", 2048, 16),
+                SamsungPit.Entry(2, "DTBO", "dtbo.img", 2048, 16),
+            });
+            OdinFlashPlan old = OdinFlashPlan.Build(OdinSources.Read(new[] { File("boot.img", Bytes(16 * 2048 + 1, 17)) }), v1, null);
+            Assert.Equal("32768", Assert.Single(old.Checks, c => c.Code == OdinCheckCode.TooBig).Args[3]);
         }
 
         [Fact]
@@ -237,6 +274,35 @@ namespace FastbootEnhance.Core.Tests
             OdinFlashPlan unknown = Plan(new[] { ap }, null);
             Assert.False(unknown.Blocked);
             Assert.Contains(unknown.Checks, c => c.Code == OdinCheckCode.ModelUnknown && c.Level == OdinCheckLevel.Warn);
+        }
+
+        [Fact]
+        public void A_bootloader_of_another_model_next_to_the_right_AP_is_refused()
+        {
+            string ap = File(SamsungFixtures.ApName, Convert.FromBase64String(SamsungFixtures.Ap));
+            string bl = Tar("BL_S911BXXU3BWK5_CL1_REV00_user_low_ship.tar.md5", true, ("sboot.bin", Bytes(100, 31)));
+            OdinFlashPlan plan = Plan(new[] { ap, bl }, "SM-S918B");
+            Assert.True(plan.Blocked);
+            OdinCheck check = Assert.Single(plan.Checks, c => c.Code == OdinCheckCode.OtherModel);
+            Assert.Equal(new[] { "SM-S911B", "SM-S918B" }, check.Args);
+        }
+
+        [Fact]
+        public void A_tar_whose_name_is_not_Samsungs_is_warned_about_and_an_empty_file_is_refused()
+        {
+            string tar = Tar("AP_patched.tar", false, ("boot.img", Bytes(100, 32)));
+            OdinFlashPlan plan = Plan(new[] { tar });
+            Assert.False(plan.Blocked);
+            OdinCheck warn = Assert.Single(plan.Checks, c => c.Code == OdinCheckCode.TarUnknown);
+            Assert.Equal(OdinCheckLevel.Warn, warn.Level);
+            Assert.Equal("AP_patched.tar", warn.Args[0]);
+
+            OdinFlashPlan empty = Plan(new[] { File("vbmeta.img", new byte[0]) });
+            Assert.True(empty.Blocked);
+            Assert.Contains(empty.Checks, c => c.Code == OdinCheckCode.EmptyFile && c.Args[0] == "vbmeta.img");
+            Assert.True(OdinFlashPlan.IsProtected("PGPT"));
+            Assert.True(OdinFlashPlan.IsProtected("efs"));
+            Assert.False(OdinFlashPlan.IsProtected("BOOT"));
         }
 
         [Fact]

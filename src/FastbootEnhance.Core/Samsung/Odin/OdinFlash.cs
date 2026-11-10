@@ -310,8 +310,20 @@ namespace FastbootEnhance.Core.Samsung.Odin
         /// <summary>Bigger than the partition can be (args: file, partition, size, most).</summary>
         TooBig,
 
+        /// <summary>
+        /// Fits the partition on a UFS phone but not on an eMMC one, and the PIT does not say which
+        /// this is (args: file, partition, size, most on eMMC).
+        /// </summary>
+        MayNotFit,
+
         /// <summary>EFS and the like: the IMEI and calibration; never flashed here (args: partition).</summary>
         Protected,
+
+        /// <summary>A file with nothing in it (args: file).</summary>
+        EmptyFile,
+
+        /// <summary>A tar whose name is not Samsung's: its model cannot be checked (args: tar).</summary>
+        TarUnknown,
 
         /// <summary>Two files for one partition (args: partition).</summary>
         Twice,
@@ -363,7 +375,12 @@ namespace FastbootEnhance.Core.Samsung.Odin
         static readonly HashSet<string> ProtectedPartitions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "EFS", "SEC_EFS", "CPEFS", "STEADY", "PERSISTENT", "PERSIST", "KEYSTORAGE", "KEYREFUGE",
+            // The partition tables and the PIT: a wrong one and the phone has no partitions left.
+            "PGPT", "SGPT", "PIT",
         };
+
+        /// <summary>Partitions nothing here may write to (identity, keys, the partition tables).</summary>
+        public static bool IsProtected(string partition) => partition != null && ProtectedPartitions.Contains(partition);
 
         /// <summary>Partitions of the boot chain: a wrong one can leave the phone unable to start.</summary>
         static readonly HashSet<string> BootChain = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -373,6 +390,45 @@ namespace FastbootEnhance.Core.Samsung.Odin
 
         /// <summary>The largest sector there is (UFS): no partition holds more than its block count times this.</summary>
         const long MaxSector = 4096;
+
+        /// <summary>The smallest (eMMC): a partition may hold as little as its block count times this.</summary>
+        const long MinSector = 512;
+
+        /// <summary>Where a firmware part comes in Odin's flash order; plain images go last.</summary>
+        static int PartOrder(FirmwarePart? part)
+        {
+            switch (part)
+            {
+                case FirmwarePart.BL: return 0;
+                case FirmwarePart.AP: return 1;
+                case FirmwarePart.CP: return 2;
+                case FirmwarePart.CSC: return 3;
+                case FirmwarePart.HomeCsc: return 3;
+                case FirmwarePart.Userdata: return 4;
+                default: return 5;
+            }
+        }
+
+        /// <summary>
+        /// The bytes one PIT block of <paramref name="entry"/> stands for, when the PIT says: a v1
+        /// PIT records the block size itself; a v2 PIT's device type names the storage (2 = eMMC,
+        /// as Heimdall reads it, 512-byte sectors; 8 = UFS, 4096). Null when it says neither.
+        /// </summary>
+        internal static long? SectorSize(SamsungPit pit, PitEntry entry)
+        {
+            if (!pit.IsVersion2)
+            {
+                long size = entry.BlockSizeOrStart;
+                // A sane block size: a power of two from a sector to 64 KiB.
+                return size >= MinSector && size <= 65536 && (size & (size - 1)) == 0 ? size : (long?)null;
+            }
+            switch (entry.DeviceType)
+            {
+                case 2: return MinSector;
+                case 8: return MaxSector;
+                default: return null;
+            }
+        }
 
         public IReadOnlyList<OdinFlashItem> Items { get; private set; }
         public IReadOnlyList<OdinCheck> Checks { get; private set; }
@@ -406,6 +462,11 @@ namespace FastbootEnhance.Core.Samsung.Odin
                     add(OdinCheckLevel.Info, OdinCheckCode.PitSkipped, source.Name);
                     continue;
                 }
+                if (source.Size <= 0)
+                {
+                    add(OdinCheckLevel.Block, OdinCheckCode.EmptyFile, source.Name);
+                    continue;
+                }
                 PitEntry entry = source.Target != null ? pit.ForPartition(source.Target) : pit.ForFile(source.FileName);
                 if (entry == null)
                 {
@@ -425,12 +486,19 @@ namespace FastbootEnhance.Core.Samsung.Odin
                     add(OdinCheckLevel.Block, OdinCheckCode.Twice, entry.Partition);
                     continue;
                 }
-                // PIT v1 records a block size of its own; v2 records a start, and its blocks are sectors.
-                long unit = pit.IsVersion2 ? MaxSector : Math.Max(MaxSector, entry.BlockSizeOrStart);
-                if (entry.BlockCount > 0 && source.Size > entry.BlockCount * unit)
+                // PIT v1 records a block size of its own; v2 records a start, and its blocks are
+                // sectors: 512 bytes on eMMC, 4096 on UFS. The entry's device type says which;
+                // when it says neither, the UFS size is certain and the eMMC one a warning.
+                long? sector = SectorSize(pit, entry);
+                long most = entry.BlockCount * (sector ?? MaxSector);
+                if (entry.BlockCount > 0 && source.Size > most)
                     add(OdinCheckLevel.Block, OdinCheckCode.TooBig, source.Name, entry.Partition,
                         source.Size.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                        (entry.BlockCount * unit).ToString(System.Globalization.CultureInfo.InvariantCulture));
+                        most.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                else if (entry.BlockCount > 0 && sector == null && source.Size > entry.BlockCount * MinSector)
+                    add(OdinCheckLevel.Warn, OdinCheckCode.MayNotFit, source.Name, entry.Partition,
+                        source.Size.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                        (entry.BlockCount * MinSector).ToString(System.Globalization.CultureInfo.InvariantCulture));
                 if (source.Part == null && BootChain.Contains(entry.Partition))
                     add(OdinCheckLevel.Warn, OdinCheckCode.Bootloader, entry.Partition);
                 if (source.Part == null && entry.IsModem)
@@ -439,6 +507,18 @@ namespace FastbootEnhance.Core.Samsung.Odin
                     add(OdinCheckLevel.Warn, OdinCheckCode.WipesData, source.Name);
                 items.Add(new OdinFlashItem { Entry = entry, Source = source });
             }
+
+            // Written in Odin's order whatever order the files were picked in: the bootloader
+            // first, then AP, CP, CSC, userdata, and plain images last; each file's own order kept.
+            items = items.Select((item, index) => new { item, index })
+                .OrderBy(x => PartOrder(x.item.Source.Part)).ThenBy(x => x.index)
+                .Select(x => x.item).ToList();
+
+            // A tar whose name is not Samsung's (renamed, repacked) carries no model: nothing
+            // says it is for this phone, so the person is told, and must say yes.
+            foreach (string tar in items.Select(i => i.Source).Where(s => s.Part == null && s.DataOffset >= 0)
+                .Select(s => Path.GetFileName(s.Origin)).Distinct(StringComparer.OrdinalIgnoreCase))
+                add(OdinCheckLevel.Warn, OdinCheckCode.TarUnknown, tar);
 
             if (firmware)
             {
@@ -458,6 +538,19 @@ namespace FastbootEnhance.Core.Samsung.Odin
                         add(OdinCheckLevel.Warn, OdinCheckCode.ModelUnknown, model);
                     else if (!sameModel(model, phoneModel))
                         add(OdinCheckLevel.Block, OdinCheckCode.OtherModel, model, phoneModel);
+                }
+                // Every part is checked on its own: a BL or CP of another model, next to the
+                // right AP, would otherwise only count as "mixed" and reach the bootloader.
+                if (!string.IsNullOrEmpty(phoneModel))
+                {
+                    foreach (FirmwareFile f in set.Files)
+                    {
+                        string own = f.Part == FirmwarePart.CSC || f.Part == FirmwarePart.HomeCsc
+                            ? SamsungBuild.ModelOfCsc(f.Build, f.CscCode) : SamsungBuild.Parse(f.Build)?.Model;
+                        if (own != null && !sameModel("SM-" + own, phoneModel)
+                            && !checks.Any(c => c.Code == OdinCheckCode.OtherModel && c.Args[0] == "SM-" + own))
+                            add(OdinCheckLevel.Block, OdinCheckCode.OtherModel, "SM-" + own, phoneModel);
+                    }
                 }
             }
 
@@ -543,7 +636,8 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 }
                 result.FailedAt = null;
             }
-            catch (Exception e) when (e is OdinException || e is IOException || e is TimeoutException || e is InvalidDataException)
+            catch (Exception e) when (e is OdinException || e is IOException || e is TimeoutException || e is InvalidDataException
+                || e is ArgumentException)
             {
                 result.Error = e;
                 log("odin: flash stopped: " + e.Message);

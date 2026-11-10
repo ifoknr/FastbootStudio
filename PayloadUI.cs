@@ -234,6 +234,11 @@ namespace FastbootEnhance
             // zeros is a separate, explicit choice ("ignore unknown operations").
             Helper.pathSelect(new Helper.PathSelectCallback(delegate (string path)
             {
+                // A boot.img already there may be a patched one the person needs: ask first.
+                List<string> existing = selected.Select(name => Path.Combine(path, name + ".img")).Where(File.Exists).ToList();
+                if (existing.Count > 0 && !Helper.confirm(string.Format(Properties.Resources.images_overwrite,
+                        string.Join("\n", existing.Select(Path.GetFileName))), Properties.Resources.confirm_title, true))
+                    return;
                 startExtraction(selected, path, ignoreUnsupported, skipChecks);
             }));
         }

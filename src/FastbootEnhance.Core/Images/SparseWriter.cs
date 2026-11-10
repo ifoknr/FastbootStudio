@@ -162,7 +162,10 @@ namespace FastbootEnhance.Core.Images
 
         public void Dispose()
         {
-            writer.Dispose();
+            // The stream may already be closed by the caller (an AtomicFile committed after
+            // Finish); a flush on a closed stream would throw for nothing.
+            if (output.CanWrite)
+                writer.Dispose();
         }
     }
 }

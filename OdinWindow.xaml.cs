@@ -564,7 +564,8 @@ namespace FastbootEnhance
                     "← " + item.Source.Name, Helper.byte2AUnit(item.Source.Size), "Dim", false, true));
 
             // An image whose name the PIT does not know: the person picks its partition.
-            List<string> names = last.Pit.Entries.Where(e => !e.IsModem).Select(e => e.Partition).OrderBy(n => n, StringComparer.Ordinal).ToList();
+            List<string> names = last.Pit.Entries.Where(e => !e.IsModem && !OdinFlashPlan.IsProtected(e.Partition))
+                .Select(e => e.Partition).OrderBy(n => n, StringComparer.Ordinal).ToList();
             foreach (OdinFlashSource source in sources.Where(x => x.Part == null && !x.FileName.EndsWith(".pit", StringComparison.OrdinalIgnoreCase)
                 && last.Pit.ForFile(x.FileName) == null))
             {
@@ -628,22 +629,29 @@ namespace FastbootEnhance
 
         void confirmFlash()
         {
-            if (plan == null || plan.Blocked || found == null)
+            OdinPortInfo port = found;
+            OdinFlashPlan ready = plan;
+            if (ready == null || ready.Blocked || port == null)
                 return;
-            if (!Helper.confirm(string.Format(Properties.Resources.odin_flash_confirm, plan.Items.Count, Helper.byte2AUnit(plan.TotalBytes)),
+            if (!Helper.confirm(string.Format(Properties.Resources.odin_flash_confirm, ready.Items.Count, Helper.byte2AUnit(ready.TotalBytes)),
                     Properties.Resources.odin_flash_title))
                 return;
-            flash();
+            // The scan kept running during the question: the phone may have gone, or another appeared.
+            if (found == null || found.Port != port.Port || plan != ready)
+            {
+                log("flash: the phone changed while the question was open; nothing sent");
+                updateFlashButton();
+                return;
+            }
+            flash(port, ready);
         }
 
         /// <summary>
         /// The flash itself, off the UI thread. The window cannot be closed meanwhile: a phone
         /// left in the middle of a file is worse off than one never started.
         /// </summary>
-        void flash()
+        void flash(OdinPortInfo port, OdinFlashPlan flashing)
         {
-            OdinPortInfo port = found;
-            OdinFlashPlan flashing = plan;
             OdinReboot reboot = plan_restart.IsChecked == true ? OdinReboot.Normal : OdinReboot.None;
             poll.Stop();
             reading = true;

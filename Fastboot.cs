@@ -53,7 +53,7 @@ namespace FastbootEnhance
             process.StartInfo.FileName = ExecutablePath;
             process.StartInfo.Arguments = serial == null
                 ? action
-                : "-s \"" + serial + "\" " + action;
+                : "-s " + FastbootEnhance.Core.Adb.AdbCommand.WindowsArgument(serial) + " " + action;
             process.StartInfo.WorkingDirectory = AppContext.BaseDirectory;
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.RedirectStandardError = true;
@@ -108,6 +108,9 @@ namespace FastbootEnhance
         /// <summary>True when the deadline passed and the process was killed.</summary>
         public bool TimedOut => timedOut;
 
+        /// <summary>True once <see cref="Abort"/> stopped the process on purpose.</summary>
+        public bool Aborted { get; private set; }
+
         /// <summary>
         /// Waits for fastboot to exit after its output has been read, and returns the exit code,
         /// or null when the deadline killed it. The deadline guarantees this returns.
@@ -133,6 +136,7 @@ namespace FastbootEnhance
             Process current = process;
             if (current == null)
                 return;
+            Aborted = true;
             try
             {
                 KillQuietly(current);

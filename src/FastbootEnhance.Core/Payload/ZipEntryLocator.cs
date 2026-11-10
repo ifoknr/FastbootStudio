@@ -68,6 +68,8 @@ namespace FastbootEnhance.Core.Payload
                 ReadZip64Tail(zip, eocd, ref centralOffset, ref totalEntries);
             }
 
+            if (centralOffset < 0 || centralOffset >= eocd)
+                throw new PayloadFormatException("damaged zip: the central directory lies outside the file");
             zip.Position = centralOffset;
             for (int i = 0; i < totalEntries; i++)
             {
@@ -140,6 +142,8 @@ namespace FastbootEnhance.Core.Payload
 
             zip.Position = locator + 8;
             long zip64Eocd = ReadInt64(zip);
+            if (zip64Eocd < 0 || zip64Eocd > locator - 56)
+                throw new PayloadFormatException("damaged ZIP64 record: it lies outside the file");
 
             zip.Position = zip64Eocd;
             if (ReadUInt32(zip) != Zip64EocdSignature)

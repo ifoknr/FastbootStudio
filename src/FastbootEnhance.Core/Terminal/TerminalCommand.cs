@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using FastbootEnhance.Core.Fastboot;
@@ -28,6 +29,9 @@ namespace FastbootEnhance.Core.Terminal
 
         /// <summary>"adb shell dd ... of=/dev/block/...": writes a partition directly.</summary>
         RawBlockWrite,
+
+        /// <summary>"set_active": the phone starts from the other slot next time, whatever is on it.</summary>
+        ChangesSlot,
     }
 
     public enum TerminalProblem
@@ -71,7 +75,7 @@ namespace FastbootEnhance.Core.Terminal
 
         static readonly HashSet<string> FastbootOptionsWithValue = new HashSet<string>(StringComparer.Ordinal)
         {
-            "-s", "-S", "-i", "-c", "-b", "-n", "--slot", "--os-version", "--os-patch-level", "--header-version",
+            "-s", "-S", "-i", "-c", "-b", "-n", "--slot", "--set-active", "--os-version", "--os-patch-level", "--header-version",
             "--kernel-offset", "--ramdisk-offset", "--tags-offset", "--dtb-offset", "--dtb", "--cmdline", "--base", "--page-size",
         };
 
@@ -135,6 +139,9 @@ namespace FastbootEnhance.Core.Terminal
             int verb = SkipOptions(words, FastbootOptionsWithValue);
             if (words.Contains("-w"))
                 Raise(TerminalRisk.WipesData);
+            // "--set-active=b" or "--set-active b": an option, so it is found among the options.
+            if (words.Any(w => w.StartsWith("--set-active", StringComparison.Ordinal)))
+                Raise(TerminalRisk.ChangesSlot);
             if (verb >= words.Count)
                 return;
 
@@ -148,6 +155,23 @@ namespace FastbootEnhance.Core.Terminal
 
             switch (action)
             {
+                // Every partition the package names, and userdata with it when it says so.
+                case "flashall":
+                case "update":
+                    Raise(TerminalRisk.CriticalPartition);
+                    RiskTarget = action;
+                    break;
+
+                case "set_active":
+                    Raise(TerminalRisk.ChangesSlot);
+                    break;
+
+                case "delete-logical-partition":
+                case "snapshot-update":
+                    Raise(TerminalRisk.CriticalPartition);
+                    RiskTarget = next ?? action;
+                    break;
+
                 case "flash":
                 case "erase":
                 case "format":
@@ -209,7 +233,7 @@ namespace FastbootEnhance.Core.Terminal
             return i;
         }
 
-        // The most serious risk wins: locking, then critical partitions, raw writes, wiping data.
+        // The most serious risk wins: locking, then critical partitions, raw writes, wiping data, the slot.
         void Raise(TerminalRisk risk)
         {
             if (Rank(risk) > Rank(Risk))
@@ -220,10 +244,11 @@ namespace FastbootEnhance.Core.Terminal
         {
             switch (risk)
             {
-                case TerminalRisk.LocksBootloader: return 4;
-                case TerminalRisk.CriticalPartition: return 3;
-                case TerminalRisk.RawBlockWrite: return 2;
-                case TerminalRisk.WipesData: return 1;
+                case TerminalRisk.LocksBootloader: return 5;
+                case TerminalRisk.CriticalPartition: return 4;
+                case TerminalRisk.RawBlockWrite: return 3;
+                case TerminalRisk.WipesData: return 2;
+                case TerminalRisk.ChangesSlot: return 1;
                 default: return 0;
             }
         }

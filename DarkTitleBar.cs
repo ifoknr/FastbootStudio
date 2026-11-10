@@ -18,6 +18,23 @@ namespace FastbootEnhance
         const int DWMWA_BORDER_COLOR = 34;
         const int DWMWA_CAPTION_COLOR = 35;
         const int DWMWA_TEXT_COLOR = 36;
+        const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
+        const int DWMSBT_NONE = 1;
+        const int DWMSBT_MAINWINDOW = 2;   // Mica
+
+        /// <summary>The Settings key of the glass backdrop: "off" to keep the window's own gradient.</summary>
+        public const string BackdropKey = "backdrop";
+
+        /// <summary>Windows 11 22H2 and later draw Mica; older systems have nothing to turn on.</summary>
+        public static bool BackdropAvailable => Environment.OSVersion.Version.Build >= 22621;
+
+        /// <summary>
+        /// Off unless turned on in Settings, and only with graphics-card drawing: under software
+        /// drawing (the app's default) Windows paints nothing behind a clear window, so the page
+        /// turned black.
+        /// </summary>
+        public static bool BackdropWanted => BackdropAvailable && Rendering.Chosen == Rendering.Mode.Gpu
+            && Settings.Get(BackdropKey) == "on";
 
         /// <summary>COLORREF (0x00BBGGRR) of one of the theme's brushes: Bg, Line or Text.</summary>
         static int ColorRef(string key)
@@ -49,6 +66,22 @@ namespace FastbootEnhance
                 DwmSetWindowAttribute(hwnd, DWMWA_CAPTION_COLOR, ref caption, sizeof(int));
                 DwmSetWindowAttribute(hwnd, DWMWA_BORDER_COLOR, ref border, sizeof(int));
                 DwmSetWindowAttribute(hwnd, DWMWA_TEXT_COLOR, ref text, sizeof(int));
+
+                // Mica: the desktop shows through the window, blurred. The window's own
+                // background has to be clear for it to show, so the sky brush goes when it is on.
+                if (BackdropAvailable)
+                {
+                    bool mica = BackdropWanted;
+                    int backdrop = mica ? DWMSBT_MAINWINDOW : DWMSBT_NONE;
+                    if (DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref backdrop, sizeof(int)) == 0)
+                    {
+                        HwndSource source = HwndSource.FromHwnd(hwnd);
+                        if (source?.CompositionTarget != null)
+                            source.CompositionTarget.BackgroundColor = mica ? System.Windows.Media.Colors.Transparent
+                                : ((System.Windows.Media.SolidColorBrush)Palette.Get("Bg")).Color;
+                        window.Background = mica ? System.Windows.Media.Brushes.Transparent : Palette.Get("SkyBrush");
+                    }
+                }
             }
             catch (DllNotFoundException)
             {

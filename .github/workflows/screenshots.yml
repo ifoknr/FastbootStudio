@@ -27,11 +27,11 @@ jobs:
   capture:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0 # full history so the commit step can rebase
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: 8.0.x
 
@@ -60,7 +60,7 @@ jobs:
         shell: pwsh
         run: ./.github/scripts/screenshots.ps1 -App publish/FastbootStudio.exe -Payload sample/sample-ota.zip -Out docs/screenshots -ExpectedFlashes 12 -ExpectedBackups 20 -Arabic
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: screenshots
@@ -71,14 +71,16 @@ jobs:
       - name: Commit screenshots
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         shell: pwsh
+        env:
+          BRANCH: ${{ github.ref_name }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "IFOKNR"
+          git config user.email "253658289+ifoknr@users.noreply.github.com"
           git add docs/screenshots
           git diff --cached --quiet
           if ($LASTEXITCODE -ne 0) {
             git commit -m "Update app screenshots [skip ci]"
             # The branch may have moved while the app was being captured.
-            git pull --rebase origin ${{ github.ref_name }}
-            git push origin HEAD:${{ github.ref_name }}
+            git pull --rebase origin $env:BRANCH
+            git push origin HEAD:$env:BRANCH
           }

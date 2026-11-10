@@ -5,8 +5,8 @@
         SizeToContent="WidthAndHeight" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
         Foreground="{StaticResource Text}" FontFamily="{StaticResource UiFont}" FontSize="13" UseLayoutRounding="True">
     <!-- The outer margin leaves room for the shadow. -->
-    <Border Margin="18" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
-            BorderThickness="1" CornerRadius="12">
+    <Border Margin="18" Background="{StaticResource Surface}" BorderBrush="{StaticResource GlassLine2}"
+            BorderThickness="1" CornerRadius="16">
         <Border.Effect>
             <DropShadowEffect BlurRadius="26" ShadowDepth="6" Opacity="0.55" Color="#000000"/>
         </Border.Effect>
@@ -18,7 +18,7 @@
             </Grid.RowDefinitions>
 
             <!-- A thin strip in the dialog's colour: teal, amber or red. -->
-            <Border x:Name="strip" Height="3" VerticalAlignment="Top" CornerRadius="11,11,0,0"/>
+            <Border x:Name="strip" Height="3" VerticalAlignment="Top" CornerRadius="15,15,0,0"/>
 
             <DockPanel x:Name="header" Margin="22,22,22,0" Background="Transparent">
                 <Border x:Name="badge" DockPanel.Dock="Left" Width="34" Height="34" CornerRadius="10"
@@ -26,15 +26,24 @@
                     <Path FlowDirection="LeftToRight" x:Name="glyph" Width="18" Height="18" Stretch="Uniform" StrokeThickness="2"
                           StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
                 </Border>
-                <TextBlock x:Name="heading" Style="{StaticResource CardTitle}" FontSize="15"
-                           VerticalAlignment="Center" TextWrapping="Wrap"/>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="heading" Style="{StaticResource CardTitle}" FontSize="15" TextWrapping="Wrap"/>
+                    <!-- Which phone a flash or erase goes to: serial, product, slot, mode. -->
+                    <TextBlock x:Name="device_line" Visibility="Collapsed" Margin="0,3,0,0" FontSize="12"
+                               Foreground="{StaticResource Dim}" TextWrapping="Wrap"/>
+                </StackPanel>
             </DockPanel>
 
             <StackPanel Grid.Row="1" Margin="70,10,22,0">
                 <ScrollViewer MaxHeight="380" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <TextBlock x:Name="message" TextWrapping="Wrap" Foreground="{StaticResource Dim}"
-                               LineHeight="19"/>
+                    <StackPanel>
+                        <TextBlock x:Name="message" TextWrapping="Wrap" Foreground="{StaticResource Dim}"
+                                   LineHeight="19"/>
+                        <!-- A summary: one row per point to know before going ahead. -->
+                        <StackPanel x:Name="items" Visibility="Collapsed" Margin="0,10,0,0"/>
+                    </StackPanel>
                 </ScrollViewer>
+                <CheckBox x:Name="ack" Visibility="Collapsed" Margin="0,12,0,0" FontWeight="SemiBold"/>
                 <!-- For the riskiest actions: the main button waits until a word is typed. -->
                 <StackPanel x:Name="typed_panel" Margin="0,14,0,0" Visibility="Collapsed">
                     <TextBlock x:Name="typed_prompt" TextWrapping="Wrap" FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -43,7 +52,7 @@
             </StackPanel>
 
             <Border Grid.Row="2" Margin="0,22,0,0" Padding="22,14" Background="{StaticResource Bg}"
-                    BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" CornerRadius="0,0,11,11">
+                    BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" CornerRadius="0,0,15,15">
                 <StackPanel x:Name="buttons" Orientation="Horizontal" HorizontalAlignment="Right"/>
             </Border>
         </Grid>

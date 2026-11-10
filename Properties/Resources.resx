@@ -3355,4 +3355,166 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
   <data name="odin_check_WipesData" xml:space="preserve">
     <value>{0} erases everything on the phone (a factory reset). Use HOME_CSC to keep your data.</value>
   </data>
+  <data name="odin_check_EmptyFile" xml:space="preserve">
+    <value>{0} is empty: there is nothing in it to flash.</value>
+  </data>
+  <data name="odin_check_TarUnknown" xml:space="preserve">
+    <value>{0} is not named like Samsung firmware, so the phone it is for cannot be checked. Flash it only if you are sure it is for this phone.</value>
+  </data>
+  <data name="payload_bad_names" xml:space="preserve">
+    <value>The payload names partitions that cannot be put on a command line: {0}. Nothing was flashed. The file may be damaged or tampered with.</value>
+  </data>
+  <data name="odin_check_MayNotFit" xml:space="preserve">
+    <value>{0} fits {1} on a UFS phone but not on an eMMC one ({2}; an eMMC partition holds at most {3}), and the PIT does not say which this phone is. On an eMMC phone the bootloader refuses it mid-flash.</value>
+  </data>
+  <data name="terminal_slot" xml:space="preserve">
+    <value>This command changes the active slot: the phone starts from the other slot next time, whatever is on it. If that slot holds an older or broken system, the phone may not boot. Run it?</value>
+  </data>
+  <data name="summary_ack" xml:space="preserve">
+    <value>I have read this</value>
+  </data>
+  <data name="flash_summary_title" xml:space="preserve">
+    <value>Confirm the flash</value>
+  </data>
+  <data name="flash_summary" xml:space="preserve">
+    <value>{0}: {1} partitions, {2}. Nothing is written until every image is extracted and its hash checks out.</value>
+  </data>
+  <data name="flash_summary_go" xml:space="preserve">
+    <value>Flash</value>
+  </data>
+  <data name="confirm_device_line" xml:space="preserve">
+    <value>Phone: {0} · {1} · slot {2} · {3}</value>
+  </data>
+  <data name="logs_open_folder" xml:space="preserve">
+    <value>Open log folder</value>
+  </data>
+  <data name="logs_file_note" xml:space="preserve">
+    <value>Every flash is also saved as a file in the log folder (the newest 30 are kept).</value>
+  </data>
+  <data name="step_cancelled" xml:space="preserve">
+    <value>Stopped by you. The phone may hold a half-written partition; flash it again before restarting.</value>
+  </data>
+  <data name="bar_cancel" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="settings_phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="root_probe" xml:space="preserve">
+    <value>Ask the phone for root when it connects over ADB</value>
+  </data>
+  <data name="root_probe_note" xml:space="preserve">
+    <value>Reads the Companion's report (root state, AVB, module conflicts). Magisk shows a prompt on the phone the first time. Off, the Phone page asks only when you read the phone yourself.</value>
+  </data>
+  <data name="nav_group_phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="nav_group_files" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="nav_group_more" xml:space="preserve">
+    <value>More tools</value>
+  </data>
+  <data name="bar_reboot" xml:space="preserve">
+    <value>Restart ▾</value>
+  </data>
+  <data name="bar_no_device" xml:space="preserve">
+    <value>No phone connected</value>
+  </data>
+  <data name="bar_no_device_hint" xml:space="preserve">
+    <value>Plug a phone in fastboot in; Android phones over ADB are read on the Phone page.</value>
+  </data>
+  <data name="bar_serial" xml:space="preserve">
+    <value>SN {0}</value>
+  </data>
+  <data name="bar_slot" xml:space="preserve">
+    <value>slot {0}</value>
+  </data>
+  <data name="bar_unlocked" xml:space="preserve">
+    <value>unlocked</value>
+  </data>
+  <data name="bar_locked" xml:space="preserve">
+    <value>locked</value>
+  </data>
+  <data name="status_last" xml:space="preserve">
+    <value>last: fastboot {0} · {1}</value>
+  </data>
+  <data name="status_seconds" xml:space="preserve">
+    <value>{0} s</value>
+  </data>
+  <data name="flash_result_title" xml:space="preserve">
+    <value>{0} of {1} partitions written</value>
+  </data>
+  <data name="flash_result_log" xml:space="preserve">
+    <value>Open the log</value>
+  </data>
+  <data name="flash_result_reboot" xml:space="preserve">
+    <value>Restart the phone</value>
+  </data>
+  <data name="flash_critical" xml:space="preserve">
+    <value>critical</value>
+  </data>
+  <data name="drop_title" xml:space="preserve">
+    <value>Drop a file here, or choose one</value>
+  </data>
+  <data name="samsung_match_phone_label" xml:space="preserve">
+    <value>Phone (Download mode)</value>
+  </data>
+  <data name="samsung_match_unknown" xml:space="preserve">
+    <value>not read yet</value>
+  </data>
+  <data name="samsung_details" xml:space="preserve">
+    <value>About the firmware</value>
+  </data>
+  <data name="super_drop_hint" xml:space="preserve">
+    <value>Drop partition images here, or import them</value>
+  </data>
+  <data name="super_drop_detail" xml:space="preserve">
+    <value>system, vendor, product… as raw or sparse images; or read the layout from a phone in fastbootd.</value>
+  </data>
+  <data name="root_prereq" xml:space="preserve">
+    <value>Before you start</value>
+  </data>
+  <data name="root_prereq_unlock" xml:space="preserve">
+    <value>Bootloader unlocked</value>
+  </data>
+  <data name="root_prereq_adb" xml:space="preserve">
+    <value>USB debugging on, phone in Android</value>
+  </data>
+  <data name="root_prereq_image" xml:space="preserve">
+    <value>The stock image of the firmware on the phone</value>
+  </data>
+  <data name="root_prereq_backup" xml:space="preserve">
+    <value>A backup of boot and the data you care about</value>
+  </data>
+  <data name="root_step_done" xml:space="preserve">
+    <value>done</value>
+  </data>
+  <data name="root_step_current" xml:space="preserve">
+    <value>now</value>
+  </data>
+  <data name="settings_backdrop" xml:space="preserve">
+    <value>Glass backdrop behind the window (Windows 11)</value>
+  </data>
+  <data name="settings_backdrop_note" xml:space="preserve">
+    <value>The desktop shows through the window, blurred. Needs Graphics card drawing below; off, the window keeps its own colour.</value>
+  </data>
+  <data name="settings_shortcuts" xml:space="preserve">
+    <value>Keyboard shortcuts</value>
+  </data>
+  <data name="shortcut_open" xml:space="preserve">
+    <value>Open a file on this page</value>
+  </data>
+  <data name="shortcut_log" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="shortcut_help" xml:space="preserve">
+    <value>Help for this page</value>
+  </data>
+  <data name="shortcut_settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="about_links" xml:space="preserve">
+    <value>Links</value>
+  </data>
 </root>

@@ -354,7 +354,9 @@ namespace FastbootEnhance.Core.Images
                     break;
                 int fileSize = Hex(data, pos + 54);
                 int nameSize = Hex(data, pos + 94);
-                if (fileSize < 0 || nameSize <= 0 || pos + 110 + nameSize > data.Length)
+                // In long: a hostile size near int.MaxValue would wrap the sums below negative.
+                if (fileSize < 0 || nameSize <= 0 || (long)pos + 110 + nameSize > data.Length
+                    || (long)pos + 110 + nameSize + fileSize > data.Length)
                     break;
                 string name = Encoding.UTF8.GetString(data, pos + 110, nameSize - 1);
                 if (name == "TRAILER!!!")
