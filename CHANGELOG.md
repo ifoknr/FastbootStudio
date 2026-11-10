@@ -4,6 +4,22 @@
 
 <!-- The "## vX.Y.Z" section is the release notes and the Telegram post (.github/scripts/telegram-release.sh): Arabic bullets, then "**English**" and the same bullets in English. Keep it short. -->
 
+## v3.0.0
+- شكل زجاجي جديد وأيقونة جديدة: رمادي زجاجي بالليلي، ثلجي بالنهاري
+- القائمة بمجموعات، وشريط فوق يبيّن الجوال ووضعه، وشريط حالة تحت
+- قبل الفلاش ملخص واحد فيه الجوال وكل النقاط، والنتيجة على الصفحة بدل نافذة
+- سجل لكل فلاش ينحفظ كملف، وزر إيقاف للأمر المعلّق
+- أودين: الحد من نوع الذاكرة، والترتيب BL ثم AP ثم CP ثم CSC
+- اختصارات كيبورد، والصيني والياباني والكوري كاملين
+
+**English**
+- A new glass look and icon: grey glass in dark, frosted in light
+- Pages in groups, a bar above with the phone and its mode, a status bar below
+- One summary before a flash with the phone and every point; the result on the page
+- A log file per flash, and a Stop for a hung command
+- Odin: limits from the storage type; BL, AP, CP, CSC order
+- Keyboard shortcuts; Chinese, Japanese and Korean complete
+
 ## v2.9.0
 - جديد: فلاش سامسونج من التطبيق في وضع التحميل: صورة وحدة، tar من Magisk، أو الروم كامل
 - قبل ما يكتب: يفحص MD5 والـ lz4، وجدول PIT والموديل، ويرفض EFS وروم موديل ثاني

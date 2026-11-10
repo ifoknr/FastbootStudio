@@ -2,42 +2,61 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:props="clr-namespace:FastbootEnhance.Properties">
 
-    <!-- The dark palette. Palette.Light.xaml has the same keys; Theme.cs loads one of the two
-         before Styles.xaml, whose styles take their colours from whichever is loaded. -->
+    <!-- The dark palette: grey glass. Palette.Light.xaml has the same keys; Theme.cs loads one
+         of the two before Styles.xaml, whose styles take their colours from whichever is loaded.
+         Surfaces are translucent so the sky gradient behind them shows through, which is what
+         reads as glass; lines are white at low alpha. -->
     <!-- One accent; amber and red are reserved for warnings and destructive actions. -->
-    <SolidColorBrush x:Key="Bg" Color="#2A2A2C"/>
-    <SolidColorBrush x:Key="Rail" Color="#2A2A2C"/>
-    <SolidColorBrush x:Key="Well" Color="#303032"/>
-    <SolidColorBrush x:Key="Surface" Color="#353537"/>
-    <SolidColorBrush x:Key="Raised" Color="#3D3D40"/>
-    <SolidColorBrush x:Key="Hover" Color="#47474B"/>
-    <SolidColorBrush x:Key="Line" Color="#4A4A4F"/>
-    <SolidColorBrush x:Key="Text" Color="#E5E3E8"/>
-    <SolidColorBrush x:Key="Dim" Color="#C4C4CB"/>
-    <SolidColorBrush x:Key="Faint" Color="#8F8F95"/>
-    <SolidColorBrush x:Key="Accent" Color="#A8C4FF"/>
-    <SolidColorBrush x:Key="AccentInk" Color="#152C5E"/>
-    <SolidColorBrush x:Key="AccentSoft" Color="#343B50"/>
-    <SolidColorBrush x:Key="AccentLine" Color="#4E5878"/>
-    <SolidColorBrush x:Key="Warn" Color="#E9C77A"/>
-    <SolidColorBrush x:Key="WarnSoft" Color="#46402C"/>
-    <SolidColorBrush x:Key="WarnLine" Color="#6D5F34"/>
-    <SolidColorBrush x:Key="Danger" Color="#FFB4AB"/>
-    <SolidColorBrush x:Key="DangerSoft" Color="#6E2A27"/>
-    <SolidColorBrush x:Key="DangerLine" Color="#8C3A3A"/>
-    <SolidColorBrush x:Key="Ok" Color="#9BD7A8"/>
-    <SolidColorBrush x:Key="Sel" Color="#3F455A"/>
-    <SolidColorBrush x:Key="OnSel" Color="#DDE1F9"/>
-    <SolidColorBrush x:Key="Thumb" Color="#5A5A60"/>
+    <SolidColorBrush x:Key="Bg" Color="#121214"/>
+    <SolidColorBrush x:Key="Rail" Color="#161619"/>
+    <SolidColorBrush x:Key="Well" Color="#101012"/>
+    <SolidColorBrush x:Key="Surface" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="Raised" Color="#26262B"/>
+    <SolidColorBrush x:Key="Hover" Color="#303036"/>
+    <SolidColorBrush x:Key="Line" Color="#2C2C32"/>
+    <SolidColorBrush x:Key="Text" Color="#ECECF1"/>
+    <SolidColorBrush x:Key="Dim" Color="#A2A2AD"/>
+    <SolidColorBrush x:Key="Faint" Color="#6D6D78"/>
+    <SolidColorBrush x:Key="Accent" Color="#7AA2FF"/>
+    <SolidColorBrush x:Key="AccentInk" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="AccentSoft" Color="#1E2840"/>
+    <SolidColorBrush x:Key="AccentLine" Color="#34497A"/>
+    <SolidColorBrush x:Key="Warn" Color="#FBBF24"/>
+    <SolidColorBrush x:Key="WarnSoft" Color="#3A2E12"/>
+    <SolidColorBrush x:Key="WarnLine" Color="#6B5320"/>
+    <SolidColorBrush x:Key="Danger" Color="#FF6B6B"/>
+    <SolidColorBrush x:Key="DangerSoft" Color="#3E1A1C"/>
+    <SolidColorBrush x:Key="DangerLine" Color="#7A2E33"/>
+    <SolidColorBrush x:Key="Ok" Color="#4ADE80"/>
+    <SolidColorBrush x:Key="OkSoft" Color="#15301F"/>
+    <SolidColorBrush x:Key="OkLine" Color="#1F5A35"/>
+    <SolidColorBrush x:Key="Sel" Color="#26262B"/>
+    <SolidColorBrush x:Key="OnSel" Color="#ECECF1"/>
+    <SolidColorBrush x:Key="Thumb" Color="#3E3E46"/>
+
+    <!-- The cards and bars: solid charcoal one step above the page (IFOKNR chose solid over see-through, 9 Nov). -->
+    <SolidColorBrush x:Key="Glass" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="Glass2" Color="#26262B"/>
+    <SolidColorBrush x:Key="GlassLine" Color="#2C2C32"/>
+    <SolidColorBrush x:Key="GlassLine2" Color="#3A3A42"/>
+    <!-- Behind everything: a diagonal gradient, blue-tinted at the top start. A plain gradient, because
+         a DrawingBrush draws black under software rendering, which is the app's default. -->
+    <SolidColorBrush x:Key="SkyBrush" Color="#121214"/>
+    <!-- The accent button: a slight gradient so it reads as a glass pill, not a flat block. -->
+    <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#7AA2FF" Offset="0"/>
+        <GradientStop Color="#4A74E6" Offset="1"/>
+    </LinearGradientBrush>
 
     <!-- Default templates fill the corner where two scroll bars meet with the system control
          colour, which is near-white; this keeps it dark. -->
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#353537"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#353537"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightLightBrushKey}" Color="#353537"/>
-    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#353537"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlLightLightBrushKey}" Color="#1B1B1F"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#1B1B1F"/>
 
-
+    <!-- The app icon: grey glass with the bolt on a screen (tools/icon/glass-dark.svg). -->
+    <BitmapImage x:Key="AppIcon" UriSource="pack://application:,,,/Assets/icon-themed.png"/>
     <!-- IFOKNR, drawn in the Swamp Ninja lettering as a picture: no font file ships with the app. -->
     <BitmapImage x:Key="Signature" UriSource="pack://application:,,,/Assets/signature-dark.png"/>
     <!-- The app name in the Prixma Bold Italic lettering, as a picture as well. -->

@@ -148,6 +148,8 @@ namespace FastbootEnhance.Core.Images
             image.LogicalBlockSize = BitConverter.ToUInt32(geometry, 48);
             if (image.MetadataMaxSize == 0 || image.MetadataMaxSize % SectorSize != 0 || image.MetadataMaxSize > (64 << 20))
                 throw new InvalidDataException("invalid metadata size in the super geometry");
+            if (image.MetadataSlotCount == 0 || image.MetadataSlotCount > 16)
+                throw new InvalidDataException("invalid metadata slot count in the super geometry");
             if (slot < 0 || slot >= image.MetadataSlotCount)
                 throw new ArgumentOutOfRangeException(nameof(slot), "the image has " + image.MetadataSlotCount + " metadata slots");
 
@@ -233,7 +235,7 @@ namespace FastbootEnhance.Core.Images
             }
 
             uint tablesSize = BitConverter.ToUInt32(header, 44);
-            if (tablesSize > MetadataMaxSize)
+            if ((long)headerSize + tablesSize > MetadataMaxSize)
             {
                 problem = "metadata tables are larger than the metadata area";
                 return false;
@@ -266,6 +268,20 @@ namespace FastbootEnhance.Core.Images
                 .Select(e => new SuperExtent((long)BitConverter.ToUInt64(e, 0), BitConverter.ToUInt32(e, 8),
                     (long)BitConverter.ToUInt64(e, 12), BitConverter.ToUInt32(e, 20)))
                 .ToList();
+
+            // As liblp's ValidateMetadata: an extent past the end of its block device is a damaged
+            // table, not a partition to extract (a crafted one could ask for petabytes of zeros).
+            List<ulong> deviceSizes = deviceEntries.Select(d => BitConverter.ToUInt64(d, 16) / SectorSize).ToList();
+            foreach (SuperExtent e in extents)
+            {
+                ulong device = e.TargetSource < deviceSizes.Count ? deviceSizes[(int)e.TargetSource] : 0;
+                if (e.Sectors <= 0 || (ulong)e.Sectors > device
+                    || e.TargetType == 0 && (e.TargetData < 0 || (ulong)e.TargetData > device - (ulong)e.Sectors))
+                {
+                    problem = "an extent lies outside its block device";
+                    return false;
+                }
+            }
 
             List<SuperPartition> partitions = new List<SuperPartition>();
             foreach (byte[] p in partitionEntries)

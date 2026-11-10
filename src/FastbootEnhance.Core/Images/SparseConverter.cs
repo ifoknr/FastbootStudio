@@ -49,8 +49,9 @@ namespace FastbootEnhance.Core.Images
             CancellationToken cancellation)
         {
             using (SparseStream source = SparseStream.Open(parts))
-            using (FileStream destination = new FileStream(output, FileMode.Create, FileAccess.Write, FileShare.None, CopyBuffer))
+            using (AtomicFile part = AtomicFile.Create(output, FileAccess.Write, CopyBuffer))
             {
+                FileStream destination = part.Stream;
                 ExpandResult result = new ExpandResult();
                 Crc32 crc = new Crc32();
                 SparseImage single = source.Parts.Count == 1 ? source.Parts[0] : null;
@@ -107,6 +108,7 @@ namespace FastbootEnhance.Core.Images
                     progress.Report(done);
                 result.Bytes = done;
                 result.Crc32 = crc.Value;
+                part.Commit();
                 return result;
             }
         }
@@ -358,9 +360,10 @@ namespace FastbootEnhance.Core.Images
         static long WritePart(Plan plan, List<PlanChunk> chunks, FileStream source, string path,
             CancellationToken cancellation, out int chunkCount)
         {
-            using (FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, CopyBuffer))
-            using (BinaryWriter writer = new BinaryWriter(file))
+            using (AtomicFile part = AtomicFile.Create(path, FileAccess.Write, CopyBuffer))
+            using (BinaryWriter writer = new BinaryWriter(part.Stream))
             {
+                FileStream file = part.Stream;
                 file.Position = SparseHeaderSize;
                 byte[] buffer = new byte[CopyBuffer];
                 int count = 0;
@@ -424,6 +427,7 @@ namespace FastbootEnhance.Core.Images
                 writer.Write((uint)count);
                 writer.Write(0u);
                 writer.Flush();
+                part.Commit();
 
                 chunkCount = count;
                 return length;

@@ -18,13 +18,15 @@ namespace FastbootEnhance.Core.Payload
         /// <paramref name="dest"/>, which is reset first and left rewound.
         /// </summary>
         internal static void DecodeInto(
-            InstallOperation.Types.Type type, byte[] src, int srcLength, MemoryStream dest)
+            InstallOperation.Types.Type type, byte[] src, int srcLength, MemoryStream dest, long limit = long.MaxValue)
         {
             dest.SetLength(0);
 
             switch (type)
             {
                 case InstallOperation.Types.Type.Replace:
+                    if (srcLength > limit)
+                        throw new InvalidDataException("the data is larger than the blocks it is for");
                     dest.Write(src, 0, srcLength);
                     break;
 
@@ -32,7 +34,7 @@ namespace FastbootEnhance.Core.Payload
                     using (MemoryStream raw = new MemoryStream(src, 0, srcLength, false))
                     using (BZip2Stream bz = new BZip2Stream(raw, CompressionMode.Decompress, false))
                     {
-                        bz.CopyTo(dest);
+                        CopyBounded(bz, dest, limit);
                     }
                     break;
 
@@ -40,7 +42,7 @@ namespace FastbootEnhance.Core.Payload
                     using (MemoryStream raw = new MemoryStream(src, 0, srcLength, false))
                     using (XZStream xz = new XZStream(raw))
                     {
-                        xz.CopyTo(dest);
+                        CopyBounded(xz, dest, limit);
                     }
                     break;
 
@@ -48,7 +50,7 @@ namespace FastbootEnhance.Core.Payload
                     using (MemoryStream raw = new MemoryStream(src, 0, srcLength, false))
                     using (ZstdSharp.DecompressionStream zstd = new ZstdSharp.DecompressionStream(raw))
                     {
-                        zstd.CopyTo(dest);
+                        CopyBounded(zstd, dest, limit);
                     }
                     break;
 
@@ -58,6 +60,25 @@ namespace FastbootEnhance.Core.Payload
             }
 
             dest.Position = 0;
+        }
+
+        /// <summary>
+        /// Copies until the end of <paramref name="from"/>, but gives up as soon as more than
+        /// <paramref name="limit"/> bytes come out: a damaged or crafted blob would otherwise
+        /// be inflated whole into memory before anyone compared it with its blocks.
+        /// </summary>
+        static void CopyBounded(Stream from, MemoryStream to, long limit)
+        {
+            byte[] buffer = new byte[81920];
+            long total = 0;
+            int n;
+            while ((n = from.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                total += n;
+                if (total > limit)
+                    throw new InvalidDataException("the data decodes to more than the blocks it is for");
+                to.Write(buffer, 0, n);
+            }
         }
     }
 }

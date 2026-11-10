@@ -56,6 +56,12 @@ namespace FastbootEnhance
             }
         }
 
+        /// <summary>The Settings key: "on" when a connected phone may be asked for root on its own.</summary>
+        public const string RootProbeKey = "root_probe";
+
+        /// <summary>Whether a phone is asked for root when it connects; off until turned on in Settings.</summary>
+        public static bool RootProbe => Settings.Get(RootProbeKey) == "on";
+
         /// <summary>
         /// Asks the phone and stores what it said. Blocks, so call it on a worker thread. A phone
         /// that does not answer is simply not remembered.
@@ -72,10 +78,12 @@ namespace FastbootEnhance
                     Settings.Set(FastbootUI.DeviceFactsKey, DeviceFacts.Remember(Settings.Get(FastbootUI.DeviceFactsKey), facts));
 
                 // The Companion lives under /data/adb, which only root can reach. Ask su only when
-                // the phone has one; Magisk shows a prompt the first time, KernelSU and APatch
-                // answer from their own allow list.
-                Adb.Result su = Adb.Run(AdbCommand.Shell(serial, "command -v su"), Adb.ShortCommand);
-                if (su.Succeeded && su.Output.Trim().Length > 0)
+                // the phone has one and the person turned the question on in Settings; Magisk
+                // shows a prompt the first time, KernelSU and APatch answer from their own allow list.
+                Adb.Result su = RootProbe
+                    ? Adb.Run(AdbCommand.Shell(serial, "command -v su"), Adb.ShortCommand)
+                    : null;
+                if (su != null && su.Succeeded && su.Output.Trim().Length > 0)
                 {
                     LogStore.Append("ADB device " + serial + ": asking for root to read Fastboot Studio Companion "
                         + "(allow Shell in the root manager, or ignore this)");

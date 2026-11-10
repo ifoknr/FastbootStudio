@@ -157,7 +157,7 @@
     <value>(仮想A/Bのアップデート中でなければ「COW」で終わる一時パーティションを手動で削除すればこの警告を解消することが可能です)</value>
   </data>
   <data name="fastboot_cow_exist_str3" xml:space="preserve">
-    <value>続行をしますか?</value>
+    <value>続行しますか?</value>
   </data>
   <data name="fastboot_create_dynamic_partition" xml:space="preserve">
     <value>新しい論理パーティションの作成</value>
@@ -169,10 +169,10 @@
     <value>現在のスロット</value>
   </data>
   <data name="fastboot_device" xml:space="preserve">
-    <value>デバイス名</value>
+    <value>デバイス</value>
   </data>
   <data name="fastboot_device_name" xml:space="preserve">
-    <value>デバイス</value>
+    <value>デバイス名</value>
   </data>
   <data name="fastboot_device_not_exist" xml:space="preserve">
     <value>対象デバイスがありません</value>
@@ -292,10 +292,10 @@
     <value>以下の書き込むパーティションが不明な場合があります:</value>
   </data>
   <data name="fastboot_unknown_partition_str1" xml:space="preserve">
-    <value>不明なパーティションを無視にチェックを入れるとこの警告を無効にすることができます。未知のパーティションですがデバイスの書き込みに失敗したり、文鎮化する訳ではありません。</value>
+    <value>「不明なパーティションを無視」にチェックを入れると、この警告は表示されなくなります。不明なパーティションがあっても、書き込みに失敗したり文鎮化したりするとは限りません。</value>
   </data>
   <data name="fastboot_unknown_partition_str2" xml:space="preserve">
-    <value>fastbootdモードの再起動が必要な可能性があります。</value>
+    <value>fastbootd モードで再起動する必要があるかもしれません。</value>
   </data>
   <data name="fastboot_update_status" xml:space="preserve">
     <value>システムアップデートの状態</value>
@@ -316,16 +316,18 @@
     <value>デバイスのシステムアップデート中です。操作を強制するとデバイスが文鎮化する可能性があります。</value>
   </data>
   <data name="fastboot_vab_staging_str2" xml:space="preserve">
-    <value>(デバイスのシステムアップデートが完了するまでしばらくお待ちください)</value>
+    <value>(デバイスをシステムで再起動し、アップデート処理が完了するまでしばらくお待ちください)</value>
   </data>
   <data name="fastboot_vab_staging_str3" xml:space="preserve">
-    <value>続行をしますか?</value>
+    <value>続行しますか?</value>
   </data>
   <data name="fastboot_vbmeta_disable_verify" xml:space="preserve">
-    <value>vbmetaのVerificationを無効化しますか?</value>
+    <value>この vbmeta で dm-verity と AVB の検証を無効にしますか? (--disable-verity --disable-verification)
+
+カスタムまたはパッチ済みのシステムに必要です。ブートローダーがアンロックされている場合のみ有効で、この変更の後は通常、端末のワイプ (初期化) が必要です。</value>
   </data>
   <data name="fastboot_vbmeta_disable_verify_title" xml:space="preserve">
-    <value>Verificationを無効化</value>
+    <value>検証を無効化</value>
   </data>
   <data name="logger" xml:space="preserve">
     <value>ログを記録</value>
@@ -403,7 +405,7 @@
     <value>動的パーティションのメタデータがありません</value>
   </data>
   <data name="payload_no_file_str" xml:space="preserve">
-    <value>Payloadを指定していない場合は、「参照」をクリックまたは「ファイルをドラッグ&amp;ドロップ」してください。</value>
+    <value>payload が指定されていません。「参照」をクリックするか、ファイルをドラッグしてください。</value>
   </data>
   <data name="payload_partitions" xml:space="preserve">
     <value>パーティション</value>
@@ -463,7 +465,7 @@
     <value>Payloadのバージョン</value>
   </data>
   <data name="program_already_running" xml:space="preserve">
-    <value>プログラムは既に実行中です。</value>
+    <value>プログラムは既に実行中です</value>
   </data>
   <data name="release_at" xml:space="preserve">
     <value>リリース先: www.akr-developers.com</value>
@@ -479,5 +481,3040 @@
   </data>
   <data name="yes" xml:space="preserve">
     <value>はい</value>
+  </data>
+  <data name="nav_device" xml:space="preserve">
+    <value>デバイス</value>
+  </data>
+  <data name="nav_flash" xml:space="preserve">
+    <value>書き込み</value>
+  </data>
+  <data name="nav_logs" xml:space="preserve">
+    <value>ログ</value>
+  </data>
+  <data name="device_subtitle" xml:space="preserve">
+    <value>デバイスの状態、パーティション、クイック操作をリアルタイムで表示</value>
+  </data>
+  <data name="device_list_title" xml:space="preserve">
+    <value>接続中のデバイス</value>
+  </data>
+  <data name="device_list_hint" xml:space="preserve">
+    <value>デバイスをダブルクリックするか、選択して Enter キーを押してください。</value>
+  </data>
+  <data name="device_list_empty" xml:space="preserve">
+    <value>bootloader または fastbootd のデバイスがまだありません。接続すると 1 秒以内にここに表示されます。</value>
+  </data>
+  <data name="device_variables" xml:space="preserve">
+    <value>デバイス変数</value>
+  </data>
+  <data name="quick_actions" xml:space="preserve">
+    <value>クイック操作</value>
+  </data>
+  <data name="preflash_checks" xml:space="preserve">
+    <value>書き込み前のチェック</value>
+  </data>
+  <data name="partition_actions" xml:space="preserve">
+    <value>パーティション操作</value>
+  </data>
+  <data name="check_unlocked" xml:space="preserve">
+    <value>ブートローダーはアンロック済み: イメージを書き込めます</value>
+  </data>
+  <data name="check_locked" xml:space="preserve">
+    <value>ブートローダーはロック中: デバイスは書き込みを拒否します</value>
+  </data>
+  <data name="check_no_update" xml:space="preserve">
+    <value>保留中の仮想A/Bアップデートはありません</value>
+  </data>
+  <data name="check_update_pending" xml:space="preserve">
+    <value>仮想A/Bアップデートが {0} です: 書き込む前にキャンセルしてください</value>
+  </data>
+  <data name="check_cow" xml:space="preserve">
+    <value>残った COW パーティションが見つかりました: 書き込む前に削除してください</value>
+  </data>
+  <data name="check_fastbootd" xml:space="preserve">
+    <value>fastbootd で実行中: 論理パーティションを書き込めます</value>
+  </data>
+  <data name="check_bootloader" xml:space="preserve">
+    <value>bootloader で実行中: 論理パーティションを書き込むには fastbootd で再起動してください</value>
+  </data>
+  <data name="check_slot" xml:space="preserve">
+    <value>アクティブなスロット: {0}</value>
+  </data>
+  <data name="rail_devices" xml:space="preserve">
+    <value>fastboot モードのデバイス: {0} 台</value>
+  </data>
+  <data name="rail_no_fastboot" xml:space="preserve">
+    <value>fastboot.exe が見つかりません</value>
+  </data>
+  <data name="flash_subtitle" xml:space="preserve">
+    <value>すべてのイメージを並列で抽出し、書き込む前にマニフェストと照合します</value>
+  </data>
+  <data name="flash_no_payload" xml:space="preserve">
+    <value>payload が選択されていません</value>
+  </data>
+  <data name="flash_no_device" xml:space="preserve">
+    <value>先に「デバイス」ページでデバイスを選んでください。</value>
+  </data>
+  <data name="flash_target_none" xml:space="preserve">
+    <value>デバイスが選択されていません</value>
+  </data>
+  <data name="flash_target" xml:space="preserve">
+    <value>対象: {0}</value>
+  </data>
+  <data name="flash_note_verify" xml:space="preserve">
+    <value>各イメージは書き込む前に SHA-256 で検証されます。</value>
+  </data>
+  <data name="flash_note_order" xml:space="preserve">
+    <value>すべてのイメージが正常に抽出されるまで、デバイスには何も書き込まれません。</value>
+  </data>
+  <data name="flash_phase_idle" xml:space="preserve">
+    <value>待機中</value>
+  </data>
+  <data name="flash_phase_extract" xml:space="preserve">
+    <value>抽出中</value>
+  </data>
+  <data name="flash_phase_flash" xml:space="preserve">
+    <value>書き込み中</value>
+  </data>
+  <data name="flash_phase_done" xml:space="preserve">
+    <value>完了</value>
+  </data>
+  <data name="flash_phase_failed" xml:space="preserve">
+    <value>失敗</value>
+  </data>
+  <data name="flash_state_queued" xml:space="preserve">
+    <value>待機中</value>
+  </data>
+  <data name="flash_state_extracting" xml:space="preserve">
+    <value>抽出中</value>
+  </data>
+  <data name="flash_state_verified" xml:space="preserve">
+    <value>検証済み</value>
+  </data>
+  <data name="flash_state_flashing" xml:space="preserve">
+    <value>書き込み中</value>
+  </data>
+  <data name="flash_state_flashed" xml:space="preserve">
+    <value>書き込み済み</value>
+  </data>
+  <data name="flash_state_failed" xml:space="preserve">
+    <value>失敗</value>
+  </data>
+  <data name="flash_state_later" xml:space="preserve">
+    <value>後で bootloader から</value>
+  </data>
+  <data name="flash_phase_bootloader" xml:space="preserve">
+    <value>bootloader から書き込み中</value>
+  </data>
+  <data name="flash_deferred_done" xml:space="preserve">
+    <value>fastbootd では {0} を書き込めなかったため、アプリが端末を bootloader で再起動してそこで書き込みました。端末は現在 bootloader にあります。</value>
+  </data>
+  <data name="flash_bootloader_timeout" xml:space="preserve">
+    <value>端末が bootloader で戻ってきませんでした。次のパーティションはまだ書き込まれていません: {0}</value>
+  </data>
+  <data name="flash_state_not_written" xml:space="preserve">
+    <value>未書き込み</value>
+  </data>
+  <data name="label_phase" xml:space="preserve">
+    <value>フェーズ</value>
+  </data>
+  <data name="label_elapsed" xml:space="preserve">
+    <value>経過時間</value>
+  </data>
+  <data name="label_written" xml:space="preserve">
+    <value>書き込み済み</value>
+  </data>
+  <data name="live_log" xml:space="preserve">
+    <value>リアルタイムログ</value>
+  </data>
+  <data name="logs_subtitle" xml:space="preserve">
+    <value>このセッションで実行したすべての fastboot コマンドとその出力</value>
+  </data>
+  <data name="logs_copy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="logs_clear" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="payload_subtitle" xml:space="preserve">
+    <value>payload.bin または OTA zip を開いて内容を確認し、イメージを抽出します</value>
+  </data>
+  <data name="payload_drop_hint" xml:space="preserve">
+    <value>payload.bin または OTA zip をここにドロップ</value>
+  </data>
+  <data name="column_codec" xml:space="preserve">
+    <value>コーデック</value>
+  </data>
+  <data name="column_extractable" xml:space="preserve">
+    <value>抽出可能</value>
+  </data>
+  <data name="column_progress" xml:space="preserve">
+    <value>進捗</value>
+  </data>
+  <data name="column_state" xml:space="preserve">
+    <value>状態</value>
+  </data>
+  <data name="column_partition" xml:space="preserve">
+    <value>パーティション</value>
+  </data>
+  <data name="column_size" xml:space="preserve">
+    <value>サイズ</value>
+  </data>
+  <data name="about_engine" xml:space="preserve">
+    <value>Payload エンジン: zstd、xz、bzip2、複数エクステント操作、SHA-256 検証付きの並列抽出</value>
+  </data>
+  <data name="confirm_title" xml:space="preserve">
+    <value>よろしいですか?</value>
+  </data>
+  <data name="confirm_erase" xml:space="preserve">
+    <value>パーティション「{0}」を消去しますか? 中のデータはすべて失われます。</value>
+  </data>
+  <data name="confirm_delete" xml:space="preserve">
+    <value>論理パーティション「{0}」を super から削除しますか? 元に戻せません。</value>
+  </data>
+  <data name="confirm_close_flashing" xml:space="preserve">
+    <value>payload の書き込み中です。今閉じると途中で停止し、デバイスが起動しなくなる可能性があります。それでも閉じますか?</value>
+  </data>
+  <data name="extract_incomplete" xml:space="preserve">
+    <value>一部のイメージが不完全です: このビルドで適用できない操作はゼロで埋められ、それらのイメージはマニフェストと照合されていません。</value>
+  </data>
+  <data name="extract_incomplete_detail" xml:space="preserve">
+    <value>{0} 件の操作をスキップ、未検証</value>
+  </data>
+  <data name="confirm_close_extracting" xml:space="preserve">
+    <value>イメージを抽出中です。今閉じると抽出が停止し、未完成のファイルは削除されます。それでも閉じますか?</value>
+  </data>
+  <data name="flash_unverified" xml:space="preserve">
+    <value>次のパーティションは payload に SHA-256 が含まれていないため、書き込む前にイメージを検証できません:
+
+{0}
+
+それでも書き込みますか?</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="dialog_warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="dialog_done" xml:space="preserve">
+    <value>完了</value>
+  </data>
+  <data name="about_developer" xml:space="preserve">
+    <value>開発者</value>
+  </data>
+  <data name="about_original" xml:space="preserve">
+    <value>オリジナルの作者</value>
+  </data>
+  <data name="about_original_detail" xml:space="preserve">
+    <value>LibXZR による Fastboot Enhance をベースにしており、MIT ライセンスで公開されています。Copyright © 2021 LibXZR.</value>
+  </data>
+  <data name="about_original_project" xml:space="preserve">
+    <value>オリジナルのプロジェクト</value>
+  </data>
+  <data name="about_license" xml:space="preserve">
+    <value>ライセンス</value>
+  </data>
+  <data name="nav_backup" xml:space="preserve">
+    <value>バックアップ</value>
+  </data>
+  <data name="backup_subtitle" xml:space="preserve">
+    <value>パーティションや端末内の任意のファイルを adb 経由でこのコンピューターに保存します</value>
+  </data>
+  <data name="backup_adb_devices" xml:space="preserve">
+    <value>ADB 接続のデバイス</value>
+  </data>
+  <data name="backup_column_model" xml:space="preserve">
+    <value>モデル</value>
+  </data>
+  <data name="backup_column_mode" xml:space="preserve">
+    <value>モード</value>
+  </data>
+  <data name="backup_waiting" xml:space="preserve">
+    <value>デバイスを探しています… USB デバッグを有効にして Android を起動するか、カスタムリカバリー (TWRP、OrangeFox) を起動してください。</value>
+  </data>
+  <data name="backup_no_device" xml:space="preserve">
+    <value>adb で接続されたデバイスがありません。開発者向けオプションで USB デバッグを有効にして端末を接続するか、カスタムリカバリーを起動してください。</value>
+  </data>
+  <data name="backup_unauthorized" xml:space="preserve">
+    <value>端末のロックを解除し、このコンピューターからの USB デバッグを許可してください。</value>
+  </data>
+  <data name="backup_not_ready" xml:space="preserve">
+    <value>デバイスは「{0}」モードです。パーティションとファイルには Android またはカスタムリカバリーが必要です。</value>
+  </data>
+  <data name="backup_root_unknown" xml:space="preserve">
+    <value>ファイルは今すぐコピーできます。パーティションのバックアップには root (Magisk、KernelSU) またはカスタムリカバリーが必要です。「パーティションテーブルを読み込む」を押して確認してください。</value>
+  </data>
+  <data name="backup_root_direct" xml:space="preserve">
+    <value>root シェルが使えます (リカバリーまたは adb root): パーティションをバックアップできます。</value>
+  </data>
+  <data name="backup_root_su" xml:space="preserve">
+    <value>su による root: パーティションをバックアップできます。</value>
+  </data>
+  <data name="backup_asking_root" xml:space="preserve">
+    <value>root 権限を要求しています。端末に確認が表示されたら許可してください。</value>
+  </data>
+  <data name="backup_needs_root" xml:space="preserve">
+    <value>パーティションの読み込みには root が必要です。Magisk または KernelSU で端末を root 化して確認を許可するか、TWRP や OrangeFox などのカスタムリカバリーを起動してください。ファイルは「ファイル」タブから引き続きコピーできます。</value>
+  </data>
+  <data name="backup_no_table" xml:space="preserve">
+    <value>このデバイスからパーティションテーブルを読み込めませんでした。</value>
+  </data>
+  <data name="backup_tab_partitions" xml:space="preserve">
+    <value>パーティション</value>
+  </data>
+  <data name="backup_tab_files" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="backup_read" xml:space="preserve">
+    <value>パーティションテーブルを読み込む</value>
+  </data>
+  <data name="backup_select_critical" xml:space="preserve">
+    <value>重要なものを選択</value>
+  </data>
+  <data name="backup_select_none" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="backup_filter_hint" xml:space="preserve">
+    <value>名前で絞り込む</value>
+  </data>
+  <data name="backup_save_to" xml:space="preserve">
+    <value>保存先</value>
+  </data>
+  <data name="backup_change" xml:space="preserve">
+    <value>変更…</value>
+  </data>
+  <data name="backup_start" xml:space="preserve">
+    <value>選択したものをバックアップ</value>
+  </data>
+  <data name="backup_cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="backup_verify" xml:space="preserve">
+    <value>バックアップを検証…</value>
+  </data>
+  <data name="backup_verify_title" xml:space="preserve">
+    <value>バックアップの検証</value>
+  </data>
+  <data name="backup_open_folder" xml:space="preserve">
+    <value>フォルダーを開く</value>
+  </data>
+  <data name="backup_note" xml:space="preserve">
+    <value>各イメージは SHA-256 とともに backup-info.txt の隣の SHA256SUMS に保存されます。復元するには「デバイス › パーティション」から書き込んでください。</value>
+  </data>
+  <data name="backup_state_reading" xml:space="preserve">
+    <value>読み込み中</value>
+  </data>
+  <data name="backup_state_saved" xml:space="preserve">
+    <value>保存済み</value>
+  </data>
+  <data name="backup_state_skipped" xml:space="preserve">
+    <value>スキップ</value>
+  </data>
+  <data name="backup_state_critical" xml:space="preserve">
+    <value>重要</value>
+  </data>
+  <data name="backup_nothing_selected" xml:space="preserve">
+    <value>先にバックアップするパーティションにチェックを入れるか、「重要なものを選択」を押してください。</value>
+  </data>
+  <data name="backup_large_warning" xml:space="preserve">
+    <value>次のパーティションはサイズが大きく、時間がかかり、多くのディスク容量を使います:
+
+{0}
+
+それでもバックアップしますか?</value>
+  </data>
+  <data name="backup_short_read" xml:space="preserve">
+    <value>{1} のうち {0} を読み込みました。デバイスからの送信が止まりました (権限がないか切断されました)</value>
+  </data>
+  <data name="backup_done" xml:space="preserve">
+    <value>{0} 個のパーティションを保存し、SHA-256 を次の場所に記録しました:
+{1}</value>
+  </data>
+  <data name="backup_partial" xml:space="preserve">
+    <value>{1} 個中 {0} 個のパーティションを次の場所に保存しました:
+{2}</value>
+  </data>
+  <data name="backup_cancelled" xml:space="preserve">
+    <value>停止しました。未完成のファイルは削除されました。</value>
+  </data>
+  <data name="backup_verify_none" xml:space="preserve">
+    <value>このフォルダーには SHA256SUMS ファイルがないため、照合できません。</value>
+  </data>
+  <data name="backup_verify_ok" xml:space="preserve">
+    <value>{0} 個すべてのファイルが SHA-256 と一致しました。</value>
+  </data>
+  <data name="backup_verify_bad" xml:space="preserve">
+    <value>{1} 個中 {0} 個のファイルが見つからないか、一致しません:</value>
+  </data>
+  <data name="files_up" xml:space="preserve">
+    <value>上へ</value>
+  </data>
+  <data name="files_go" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="files_quick_storage" xml:space="preserve">
+    <value>内部ストレージ</value>
+  </data>
+  <data name="files_quick_dcim" xml:space="preserve">
+    <value>カメラ</value>
+  </data>
+  <data name="files_quick_pictures" xml:space="preserve">
+    <value>画像</value>
+  </data>
+  <data name="files_quick_download" xml:space="preserve">
+    <value>ダウンロード</value>
+  </data>
+  <data name="files_quick_documents" xml:space="preserve">
+    <value>ドキュメント</value>
+  </data>
+  <data name="files_column_name" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="files_column_kind" xml:space="preserve">
+    <value>種類</value>
+  </data>
+  <data name="files_kind_folder" xml:space="preserve">
+    <value>フォルダー</value>
+  </data>
+  <data name="files_kind_file" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="files_kind_link" xml:space="preserve">
+    <value>リンク</value>
+  </data>
+  <data name="files_empty" xml:space="preserve">
+    <value>このフォルダーは空か、root なしでは Android が読み込みを許可していません。</value>
+  </data>
+  <data name="files_count" xml:space="preserve">
+    <value>フォルダー {0} 個、ファイル {1} 個</value>
+  </data>
+  <data name="files_copying" xml:space="preserve">
+    <value>{0} をコピー中…</value>
+  </data>
+  <data name="files_pull" xml:space="preserve">
+    <value>コンピューターにコピー</value>
+  </data>
+  <data name="files_note" xml:space="preserve">
+    <value>ファイルやフォルダーを選択して (複数は Ctrl または Shift、すべては Ctrl+A) コピーします。フォルダーは中身ごとコピーされます。フォルダーをダブルクリックすると開きます。</value>
+  </data>
+  <data name="files_nothing_selected" xml:space="preserve">
+    <value>先にコピーするファイルまたはフォルダーを選択してください。</value>
+  </data>
+  <data name="files_done" xml:space="preserve">
+    <value>{0} 個の項目を次の場所にコピーしました:
+{1}</value>
+  </data>
+  <data name="files_partial" xml:space="preserve">
+    <value>{1} 個中 {0} 個の項目を次の場所にコピーしました:
+{2}</value>
+  </data>
+  <data name="payload_container" xml:space="preserve">
+    <value>コンテナー</value>
+  </data>
+  <data name="payload_container_inplace" xml:space="preserve">
+    <value>OTA zip (そのまま読み込み)</value>
+  </data>
+  <data name="payload_container_unpacked" xml:space="preserve">
+    <value>OTA zip (一時フォルダーに展開)</value>
+  </data>
+  <data name="payload_security_patch" xml:space="preserve">
+    <value>セキュリティパッチ</value>
+  </data>
+  <data name="payload_partial_update" xml:space="preserve">
+    <value>部分アップデート</value>
+  </data>
+  <data name="payload_apex" xml:space="preserve">
+    <value>APEX パッケージ</value>
+  </data>
+  <data name="payload_operations" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="flash_file_detail" xml:space="preserve">
+    <value>{0} 個のパーティション  ·  {1}  ·  {2}</value>
+  </data>
+  <data name="flash_written_count" xml:space="preserve">
+    <value>{1} 個中 {0} 個のパーティションを書き込みました</value>
+  </data>
+  <data name="extract_done_detail" xml:space="preserve">
+    <value>{0} ({1} 秒)</value>
+  </data>
+  <data name="chrome_minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="chrome_maximize" xml:space="preserve">
+    <value>最大化</value>
+  </data>
+  <data name="chrome_restore" xml:space="preserve">
+    <value>元に戻す</value>
+  </data>
+  <data name="chrome_close" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="language_restart" xml:space="preserve">
+    <value>新しい言語は再起動後に適用されます。今すぐ Fastboot Studio を再起動しますか?</value>
+  </data>
+  <data name="language_busy" xml:space="preserve">
+    <value>言語を変更する前に、現在の書き込みまたは抽出が終わるまでお待ちください。</value>
+  </data>
+  <data name="nav_images" xml:space="preserve">
+    <value>イメージツール</value>
+  </data>
+  <data name="images_subtitle" xml:space="preserve">
+    <value>Android イメージの確認、変換、展開: sparse、super、ext4、EROFS など</value>
+  </data>
+  <data name="images_open" xml:space="preserve">
+    <value>イメージを開く…</value>
+  </data>
+  <data name="images_drop_hint" xml:space="preserve">
+    <value>イメージをここにドロップ</value>
+  </data>
+  <data name="images_drop_detail" xml:space="preserve">
+    <value>system.img、super.img、vendor.img… sparse でも raw でも可。複数に分割されたイメージ (system.img_sparsechunk.0、.1…) は、どれか 1 つを開けば残りは自動で見つかります。</value>
+  </data>
+  <data name="images_tab_details" xml:space="preserve">
+    <value>詳細</value>
+  </data>
+  <data name="images_tab_partitions" xml:space="preserve">
+    <value>super 内のパーティション</value>
+  </data>
+  <data name="images_tab_chunks" xml:space="preserve">
+    <value>Sparse チャンク</value>
+  </data>
+  <data name="images_select_all" xml:space="preserve">
+    <value>すべて選択</value>
+  </data>
+  <data name="images_column_group" xml:space="preserve">
+    <value>グループ</value>
+  </data>
+  <data name="images_column_type" xml:space="preserve">
+    <value>種類</value>
+  </data>
+  <data name="images_column_start" xml:space="preserve">
+    <value>開始ブロック</value>
+  </data>
+  <data name="images_column_blocks" xml:space="preserve">
+    <value>ブロック数</value>
+  </data>
+  <data name="images_extract" xml:space="preserve">
+    <value>パーティションを抽出 (lpunpack)</value>
+  </data>
+  <data name="images_to_raw" xml:space="preserve">
+    <value>raw に変換 (simg2img)</value>
+  </data>
+  <data name="images_to_sparse" xml:space="preserve">
+    <value>sparse に変換 (img2simg)</value>
+  </data>
+  <data name="images_resplit" xml:space="preserve">
+    <value>分割 (simg2simg)</value>
+  </data>
+  <data name="images_split" xml:space="preserve">
+    <value>分割する最大サイズ</value>
+  </data>
+  <data name="images_empty_slot" xml:space="preserve">
+    <value>空のスロット</value>
+  </data>
+  <data name="images_parts_not_sparse" xml:space="preserve">
+    <value>複数のファイルが選択されましたが、1 つのイメージの sparse パーツではありません。イメージは 1 つずつ開いてください。</value>
+  </data>
+  <data name="images_kind_super" xml:space="preserve">
+    <value>Super (動的パーティション)</value>
+  </data>
+  <data name="images_kind_ext4" xml:space="preserve">
+    <value>ext4 ファイルシステム</value>
+  </data>
+  <data name="images_kind_erofs" xml:space="preserve">
+    <value>EROFS ファイルシステム</value>
+  </data>
+  <data name="images_kind_f2fs" xml:space="preserve">
+    <value>F2FS ファイルシステム</value>
+  </data>
+  <data name="images_kind_boot" xml:space="preserve">
+    <value>Boot イメージ</value>
+  </data>
+  <data name="images_kind_vendor_boot" xml:space="preserve">
+    <value>Vendor boot イメージ</value>
+  </data>
+  <data name="images_kind_vbmeta" xml:space="preserve">
+    <value>vbmeta (Android Verified Boot)</value>
+  </data>
+  <data name="images_kind_payload" xml:space="preserve">
+    <value>OTA payload (Payload Dumper で開いてください)</value>
+  </data>
+  <data name="images_kind_zip" xml:space="preserve">
+    <value>Zip アーカイブ</value>
+  </data>
+  <data name="images_row_file" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="images_parts" xml:space="preserve">
+    <value>{0} パーツ</value>
+  </data>
+  <data name="images_row_format" xml:space="preserve">
+    <value>形式</value>
+  </data>
+  <data name="images_format_raw" xml:space="preserve">
+    <value>Raw イメージ</value>
+  </data>
+  <data name="images_row_content" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="images_row_size" xml:space="preserve">
+    <value>イメージサイズ</value>
+  </data>
+  <data name="images_row_disk" xml:space="preserve">
+    <value>ディスク上のサイズ</value>
+  </data>
+  <data name="images_row_block_size" xml:space="preserve">
+    <value>ブロックサイズ</value>
+  </data>
+  <data name="images_row_blocks" xml:space="preserve">
+    <value>ブロック</value>
+  </data>
+  <data name="images_blocks_detail" xml:space="preserve">
+    <value>{1} / {2} / {3}</value>
+  </data>
+  <data name="images_row_chunks" xml:space="preserve">
+    <value>チャンク</value>
+  </data>
+  <data name="images_row_crc" xml:space="preserve">
+    <value>CRC-32</value>
+  </data>
+  <data name="images_crc_none" xml:space="preserve">
+    <value>記録なし</value>
+  </data>
+  <data name="images_row_metadata" xml:space="preserve">
+    <value>メタデータ</value>
+  </data>
+  <data name="images_metadata_detail" xml:space="preserve">
+    <value>バージョン {0}、スロット {1} 個</value>
+  </data>
+  <data name="images_backup_copy" xml:space="preserve">
+    <value>バックアップコピーから読み込み</value>
+  </data>
+  <data name="images_row_vab" xml:space="preserve">
+    <value>仮想A/B</value>
+  </data>
+  <data name="images_row_partitions" xml:space="preserve">
+    <value>パーティション</value>
+  </data>
+  <data name="images_partitions_detail" xml:space="preserve">
+    <value>データあり {0} 個、合計 {1} 個</value>
+  </data>
+  <data name="images_row_group" xml:space="preserve">
+    <value>グループ</value>
+  </data>
+  <data name="images_unlimited" xml:space="preserve">
+    <value>制限なし</value>
+  </data>
+  <data name="images_row_super_size" xml:space="preserve">
+    <value>Super サイズ</value>
+  </data>
+  <data name="images_note_super" xml:space="preserve">
+    <value>パーティションは sparse かどうかに関係なくイメージから直接読み込まれ、すべてのメタデータのチェックサムが検証されます。それぞれ name.img としてイメージの隣のフォルダーに保存されます。</value>
+  </data>
+  <data name="images_note_sparse" xml:space="preserve">
+    <value>raw への変換では (全パーツをまとめて) 完全なイメージを再構築し、含まれる CRC-32 を検証します。分割すると、fastboot で 1 つずつ書き込めるパーツが作られます。</value>
+  </data>
+  <data name="images_note_raw" xml:space="preserve">
+    <value>sparse への変換では、繰り返しのブロックを 1 つのレコードとして保存します。fastboot やファクトリーイメージで使われる形式です。出力は AOSP の img2simg とバイト単位で一致します。</value>
+  </data>
+  <data name="images_overwrite" xml:space="preserve">
+    <value>次のファイルは既に存在し、置き換えられます:
+
+{0}
+
+続行しますか?</value>
+  </data>
+  <data name="images_done_in" xml:space="preserve">
+    <value>{0} 秒で完了</value>
+  </data>
+  <data name="images_raw_done" xml:space="preserve">
+    <value>Raw イメージを書き込みました:
+{0}
+{1}</value>
+  </data>
+  <data name="images_crc_line" xml:space="preserve">
+    <value>CRC-32 {0}</value>
+  </data>
+  <data name="images_crc_checked" xml:space="preserve">
+    <value>記録されたチェックサム {0} 個を検証しました</value>
+  </data>
+  <data name="images_split_invalid" xml:space="preserve">
+    <value>最大パーツサイズをメガバイト単位で入力してください (例: 512)。</value>
+  </data>
+  <data name="images_resplit_one" xml:space="preserve">
+    <value>分割するには sparse イメージを 1 つだけ開いてください。パーツを結合するには、先に raw に変換してください。</value>
+  </data>
+  <data name="images_sparse_done" xml:space="preserve">
+    <value>sparse ファイルを {0} 個書き込みました ({1}):
+{2}</value>
+  </data>
+  <data name="images_nothing_selected" xml:space="preserve">
+    <value>先に抽出するパーティションにチェックを入れてください。</value>
+  </data>
+  <data name="images_extract_done" xml:space="preserve">
+    <value>{0} 個のパーティションを次の場所に抽出しました:
+{1}</value>
+  </data>
+  <data name="images_row_block_kinds" xml:space="preserve">
+    <value>データ / フィル / don't care</value>
+  </data>
+  <data name="backup_fb_title" xml:space="preserve">
+    <value>{0} は Fastboot モードです</value>
+  </data>
+  <data name="backup_fb_why" xml:space="preserve">
+    <value>Fastboot はパーティションを書き込めますが、読み戻すことはできません。市販の端末では Android がそれを許可していません。バックアップは adb で行うため、次のいずれかの方法で端末を Fastboot から抜ける必要があります:</value>
+  </data>
+  <data name="backup_fb_android" xml:space="preserve">
+    <value>Android を起動</value>
+  </data>
+  <data name="backup_fb_android_note" xml:space="preserve">
+    <value>ファイルはすぐにコピーできます。USB デバッグを有効にする必要があり、パーティションのバックアップには root (Magisk または KernelSU) も必要です。</value>
+  </data>
+  <data name="backup_fb_recovery" xml:space="preserve">
+    <value>リカバリーを起動</value>
+  </data>
+  <data name="backup_fb_recovery_note" xml:space="preserve">
+    <value>インストール済みのカスタムリカバリー (TWRP、OrangeFox) 用: パーティションとファイル、root 不要。純正リカバリーには adb がありません。</value>
+  </data>
+  <data name="backup_fb_boot" xml:space="preserve">
+    <value>リカバリーイメージをインストールせずに 1 回だけ起動</value>
+  </data>
+  <data name="backup_fb_boot_note" xml:space="preserve">
+    <value>この端末用の TWRP または OrangeFox イメージを送信して起動します。端末内は何も変更されません。ブートローダーのアンロックが必要です。</value>
+  </data>
+  <data name="backup_fb_boot_button" xml:space="preserve">
+    <value>リカバリーイメージを選択…</value>
+  </data>
+  <data name="backup_fb_rebooting" xml:space="preserve">
+    <value>{0} を再起動中… 端末が adb で応答すると、このページは自動で切り替わります。</value>
+  </data>
+  <data name="backup_fb_sending" xml:space="preserve">
+    <value>{0} を端末に送信中…</value>
+  </data>
+  <data name="backup_fb_booted" xml:space="preserve">
+    <value>リカバリーイメージを送信して起動しました。読み込みが終わると端末が adb でここに表示され、バックアップを開始できます。</value>
+  </data>
+  <data name="backup_fb_boot_failed" xml:space="preserve">
+    <value>端末はイメージを起動しませんでした。
+
+{0}
+
+ブートローダーがアンロックされていること、イメージがこの端末用であることを確認してください。一部の端末 (Samsung など) は、書き込まずにイメージを起動する機能に対応していません。</value>
+  </data>
+  <data name="backup_fb_not_boot_image" xml:space="preserve">
+    <value>このファイルは boot またはリカバリーイメージではありません。この端末用の TWRP または OrangeFox の .img を選んでください。</value>
+  </data>
+  <data name="backup_fb_userspace" xml:space="preserve">
+    <value>端末は fastbootd にあり、イメージを起動できません。今すぐ bootloader で再起動しますか? 戻ったらもう一度イメージを選んでください。</value>
+  </data>
+  <data name="backup_fb_failed" xml:space="preserve">
+    <value>fastboot が完了しませんでした: {0}</value>
+  </data>
+  <data name="nav_super" xml:space="preserve">
+    <value>Super 作成</value>
+  </data>
+  <data name="super_subtitle" xml:space="preserve">
+    <value>パーティションイメージを fastboot で書き込める 1 つの super.img にまとめます</value>
+  </data>
+  <data name="super_import" xml:space="preserve">
+    <value>super.img からインポート…</value>
+  </data>
+  <data name="super_read_phone" xml:space="preserve">
+    <value>端末からサイズを読み込む</value>
+  </data>
+  <data name="super_layout" xml:space="preserve">
+    <value>レイアウト</value>
+  </data>
+  <data name="super_mode_vab" xml:space="preserve">
+    <value>仮想A/B</value>
+  </data>
+  <data name="super_mode_ab" xml:space="preserve">
+    <value>A/B</value>
+  </data>
+  <data name="super_mode_single" xml:space="preserve">
+    <value>シングルスロット</value>
+  </data>
+  <data name="super_mode_imported" xml:space="preserve">
+    <value>インポートした super と同じ</value>
+  </data>
+  <data name="super_mode_note_vab" xml:space="preserve">
+    <value>Android 11 以降のほとんどの端末。パーティションには _a と _b が付き、ファクトリーイメージと同様にスロット b は空のままです。</value>
+  </data>
+  <data name="super_mode_note_ab" xml:space="preserve">
+    <value>仮想A/B 非対応の A/B 端末 (主に Android 10)。各スロットに super の半分が割り当てられます。</value>
+  </data>
+  <data name="super_mode_note_single" xml:space="preserve">
+    <value>A/B スロットのない端末: パーティション名はそのままです。</value>
+  </data>
+  <data name="super_mode_note_imported" xml:space="preserve">
+    <value>グループ、スロット、パーティションの順序は {0} からコピーされます。同じ名前のパーティションはイメージで置き換えられます。</value>
+  </data>
+  <data name="super_size" xml:space="preserve">
+    <value>SUPER サイズ (バイト)</value>
+  </data>
+  <data name="super_size_hint" xml:space="preserve">
+    <value>例: 9126805504</value>
+  </data>
+  <data name="super_group_size" xml:space="preserve">
+    <value>グループサイズ (バイト)</value>
+  </data>
+  <data name="super_group_name" xml:space="preserve">
+    <value>グループ名</value>
+  </data>
+  <data name="super_auto" xml:space="preserve">
+    <value>自動</value>
+  </data>
+  <data name="super_auto_value" xml:space="preserve">
+    <value>自動: {0}</value>
+  </data>
+  <data name="super_usage" xml:space="preserve">
+    <value>{1} 中 {0} 使用 · 空き {2}</value>
+  </data>
+  <data name="super_usage_none" xml:space="preserve">
+    <value>super のサイズを入力すると、パーティションの使用量が表示されます。</value>
+  </data>
+  <data name="super_add" xml:space="preserve">
+    <value>イメージを追加…</value>
+  </data>
+  <data name="super_add_folder" xml:space="preserve">
+    <value>フォルダーを追加…</value>
+  </data>
+  <data name="super_remove" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="super_clear" xml:space="preserve">
+    <value>クリア</value>
+  </data>
+  <data name="super_empty_hint" xml:space="preserve">
+    <value>パーティションイメージ (system.img、vendor.img、product.img…) を追加するか、既存の super.img のレイアウトをインポートしてください。イメージツールで展開したイメージは自動で見つかります。</value>
+  </data>
+  <data name="super_column_image" xml:space="preserve">
+    <value>イメージ</value>
+  </data>
+  <data name="super_empty_partition" xml:space="preserve">
+    <value>空</value>
+  </data>
+  <data name="super_output" xml:space="preserve">
+    <value>出力</value>
+  </data>
+  <data name="super_format_sparse" xml:space="preserve">
+    <value>Sparse</value>
+  </data>
+  <data name="super_format_raw" xml:space="preserve">
+    <value>Raw</value>
+  </data>
+  <data name="super_format_note" xml:space="preserve">
+    <value>Sparse はサイズが小さく、ファクトリーイメージで使われる形式です。Raw は super のフルサイズになります。</value>
+  </data>
+  <data name="super_verify" xml:space="preserve">
+    <value>作成後にイメージを検証する</value>
+  </data>
+  <data name="super_build" xml:space="preserve">
+    <value>super.img を作成…</value>
+  </data>
+  <data name="super_building" xml:space="preserve">
+    <value>super.img を作成中</value>
+  </data>
+  <data name="super_verifying" xml:space="preserve">
+    <value>super.img を検証中</value>
+  </data>
+  <data name="super_flash_note" xml:space="preserve">
+    <value>書き込みコマンド: fastboot flash super super.img。先に端末の現在の super をバックアップしておいてください。</value>
+  </data>
+  <data name="super_done" xml:space="preserve">
+    <value>super.img の作成と検証が完了しました: すべてのパーティションを読み戻し、元のイメージと一致しました。
+
+{0}
+{1} · {2} 個のパーティション</value>
+  </data>
+  <data name="super_done_unchecked" xml:space="preserve">
+    <value>super.img の作成が完了しました。
+
+{0}
+{1} · {2} 個のパーティション</value>
+  </data>
+  <data name="super_verify_failed" xml:space="preserve">
+    <value>super.img は書き出されましたが検証に失敗しました。書き込まないでください:
+
+{0}</value>
+  </data>
+  <data name="super_problem_no_size" xml:space="preserve">
+    <value>super のサイズを入力してください: 端末から読み込むか、super.img をインポートしてください。</value>
+  </data>
+  <data name="super_problem_size_aligned" xml:space="preserve">
+    <value>super のサイズは 4096 バイトの倍数である必要があります。</value>
+  </data>
+  <data name="super_problem_metadata" xml:space="preserve">
+    <value>このレイアウトのメタデータ設定は使用できません。</value>
+  </data>
+  <data name="super_problem_metadata_large" xml:space="preserve">
+    <value>メタデータ領域に対してパーティションが多すぎます。</value>
+  </data>
+  <data name="super_problem_no_images" xml:space="preserve">
+    <value>パーティションイメージを 1 つ以上追加してください。</value>
+  </data>
+  <data name="super_problem_bad_name" xml:space="preserve">
+    <value>「{0}」は有効な名前ではありません (英字、数字、_ . - のみ、最大 36 文字)。</value>
+  </data>
+  <data name="super_problem_duplicate" xml:space="preserve">
+    <value>「{0}」が重複しています。</value>
+  </data>
+  <data name="super_problem_unknown_group" xml:space="preserve">
+    <value>グループ「{0}」は存在しません。</value>
+  </data>
+  <data name="super_problem_group_full" xml:space="preserve">
+    <value>グループ {0} が小さすぎます: パーティションに {1} 必要ですが、上限は {2} です。</value>
+  </data>
+  <data name="super_problem_does_not_fit" xml:space="preserve">
+    <value>パーティションに {0} 必要ですが、super は {1} です。</value>
+  </data>
+  <data name="super_import_source" xml:space="preserve">
+    <value>{0} のレイアウト · {1} · メタデータスロット {2} 個 · グループ {3}</value>
+  </data>
+  <data name="super_found_images" xml:space="preserve">
+    <value>{1} にパーティションイメージが {0} 個見つかりました。</value>
+  </data>
+  <data name="super_not_super" xml:space="preserve">
+    <value>このファイルは super イメージではありません。</value>
+  </data>
+  <data name="super_not_filesystem" xml:space="preserve">
+    <value>次のファイルはファイルシステムイメージではないため、super には含めないものと思われます (boot や vbmeta などは個別に書き込みます):
+
+{0}
+
+それでも追加しますか?</value>
+  </data>
+  <data name="super_folder_skipped" xml:space="preserve">
+    <value>ファイルシステムイメージではないファイル {0} 個をスキップしました: {1}</value>
+  </data>
+  <data name="super_folder_none" xml:space="preserve">
+    <value>このフォルダーにパーティションイメージが見つかりませんでした。</value>
+  </data>
+  <data name="super_clear_confirm" xml:space="preserve">
+    <value>リストからすべてのパーティションイメージを削除しますか?</value>
+  </data>
+  <data name="super_phone_none" xml:space="preserve">
+    <value>fastboot モードの端末がありません。bootloader または fastbootd で接続して、もう一度お試しください。</value>
+  </data>
+  <data name="super_phone_read" xml:space="preserve">
+    <value>{0} から読み込みました: super は {1} ({2} バイト)。レイアウト: {3}。</value>
+  </data>
+  <data name="super_phone_failed" xml:space="preserve">
+    <value>端末から super のサイズを読み込めませんでした:
+
+{0}</value>
+  </data>
+  <data name="super_reading_phone" xml:space="preserve">
+    <value>端末から読み込み中…</value>
+  </data>
+  <data name="super_pick_image" xml:space="preserve">
+    <value>{0} のイメージを選択</value>
+  </data>
+  <data name="super_output_is_input" xml:space="preserve">
+    <value>出力ファイルが super に含めるイメージの 1 つと同じです。別の名前を選んでください。</value>
+  </data>
+  <data name="images_format_pieces" xml:space="preserve">
+    <value>Qualcomm 書き込みパッケージのピース ({0})</value>
+  </data>
+  <data name="images_note_pieces" xml:space="preserve">
+    <value>これら {0} 個のファイルは 1 つの {1} イメージのピースで、{2} によって配置されます。1 つのイメージに結合するか、ピースから直接パーティションを抽出してください。</value>
+  </data>
+  <data name="images_combine_sparse" xml:space="preserve">
+    <value>sparse として結合</value>
+  </data>
+  <data name="images_combine_raw" xml:space="preserve">
+    <value>raw として結合</value>
+  </data>
+  <data name="images_combine_done" xml:space="preserve">
+    <value>{0} 個のピースを 1 つのイメージに結合しました:
+
+{1}
+{2}
+
+{3}</value>
+  </data>
+  <data name="images_combine_sparse_note" xml:space="preserve">
+    <value>書き込みコマンド: fastboot flash super super.img</value>
+  </data>
+  <data name="images_combine_raw_note" xml:space="preserve">
+    <value>raw イメージはパーティションのフルサイズになります。fastboot には sparse の方が小さくて済みます。</value>
+  </data>
+  <data name="confirm_type_name" xml:space="preserve">
+    <value>確認のため {0} と入力してください:</value>
+  </data>
+  <data name="critical_title" xml:space="preserve">
+    <value>重要なパーティション</value>
+  </data>
+  <data name="confirm_critical_flash" xml:space="preserve">
+    <value>{0} はブートチェーンの一部か、端末の固有情報 (IMEI、キャリブレーション、キー) を保持しています。ここに間違ったイメージを書き込むと、bootloader にすら入れなくなったり、どのファームウェアでも戻せないデータが失われたりする可能性があります。
+
+この端末専用のイメージだけを書き込み、現在のイメージのバックアップを取っておいてください。</value>
+  </data>
+  <data name="confirm_critical_erase" xml:space="preserve">
+    <value>{0} を消去すると、端末が起動しなくなったり、IMEI、キャリブレーション、キーが完全に消えたりする可能性があります。元に戻すことはできません。</value>
+  </data>
+  <data name="slot_switch_title" xml:space="preserve">
+    <value>スロットの切り替え</value>
+  </data>
+  <data name="slot_switch_blocked" xml:space="preserve">
+    <value>スロット {0} はこのままでは起動できないため、アクティブにしませんでした。</value>
+  </data>
+  <data name="slot_switch_danger" xml:space="preserve">
+    <value>スロット {0} はおそらく起動しません。それでも切り替えますか?</value>
+  </data>
+  <data name="slot_switch_warn" xml:space="preserve">
+    <value>スロット {0} に切り替えますか?</value>
+  </data>
+  <data name="slot_reason_never_booted" xml:space="preserve">
+    <value>スロット {0} はまだ起動を完了していません。書き込んだ直後なら正常ですが、そうでない場合は端末がもう一方のスロットに戻ったり、起動に失敗したりする可能性があります。</value>
+  </data>
+  <data name="slot_reason_unbootable" xml:space="preserve">
+    <value>bootloader はスロット {0} を起動不可としてマークしています。</value>
+  </data>
+  <data name="slot_reason_no_retries" xml:space="preserve">
+    <value>スロット {0} は起動の試行回数が残っておらず、一度も正常に起動していません。</value>
+  </data>
+  <data name="slot_reason_empty" xml:space="preserve">
+    <value>スロット {0} の次のパーティションが存在しないか空です: {1}。先にそのスロット (またはファームウェア全体) を書き込んでください。</value>
+  </data>
+  <data name="fastboot_boot_once" xml:space="preserve">
+    <value>イメージを 1 回だけ起動…</value>
+  </data>
+  <data name="fastboot_boot_once_title" xml:space="preserve">
+    <value>1 回だけ起動</value>
+  </data>
+  <data name="fastboot_boot_once_note" xml:space="preserve">
+    <value>boot またはリカバリーイメージを書き込まずに 1 回だけ起動します。端末を再起動すると、インストール済みの状態に戻ります。</value>
+  </data>
+  <data name="boot_once_no_kernel" xml:space="preserve">
+    <value>このイメージにはカーネルがありません (init_boot イメージ、またはそれと同じ種類の boot イメージ)。そのため端末はこれ単体では起動できません。完全な boot.img を起動するか、代わりに init_boot を書き込んでください。</value>
+  </data>
+  <data name="boot_once_vendor_boot" xml:space="preserve">
+    <value>これは vendor_boot イメージです: ramdisk とデバイスツリーのみを含み、単体で起動するものはありません。</value>
+  </data>
+  <data name="boot_once_not_boot" xml:space="preserve">
+    <value>このファイルは boot またはリカバリーイメージではありません。</value>
+  </data>
+  <data name="boot_once_fastbootd" xml:space="preserve">
+    <value>端末は fastbootd にあり、イメージを起動できません。今すぐ bootloader で再起動しますか? その後もう一度イメージを選んでください。</value>
+  </data>
+  <data name="boot_once_started" xml:space="preserve">
+    <value>イメージを送信し、端末が起動しています。通常どおり再起動すると、インストール済みのシステムに戻ります。</value>
+  </data>
+  <data name="super_space_title" xml:space="preserve">
+    <value>Super</value>
+  </data>
+  <data name="super_space_bootloader" xml:space="preserve">
+    <value>fastbootd で表示されます: bootloader は super 内のパーティションを一覧表示しません。</value>
+  </data>
+  <data name="super_space_unknown" xml:space="preserve">
+    <value>端末が super のサイズを報告していません。</value>
+  </data>
+  <data name="super_space_total" xml:space="preserve">
+    <value>合計 {0}、空き約 {1}</value>
+  </data>
+  <data name="super_space_slot" xml:space="preserve">
+    <value>スロット {0}: {1}</value>
+  </data>
+  <data name="super_space_in_use" xml:space="preserve">
+    <value>(使用中)</value>
+  </data>
+  <data name="super_space_cow" xml:space="preserve">
+    <value>アップデートのコピー (COW): {0}</value>
+  </data>
+  <data name="super_space_unslotted" xml:space="preserve">
+    <value>スロットなし: {0}</value>
+  </data>
+  <data name="super_full_title" xml:space="preserve">
+    <value>super の空き容量が足りません</value>
+  </data>
+  <data name="super_full" xml:space="preserve">
+    <value>これらのイメージには super にあと約 {0} の空きが必要ですが ({1})、空きは約 {2} しかありません。fastbootd は "Not enough space to resize partition" で停止します。
+
+空きを作る方法:</value>
+  </data>
+  <data name="super_full_other_slot" xml:space="preserve">
+    <value>スロット {0} のパーティションを削除: {1}。スロット {0} は再度書き込むまで起動しなくなります。</value>
+  </data>
+  <data name="super_full_cow" xml:space="preserve">
+    <value>以前のアップデートの残りを削除: 保留中のアップデートをキャンセルする (更新を中断する) か、COW パーティションを削除します。</value>
+  </data>
+  <data name="super_full_nothing" xml:space="preserve">
+    <value>super を使用しているものは他にありません。これらのイメージはこの端末の super より大きいです。</value>
+  </data>
+  <data name="super_full_ask" xml:space="preserve">
+    <value>数値は推定値です。それでも書き込みますか?</value>
+  </data>
+  <data name="create_missing_title" xml:space="preserve">
+    <value>存在しないパーティション</value>
+  </data>
+  <data name="create_missing" xml:space="preserve">
+    <value>端末に {0} がありません。これらはこのアップデートが super 内に配置するパーティションなので、今ここで (空の状態で) 作成してから書き込むことができます。
+
+fastbootd は新しいパーティションを端末本来のグループ (main_a など) ではなく "default" グループに置きます。端末は通常どおり起動し、次回のフルアップデートかファクトリーの super の書き込みで元のグループに戻ります。
+
+作成して続行しますか?</value>
+  </data>
+  <data name="create_default_group_note" xml:space="preserve">
+    <value>fastbootd は新しいパーティションを端末本来のグループ (main_a など) ではなく "default" グループに置きます。動作には問題なく、次回のフルアップデートで元のグループに戻ります。</value>
+  </data>
+  <data name="usb_check" xml:space="preserve">
+    <value>USB チェック</value>
+  </data>
+  <data name="usb_check_title" xml:space="preserve">
+    <value>USB チェック</value>
+  </data>
+  <data name="usb_missing_driver" xml:space="preserve">
+    <value>{0}: Windows にドライバーがないため、fastboot と adb から認識できません。</value>
+  </data>
+  <data name="usb_driver_problem" xml:space="preserve">
+    <value>{0}: ドライバーはインストールされていますが動作していません (コード {1})。抜き差しするか、ドライバーを再インストールしてください。</value>
+  </data>
+  <data name="usb_edl" xml:space="preserve">
+    <value>{0}: 端末は QFIL で使われる Qualcomm 緊急ダウンロードモード (EDL、9008) です。fastboot はこのモードを扱えません。電源キーを 10〜15 秒長押しして抜けてください。</value>
+  </data>
+  <data name="usb_mediatek" xml:space="preserve">
+    <value>{0}: 端末は SP Flash Tool で使われる MediaTek BROM または preloader モードです。fastboot は扱えません。ケーブルを抜き、端末のキーの組み合わせで fastboot を起動してください。</value>
+  </data>
+  <data name="usb_unisoc" xml:space="preserve">
+    <value>{0}: 端末は Unisoc (Spreadtrum) のダウンロードモードです。fastboot は扱えません。ケーブルを抜き、端末のキーの組み合わせで fastboot を起動してください。</value>
+  </data>
+  <data name="usb_samsung" xml:space="preserve">
+    <value>{0}: 端末は Samsung のダウンロード (Odin) モードです。Samsung の端末には fastboot がなく、このモードでは Odin を使います。</value>
+  </data>
+  <data name="usb_fastboot_ready" xml:space="preserve">
+    <value>{0}: ドライバーが正常に動作している fastboot インターフェースです。端末が一覧に表示されない場合は、抜き差ししてください。</value>
+  </data>
+  <data name="usb_adb_ready" xml:space="preserve">
+    <value>{0}: 端末は fastboot ではなく Android またはリカバリー (adb) で接続されています。</value>
+  </data>
+  <data name="usb_nothing" xml:space="preserve">
+    <value>Windows は USB 上に端末を認識していません。
+
+•  データ通信対応のケーブルを使ってください。充電専用のケーブルも多くあります。
+•  別の USB ポートを試してください。可能なら PC 本体の USB 2.0 ポートに直接接続してください。
+•  端末が fastboot (bootloader または fastbootd) になっているか、adb の場合は USB デバッグが有効になっているか確認してください。</value>
+  </data>
+  <data name="usb_driver_howto" xml:space="preserve">
+    <value>ドライバーのインストール方法: Google USB Driver (developer.android.com/studio/run/win-usb) または端末メーカーのドライバーを入手してください。それでも Windows が端末をドライバーなしと表示する場合は、デバイスマネージャーで右クリック → ドライバーの更新 → コンピューターを参照 → 一覧から選択 → Android Device → fastboot なら "Android Bootloader Interface"、adb なら "Android ADB Interface" を選んでください。</value>
+  </data>
+  <data name="usb_open_device_manager" xml:space="preserve">
+    <value>今すぐデバイスマネージャーを開きますか?</value>
+  </data>
+  <data name="usb_reboot_bootloader_ask" xml:space="preserve">
+    <value>ここに表示されるよう、今すぐ bootloader で再起動しますか?</value>
+  </data>
+  <data name="usb_reboot_more_than_one" xml:space="preserve">
+    <value>adb で複数の端末が接続されています ({0})。正しい端末が再起動するよう、他の端末を外してからもう一度お試しください。</value>
+  </data>
+  <data name="usb_reboot_none" xml:space="preserve">
+    <value>adb で使える端末がありません。端末で USB デバッグを許可してから、もう一度お試しください。</value>
+  </data>
+  <data name="theme" xml:space="preserve">
+    <value>外観</value>
+  </data>
+  <data name="theme_dark" xml:space="preserve">
+    <value>ダーク</value>
+  </data>
+  <data name="theme_light" xml:space="preserve">
+    <value>ライト</value>
+  </data>
+  <data name="theme_system" xml:space="preserve">
+    <value>Windows の設定に合わせる</value>
+  </data>
+  <data name="theme_restart" xml:space="preserve">
+    <value>新しい外観は再起動後に適用されます。今すぐ Fastboot Studio を再起動しますか?</value>
+  </data>
+  <data name="theme_busy" xml:space="preserve">
+    <value>外観を変更する前に、現在の書き込みまたは抽出が終わるまでお待ちください。</value>
+  </data>
+  <data name="nav_terminal" xml:space="preserve">
+    <value>ターミナル</value>
+  </data>
+  <data name="terminal_subtitle" xml:space="preserve">
+    <value>アプリに付属のツールで adb や fastboot のコマンドを直接実行します</value>
+  </data>
+  <data name="terminal_folder" xml:space="preserve">
+    <value>フォルダー…</value>
+  </data>
+  <data name="terminal_folder_now" xml:space="preserve">
+    <value>フォルダー: {0}   ·   パスなしで指定したファイルはここから探します。ファイルを行にドロップするとパスが追加されます</value>
+  </data>
+  <data name="terminal_run" xml:space="preserve">
+    <value>実行</value>
+  </data>
+  <data name="terminal_stop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="terminal_welcome" xml:space="preserve">
+    <value>adb または fastboot のコマンドを入力して Enter キーを押してください。例: fastboot getvar all
+上下キーで以前のコマンドを呼び出せます。詳しくは help と入力してください。</value>
+  </data>
+  <data name="terminal_help" xml:space="preserve">
+    <value>コマンドは adb または fastboot で始まり、アプリに付属のツールで実行されます。
+  cd FOLDER    ファイルを読み込むフォルダーを変更
+  clear        この画面をクリア
+端末を文鎮化させる可能性があるコマンド (重要なパーティション、ブートローダーのロック、パーティションへの dd) は、先に単語の入力を求めます。データを消去するコマンドも確認を求めます。
+adb shell の後にはコマンドが必要です (例: adb shell getprop)。「停止」で logcat など実行中のものを終了します。</value>
+  </data>
+  <data name="terminal_not_tool" xml:space="preserve">
+    <value>ここで実行できるのは adb と fastboot のコマンドだけです。行を adb または fastboot で始めてください。</value>
+  </data>
+  <data name="terminal_interactive" xml:space="preserve">
+    <value>ここでは adb shell の後にコマンドが必要です。例: adb shell getprop ro.product.model</value>
+  </data>
+  <data name="terminal_quote" xml:space="preserve">
+    <value>引用符が閉じられていません。</value>
+  </data>
+  <data name="terminal_busy" xml:space="preserve">
+    <value>書き込み中です。同時に端末と通信しないよう、終わるまでお待ちください。</value>
+  </data>
+  <data name="terminal_cancelled" xml:space="preserve">
+    <value>実行しませんでした。</value>
+  </data>
+  <data name="terminal_exit" xml:space="preserve">
+    <value>[終了コード {0}]</value>
+  </data>
+  <data name="terminal_stopped" xml:space="preserve">
+    <value>[停止しました]</value>
+  </data>
+  <data name="terminal_no_folder" xml:space="preserve">
+    <value>フォルダーが存在しません: {0}</value>
+  </data>
+  <data name="terminal_start_failed" xml:space="preserve">
+    <value>コマンドを開始できませんでした: {0}</value>
+  </data>
+  <data name="terminal_critical" xml:space="preserve">
+    <value>このコマンドは {0} を書き込みまたは消去します。これはブートチェーンまたは端末の固有情報 (IMEI、キャリブレーション、キー) の一部です。間違ったイメージを書き込むと、bootloader にすら入れなくなったり、どのファームウェアでも戻せないデータが失われたりする可能性があります。</value>
+  </data>
+  <data name="terminal_lock" xml:space="preserve">
+    <value>ブートローダーをロックします。純正以外のソフトウェア (カスタム ROM、root、パッチ済み boot、GSI) を使っている端末では、ロックされたブートローダーは起動を拒否します。アンロックするまで端末が起動しなくなる可能性があり、アンロックするとデータは消去されます。</value>
+  </data>
+  <data name="terminal_dd" xml:space="preserve">
+    <value>dd で端末のパーティションに直接書き込みます。イメージやパーティションは一切チェックされません。間違えると端末が起動しなくなる可能性があります。</value>
+  </data>
+  <data name="terminal_wipe" xml:space="preserve">
+    <value>このコマンドは端末のユーザーデータ (アプリ、写真、ファイル) を消去します。実行しますか?</value>
+  </data>
+  <data name="boot_check_title" xml:space="preserve">
+    <value>{0} に書き込む前のチェック</value>
+  </data>
+  <data name="boot_check_failed" xml:space="preserve">
+    <value>イメージを読み込めませんでした: {0}</value>
+  </data>
+  <data name="boot_find_not_boot" xml:space="preserve">
+    <value>このファイルは boot イメージではありませんが、{0} には boot イメージが入ります。ここに書き込むと、端末はおそらく起動しなくなります。</value>
+  </data>
+  <data name="boot_find_no_kernel" xml:space="preserve">
+    <value>このイメージにはカーネルがありません (init_boot イメージ、またはそれと同様の構成) が、{0} にはカーネルが必要です。端末は起動しません。</value>
+  </data>
+  <data name="boot_find_no_kernel_hint" xml:space="preserve">
+    <value>この端末には {0} があります。このイメージはそこに書き込みます。</value>
+  </data>
+  <data name="boot_find_kernel_in_init_boot" xml:space="preserve">
+    <value>このイメージにはカーネルが含まれていますが、{0} には ramdisk しか入りません。カーネル入りのイメージは boot 用です。</value>
+  </data>
+  <data name="boot_find_vendor_mismatch" xml:space="preserve">
+    <value>このイメージは {0} 用ではありません: vendor_boot イメージは vendor_boot に、boot イメージは決して vendor_boot には書き込みません。</value>
+  </data>
+  <data name="boot_find_kmi" xml:space="preserve">
+    <value>カーネルは {0} 用にビルドされていますが、端末は {1} で動作しています。別の KMI 用のカーネルは起動せず、端末はブートループします。</value>
+  </data>
+  <data name="boot_find_kernel_version" xml:space="preserve">
+    <value>カーネルのバージョンは {0} ですが、端末は {1} で動作しています。起動しない可能性があります。</value>
+  </data>
+  <data name="boot_find_older_patch" xml:space="preserve">
+    <value>イメージのセキュリティパッチ ({0}) が端末のもの ({1}) より古いです。端末によっては起動を拒否したり、keystore に保存されたキー (指紋、一部アプリのログイン) が失われたりします。</value>
+  </data>
+  <data name="boot_find_kernel" xml:space="preserve">
+    <value>カーネル: {0}</value>
+  </data>
+  <data name="boot_find_root" xml:space="preserve">
+    <value>Root: {0}</value>
+  </data>
+  <data name="boot_find_stock" xml:space="preserve">
+    <value>root 化されていません (純正イメージ)。</value>
+  </data>
+  <data name="boot_check_phone_unknown" xml:space="preserve">
+    <value>ヒント: Android の起動中にこの端末を一度「バックアップ」ページで開くと、カーネルとセキュリティパッチもここでチェックされます。</value>
+  </data>
+  <data name="boot_check_phone_known" xml:space="preserve">
+    <value>{1} に {0} が adb で報告した内容と比較しました。</value>
+  </data>
+  <data name="boot_check_question" xml:space="preserve">
+    <value>それでも {0} に書き込みますか?</value>
+  </data>
+  <data name="images_row_header" xml:space="preserve">
+    <value>ヘッダー</value>
+  </data>
+  <data name="images_header_detail" xml:space="preserve">
+    <value>バージョン {0}、ページ {1}</value>
+  </data>
+  <data name="images_row_android" xml:space="preserve">
+    <value>Android</value>
+  </data>
+  <data name="images_row_patch" xml:space="preserve">
+    <value>セキュリティパッチ</value>
+  </data>
+  <data name="images_row_kernel" xml:space="preserve">
+    <value>カーネル</value>
+  </data>
+  <data name="images_row_kmi" xml:space="preserve">
+    <value>KMI</value>
+  </data>
+  <data name="images_kmi_none" xml:space="preserve">
+    <value>GKI ではない</value>
+  </data>
+  <data name="images_row_kernel_compression" xml:space="preserve">
+    <value>カーネルの圧縮</value>
+  </data>
+  <data name="images_kernel_unreadable" xml:space="preserve">
+    <value>{0} (読み込み不可)</value>
+  </data>
+  <data name="images_kernel_no_banner" xml:space="preserve">
+    <value>バージョンが見つかりません</value>
+  </data>
+  <data name="images_no_kernel" xml:space="preserve">
+    <value>なし (init_boot)</value>
+  </data>
+  <data name="images_row_ramdisk" xml:space="preserve">
+    <value>Ramdisk</value>
+  </data>
+  <data name="images_ramdisk_detail" xml:space="preserve">
+    <value>{0}、ファイル {1} 個</value>
+  </data>
+  <data name="images_row_root" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="images_root_none" xml:space="preserve">
+    <value>なし (純正)</value>
+  </data>
+  <data name="images_row_cmdline" xml:space="preserve">
+    <value>コマンドライン</value>
+  </data>
+  <data name="fastboot_row_adb_kernel" xml:space="preserve">
+    <value>カーネル (adb で最後に確認)</value>
+  </data>
+  <data name="fastboot_row_adb_patch" xml:space="preserve">
+    <value>セキュリティパッチ (adb 経由)</value>
+  </data>
+  <data name="adb_phone_seen" xml:space="preserve">
+    <value>{0} は Android で起動中: カーネル {1}。</value>
+  </data>
+  <data name="adb_phone_companion" xml:space="preserve">
+    <value>{0} は Android で起動中: カーネル {1}、Fastboot Studio Companion {2} ({3})。</value>
+  </data>
+  <data name="adb_phone_hint" xml:space="preserve">
+    <value>カーネルが記録されたので、書き込む前に boot イメージと照合されます。bootloader で再起動するには「USB チェック」を使ってください。</value>
+  </data>
+  <data name="fastboot_row_companion" xml:space="preserve">
+    <value>Companion (adb 経由)</value>
+  </data>
+  <data name="fastboot_row_avb" xml:space="preserve">
+    <value>AVB (adb 経由)</value>
+  </data>
+  <data name="fastboot_row_conflicts" xml:space="preserve">
+    <value>モジュールの競合 (adb 経由)</value>
+  </data>
+  <data name="fastboot_avb_spoofed" xml:space="preserve">
+    <value>隠蔽モジュールがプロパティを変更しています</value>
+  </data>
+  <data name="fastboot_conflicts_none" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="check_module_conflicts" xml:space="preserve">
+    <value>前回端末が Android で起動していたとき、Fastboot Studio Companion が root モジュール間の競合を {0} 件検出しました。</value>
+  </data>
+  <data name="boot_find_root_change" xml:space="preserve">
+    <value>このイメージは {0} で root 化されていますが、端末は {1} を使っています。書き込むと {1} のモジュールと設定は動作しなくなります。</value>
+  </data>
+  <data name="nav_root" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="root_subtitle" xml:space="preserve">
+    <value>Magisk、KernelSU、APatch で端末をステップごとに root 化します</value>
+  </data>
+  <data name="root_step1" xml:space="preserve">
+    <value>1 · root アプリと純正イメージ</value>
+  </data>
+  <data name="root_step1_note" xml:space="preserve">
+    <value>root に使うアプリを選び、次に端末で現在動作しているファームウェアの純正イメージを選んでください: boot.img または init_boot.img、または OTA 全体 (payload.bin または zip) を選ぶと適切なイメージが取り出されます。</value>
+  </data>
+  <data name="root_pick" xml:space="preserve">
+    <value>イメージまたは OTA を選択…</value>
+  </data>
+  <data name="root_picking" xml:space="preserve">
+    <value>読み込み中…</value>
+  </data>
+  <data name="root_image_summary" xml:space="preserve">
+    <value>{0} · {1}</value>
+  </data>
+  <data name="root_image_stock" xml:space="preserve">
+    <value>純正、root 化されていません</value>
+  </data>
+  <data name="root_image_rooted" xml:space="preserve">
+    <value>既に root 化済み: {0}</value>
+  </data>
+  <data name="root_needs_init_boot" xml:space="preserve">
+    <value>{0} は init_boot を持つ端末 (Android 13 以降) では init_boot にパッチを当てます。この OTA には init_boot があるため、そのイメージを使います。</value>
+  </data>
+  <data name="root_not_boot" xml:space="preserve">
+    <value>このファイルは boot または init_boot イメージではありません。</value>
+  </data>
+  <data name="root_no_image_in_ota" xml:space="preserve">
+    <value>この OTA には boot または init_boot イメージがありません。</value>
+  </data>
+  <data name="root_already_rooted" xml:space="preserve">
+    <value>このイメージは既にパッチ済みです ({0})。端末で動作しているのと同じファームウェアの純正イメージにパッチを当ててください。</value>
+  </data>
+  <data name="root_apatch_kernel" xml:space="preserve">
+    <value>APatch は boot に含まれるカーネルにパッチを当てます: boot.img (または OTA) を選んでください。</value>
+  </data>
+  <data name="root_step2" xml:space="preserve">
+    <value>2 · 端末に送信</value>
+  </data>
+  <data name="root_step2_note" xml:space="preserve">
+    <value>端末は USB デバッグを有効にした状態で Android を起動している必要があります。イメージは Download フォルダーに {0} として保存されます。</value>
+  </data>
+  <data name="root_push" xml:space="preserve">
+    <value>端末に送信</value>
+  </data>
+  <data name="root_no_adb" xml:space="preserve">
+    <value>adb で端末が見つかりません。Android を起動し、USB デバッグを許可した状態で接続してください。</value>
+  </data>
+  <data name="root_pushed" xml:space="preserve">
+    <value>{1} の {0} に送信しました。</value>
+  </data>
+  <data name="root_push_failed" xml:space="preserve">
+    <value>イメージを送信できませんでした: {0}</value>
+  </data>
+  <data name="root_step3" xml:space="preserve">
+    <value>3 · 端末でパッチを当てる</value>
+  </data>
+  <data name="root_how_magisk" xml:space="preserve">
+    <value>Magisk を開く → インストール → パッチするファイルの選択 → Download → {0} → 次に進む。「All done」と表示されたら、下のボタンを押してください。</value>
+  </data>
+  <data name="root_how_kernelsu" xml:space="preserve">
+    <value>KernelSU を開く → インストール → ファイルを選択 → Download → {0} → 次へ。完了したら、下のボタンを押してください。</value>
+  </data>
+  <data name="root_how_apatch" xml:space="preserve">
+    <value>APatch を開く → パッチ (インストールボタン) → boot イメージを選択 → Download → {0}、スーパーキーを設定 → 開始。完了したら、下のボタンを押してください。</value>
+  </data>
+  <data name="root_pull" xml:space="preserve">
+    <value>パッチ済みイメージを取得</value>
+  </data>
+  <data name="root_no_patched" xml:space="preserve">
+    <value>純正イメージを送信した後、Download にパッチ済みイメージが見つかりません。先に root アプリでパッチを当ててください。</value>
+  </data>
+  <data name="root_pulled" xml:space="preserve">
+    <value>{0} を取得しました: {1}。</value>
+  </data>
+  <data name="root_patch_not_rooted" xml:space="preserve">
+    <value>パッチ済みイメージに root が見つかりませんでした。</value>
+  </data>
+  <data name="root_patch_kind" xml:space="preserve">
+    <value>パッチ済みイメージが純正イメージと同じ種類ではありません (一方にはカーネルがあり、もう一方にはありません)。</value>
+  </data>
+  <data name="root_patch_kernel" xml:space="preserve">
+    <value>パッチ済みイメージのカーネルが純正イメージと異なります: 別のイメージにパッチを当てた可能性があります。</value>
+  </data>
+  <data name="root_patch_problems" xml:space="preserve">
+    <value>このパッチ済みイメージは正しくないようです:</value>
+  </data>
+  <data name="root_step4" xml:space="preserve">
+    <value>4 · 書き込む</value>
+  </data>
+  <data name="root_step4_note" xml:space="preserve">
+    <value>端末が bootloader で再起動し、パッチ済みイメージがアクティブなスロットの {0} に書き込まれます。ブートローダーのアンロックが必要です。純正イメージは後で元に戻せるようフォルダーに残ります。</value>
+  </data>
+  <data name="root_flash" xml:space="preserve">
+    <value>bootloader で再起動して書き込む</value>
+  </data>
+  <data name="root_boot_once" xml:space="preserve">
+    <value>まず 1 回だけ試す</value>
+  </data>
+  <data name="root_boot_once_note" xml:space="preserve">
+    <value>パッチ済み boot イメージを書き込まずに、端末を 1 回だけ起動します。正常に起動したら書き込むか、root アプリ自体にインストールさせてください (直接インストール)。</value>
+  </data>
+  <data name="root_open_folder" xml:space="preserve">
+    <value>フォルダーを開く</value>
+  </data>
+  <data name="root_confirm_flash" xml:space="preserve">
+    <value>{0} を bootloader で再起動し、{1} を {2} に書き込みますか?
+
+ブートローダーのアンロックが必要です。その後端末が起動しない場合は、同じ方法でフォルダー内の純正イメージを {2} に書き込んでください。</value>
+  </data>
+  <data name="root_waiting_fastboot" xml:space="preserve">
+    <value>bootloader の端末を待っています…</value>
+  </data>
+  <data name="root_no_fastboot" xml:space="preserve">
+    <value>2 分以内に端末が fastboot に表示されませんでした。ドライバーを確認してから (デバイスページ → USB チェック)、デバイスページから {0} を書き込んでください。</value>
+  </data>
+  <data name="root_flashing" xml:space="preserve">
+    <value>{0} を書き込み中…</value>
+  </data>
+  <data name="root_flash_failed" xml:space="preserve">
+    <value>書き込みに失敗しました: {0}</value>
+  </data>
+  <data name="root_flashed" xml:space="preserve">
+    <value>{0} にパッチ済みイメージを書き込みました。今すぐ端末を再起動しますか?</value>
+  </data>
+  <data name="root_done" xml:space="preserve">
+    <value>完了しました。端末が起動したら root アプリを開いてください: セットアップの完了ともう一度の再起動を求められる場合があります。</value>
+  </data>
+  <data name="root_booting" xml:space="preserve">
+    <value>パッチ済みイメージで端末を 1 回だけ起動中…</value>
+  </data>
+  <data name="root_boot_failed" xml:space="preserve">
+    <value>イメージを起動できませんでした: {0}</value>
+  </data>
+  <data name="root_booted" xml:space="preserve">
+    <value>端末はパッチ済みイメージで起動中です。root が動作したら書き込むか、root アプリの「直接インストール」を使ってください。</value>
+  </data>
+  <data name="root_image_patched" xml:space="preserve">
+    <value>{0} でパッチ済み</value>
+  </data>
+  <data name="nav_phone" xml:space="preserve">
+    <value>端末</value>
+  </data>
+  <data name="phone_subtitle" xml:space="preserve">
+    <value>Android 起動中の端末: スペック、セキュリティ、端末内のバックアップ。Fastboot Studio Companion があればさらに詳しく表示します。</value>
+  </data>
+  <data name="phone_reboot_recovery" xml:space="preserve">
+    <value>リカバリー</value>
+  </data>
+  <data name="phone_reboot_bootloader" xml:space="preserve">
+    <value>bootloader で再起動</value>
+  </data>
+  <data name="phone_read_again" xml:space="preserve">
+    <value>再読み込み</value>
+  </data>
+  <data name="phone_empty_title" xml:space="preserve">
+    <value>Android で起動中の端末がありません</value>
+  </data>
+  <data name="phone_empty_text" xml:space="preserve">
+    <value>USB デバッグを有効にして端末を接続し、端末に確認が表示されたらこのコンピューターを許可してください。bootloader の端末は「デバイス」ページに表示されます。</value>
+  </data>
+  <data name="phone_unauthorized" xml:space="preserve">
+    <value>{0} が待機中です: 端末の画面でこのコンピューターからの USB デバッグを許可してください。</value>
+  </data>
+  <data name="phone_reading" xml:space="preserve">
+    <value>{0} を読み込み中…</value>
+  </data>
+  <data name="phone_card_device" xml:space="preserve">
+    <value>デバイス</value>
+  </data>
+  <data name="phone_model" xml:space="preserve">
+    <value>モデル</value>
+  </data>
+  <data name="phone_chip" xml:space="preserve">
+    <value>チップ</value>
+  </data>
+  <data name="phone_android" xml:space="preserve">
+    <value>Android</value>
+  </data>
+  <data name="phone_patch" xml:space="preserve">
+    <value>セキュリティパッチ</value>
+  </data>
+  <data name="phone_slot" xml:space="preserve">
+    <value>スロット</value>
+  </data>
+  <data name="phone_battery" xml:space="preserve">
+    <value>バッテリー</value>
+  </data>
+  <data name="phone_storage" xml:space="preserve">
+    <value>ストレージ</value>
+  </data>
+  <data name="phone_card_security" xml:space="preserve">
+    <value>カーネルとセキュリティ</value>
+  </data>
+  <data name="phone_kernel" xml:space="preserve">
+    <value>カーネル</value>
+  </data>
+  <data name="phone_bootloader" xml:space="preserve">
+    <value>ブートローダー</value>
+  </data>
+  <data name="phone_root" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="phone_locked" xml:space="preserve">
+    <value>ロック中</value>
+  </data>
+  <data name="phone_unlocked" xml:space="preserve">
+    <value>アンロック済み</value>
+  </data>
+  <data name="phone_root_none" xml:space="preserve">
+    <value>見つかりません</value>
+  </data>
+  <data name="phone_root_unknown" xml:space="preserve">
+    <value>Companion で確認できます</value>
+  </data>
+  <data name="phone_spoofed" xml:space="preserve">
+    <value>ROM または隠蔽モジュールが boot プロパティ (ro.boot.*) をロック状態に見えるよう変更しています。ここに表示されているのが本当の状態です: root はアンロックされたブートローダーでしか動作しません。</value>
+  </data>
+  <data name="phone_avb_from_props" xml:space="preserve">
+    <value>AVB は端末のプロパティに基づく値です。隠蔽モジュールによって変更されている可能性があります。Companion はブートローダー自身の値を読み取ります。</value>
+  </data>
+  <data name="phone_boot_checked" xml:space="preserve">
+    <value>書き込む前に、boot イメージはこのカーネルと照合されます。</value>
+  </data>
+  <data name="phone_battery_health" xml:space="preserve">
+    <value>健全性 {0}%</value>
+  </data>
+  <data name="phone_battery_cycles" xml:space="preserve">
+    <value>{0} サイクル</value>
+  </data>
+  <data name="phone_battery_charge" xml:space="preserve">
+    <value>充電 {0}%</value>
+  </data>
+  <data name="phone_storage_wear" xml:space="preserve">
+    <value>{0} · 消耗 {1}–{2}%</value>
+  </data>
+  <data name="phone_storage_past" xml:space="preserve">
+    <value>{0} · 定格寿命を超過</value>
+  </data>
+  <data name="phone_storage_spare" xml:space="preserve">
+    <value>予備ブロックが残りわずか</value>
+  </data>
+  <data name="phone_slot_none" xml:space="preserve">
+    <value>A/B スロットなし</value>
+  </data>
+  <data name="phone_dynamic" xml:space="preserve">
+    <value>動的</value>
+  </data>
+  <data name="phone_companion_beta" xml:space="preserve">
+    <value>ベータ</value>
+  </data>
+  <data name="phone_companion_reading" xml:space="preserve">
+    <value>root マネージャーに Companion のレポートを要求しています… 確認が表示されたら Shell を許可してください。</value>
+  </data>
+  <data name="phone_companion_no_root" xml:space="preserve">
+    <value>Companion は Magisk、KernelSU、APatch 用の root モジュールですが、この端末は root 化されていません。ここに表示されている内容はすべて Companion なしで読み取ったものです。</value>
+  </data>
+  <data name="phone_companion_missing" xml:space="preserve">
+    <value>この端末にはインストールされていません。インストールすると、このページにブートローダー自身の AVB 状態、root マネージャー、ストレージの消耗度、モジュール間の競合も表示されます。</value>
+  </data>
+  <data name="phone_companion_get" xml:space="preserve">
+    <value>Companion を入手</value>
+  </data>
+  <data name="phone_companion_refused" xml:space="preserve">
+    <value>root が拒否されたか、応答がありませんでした。root マネージャーで Shell を許可してから、再読み込みしてください。</value>
+  </data>
+  <data name="phone_conflicts_none" xml:space="preserve">
+    <value>{0} 個のモジュール、競合なし</value>
+  </data>
+  <data name="phone_conflicts_some" xml:space="preserve">
+    <value>モジュール間の競合: {0} 件</value>
+  </data>
+  <data name="phone_conflict_file" xml:space="preserve">
+    <value>同じファイル: {0}</value>
+  </data>
+  <data name="phone_conflict_files" xml:space="preserve">
+    <value>同じファイル {1} 個: {0}</value>
+  </data>
+  <data name="phone_conflict_replace" xml:space="preserve">
+    <value>{0} がフォルダーを置き換え、{1} を隠しています</value>
+  </data>
+  <data name="phone_conflict_prop" xml:space="preserve">
+    <value>同じプロパティ: {0}</value>
+  </data>
+  <data name="phone_and" xml:space="preserve">
+    <value>と</value>
+  </data>
+  <data name="phone_card_backups" xml:space="preserve">
+    <value>端末内のバックアップ</value>
+  </data>
+  <data name="phone_backups_summary" xml:space="preserve">
+    <value>{0} 個のバックアップ · {1}</value>
+  </data>
+  <data name="phone_backups_last" xml:space="preserve">
+    <value>最新: {0}</value>
+  </data>
+  <data name="phone_backups_open" xml:space="preserve">
+    <value>PC のバックアップフォルダーを開く</value>
+  </data>
+  <data name="phone_backups_empty" xml:space="preserve">
+    <value>端末にはまだバックアップがありません。Companion の「バックアップ」タブから /sdcard/FastbootStudio/Backups に作成できます。</value>
+  </data>
+  <data name="phone_backups_note" xml:space="preserve">
+    <value>root なしで adb 経由でコピーし、すべてのファイルを SHA256SUMS と照合します。デバイスページから、これらを使ってパーティションを書き戻せます。</value>
+  </data>
+  <data name="phone_col_backup" xml:space="preserve">
+    <value>バックアップ</value>
+  </data>
+  <data name="phone_col_type" xml:space="preserve">
+    <value>種類</value>
+  </data>
+  <data name="phone_col_files" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="phone_col_size" xml:space="preserve">
+    <value>サイズ</value>
+  </data>
+  <data name="phone_col_date" xml:space="preserve">
+    <value>日付</value>
+  </data>
+  <data name="phone_col_pc" xml:space="preserve">
+    <value>PC 上</value>
+  </data>
+  <data name="phone_set_full" xml:space="preserve">
+    <value>フル</value>
+  </data>
+  <data name="phone_set_critical" xml:space="preserve">
+    <value>重要</value>
+  </data>
+  <data name="phone_set_boot" xml:space="preserve">
+    <value>Boot</value>
+  </data>
+  <data name="phone_pc_no" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="phone_pc_yes" xml:space="preserve">
+    <value>コピー済み</value>
+  </data>
+  <data name="phone_pc_copying" xml:space="preserve">
+    <value>コピー中…</value>
+  </data>
+  <data name="phone_pc_checking" xml:space="preserve">
+    <value>検証中…</value>
+  </data>
+  <data name="phone_pc_ok" xml:space="preserve">
+    <value>✓ コピー済み・一致</value>
+  </data>
+  <data name="phone_pc_bad" xml:space="preserve">
+    <value>✗ {1} 個中 {0} 個のファイルが一致しません</value>
+  </data>
+  <data name="phone_pc_failed" xml:space="preserve">
+    <value>コピーに失敗しました: {0}</value>
+  </data>
+  <data name="phone_copy" xml:space="preserve">
+    <value>コピーして検証</value>
+  </data>
+  <data name="phone_open" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="phone_reboot_confirm" xml:space="preserve">
+    <value>{0} を {1} で再起動しますか?</value>
+  </data>
+  <data name="phone_reboot_failed" xml:space="preserve">
+    <value>端末が再起動しませんでした: {0}</value>
+  </data>
+  <data name="rendering" xml:space="preserve">
+    <value>描画</value>
+  </data>
+  <data name="rendering_software" xml:space="preserve">
+    <value>ソフトウェア (安定)</value>
+  </data>
+  <data name="rendering_gpu" xml:space="preserve">
+    <value>グラフィックカード</value>
+  </data>
+  <data name="rendering_note" xml:space="preserve">
+    <value>ソフトウェア描画にすると、一部のグラフィックドライバーやリモートデスクトップアプリで起こるちらつき、メニュー項目の消失、ボタンの縞模様がなくなります。</value>
+  </data>
+  <data name="rendering_restart" xml:space="preserve">
+    <value>新しい描画モードは再起動後に適用されます。今すぐ Fastboot Studio を再起動しますか?</value>
+  </data>
+  <data name="flash_both_slots" xml:space="preserve">
+    <value>両方のスロットに書き込む (a と b)</value>
+  </data>
+  <data name="flash_both_slots_note" xml:space="preserve">
+    <value>modem や boot などのファームウェアパーティションは、もう一方のスロットにも書き込まれます。super 内のパーティションは除外されます。</value>
+  </data>
+  <data name="flash_both_slots_confirm" xml:space="preserve">
+    <value>使用中のスロットに加えて、次のパーティションをスロット {0} にも書き込みます。端末がそのスロットから起動した場合でも同じファームウェアが使われます:
+
+{1}
+
+super 内のパーティション (system、vendor…) は除外されます。続行しますか?</value>
+  </data>
+  <data name="flash_both_slots_done" xml:space="preserve">
+    <value>もう一方のスロットにも書き込みました: {0}</value>
+  </data>
+  <data name="update_section" xml:space="preserve">
+    <value>アップデート</value>
+  </data>
+  <data name="update_auto" xml:space="preserve">
+    <value>自動でアップデートを確認する</value>
+  </data>
+  <data name="update_auto_note" xml:space="preserve">
+    <value>1 日に 1 回、アプリの GitHub ページから確認します。オフの場合は、ここから手動で確認してください。</value>
+  </data>
+  <data name="update_check_now" xml:space="preserve">
+    <value>今すぐ確認</value>
+  </data>
+  <data name="update_checking" xml:space="preserve">
+    <value>確認中…</value>
+  </data>
+  <data name="update_latest" xml:space="preserve">
+    <value>最新バージョンです ✓</value>
+  </data>
+  <data name="update_found" xml:space="preserve">
+    <value>{0} が利用可能です</value>
+  </data>
+  <data name="update_check_failed" xml:space="preserve">
+    <value>確認できませんでした: {0}</value>
+  </data>
+  <data name="update_badge" xml:space="preserve">
+    <value>アップデート {0} が利用可能</value>
+  </data>
+  <data name="update_available_title" xml:space="preserve">
+    <value>アップデートが利用可能: {0}</value>
+  </data>
+  <data name="update_have" xml:space="preserve">
+    <value>現在 v{0} · {1} リリース</value>
+  </data>
+  <data name="update_have_nodate" xml:space="preserve">
+    <value>現在 v{0}</value>
+  </data>
+  <data name="update_whats_new" xml:space="preserve">
+    <value>新機能と修正点</value>
+  </data>
+  <data name="update_no_notes" xml:space="preserve">
+    <value>変更点はリリースページに記載されています。</value>
+  </data>
+  <data name="update_note" xml:space="preserve">
+    <value>アプリの GitHub ページからダウンロードし、開く前に SHA-256 を検証します。winget でインストールした場合: winget upgrade IFOKNR.FastbootStudio</value>
+  </data>
+  <data name="update_download" xml:space="preserve">
+    <value>アップデートをダウンロード</value>
+  </data>
+  <data name="update_later" xml:space="preserve">
+    <value>後で</value>
+  </data>
+  <data name="update_skip" xml:space="preserve">
+    <value>このバージョンをスキップ</value>
+  </data>
+  <data name="update_open_page" xml:space="preserve">
+    <value>リリースページを開く</value>
+  </data>
+  <data name="update_downloading" xml:space="preserve">
+    <value>{0} をダウンロード中…</value>
+  </data>
+  <data name="update_downloading_note" xml:space="preserve">
+    <value>ダウンロードが終わると SHA-256 が検証され、フォルダーが開きます。アプリを閉じて展開し、新しいバージョンを実行してください。</value>
+  </data>
+  <data name="update_done_title" xml:space="preserve">
+    <value>ダウンロード完了、SHA-256 も一致 ✓</value>
+  </data>
+  <data name="update_done_where" xml:space="preserve">
+    <value>ダウンロードフォルダー: {0}</value>
+  </data>
+  <data name="update_done_note" xml:space="preserve">
+    <value>アプリを閉じ、古いものに上書きして (または任意のフォルダーに) 展開し、FastbootStudio.exe を実行してください。設定とバックアップはそのまま残ります。</value>
+  </data>
+  <data name="update_open_close" xml:space="preserve">
+    <value>フォルダーを開いてアプリを閉じる</value>
+  </data>
+  <data name="update_open_folder" xml:space="preserve">
+    <value>フォルダーを開く</value>
+  </data>
+  <data name="update_close" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="update_failed_title" xml:space="preserve">
+    <value>アップデートをダウンロードできませんでした</value>
+  </data>
+  <data name="update_hash_mismatch" xml:space="preserve">
+    <value>ダウンロードしたファイルが SHA-256 と一致しないため削除しました。もう一度試すか、リリースページからダウンロードしてください。</value>
+  </data>
+  <data name="update_no_hash" xml:space="preserve">
+    <value>リリースに zip の SHA-256 が記載されていないため、アプリは保存しません。リリースページからダウンロードしてください。</value>
+  </data>
+  <data name="update_no_zip" xml:space="preserve">
+    <value>このリリースにはアプリでダウンロードできる Windows 用 zip がありません。リリースページを開いて入手してください。</value>
+  </data>
+  <data name="update_download_failed" xml:space="preserve">
+    <value>ダウンロードできませんでした: {0}</value>
+  </data>
+  <data name="update_busy" xml:space="preserve">
+    <value>アプリは書き込みまたは抽出中です。完了してから閉じてください。</value>
+  </data>
+  <data name="all_files" xml:space="preserve">
+    <value>すべてのファイル</value>
+  </data>
+  <data name="nav_samsung" xml:space="preserve">
+    <value>Samsung</value>
+  </data>
+  <data name="samsung_subtitle" xml:space="preserve">
+    <value>Samsung のファームウェアを開き、必要なイメージを取り出し、端末に合うか確認して、ダウンロードモードで書き込みます。</value>
+  </data>
+  <data name="samsung_drop_hint" xml:space="preserve">
+    <value>Samsung のファームウェアを開く</value>
+  </data>
+  <data name="samsung_drop_detail" xml:space="preserve">
+    <value>AP、BL、CP、CSC、HOME_CSC (.tar.md5)、それらが入ったフォルダー、または配布元の zip。ここにドロップするか選択してください。</value>
+  </data>
+  <data name="samsung_open" xml:space="preserve">
+    <value>ファームウェアを開く…</value>
+  </data>
+  <data name="samsung_open_folder" xml:space="preserve">
+    <value>フォルダーを開く…</value>
+  </data>
+  <data name="samsung_opening" xml:space="preserve">
+    <value>ファームウェアを読み込み中…</value>
+  </data>
+  <data name="samsung_unzipping" xml:space="preserve">
+    <value>zip を展開中 · {0}%</value>
+  </data>
+  <data name="samsung_filter" xml:space="preserve">
+    <value>Samsung ファームウェア</value>
+  </data>
+  <data name="samsung_not_firmware" xml:space="preserve">
+    <value>Samsung のファームウェアファイルが見つかりませんでした。ファイル名は AP_、BL_、CP_、CSC_、HOME_CSC_ で始まり、.tar.md5 で終わります。</value>
+  </data>
+  <data name="samsung_files" xml:space="preserve">
+    <value>ファームウェアファイル</value>
+  </data>
+  <data name="samsung_about" xml:space="preserve">
+    <value>このファームウェアについて</value>
+  </data>
+  <data name="samsung_info_model" xml:space="preserve">
+    <value>モデル</value>
+  </data>
+  <data name="samsung_info_build" xml:space="preserve">
+    <value>ビルド (PDA)</value>
+  </data>
+  <data name="samsung_info_binary" xml:space="preserve">
+    <value>ブートローダーのバイナリ</value>
+  </data>
+  <data name="samsung_info_date" xml:space="preserve">
+    <value>ビルド日</value>
+  </data>
+  <data name="samsung_info_android" xml:space="preserve">
+    <value>Android</value>
+  </data>
+  <data name="samsung_info_csc" xml:space="preserve">
+    <value>CSC</value>
+  </data>
+  <data name="samsung_info_other" xml:space="preserve">
+    <value>読み込まず (ファームウェアのパーツではありません)</value>
+  </data>
+  <data name="samsung_md5_checking" xml:space="preserve">
+    <value>MD5 {0}%</value>
+  </data>
+  <data name="samsung_md5_ok" xml:space="preserve">
+    <value>MD5 ✓</value>
+  </data>
+  <data name="samsung_md5_none" xml:space="preserve">
+    <value>MD5 なし</value>
+  </data>
+  <data name="samsung_md5_bad" xml:space="preserve">
+    <value>MD5 ✕ 破損</value>
+  </data>
+  <data name="samsung_unreadable" xml:space="preserve">
+    <value>読み込み不可</value>
+  </data>
+  <data name="samsung_md5_job" xml:space="preserve">
+    <value>{0} の MD5 を検証中</value>
+  </data>
+  <data name="samsung_md5_all" xml:space="preserve">
+    <value>各ファイルの MD5 を検証中</value>
+  </data>
+  <data name="samsung_refused_bad" xml:space="preserve">
+    <value>{0} は破損しているか不完全です: MD5 が一致しません。もう一度ダウンロードしてください。このファイルからは何も取り出しません。</value>
+  </data>
+  <data name="samsung_match" xml:space="preserve">
+    <value>ファームウェアと端末の照合</value>
+  </data>
+  <data name="samsung_read_phone" xml:space="preserve">
+    <value>端末を確認</value>
+  </data>
+  <data name="samsung_phone_reading" xml:space="preserve">
+    <value>adb で端末を探しています…</value>
+  </data>
+  <data name="samsung_phone_none" xml:space="preserve">
+    <value>USB デバッグを有効にした Android の状態で端末を接続し、「端末を確認」を押してください。ファームウェア単体のチェックは引き続き行われます。</value>
+  </data>
+  <data name="samsung_phone_read" xml:space="preserve">
+    <value>adb で {0} ({1}) と比較しました。</value>
+  </data>
+  <data name="samsung_verdict_ok" xml:space="preserve">
+    <value>このファームウェアはお使いの端末に適合します</value>
+  </data>
+  <data name="samsung_verdict_ok_text" xml:space="preserve">
+    <value>Odin で書き込んでください: AP、BL、CP、そしてデータを残すなら HOME_CSC。</value>
+  </data>
+  <data name="samsung_verdict_warn" xml:space="preserve">
+    <value>書き込む前にお読みください</value>
+  </data>
+  <data name="samsung_verdict_warn_text" xml:space="preserve">
+    <value>ファームウェアは書き込めますが、先に以下の点を確認してください。</value>
+  </data>
+  <data name="samsung_verdict_block" xml:space="preserve">
+    <value>このファームウェアをお使いの端末に書き込まないでください</value>
+  </data>
+  <data name="samsung_verdict_block_text" xml:space="preserve">
+    <value>Odin で端末に拒否されるか、別の端末用に作られています。</value>
+  </data>
+  <data name="samsung_m_fw_phone" xml:space="preserve">
+    <value>ファームウェア {0} · 端末 {1}</value>
+  </data>
+  <data name="samsung_m_not_samsung" xml:space="preserve">
+    <value>この端末は Samsung ではありません</value>
+  </data>
+  <data name="samsung_m_same_model" xml:space="preserve">
+    <value>同じモデル</value>
+  </data>
+  <data name="samsung_m_other_model" xml:space="preserve">
+    <value>別のモデル用</value>
+  </data>
+  <data name="samsung_m_same_binary" xml:space="preserve">
+    <value>同じブートローダーバイナリ</value>
+  </data>
+  <data name="samsung_m_newer_binary" xml:space="preserve">
+    <value>新しいブートローダーバイナリ</value>
+  </data>
+  <data name="samsung_m_newer_binary_detail" xml:space="preserve">
+    <value>ファームウェア {0} · 端末 {1}。書き込み後は、バイナリ {1} のファームウェアをインストールできなくなります。</value>
+  </data>
+  <data name="samsung_m_older_binary" xml:space="preserve">
+    <value>ブートローダーバイナリが端末より古い</value>
+  </data>
+  <data name="samsung_m_older_binary_detail" xml:space="preserve">
+    <value>ファームウェア {0} · 端末 {1}。Samsung はこのダウングレードをブロックしており、Odin は SW REV CHECK FAIL で停止します。</value>
+  </data>
+  <data name="samsung_m_android" xml:space="preserve">
+    <value>Android バージョン</value>
+  </data>
+  <data name="samsung_m_older_android" xml:space="preserve">
+    <value>端末より古い Android</value>
+  </data>
+  <data name="samsung_m_older_android_detail" xml:space="preserve">
+    <value>ファームウェア {0} · 端末 {1}。戻すには完全な CSC が必要で、端末のデータが消去されます。</value>
+  </data>
+  <data name="samsung_m_same_csc" xml:space="preserve">
+    <value>お使いの地域がこのファームウェアに含まれています</value>
+  </data>
+  <data name="samsung_m_other_csc" xml:space="preserve">
+    <value>別の CSC (地域)</value>
+  </data>
+  <data name="samsung_m_other_csc_detail" xml:space="preserve">
+    <value>ファームウェア {0} · 端末 {1}。変更するには完全な CSC が必要で、端末のデータが消去されます。</value>
+  </data>
+  <data name="samsung_m_csc_wipes" xml:space="preserve">
+    <value>CSC は端末のデータを消去します</value>
+  </data>
+  <data name="samsung_m_csc_wipes_detail" xml:space="preserve">
+    <value>データを残すには、Odin の CSC 欄に HOME_CSC を入れてください。</value>
+  </data>
+  <data name="samsung_m_csc_wipes_no_home" xml:space="preserve">
+    <value>このファームウェアには HOME_CSC がありません: 書き込むと端末のデータが消去されます。</value>
+  </data>
+  <data name="samsung_m_mixed" xml:space="preserve">
+    <value>異なるファームウェアのファイルが混在</value>
+  </data>
+  <data name="samsung_contents" xml:space="preserve">
+    <value>中身</value>
+  </data>
+  <data name="samsung_select_boot" xml:space="preserve">
+    <value>Boot イメージ</value>
+  </data>
+  <data name="samsung_selected" xml:space="preserve">
+    <value>{0} 個選択 · {1}</value>
+  </data>
+  <data name="samsung_column_from" xml:space="preserve">
+    <value>元ファイル</value>
+  </data>
+  <data name="samsung_column_file" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="samsung_extract" xml:space="preserve">
+    <value>選択したものを抽出 (lz4 を解除)</value>
+  </data>
+  <data name="samsung_extract_job" xml:space="preserve">
+    <value>{0} 個のファイルを抽出中</value>
+  </data>
+  <data name="samsung_extract_done" xml:space="preserve">
+    <value>{0} 個のファイルを LZ4 を解除して次の場所に保存しました:
+{1}</value>
+  </data>
+  <data name="samsung_pick_first" xml:space="preserve">
+    <value>先に取り出すファイルを選んでください。</value>
+  </data>
+  <data name="samsung_super_tools" xml:space="preserve">
+    <value>super をイメージツールで開く</value>
+  </data>
+  <data name="samsung_magisk" xml:space="preserve">
+    <value>Magisk で root 化…</value>
+  </data>
+  <data name="samsung_magisk_job" xml:space="preserve">
+    <value>Magisk 用のファイルを準備中</value>
+  </data>
+  <data name="samsung_magisk_no_ap" xml:space="preserve">
+    <value>先に AP ファイルを開いてください: Magisk はその init_boot (または boot) と vbmeta にパッチを当てます。</value>
+  </data>
+  <data name="samsung_magisk_on_phone" xml:space="preserve">
+    <value>{0} は端末の Download フォルダーにあります。
+
+Magisk で: インストール › パッチするファイルの選択 › このファイルを選びます。Magisk が完了を表示したら OK を押すと、パッチ済みファイルを取得して検証します。</value>
+  </data>
+  <data name="samsung_magisk_manual" xml:space="preserve">
+    <value>{0} を次の場所に用意しました:
+{1}
+
+adb で端末が見つかりませんでした。端末にコピーして Magisk でパッチを当て (インストール › パッチするファイルの選択)、「Magisk ファイルを検証」で結果を確認してください。</value>
+  </data>
+  <data name="samsung_magisk_fetch" xml:space="preserve">
+    <value>パッチ済みファイルを取得中</value>
+  </data>
+  <data name="samsung_magisk_not_found" xml:space="preserve">
+    <value>端末の Download フォルダーに、送信したファイルより新しい magisk_patched の tar が見つかりませんでした。Magisk でパッチを当ててから、もう一度お試しください。</value>
+  </data>
+  <data name="samsung_check_patched" xml:space="preserve">
+    <value>Magisk ファイルを検証…</value>
+  </data>
+  <data name="samsung_magisk_checking" xml:space="preserve">
+    <value>パッチ済みファイルを検証中</value>
+  </data>
+  <data name="samsung_patched_ok" xml:space="preserve">
+    <value>{0} は Magisk でパッチ済みです ✓
+
+Odin で {1} を AP に入れ、同じファームウェアの BL、CP、CSC と一緒に書き込んでください。AP だけを書き込まないでください。
+• 初めて Magisk を入れる場合: HOME_CSC ではなく CSC。端末のデータは消去されますが、Magisk にはこの消去が必要です。
+• 既に root 化済みの端末のアップデート: データを残すため HOME_CSC。
+
+ブートローダーのアンロックが必要で、Knox は永久にトリップします。</value>
+  </data>
+  <data name="samsung_patched_not" xml:space="preserve">
+    <value>このファイル内の {0} は Magisk でパッチされていません。root 化のためにこれを書き込まないでください。</value>
+  </data>
+  <data name="samsung_patched_no_boot" xml:space="preserve">
+    <value>この tar には boot または init_boot イメージがありません。</value>
+  </data>
+  <data name="samsung_build_tar" xml:space="preserve">
+    <value>Odin 用 tar…</value>
+  </data>
+  <data name="samsung_tar_images" xml:space="preserve">
+    <value>イメージ</value>
+  </data>
+  <data name="samsung_tar_job" xml:space="preserve">
+    <value>Odin 用の tar を作成中</value>
+  </data>
+  <data name="samsung_tar_done" xml:space="preserve">
+    <value>{0} は Odin の AP 欄に使えます。中身: {1}。</value>
+  </data>
+  <data name="samsung_tar_long_name" xml:space="preserve">
+    <value>{0}: Odin のファイル名は 99 文字以内である必要があります。</value>
+  </data>
+  <data name="samsung_note" xml:space="preserve">
+    <value>イメージは LZ4 を解除した通常の .img として保存されます。super は sparse のままで、イメージツールで展開できます。書き込みは Odin で行います。</value>
+  </data>
+  <data name="help_label" xml:space="preserve">
+    <value>ヘルプ</value>
+  </data>
+  <data name="help_close" xml:space="preserve">
+    <value>ヘルプを閉じる (Esc)</value>
+  </data>
+  <data name="help_tooltip" xml:space="preserve">
+    <value>このページのヘルプ</value>
+  </data>
+  <data name="help_ask" xml:space="preserve">
+    <value>Telegram で質問</value>
+  </data>
+  <data name="help_ask_note" xml:space="preserve">
+    <value>それでも解決しない場合は、グループで質問してください。</value>
+  </data>
+  <data name="help_missing" xml:space="preserve">
+    <value>このページのヘルプはまだありません。</value>
+  </data>
+  <data name="help_purpose" xml:space="preserve">
+    <value>このページの用途</value>
+  </data>
+  <data name="help_steps" xml:space="preserve">
+    <value>手順</value>
+  </data>
+  <data name="help_tips" xml:space="preserve">
+    <value>知っておくと便利</value>
+  </data>
+  <data name="help_terms" xml:space="preserve">
+    <value>用語</value>
+  </data>
+  <data name="help_danger" xml:space="preserve">
+    <value>危険: 先にお読みください</value>
+  </data>
+  <data name="welcome_section" xml:space="preserve">
+    <value>ツアーと新機能</value>
+  </data>
+  <data name="welcome_show_again" xml:space="preserve">
+    <value>ツアーをもう一度表示</value>
+  </data>
+  <data name="whats_new_button" xml:space="preserve">
+    <value>{0} の新機能</value>
+  </data>
+  <data name="whats_new_none" xml:space="preserve">
+    <value>このバージョンにはリリースノートが含まれていません。</value>
+  </data>
+  <data name="whats_new_title" xml:space="preserve">
+    <value>{0} の新機能</value>
+  </data>
+  <data name="whats_new_intro" xml:space="preserve">
+    <value>Fastboot Studio がアップデートされました。変更点は次のとおりです:</value>
+  </data>
+  <data name="whats_new_ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="welcome_take_tour" xml:space="preserve">
+    <value>ツアーを見る</value>
+  </data>
+  <data name="welcome_skip" xml:space="preserve">
+    <value>スキップ</value>
+  </data>
+  <data name="welcome_back" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="welcome_next" xml:space="preserve">
+    <value>次へ</value>
+  </data>
+  <data name="welcome_start" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="welcome_title" xml:space="preserve">
+    <value>Fastboot Studio へようこそ</value>
+  </data>
+  <data name="welcome_intro" xml:space="preserve">
+    <value>書き込み、root、バックアップをひとつのアプリで。まずは簡単なツアーをどうぞ。1 分ほどで終わり、スキップもできます。</value>
+  </data>
+  <data name="welcome_language_current" xml:space="preserve">
+    <value>使用中</value>
+  </data>
+  <data name="welcome_map_title" xml:space="preserve">
+    <value>各ページの役割</value>
+  </data>
+  <data name="welcome_map_intro" xml:space="preserve">
+    <value>各ページには 1 つの役割があり、どのページにも隅に ? があって手順を説明します。ツアー終了後に開くページを選んでください。</value>
+  </data>
+  <data name="welcome_map_pick" xml:space="preserve">
+    <value>ツアー終了後にこのページを開く</value>
+  </data>
+  <data name="welcome_page_device" xml:space="preserve">
+    <value>fastboot の端末: 状態、パーティション、クイック再起動</value>
+  </data>
+  <data name="welcome_page_phone" xml:space="preserve">
+    <value>Android の端末: スペック、セキュリティ、バックアップ</value>
+  </data>
+  <data name="welcome_page_flash" xml:space="preserve">
+    <value>OTA 全体を書き込み。全イメージを事前に検証</value>
+  </data>
+  <data name="welcome_page_payload" xml:space="preserve">
+    <value>OTA の中身を確認してイメージを取り出す</value>
+  </data>
+  <data name="welcome_page_images" xml:space="preserve">
+    <value>boot イメージの確認、sparse の変換、super の展開</value>
+  </data>
+  <data name="welcome_page_super" xml:space="preserve">
+    <value>パーティションイメージから 1 つの super.img を作成</value>
+  </data>
+  <data name="welcome_page_samsung" xml:space="preserve">
+    <value>Samsung ファームウェア: MD5、適合チェック、Magisk、Odin 用 tar</value>
+  </data>
+  <data name="welcome_page_backup" xml:space="preserve">
+    <value>パーティションとファイルをこの PC に保存</value>
+  </data>
+  <data name="welcome_page_root" xml:space="preserve">
+    <value>Magisk、KernelSU、APatch でステップごとに root 化</value>
+  </data>
+  <data name="welcome_page_terminal" xml:space="preserve">
+    <value>adb と fastboot のコマンドを自分で実行</value>
+  </data>
+  <data name="welcome_page_logs" xml:space="preserve">
+    <value>アプリが実行したすべての記録。ヘルプを求めるときにコピー</value>
+  </data>
+  <data name="welcome_page_about" xml:space="preserve">
+    <value>バージョン、言語、テーマ、アップデート</value>
+  </data>
+  <data name="welcome_check_title" xml:space="preserve">
+    <value>簡単なチェック</value>
+  </data>
+  <data name="welcome_check_intro" xml:space="preserve">
+    <value>端末を接続する前に、この PC の準備状況を確認します。</value>
+  </data>
+  <data name="welcome_checking" xml:space="preserve">
+    <value>確認中…</value>
+  </data>
+  <data name="welcome_check_tools" xml:space="preserve">
+    <value>adb と fastboot があります</value>
+  </data>
+  <data name="welcome_check_tools_detail" xml:space="preserve">
+    <value>アプリに付属しています (platform-tools 37.0.1): インストールは不要です。</value>
+  </data>
+  <data name="welcome_check_tools_missing" xml:space="preserve">
+    <value>adb または fastboot が見つかりません</value>
+  </data>
+  <data name="welcome_check_tools_missing_detail" xml:space="preserve">
+    <value>FastbootStudio.exe と同じ場所に必要です。exe だけでなく、ダウンロードしたものをすべて展開し直してください。</value>
+  </data>
+  <data name="welcome_check_samsung" xml:space="preserve">
+    <value>Samsung USB ドライバーがインストールされています</value>
+  </data>
+  <data name="welcome_check_samsung_detail" xml:space="preserve">
+    <value>ダウンロードモードの Samsung 端末用です。</value>
+  </data>
+  <data name="welcome_check_samsung_missing" xml:space="preserve">
+    <value>Samsung USB ドライバーがインストールされていません</value>
+  </data>
+  <data name="welcome_check_samsung_missing_detail" xml:space="preserve">
+    <value>必要なのはダウンロードモードの Samsung 端末だけです。アプリが Samsung から入手できます。</value>
+  </data>
+  <data name="driver_install" xml:space="preserve">
+    <value>インストール…</value>
+  </data>
+  <data name="welcome_check_usb_unknown" xml:space="preserve">
+    <value>USB デバイスを読み取れませんでした</value>
+  </data>
+  <data name="welcome_check_usb_trouble" xml:space="preserve">
+    <value>ドライバーが動作していない端末があります</value>
+  </data>
+  <data name="welcome_check_usb_fastboot" xml:space="preserve">
+    <value>fastboot で接続された端末があります</value>
+  </data>
+  <data name="welcome_check_usb_adb" xml:space="preserve">
+    <value>Android またはリカバリー (adb) で接続された端末があります</value>
+  </data>
+  <data name="welcome_check_usb_samsung" xml:space="preserve">
+    <value>ダウンロードモードの Samsung 端末があります</value>
+  </data>
+  <data name="welcome_check_usb_download" xml:space="preserve">
+    <value>チップのダウンロードモード (EDL、BROM…) の端末があります</value>
+  </data>
+  <data name="welcome_check_usb_none" xml:space="preserve">
+    <value>端末が接続されていません</value>
+  </data>
+  <data name="welcome_check_usb_none_detail" xml:space="preserve">
+    <value>問題ありません。後で接続してください。Android では開発者向けオプションで USB デバッグを有効にしてください。</value>
+  </data>
+  <data name="welcome_safety_title" xml:space="preserve">
+    <value>書き込みの前に</value>
+  </data>
+  <data name="welcome_safety_intro" xml:space="preserve">
+    <value>ほとんどのトラブルを防ぐ 4 つのルール。</value>
+  </data>
+  <data name="welcome_rule_backup" xml:space="preserve">
+    <value>まずバックアップ</value>
+  </data>
+  <data name="welcome_rule_backup_detail" xml:space="preserve">
+    <value>「バックアップ」ページで。何か問題が起きても、端末を元の状態に戻せます。</value>
+  </data>
+  <data name="welcome_rule_battery" xml:space="preserve">
+    <value>バッテリーは 50% 以上</value>
+  </data>
+  <data name="welcome_rule_battery_detail" xml:space="preserve">
+    <value>書き込みの途中で電源が切れると、端末が起動しなくなる可能性があります。</value>
+  </data>
+  <data name="welcome_rule_cable" xml:space="preserve">
+    <value>ケーブルを抜かない</value>
+  </data>
+  <data name="welcome_rule_cable_detail" xml:space="preserve">
+    <value>品質の良いデータケーブルをハブではなく PC 本体のポートに挿し、アプリが完了を表示するまで待ってください。</value>
+  </data>
+  <data name="welcome_rule_files" xml:space="preserve">
+    <value>お使いの端末専用のファイル</value>
+  </data>
+  <data name="welcome_rule_files_detail" xml:space="preserve">
+    <value>同じモデル、同じソフトウェアバージョンのもの。アプリは確認できる範囲でチェックし、書き込む前に警告します。</value>
+  </data>
+  <data name="welcome_again_note" xml:space="preserve">
+    <value>このツアーは「バージョン情報」からもう一度見られます。</value>
+  </data>
+  <data name="driver_samsung_title" xml:space="preserve">
+    <value>Samsung USB ドライバー</value>
+  </data>
+  <data name="driver_samsung_source" xml:space="preserve">
+    <value>developer.samsung.com から · 約 37 MB</value>
+  </data>
+  <data name="driver_samsung_already" xml:space="preserve">
+    <value>既にインストールされているようです。再インストールしても問題ありません。</value>
+  </data>
+  <data name="driver_samsung_offer" xml:space="preserve">
+    <value>ダウンロードモードの Samsung 端末には Samsung 独自のドライバーが必要です。Odin が使うものと同じです。
+
+アプリが Samsung からダウンロードし、Windows が Samsung の署名を確認できることを確かめてから、インストーラーを開きます。Windows が許可を求めますが、ドライバーでは通常のことです。</value>
+  </data>
+  <data name="driver_download_install" xml:space="preserve">
+    <value>ダウンロードしてインストール</value>
+  </data>
+  <data name="driver_downloading" xml:space="preserve">
+    <value>Samsung のドライバーをダウンロード中</value>
+  </data>
+  <data name="driver_downloading_note" xml:space="preserve">
+    <value>Samsung から直接ダウンロードします。実行前に検証されます。</value>
+  </data>
+  <data name="driver_download_failed" xml:space="preserve">
+    <value>ダウンロードに失敗しました: {0}</value>
+  </data>
+  <data name="driver_not_https" xml:space="preserve">
+    <value>Samsung のリンクが安全な (https) アドレスで終わっていなかったため、ファイルは使用しませんでした。</value>
+  </data>
+  <data name="driver_too_big" xml:space="preserve">
+    <value>ファイルが Samsung のドライバーよりはるかに大きいため、保存しませんでした。</value>
+  </data>
+  <data name="driver_signature_bad" xml:space="preserve">
+    <value>Windows がファイルに Samsung Electronics の有効な署名を見つけられなかったため、削除して実行しませんでした。</value>
+  </data>
+  <data name="driver_installing" xml:space="preserve">
+    <value>Samsung のインストーラーが開いています</value>
+  </data>
+  <data name="driver_installing_note" xml:space="preserve">
+    <value>インストーラーの手順に従ってください。完了すると、このウィンドウがドライバーの有無を確認します。</value>
+  </data>
+  <data name="driver_no_permission" xml:space="preserve">
+    <value>Windows でインストーラーを実行する許可が得られませんでした。</value>
+  </data>
+  <data name="driver_done" xml:space="preserve">
+    <value>Samsung のドライバーがインストールされました</value>
+  </data>
+  <data name="driver_done_note" xml:space="preserve">
+    <value>Samsung の端末が接続されている場合は、抜き差ししてください。</value>
+  </data>
+  <data name="driver_close" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
+  <data name="driver_not_yet" xml:space="preserve">
+    <value>ドライバーはまだインストールされていません</value>
+  </data>
+  <data name="driver_not_yet_note" xml:space="preserve">
+    <value>インストーラーがまだ開いている場合は先に完了させてから、「再確認」を押してください。</value>
+  </data>
+  <data name="driver_check_again" xml:space="preserve">
+    <value>再確認</value>
+  </data>
+  <data name="driver_failed" xml:space="preserve">
+    <value>Samsung のドライバーはインストールされませんでした</value>
+  </data>
+  <data name="driver_failed_note" xml:space="preserve">
+    <value>Samsung のページから自分でダウンロードすることもできます。</value>
+  </data>
+  <data name="driver_try_again" xml:space="preserve">
+    <value>再試行</value>
+  </data>
+  <data name="driver_open_page" xml:space="preserve">
+    <value>Samsung のページを開く</value>
+  </data>
+  <data name="boot_check_question_notice" xml:space="preserve">
+    <value>{0} に書き込みますか?</value>
+  </data>
+  <data name="boot_find_rooted" xml:space="preserve">
+    <value>このイメージは {0} で root 化されています。端末を root 化するならこれで正しいです。root を外すには、同じファームウェアの純正イメージを書き込んでください。</value>
+  </data>
+  <data name="boot_find_recovery_try" xml:space="preserve">
+    <value>まずデバイスページの「イメージを 1 回だけ起動…」で試してください: {0} に書き込まずにリカバリーを起動するので、端末に合わなくても何も変わりません。端末によってはこの方法でイメージを起動できません。</value>
+  </data>
+  <data name="usb_samsung_driver_ask" xml:space="preserve">
+    <value>この PC には Samsung の USB ドライバーがインストールされておらず、この端末にはそれが必要です。今すぐ Samsung からダウンロードしてインストールしますか?</value>
+  </data>
+  <data name="samsung_driver_ok" xml:space="preserve">
+    <value>Samsung USB ドライバーがインストールされています: ダウンロードモードを認識できます。</value>
+  </data>
+  <data name="samsung_driver_missing" xml:space="preserve">
+    <value>Samsung USB ドライバーがインストールされていません。ダウンロードモードには必要です。</value>
+  </data>
+  <data name="samsung_m_knox_ok" xml:space="preserve">
+    <value>Knox: 正常 (0x0)</value>
+  </data>
+  <data name="samsung_m_knox_ok_detail" xml:space="preserve">
+    <value>端末の報告による値です。Samsung 以外のもの (root、カスタムリカバリー、カーネル) を書き込むと、永久にトリップします。</value>
+  </data>
+  <data name="samsung_m_knox_tripped" xml:space="preserve">
+    <value>Knox がトリップしています (0x1)</value>
+  </data>
+  <data name="samsung_m_knox_tripped_detail" xml:space="preserve">
+    <value>この端末では Samsung Wallet、セキュアフォルダ、Samsung Pass が使えなくなっています。公式ファームウェアを書き込んでも Knox は戻りません。</value>
+  </data>
+  <data name="samsung_m_knox_unlocked" xml:space="preserve">
+    <value>Knox は 0x0 ですが、ブートローダーはアンロックされています</value>
+  </data>
+  <data name="samsung_m_knox_unlocked_detail" xml:space="preserve">
+    <value>アンロックだけでは Knox はトリップしません。しかし非公式なもの (root、カスタムリカバリー、カーネル) を一度でも書き込んでいれば Knox は永久にトリップしており、隠蔽モジュールが 0x0 と表示させています。Samsung Wallet、セキュアフォルダ、Samsung Pass は実際の eFuse に従います。</value>
+  </data>
+  <data name="samsung_odin_button" xml:space="preserve">
+    <value>ダウンロードモード</value>
+  </data>
+  <data name="samsung_odin_tip" xml:space="preserve">
+    <value>ダウンロードモードの端末を読み取る: パーティションテーブル (PIT)、モデル、地域</value>
+  </data>
+  <data name="odin_title" xml:space="preserve">
+    <value>ダウンロードモードで端末を読み取る</value>
+  </data>
+  <data name="odin_subtitle" xml:space="preserve">
+    <value>パーティションテーブル (PIT)、モデル、地域を読み取り、それらと照合したうえで書き込みます。</value>
+  </data>
+  <data name="odin_step_off" xml:space="preserve">
+    <value>端末の電源を切り、ケーブルを抜いてください。</value>
+  </data>
+  <data name="odin_step_keys" xml:space="preserve">
+    <value>音量アップと音量ダウンを同時に押しながら、ケーブルをコンピューターに接続してください。ホームボタンのある古い端末: 音量ダウン + ホーム + 電源。</value>
+  </data>
+  <data name="odin_step_continue" xml:space="preserve">
+    <value>青い警告画面で音量アップを 1 回押して続行します。画面に Downloading と表示されます。</value>
+  </data>
+  <data name="odin_maintenance" xml:space="preserve">
+    <value>One UI 8.5 の Galaxy S26 と Z Fold 7: Samsung が先にメンテナンスモードを求める場合があります (設定 › デバイスケア › メンテナンスモード)。</value>
+  </data>
+  <data name="odin_looking" xml:space="preserve">
+    <value>端末を探しています…</value>
+  </data>
+  <data name="odin_not_found" xml:space="preserve">
+    <value>ダウンロードモードの端末はまだありません。この表示は自動で更新されます。</value>
+  </data>
+  <data name="odin_found" xml:space="preserve">
+    <value>ダウンロードモードの端末が {0} で見つかりました。</value>
+  </data>
+  <data name="odin_found_many" xml:space="preserve">
+    <value>ダウンロードモードの端末が {0} 台あります: 1 台だけ接続したままにしてください。</value>
+  </data>
+  <data name="odin_seen_no_driver" xml:space="preserve">
+    <value>ダウンロードモードの端末がありますが、Windows に動作するドライバーがありません: Samsung の USB ドライバーをインストールしてください。</value>
+  </data>
+  <data name="odin_no_driver" xml:space="preserve">
+    <value>Samsung の USB ドライバーがありません。ダウンロードモードには必要です。</value>
+  </data>
+  <data name="odin_after_title" xml:space="preserve">
+    <value>読み取り後:</value>
+  </data>
+  <data name="odin_after_android" xml:space="preserve">
+    <value>Android で再起動</value>
+  </data>
+  <data name="odin_after_download" xml:space="preserve">
+    <value>ダウンロードモードで再起動</value>
+  </data>
+  <data name="odin_after_note" xml:space="preserve">
+    <value>端末は接続ごとに 1 回の Odin セッションしか受け付けないため、読み取り後に再起動します。</value>
+  </data>
+  <data name="odin_read" xml:space="preserve">
+    <value>端末を読み取る</value>
+  </data>
+  <data name="odin_reading_title" xml:space="preserve">
+    <value>端末を読み取り中…</value>
+  </data>
+  <data name="odin_reading" xml:space="preserve">
+    <value>ケーブルを抜かないでください。数秒かかります。</value>
+  </data>
+  <data name="odin_failed" xml:space="preserve">
+    <value>読み取りに失敗しました</value>
+  </data>
+  <data name="odin_err_busy" xml:space="preserve">
+    <value>別のプログラムが端末のポート ({0}) を使用しています: Odin、Smart Switch、その他の書き込みツールを閉じてから、もう一度お試しください。</value>
+  </data>
+  <data name="odin_err_gone" xml:space="preserve">
+    <value>端末のポートが消えました: ケーブルが抜けたか、端末がダウンロードモードを抜けませんでしたか?</value>
+  </data>
+  <data name="odin_err_open" xml:space="preserve">
+    <value>端末のポートを開けませんでした: {0}</value>
+  </data>
+  <data name="odin_err_handshake" xml:space="preserve">
+    <value>端末がダウンロードモードの端末として応答しませんでした。</value>
+  </data>
+  <data name="odin_err_other" xml:space="preserve">
+    <value>端末が応答しなくなりました: {0}</value>
+  </data>
+  <data name="odin_err_restart" xml:space="preserve">
+    <value>もう一度試す前に、端末をダウンロードモードで再起動してください: 音量ダウン + 電源を約 7 秒長押しし、画面が暗くなったらダウンロードモードのキーを押し続けます。</value>
+  </data>
+  <data name="odin_err_cable" xml:space="preserve">
+    <value>データ通信対応のケーブルを、ハブを使わずコンピューターに直接接続してください。</value>
+  </data>
+  <data name="odin_try_again" xml:space="preserve">
+    <value>再試行</value>
+  </data>
+  <data name="odin_done" xml:space="preserve">
+    <value>端末を読み取りました</value>
+  </data>
+  <data name="odin_done_model" xml:space="preserve">
+    <value>{0} を読み取りました</value>
+  </data>
+  <data name="odin_done_note" xml:space="preserve">
+    <value>端末には何も書き込まれていません。</value>
+  </data>
+  <data name="odin_model" xml:space="preserve">
+    <value>モデル</value>
+  </data>
+  <data name="odin_serial" xml:space="preserve">
+    <value>シリアル</value>
+  </data>
+  <data name="odin_region" xml:space="preserve">
+    <value>地域 (CSC)</value>
+  </data>
+  <data name="odin_carrier" xml:space="preserve">
+    <value>キャリア</value>
+  </data>
+  <data name="odin_protocol" xml:space="preserve">
+    <value>Odin プロトコル</value>
+  </data>
+  <data name="odin_protocol_value" xml:space="preserve">
+    <value>v{0}</value>
+  </data>
+  <data name="odin_protocol_lz4" xml:space="preserve">
+    <value>v{0}、LZ4 ファームウェア対応</value>
+  </data>
+  <data name="odin_pit" xml:space="preserve">
+    <value>パーティションテーブル</value>
+  </data>
+  <data name="odin_pit_value" xml:space="preserve">
+    <value>{0} 個のパーティション</value>
+  </data>
+  <data name="odin_info_missing" xml:space="preserve">
+    <value>このブートローダーはモデルを報告しません。パーティションテーブルは読み取りました。</value>
+  </data>
+  <data name="odin_info_failed" xml:space="preserve">
+    <value>モデルを読み取れませんでした。パーティションテーブルは読み取りました。</value>
+  </data>
+  <data name="odin_col_id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="odin_col_partition" xml:space="preserve">
+    <value>パーティション</value>
+  </data>
+  <data name="odin_col_file" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="odin_col_blocks" xml:space="preserve">
+    <value>ブロック数</value>
+  </data>
+  <data name="odin_ended_android" xml:space="preserve">
+    <value>端末は Android で再起動しています。</value>
+  </data>
+  <data name="odin_ended_download" xml:space="preserve">
+    <value>端末はダウンロードモードで再起動しています。</value>
+  </data>
+  <data name="odin_not_ended" xml:space="preserve">
+    <value>端末がセッションの終了に応答しませんでした: 音量ダウン + 電源を約 7 秒長押しして再起動してください。</value>
+  </data>
+  <data name="odin_save_pit" xml:space="preserve">
+    <value>PIT を保存…</value>
+  </data>
+  <data name="odin_saved" xml:space="preserve">
+    <value>保存しました: {0}</value>
+  </data>
+  <data name="odin_copy" xml:space="preserve">
+    <value>詳細をコピー</value>
+  </data>
+  <data name="odin_copied" xml:space="preserve">
+    <value>コピーしました</value>
+  </data>
+  <data name="odin_ended_android_instead" xml:space="preserve">
+    <value>この端末は自動ではダウンロードモードで再起動しません: Android で再起動しています。</value>
+  </data>
+  <data name="nav_settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="settings_subtitle" xml:space="preserve">
+    <value>言語、外観、アップデート。</value>
+  </data>
+  <data name="settings_look" xml:space="preserve">
+    <value>外観</value>
+  </data>
+  <data name="text_size" xml:space="preserve">
+    <value>文字サイズ</value>
+  </data>
+  <data name="text_size_note" xml:space="preserve">
+    <value>すべてのページにすぐ反映されます。</value>
+  </data>
+  <data name="text_size_small" xml:space="preserve">
+    <value>小</value>
+  </data>
+  <data name="text_size_default" xml:space="preserve">
+    <value>標準</value>
+  </data>
+  <data name="text_size_large" xml:space="preserve">
+    <value>大</value>
+  </data>
+  <data name="text_size_larger" xml:space="preserve">
+    <value>特大</value>
+  </data>
+  <data name="text_size_preview" xml:space="preserve">
+    <value>文字はこのように表示されます</value>
+  </data>
+  <data name="text_size_preview_note" xml:space="preserve">
+    <value>安全に書き込み、バックアップ、root 化。</value>
+  </data>
+  <data name="about_tagline" xml:space="preserve">
+    <value>Windows から Android 端末を安全に書き込み、バックアップ、root 化。</value>
+  </data>
+  <data name="about_free" xml:space="preserve">
+    <value>無料のオープンソース</value>
+  </data>
+  <data name="about_check_updates" xml:space="preserve">
+    <value>アップデートを確認</value>
+  </data>
+  <data name="about_built_on" xml:space="preserve">
+    <value>ベース</value>
+  </data>
+  <data name="about_inside" xml:space="preserve">
+    <value>内蔵</value>
+  </data>
+  <data name="about_checks" xml:space="preserve">
+    <value>チェック</value>
+  </data>
+  <data name="about_tools" xml:space="preserve">
+    <value>ツール</value>
+  </data>
+  <data name="about_telegram_group" xml:space="preserve">
+    <value>Telegram グループ</value>
+  </data>
+  <data name="about_all_tools" xml:space="preserve">
+    <value>すべてのツール</value>
+  </data>
+  <data name="phone_likely_unlocked" xml:space="preserve">
+    <value>おそらくアンロック済み</value>
+  </data>
+  <data name="phone_likely_unlocked_note" xml:space="preserve">
+    <value>プロパティはロック中と示していますが、この端末には {0} があり、root にはアンロックされたブートローダーが必要です: ROM や隠蔽モジュールがロック中に見せかけています。本当の状態を読み取るには、root マネージャーで Shell に root を許可するか、bootloader で再起動してデバイスページを開いてください。</value>
+  </data>
+  <data name="phone_backups_sign" xml:space="preserve">
+    <value>Companion のバックアップ</value>
+  </data>
+  <data name="phone_root_not_for_shell" xml:space="preserve">
+    <value>{0}、Shell には未許可</value>
+  </data>
+  <data name="driver_google_title" xml:space="preserve">
+    <value>Google USB ドライバー</value>
+  </data>
+  <data name="driver_google_source" xml:space="preserve">
+    <value>dl.google.com から · 約 8 MB</value>
+  </data>
+  <data name="driver_google_offer" xml:space="preserve">
+    <value>Pixel や、Google の USB ID を使う多くの端末で fastboot と adb を使うには、Google のドライバーが必要です。Android Studio がインストールするものと同じです。
+
+アプリが Google からダウンロードし、サイズとチェックサムを Google の一覧と照合してから、Windows に追加を依頼します。他のドライバーと同様に、Windows が許可を求めます。</value>
+  </data>
+  <data name="driver_google_downloading" xml:space="preserve">
+    <value>Google のドライバーをダウンロード中</value>
+  </data>
+  <data name="driver_google_downloading_note" xml:space="preserve">
+    <value>Google から直接ダウンロードします。使用前に検証されます。</value>
+  </data>
+  <data name="driver_google_check_bad" xml:space="preserve">
+    <value>ファイルが Google の一覧の内容 ({0}) と一致しないため、削除して使用しませんでした。</value>
+  </data>
+  <data name="driver_google_installing" xml:space="preserve">
+    <value>Google のドライバーを追加中</value>
+  </data>
+  <data name="driver_google_installing_note" xml:space="preserve">
+    <value>Windows が許可を求めてから、ドライバーを追加します。数秒かかります。</value>
+  </data>
+  <data name="driver_google_done" xml:space="preserve">
+    <value>Google のドライバーがインストールされました</value>
+  </data>
+  <data name="driver_google_done_note" xml:space="preserve">
+    <value>端末が接続されている場合は、抜き差ししてください。他のメーカーの端末では、そのメーカー独自のドライバーが必要な場合があります。</value>
+  </data>
+  <data name="driver_google_failed" xml:space="preserve">
+    <value>Google のドライバーはインストールされませんでした</value>
+  </data>
+  <data name="driver_google_failed_code" xml:space="preserve">
+    <value>Windows がドライバーを追加できませんでした (pnputil の終了コード {0})。</value>
+  </data>
+  <data name="driver_google_failed_note" xml:space="preserve">
+    <value>Google のページから自分でダウンロードすることもできます。</value>
+  </data>
+  <data name="driver_google_open_page" xml:space="preserve">
+    <value>Google のページを開く</value>
+  </data>
+  <data name="driver_google_ok" xml:space="preserve">
+    <value>Google USB ドライバーがインストールされています: Google の USB ID の fastboot と adb を認識できます。</value>
+  </data>
+  <data name="driver_google_missing" xml:space="preserve">
+    <value>Google USB ドライバーがインストールされていません。Pixel や Google の USB ID を使う端末には必要です。</value>
+  </data>
+  <data name="driver_section" xml:space="preserve">
+    <value>USB ドライバー</value>
+  </data>
+  <data name="driver_section_note" xml:space="preserve">
+    <value>fastboot、adb、ダウンロードモードの端末を認識するには、Windows にドライバーが必要です。</value>
+  </data>
+  <data name="usb_google_driver_ask" xml:space="preserve">
+    <value>この端末には Google の USB ドライバーが適合します (Google の USB ID)。今すぐ Google からダウンロードしてインストールしますか?</value>
+  </data>
+  <data name="odin_flash" xml:space="preserve">
+    <value>書き込み…</value>
+  </data>
+  <data name="odin_flash_title" xml:space="preserve">
+    <value>端末に書き込む</value>
+  </data>
+  <data name="odin_flash_intro" xml:space="preserve">
+    <value>書き込むものを選んでください: 単体のイメージ (boot.img、.lz4)、Magisk の tar、またはファームウェアの BL、AP、CP、HOME_CSC ファイル。送信する前に、すべてのファイルをこの端末のパーティションテーブルとモデルに照合します。</value>
+  </data>
+  <data name="odin_flash_choose" xml:space="preserve">
+    <value>ファイルを選択…</value>
+  </data>
+  <data name="odin_flash_filter" xml:space="preserve">
+    <value>Samsung ファームウェアとイメージ</value>
+  </data>
+  <data name="odin_flash_reading" xml:space="preserve">
+    <value>{0} を検証中</value>
+  </data>
+  <data name="odin_flash_damaged" xml:space="preserve">
+    <value>{0}
+
+ファイルが破損しているか不完全です。もう一度ダウンロードしてください。</value>
+  </data>
+  <data name="odin_flash_total" xml:space="preserve">
+    <value>{0} 個のファイル · {1}</value>
+  </data>
+  <data name="odin_flash_target" xml:space="preserve">
+    <value>{0} のパーティション:</value>
+  </data>
+  <data name="odin_flash_ack" xml:space="preserve">
+    <value>上の警告を読み、続行します</value>
+  </data>
+  <data name="odin_flash_restart" xml:space="preserve">
+    <value>完了したら端末を再起動する</value>
+  </data>
+  <data name="odin_flash_waiting" xml:space="preserve">
+    <value>端末をダウンロードモードにして接続してください。端末が見つかると「書き込み」が有効になります。</value>
+  </data>
+  <data name="odin_flash_confirm" xml:space="preserve">
+    <value>{0} 個のファイル ({1}) を端末に書き込みますか?
+
+終わるまで端末を抜いたり、このウィンドウを閉じたりしないでください。途中で止まった場合でも、端末はダウンロードモードのままで、もう一度書き込めます。</value>
+  </data>
+  <data name="odin_flash_writing" xml:space="preserve">
+    <value>{0} を書き込み中</value>
+  </data>
+  <data name="odin_flash_progress" xml:space="preserve">
+    <value>{1} 中 {0}</value>
+  </data>
+  <data name="odin_flash_keep" xml:space="preserve">
+    <value>端末を抜いたり、このウィンドウを閉じたりしないでください。</value>
+  </data>
+  <data name="odin_flash_done" xml:space="preserve">
+    <value>書き込みが完了しました</value>
+  </data>
+  <data name="odin_flash_done_restart" xml:space="preserve">
+    <value>端末を再起動します。ファームウェア書き込み後の初回起動には数分かかることがあります。</value>
+  </data>
+  <data name="odin_flash_done_stay" xml:space="preserve">
+    <value>端末はダウンロードモードのままです。再起動するには、電源と音量ダウンを 7 秒長押ししてください。</value>
+  </data>
+  <data name="odin_flash_written" xml:space="preserve">
+    <value>書き込み済み: {0}</value>
+  </data>
+  <data name="odin_flash_failed" xml:space="preserve">
+    <value>書き込みが停止しました</value>
+  </data>
+  <data name="odin_flash_failed_at" xml:space="preserve">
+    <value>{0} の書き込み中に停止しました: {1}</value>
+  </data>
+  <data name="odin_flash_failed_before" xml:space="preserve">
+    <value>何も書き込む前に停止しました: {0}</value>
+  </data>
+  <data name="odin_flash_pit_changed" xml:space="preserve">
+    <value>この端末のパーティションテーブルが、ファイルを照合したものと異なります (別の端末を接続しましたか?)。何も書き込まれていません。端末をもう一度読み取ってください。</value>
+  </data>
+  <data name="odin_flash_failed_note" xml:space="preserve">
+    <value>端末はダウンロードモードのままです。再起動せずに、もう一度接続して書き込み直してください。画面にエラーが表示されている場合は、写真を撮っておいてください。</value>
+  </data>
+  <data name="odin_flash_again" xml:space="preserve">
+    <value>もう一度書き込む</value>
+  </data>
+  <data name="odin_flash_back" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="odin_check_Empty" xml:space="preserve">
+    <value>書き込むものがありません: この端末にパーティションがあるファイルが 1 つもありません。</value>
+  </data>
+  <data name="odin_check_NotInPit" xml:space="preserve">
+    <value>{0}: この端末にはその名前のパーティションがありません。下から選んでください。</value>
+  </data>
+  <data name="odin_check_Skipped" xml:space="preserve">
+    <value>{0}: この端末のパーティションではありません。Odin と同様に除外します。</value>
+  </data>
+  <data name="odin_check_PitSkipped" xml:space="preserve">
+    <value>{0}: パーティションテーブルです。書き込まれず、端末のパーティションはそのままです。</value>
+  </data>
+  <data name="odin_check_TooBig" xml:space="preserve">
+    <value>{0} は {1} の容量を超えています ({2}、最大 {3})。</value>
+  </data>
+  <data name="odin_check_Protected" xml:space="preserve">
+    <value>{0} は端末の固有情報 (IMEI、キー) を保持しています。ここでは決して書き込みません。</value>
+  </data>
+  <data name="odin_check_Twice" xml:space="preserve">
+    <value>{0} 用のファイルが 2 つあります。1 つだけ残してください。</value>
+  </data>
+  <data name="odin_check_BothCsc" xml:space="preserve">
+    <value>CSC と HOME_CSC の両方が選択されています。データを残すなら HOME_CSC、端末を消去するなら CSC を残してください。</value>
+  </data>
+  <data name="odin_check_OtherModel" xml:space="preserve">
+    <value>ファームウェアは {0} 用ですが、この端末は {1} です。書き込めません。</value>
+  </data>
+  <data name="odin_check_ModelUnknown" xml:space="preserve">
+    <value>端末がモデルを報告しなかったため、ファームウェア ({0}) と照合できません。この端末用であることを確認してください。</value>
+  </data>
+  <data name="odin_check_Mixed" xml:space="preserve">
+    <value>これらのファイルは別のビルドのものです: {0}。1 つのファームウェアの BL、AP、CP、CSC を使ってください。</value>
+  </data>
+  <data name="odin_check_Bootloader" xml:space="preserve">
+    <value>{0} はブートローダーの一部です。間違ったものを書き込むと端末が起動しなくなる可能性があり、古いものは端末に拒否されます。</value>
+  </data>
+  <data name="odin_check_Modem" xml:space="preserve">
+    <value>{0} はモデムです。間違ったものを書き込むと端末が圏外になる可能性があります。</value>
+  </data>
+  <data name="odin_check_WipesData" xml:space="preserve">
+    <value>{0} は端末のすべてのデータを消去します (初期化)。データを残すには HOME_CSC を使ってください。</value>
+  </data>
+  <data name="odin_check_EmptyFile" xml:space="preserve">
+    <value>{0} は空です: 書き込む内容がありません。</value>
+  </data>
+  <data name="odin_check_TarUnknown" xml:space="preserve">
+    <value>{0} は Samsung ファームウェアの命名規則に従っていないため、対象の端末を確認できません。この端末用だと確信できる場合のみ書き込んでください。</value>
+  </data>
+  <data name="payload_bad_names" xml:space="preserve">
+    <value>payload にコマンドラインで扱えないパーティション名が含まれています: {0}。何も書き込まれていません。ファイルが破損しているか改ざんされている可能性があります。</value>
+  </data>
+  <data name="odin_check_MayNotFit" xml:space="preserve">
+    <value>{0} は UFS の端末では {1} に収まりますが、eMMC の端末では収まりません ({2}、eMMC のパーティションは最大 {3})。PIT からはこの端末がどちらか分かりません。eMMC の端末では、書き込みの途中でブートローダーに拒否されます。</value>
+  </data>
+  <data name="terminal_slot" xml:space="preserve">
+    <value>このコマンドはアクティブなスロットを変更します: 次回、端末はもう一方のスロットから、その内容に関係なく起動します。そのスロットに古いシステムや壊れたシステムが入っていると、起動しない可能性があります。実行しますか?</value>
+  </data>
+  <data name="summary_ack" xml:space="preserve">
+    <value>内容を読みました</value>
+  </data>
+  <data name="flash_summary_title" xml:space="preserve">
+    <value>書き込みの確認</value>
+  </data>
+  <data name="flash_summary" xml:space="preserve">
+    <value>{0}: {1} 個のパーティション、{2}。すべてのイメージが抽出され、ハッシュの検証に合格するまで何も書き込まれません。</value>
+  </data>
+  <data name="flash_summary_go" xml:space="preserve">
+    <value>書き込む</value>
+  </data>
+  <data name="confirm_device_line" xml:space="preserve">
+    <value>端末: {0} · {1} · スロット {2} · {3}</value>
+  </data>
+  <data name="logs_open_folder" xml:space="preserve">
+    <value>ログフォルダーを開く</value>
+  </data>
+  <data name="logs_file_note" xml:space="preserve">
+    <value>書き込みのたびにログフォルダーにファイルとしても保存されます (最新 30 件を保持)。</value>
+  </data>
+  <data name="step_cancelled" xml:space="preserve">
+    <value>ユーザーにより停止しました。パーティションが書き込み途中の可能性があります。再起動する前にもう一度書き込んでください。</value>
+  </data>
+  <data name="bar_cancel" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="settings_phone" xml:space="preserve">
+    <value>端末</value>
+  </data>
+  <data name="root_probe" xml:space="preserve">
+    <value>ADB で接続したときに端末に root を要求する</value>
+  </data>
+  <data name="root_probe_note" xml:space="preserve">
+    <value>Companion のレポート (root の状態、AVB、モジュールの競合) を読み取ります。Magisk は初回に端末で確認を表示します。オフの場合、端末ページは自分で読み取ったときだけ要求します。</value>
+  </data>
+  <data name="nav_group_phone" xml:space="preserve">
+    <value>端末</value>
+  </data>
+  <data name="nav_group_files" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="nav_group_more" xml:space="preserve">
+    <value>その他のツール</value>
+  </data>
+  <data name="bar_reboot" xml:space="preserve">
+    <value>再起動 ▾</value>
+  </data>
+  <data name="bar_no_device" xml:space="preserve">
+    <value>端末が接続されていません</value>
+  </data>
+  <data name="bar_no_device_hint" xml:space="preserve">
+    <value>fastboot の端末を接続してください。ADB の Android 端末は「端末」ページで読み取ります。</value>
+  </data>
+  <data name="bar_serial" xml:space="preserve">
+    <value>SN {0}</value>
+  </data>
+  <data name="bar_slot" xml:space="preserve">
+    <value>スロット {0}</value>
+  </data>
+  <data name="bar_unlocked" xml:space="preserve">
+    <value>アンロック済み</value>
+  </data>
+  <data name="bar_locked" xml:space="preserve">
+    <value>ロック中</value>
+  </data>
+  <data name="status_last" xml:space="preserve">
+    <value>最終: fastboot {0} · {1}</value>
+  </data>
+  <data name="status_seconds" xml:space="preserve">
+    <value>{0} 秒</value>
+  </data>
+  <data name="flash_result_title" xml:space="preserve">
+    <value>{1} 個中 {0} 個のパーティションを書き込みました</value>
+  </data>
+  <data name="flash_result_log" xml:space="preserve">
+    <value>ログを開く</value>
+  </data>
+  <data name="flash_result_reboot" xml:space="preserve">
+    <value>端末を再起動</value>
+  </data>
+  <data name="flash_critical" xml:space="preserve">
+    <value>重要</value>
+  </data>
+  <data name="drop_title" xml:space="preserve">
+    <value>ここにファイルをドロップするか、選択してください</value>
+  </data>
+  <data name="samsung_match_phone_label" xml:space="preserve">
+    <value>端末 (ダウンロードモード)</value>
+  </data>
+  <data name="samsung_match_unknown" xml:space="preserve">
+    <value>未読み取り</value>
+  </data>
+  <data name="samsung_details" xml:space="preserve">
+    <value>ファームウェアについて</value>
+  </data>
+  <data name="super_drop_hint" xml:space="preserve">
+    <value>パーティションイメージをここにドロップするか、インポートしてください</value>
+  </data>
+  <data name="super_drop_detail" xml:space="preserve">
+    <value>system、vendor、product… の raw または sparse イメージ。fastbootd の端末からレイアウトを読み込むこともできます。</value>
+  </data>
+  <data name="root_prereq" xml:space="preserve">
+    <value>始める前に</value>
+  </data>
+  <data name="root_prereq_unlock" xml:space="preserve">
+    <value>ブートローダーがアンロック済み</value>
+  </data>
+  <data name="root_prereq_adb" xml:space="preserve">
+    <value>USB デバッグが有効で、端末が Android で起動中</value>
+  </data>
+  <data name="root_prereq_image" xml:space="preserve">
+    <value>端末のファームウェアの純正イメージ</value>
+  </data>
+  <data name="root_prereq_backup" xml:space="preserve">
+    <value>boot と大切なデータのバックアップ</value>
+  </data>
+  <data name="root_step_done" xml:space="preserve">
+    <value>完了</value>
+  </data>
+  <data name="root_step_current" xml:space="preserve">
+    <value>現在</value>
+  </data>
+  <data name="settings_backdrop" xml:space="preserve">
+    <value>ウィンドウの背景をすりガラスにする (Windows 11)</value>
+  </data>
+  <data name="settings_backdrop_note" xml:space="preserve">
+    <value>デスクトップがぼかされてウィンドウ越しに見えます。オフの場合は、ウィンドウ独自のグラデーションになります。</value>
+  </data>
+  <data name="settings_shortcuts" xml:space="preserve">
+    <value>キーボードショートカット</value>
+  </data>
+  <data name="shortcut_open" xml:space="preserve">
+    <value>このページでファイルを開く</value>
+  </data>
+  <data name="shortcut_log" xml:space="preserve">
+    <value>ログ</value>
+  </data>
+  <data name="shortcut_help" xml:space="preserve">
+    <value>このページのヘルプ</value>
+  </data>
+  <data name="shortcut_settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="about_links" xml:space="preserve">
+    <value>リンク</value>
   </data>
 </root>

@@ -153,8 +153,8 @@ namespace FastbootEnhance.Core.Tests
             ReleaseFeed.SplitNotes(section, out List<string> arabic, out List<string> english);
             Assert.NotEmpty(arabic);
             Assert.Equal(arabic.Count, english.Count);
-            // The sidebar shows the version too.
-            Assert.Contains("v" + version + "\"", File.ReadAllText(Path.Combine(root, "Themes", "Styles.xaml")));
+            // The sidebar and About show the version too, read from MainWindow.version.
+            Assert.Contains("local:MainWindow.versionLabel", File.ReadAllText(Path.Combine(root, "Themes", "Styles.xaml")));
             Assert.Contains("\"" + version + "\"", File.ReadAllText(Path.Combine(root, "MainWindow.xaml.cs")));
         }
 

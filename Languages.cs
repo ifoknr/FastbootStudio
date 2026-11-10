@@ -37,6 +37,9 @@ namespace FastbootEnhance
             new Option("ko-KR", "한국어"),
         };
 
+        /// <summary>The languages Settings and the tour offer: every one whose translation is complete.</summary>
+        public static readonly Option[] Offered = All;
+
         /// <summary>For automated runs: overrides the saved choice without touching it.</summary>
         const string OverrideVariable = "FASTBOOT_STUDIO_LANG";
 

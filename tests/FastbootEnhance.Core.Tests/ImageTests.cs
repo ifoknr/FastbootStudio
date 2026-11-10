@@ -214,6 +214,38 @@ namespace FastbootEnhance.Core.Tests
             return data;
         }
 
+        /// <summary>Makes the first extent of every metadata copy claim more sectors than super has, with checksums redone.</summary>
+        static void StretchFirstExtent(byte[] image, long header)
+        {
+            int headerSize = BitConverter.ToInt32(image, (int)header + 8);
+            int tablesSize = BitConverter.ToInt32(image, (int)header + 44);
+            int extentsOffset = BitConverter.ToInt32(image, (int)header + 92);
+            long extent = header + headerSize + extentsOffset;
+            BitConverter.GetBytes(1UL << 50).CopyTo(image, extent);   // num_sectors
+            using (System.Security.Cryptography.SHA256 sha = System.Security.Cryptography.SHA256.Create())
+            {
+                sha.ComputeHash(image, (int)header + headerSize, tablesSize).CopyTo(image, header + 48);
+                byte[] copy = new byte[headerSize];
+                Array.Copy(image, header, copy, 0, headerSize);
+                Array.Clear(copy, 12, 32);
+                sha.ComputeHash(copy).CopyTo(image, header + 12);
+            }
+        }
+
+        [Fact]
+        public void An_extent_past_the_end_of_super_is_a_damaged_image()
+        {
+            Dictionary<string, byte[]> contents;
+            string path = BuildSuper(true, out contents);
+            byte[] image = File.ReadAllBytes(path);
+            long primary = 4096 + 8192, backup = 4096 + 8192 + 65536L * 2;
+            StretchFirstExtent(image, primary);
+            StretchFirstExtent(image, backup);
+            File.WriteAllBytes(path, image);
+            using (FileStream file = File.OpenRead(path))
+                Assert.Throws<InvalidDataException>(() => SuperImage.Read(file));
+        }
+
         string BuildSuper(bool expandedHeader, out Dictionary<string, byte[]> contents)
         {
             contents = new Dictionary<string, byte[]>

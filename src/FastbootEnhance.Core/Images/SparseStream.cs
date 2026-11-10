@@ -37,7 +37,19 @@ namespace FastbootEnhance.Core.Images
             Parts = parts;
             BlockSize = parts[0].BlockSize;
             length = parts[0].OutputLength;
-            files = parts.Select(p => new FileStream(p.Path, FileMode.Open, FileAccess.Read, FileShare.Read, 1 << 16, FileOptions.RandomAccess)).ToArray();
+            FileStream[] opened = new FileStream[parts.Count];
+            try
+            {
+                for (int i = 0; i < parts.Count; i++)
+                    opened[i] = new FileStream(parts[i].Path, FileMode.Open, FileAccess.Read, FileShare.Read, 1 << 16, FileOptions.RandomAccess);
+            }
+            catch
+            {
+                foreach (FileStream f in opened)
+                    f?.Dispose();
+                throw;
+            }
+            files = opened;
 
             segments = new List<Segment>();
             for (int i = 0; i < parts.Count; i++)

@@ -26,6 +26,10 @@ nothing to install.
 > 🆕 **A new version.** Fastboot Studio is the new generation of Fastboot Enhance: a new
 > interface from top to bottom, new pages, and more protection for the phone.
 >
+> **New in 3.0:** a new glass look (grey glass in dark, frosted in light, a new icon), the pages in
+> groups with a device bar above and a status bar below, one summary before a flash and the result on the
+> page, a log file per flash, a Stop for a hung command, and keyboard shortcuts.
+>
 > **New in 2.9:**
 > - **Samsung flashing** in Download mode, from the app: one image, a Magisk tar, or the whole firmware
 >   (BL, AP, CP, HOME_CSC). Every file is checked first (MD5, lz4, the phone's PIT and model); EFS and
@@ -54,9 +58,6 @@ nothing to install.
 >   it only if you want (checked against its SHA-256).
 > - **Flash both slots**: firmware partitions such as modem and boot are written to slot a and b.
 > - A partition fastbootd refuses (a OnePlus modem) is written from the bootloader after the rest.
->
-> 🔜 **Coming soon: Odin.** Flashing Samsung phones straight from Download mode, with the same
-> checks, so Samsung firmware goes from download to phone in one app.
 >
 > **New in 2.5:**
 > - A **Phone** page for the phone in Android: specs, kernel, security and battery; with the
@@ -97,9 +98,9 @@ nothing to install.
 3. Run `FastbootStudio.exe`.
 
 The build is self-contained: .NET, `adb` and `fastboot` (platform-tools 37.0.1) are
-included. You only need the phone's USB driver installed in Windows
-(e.g. the [Google USB Driver](https://developer.android.com/studio/run/win-usb)); for a Samsung,
-the app can download and install Samsung's own driver for you.
+included. You only need the phone's USB driver installed in Windows; the app can download and
+install [Google's driver](https://developer.android.com/studio/run/win-usb) (Pixels and phones on
+Google's USB ids) and Samsung's own driver for you, from Settings or the USB check.
 
 An OTA or image can be opened straight away: `FastbootStudio.exe ota.zip`, or drop the
 file onto the exe.
@@ -132,7 +133,7 @@ you first that it wipes the phone.
 | Infinix, Tecno, itel and other MediaTek phones | ✅ On most models | Developer options → OEM unlocking, then `fastboot flashing unlock` (varies by model) | SP Flash Tool is only for reviving a phone in BROM mode |
 | Nothing, Fairphone, ASUS, and phones close to stock Android | ✅ Usually | The standard command | |
 | Oppo, Realme, vivo | ⚠️ Depends on the model | Many models cannot be unlocked at all | adb features work on all of them |
-| Samsung | ⚠️ No fastboot | OEM unlocking, then a long press on Volume up in Download mode | The **Samsung page** checks firmware, roots with Magisk and makes tars for Odin, and the app installs Samsung's driver. Flashing is in Odin for now; built-in flashing is coming |
+| Samsung | ⚠️ No fastboot | OEM unlocking, then a long press on Volume up in Download mode | The **Samsung page** checks firmware, roots with Magisk, makes tars for Odin and flashes from Download mode in the app; the app installs Samsung's driver |
 | Huawei, Honor | ❌ For flashing | Unlock codes stopped in 2018 | adb features (Phone page, copying files) still work |
 
 **Without unlocking**, these work on any phone, or on no phone at all:
@@ -338,7 +339,7 @@ HOME_CSC) for Odin. This page does everything around Odin, and nothing is writte
 - **Tar for Odin**: any images (TWRP's recovery.img, a patched boot…) packed as a `.tar.md5`.
 
 **Why it helps:** the wrong firmware, a bootloader downgrade or a wiped phone are caught before
-Odin is even open. **Coming soon:** flashing from Download mode, Odin built in.
+Odin is even open, and the firmware can be flashed from Download mode in the app, with the same checks.
 
 ### 💾 Backup
 
@@ -397,12 +398,20 @@ Type adb and fastboot commands and run them with the tools that come with the ap
 ### 📝 Logs and ℹ️ About
 
 - **Logs**: everything the app runs and every fastboot / adb answer, to copy or clear.
-- **About**: version, credits, license, the **language switch** and the **appearance** (dark, light, or as Windows)
-  (English, العربية with a full right-to-left layout, 中文, 日本語, 한국어).
+- **About**: version, credits and license.
+- **Help, tour and What's new**: every page has a **?** in its corner with its help; Settings opens the
+  welcome tour again, and What's new for this version.
+
+### ⚙️ Settings
+
+- **Language** (English, العربية with a full right-to-left layout, 中文, 日本語, 한국어), **appearance** (dark, light, or as
+  Windows), **text size**, and the **glass backdrop** on Windows 11.
+- **Phone**: whether a phone connected over ADB is asked for root (off by default).
+- **Shortcuts**: Ctrl+O opens a file on the page, Ctrl+L the log, F1 the page's help, Ctrl+, Settings.
 - **Updates**: once a day (or with *Check now*) the app looks for a new release, shows what
   changed, and downloads it only if you say so; the zip is kept only when its SHA-256 matches.
-- **Help, tour and What's new**: every page has a **?** in its corner with its help; About opens the
-  welcome tour again, and What's new for this version.
+- **USB drivers**: Google's (Pixels and phones on Google's USB ids) and Samsung's, downloaded,
+  checked and installed in one click.
 
 ---
 

@@ -278,9 +278,10 @@ namespace FastbootEnhance.Core.Images
             long lastReport = 0;
             long blocks = 0;
 
-            using (FileStream file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1 << 20))
-            using (SparseWriter writer = sparse ? new SparseWriter(file, BlockSize, totalSize / BlockSize) : null)
+            using (AtomicFile part = AtomicFile.Create(path, FileAccess.ReadWrite, 1 << 20))
+            using (SparseWriter writer = sparse ? new SparseWriter(part.Stream, BlockSize, totalSize / BlockSize) : null)
             {
+                FileStream file = part.Stream;
                 if (writer != null)
                 {
                     for (int at = 0; at < layout.Metadata.Length; at += BlockSize)
@@ -337,6 +338,7 @@ namespace FastbootEnhance.Core.Images
 
                 if (writer != null)
                     writer.Finish();
+                part.Commit();
             }
 
             if (progress != null)

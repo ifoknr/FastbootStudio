@@ -241,6 +241,10 @@ namespace FastbootEnhance.Core.Images
             long start = Number(Attribute(program, "start_sector"), -1);
             if (string.IsNullOrEmpty(label) || start < 0)
                 return null;
+            long sectorBytes = Number(Attribute(program, "SECTOR_SIZE_IN_BYTES"), 512);
+            if (sectorBytes <= 0 || sectorBytes % 512 != 0 || sectorBytes > 65536)
+                return null;
+            int sectorSize = (int)sectorBytes;
             return new Entry
             {
                 File = Attribute(program, "filename") ?? "",
@@ -248,7 +252,7 @@ namespace FastbootEnhance.Core.Images
                 Start = start,
                 Sectors = Number(Attribute(program, "num_partition_sectors"), 0),
                 FileSectorOffset = Number(Attribute(program, "file_sector_offset"), 0),
-                SectorSize = (int)Number(Attribute(program, "SECTOR_SIZE_IN_BYTES"), 512),
+                SectorSize = sectorSize,
                 Lun = Attribute(program, "physical_partition_number") ?? "0",
                 Sparse = string.Equals(Attribute(program, "sparse"), "true", StringComparison.OrdinalIgnoreCase),
                 Xml = xml,
@@ -267,8 +271,9 @@ namespace FastbootEnhance.Core.Images
             byte[] buffer = new byte[1 << 20];
             long done = 0;
             long lastReport = 0;
-            using (FileStream file = new FileStream(output, FileMode.Create, FileAccess.Write, FileShare.None, 1 << 20))
+            using (AtomicFile part = AtomicFile.Create(output, FileAccess.Write, 1 << 20))
             {
+                FileStream file = part.Stream;
                 file.SetLength(Length);
                 foreach (RawProgramPiece piece in Pieces)
                 {
@@ -293,6 +298,7 @@ namespace FastbootEnhance.Core.Images
                         }
                     }
                 }
+                part.Commit();
             }
             if (progress != null)
                 progress.Report(done);
@@ -313,9 +319,10 @@ namespace FastbootEnhance.Core.Images
             long done = 0;
             long lastReport = 0;
             long blocks = 0;
-            using (FileStream file = new FileStream(output, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1 << 20))
-            using (SparseWriter writer = new SparseWriter(file, block, Length / block))
+            using (AtomicFile part = AtomicFile.Create(output, FileAccess.ReadWrite, 1 << 20))
+            using (SparseWriter writer = new SparseWriter(part.Stream, block, Length / block))
             {
+                FileStream file = part.Stream;
                 long position = 0;
                 foreach (RawProgramPiece piece in Pieces)
                 {
@@ -355,7 +362,9 @@ namespace FastbootEnhance.Core.Images
                 writer.Finish();
                 if (progress != null)
                     progress.Report(done);
-                return file.Length;
+                long length = file.Length;
+                part.Commit();
+                return length;
             }
         }
 

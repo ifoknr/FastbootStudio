@@ -81,8 +81,10 @@ namespace FastbootEnhance.Core.Payload
             }
 
             ZipEntryLocation? found;
+            long zipLength;
             using (FileStream zip = File.OpenRead(path))
             {
+                zipLength = zip.Length;
                 found = ZipEntryLocator.Find(zip, PayloadEntryName);
             }
 
@@ -90,6 +92,8 @@ namespace FastbootEnhance.Core.Payload
                 throw new PayloadFormatException("this zip has no " + PayloadEntryName + " entry");
 
             ZipEntryLocation entry = found.Value;
+            if (entry.DataOffset < 0 || entry.CompressedSize < 0 || entry.DataOffset > zipLength - entry.CompressedSize)
+                throw new PayloadFormatException(PayloadEntryName + " runs past the end of the zip; the download looks incomplete");
             if (entry.IsStored)
                 return new PayloadSource(path, path, entry.DataOffset, entry.CompressedSize, true, true, null);
 

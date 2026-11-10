@@ -120,6 +120,9 @@
   <data name="about" xml:space="preserve">
     <value>关于</value>
   </data>
+  <data name="app_name" xml:space="preserve">
+    <value>Fastboot Studio</value>
+  </data>
   <data name="author" xml:space="preserve">
     <value>作者：LibXZR @ akr-developers.com</value>
   </data>
@@ -163,7 +166,7 @@
     <value>当前选择的设备：</value>
   </data>
   <data name="fastboot_current_slot" xml:space="preserve">
-    <value>当前分区</value>
+    <value>当前槽位</value>
   </data>
   <data name="fastboot_device" xml:space="preserve">
     <value>设备</value>
@@ -319,7 +322,9 @@
     <value>要强行继续刷入吗？</value>
   </data>
   <data name="fastboot_vbmeta_disable_verify" xml:space="preserve">
-    <value>要禁用 vbmeta 校验吗？</value>
+    <value>要在此 vbmeta 中禁用 dm-verity 和 AVB 校验吗（--disable-verity --disable-verification）？
+
+自定义或修补过的系统需要这样做。仅在 bootloader 已解锁时有效，并且更改后通常需要清除手机数据（恢复出厂设置）。</value>
   </data>
   <data name="fastboot_vbmeta_disable_verify_title" xml:space="preserve">
     <value>禁用校验</value>
@@ -476,5 +481,3040 @@
   </data>
   <data name="yes" xml:space="preserve">
     <value>是</value>
+  </data>
+  <data name="nav_device" xml:space="preserve">
+    <value>设备</value>
+  </data>
+  <data name="nav_flash" xml:space="preserve">
+    <value>刷机</value>
+  </data>
+  <data name="nav_logs" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="device_subtitle" xml:space="preserve">
+    <value>实时设备状态、分区和快捷操作</value>
+  </data>
+  <data name="device_list_title" xml:space="preserve">
+    <value>已连接的设备</value>
+  </data>
+  <data name="device_list_hint" xml:space="preserve">
+    <value>双击设备，或选中后按 Enter。</value>
+  </data>
+  <data name="device_list_empty" xml:space="preserve">
+    <value>还没有处于 bootloader 或 fastbootd 的设备。连接后一秒内就会显示在这里。</value>
+  </data>
+  <data name="device_variables" xml:space="preserve">
+    <value>设备变量</value>
+  </data>
+  <data name="quick_actions" xml:space="preserve">
+    <value>快捷操作</value>
+  </data>
+  <data name="preflash_checks" xml:space="preserve">
+    <value>刷写前检查</value>
+  </data>
+  <data name="partition_actions" xml:space="preserve">
+    <value>分区操作</value>
+  </data>
+  <data name="check_unlocked" xml:space="preserve">
+    <value>Bootloader 已解锁：可以写入镜像</value>
+  </data>
+  <data name="check_locked" xml:space="preserve">
+    <value>Bootloader 已锁定：设备会拒绝刷写</value>
+  </data>
+  <data name="check_no_update" xml:space="preserve">
+    <value>没有待处理的 Virtual A/B 更新</value>
+  </data>
+  <data name="check_update_pending" xml:space="preserve">
+    <value>有一个 Virtual A/B 更新处于“{0}”状态：刷写前请先取消</value>
+  </data>
+  <data name="check_cow" xml:space="preserve">
+    <value>发现残留的 COW 分区：刷写前请先删除</value>
+  </data>
+  <data name="check_fastbootd" xml:space="preserve">
+    <value>处于 fastbootd：可以写入逻辑分区</value>
+  </data>
+  <data name="check_bootloader" xml:space="preserve">
+    <value>处于 bootloader：要写入逻辑分区请重启到 fastbootd</value>
+  </data>
+  <data name="check_slot" xml:space="preserve">
+    <value>当前槽位：{0}</value>
+  </data>
+  <data name="rail_devices" xml:space="preserve">
+    <value>{0} 台设备处于 fastboot 模式</value>
+  </data>
+  <data name="rail_no_fastboot" xml:space="preserve">
+    <value>缺少 fastboot.exe</value>
+  </data>
+  <data name="flash_subtitle" xml:space="preserve">
+    <value>所有镜像并行解包，并在写入前与清单逐一校验</value>
+  </data>
+  <data name="flash_no_payload" xml:space="preserve">
+    <value>未选择 payload</value>
+  </data>
+  <data name="flash_no_device" xml:space="preserve">
+    <value>请先在“设备”页面选择一台设备。</value>
+  </data>
+  <data name="flash_target_none" xml:space="preserve">
+    <value>未选择设备</value>
+  </data>
+  <data name="flash_target" xml:space="preserve">
+    <value>目标：{0}</value>
+  </data>
+  <data name="flash_note_verify" xml:space="preserve">
+    <value>每个镜像在写入前都会校验 SHA-256。</value>
+  </data>
+  <data name="flash_note_order" xml:space="preserve">
+    <value>所有镜像都成功解包之前，不会向设备写入任何内容。</value>
+  </data>
+  <data name="flash_phase_idle" xml:space="preserve">
+    <value>空闲</value>
+  </data>
+  <data name="flash_phase_extract" xml:space="preserve">
+    <value>正在解包</value>
+  </data>
+  <data name="flash_phase_flash" xml:space="preserve">
+    <value>正在刷写</value>
+  </data>
+  <data name="flash_phase_done" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="flash_phase_failed" xml:space="preserve">
+    <value>失败</value>
+  </data>
+  <data name="flash_state_queued" xml:space="preserve">
+    <value>排队中</value>
+  </data>
+  <data name="flash_state_extracting" xml:space="preserve">
+    <value>正在解包</value>
+  </data>
+  <data name="flash_state_verified" xml:space="preserve">
+    <value>已校验</value>
+  </data>
+  <data name="flash_state_flashing" xml:space="preserve">
+    <value>正在刷写</value>
+  </data>
+  <data name="flash_state_flashed" xml:space="preserve">
+    <value>已刷写</value>
+  </data>
+  <data name="flash_state_failed" xml:space="preserve">
+    <value>失败</value>
+  </data>
+  <data name="flash_state_later" xml:space="preserve">
+    <value>稍后在 bootloader 中刷写</value>
+  </data>
+  <data name="flash_phase_bootloader" xml:space="preserve">
+    <value>正在从 bootloader 刷写</value>
+  </data>
+  <data name="flash_deferred_done" xml:space="preserve">
+    <value>fastbootd 无法写入 {0}，因此软件已将手机重启到 bootloader 并在那里完成写入。手机现在处于 bootloader。</value>
+  </data>
+  <data name="flash_bootloader_timeout" xml:space="preserve">
+    <value>手机没有回到 bootloader。以下分区尚未写入：{0}</value>
+  </data>
+  <data name="flash_state_not_written" xml:space="preserve">
+    <value>未写入</value>
+  </data>
+  <data name="label_phase" xml:space="preserve">
+    <value>阶段</value>
+  </data>
+  <data name="label_elapsed" xml:space="preserve">
+    <value>已用时间</value>
+  </data>
+  <data name="label_written" xml:space="preserve">
+    <value>已写入</value>
+  </data>
+  <data name="live_log" xml:space="preserve">
+    <value>实时日志</value>
+  </data>
+  <data name="logs_subtitle" xml:space="preserve">
+    <value>本次会话中的每条 fastboot 命令及其输出</value>
+  </data>
+  <data name="logs_copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="logs_clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="payload_subtitle" xml:space="preserve">
+    <value>打开 payload.bin 或 OTA zip 以查看内容并导出镜像</value>
+  </data>
+  <data name="payload_drop_hint" xml:space="preserve">
+    <value>将 payload.bin 或 OTA zip 拖到这里</value>
+  </data>
+  <data name="column_codec" xml:space="preserve">
+    <value>压缩格式</value>
+  </data>
+  <data name="column_extractable" xml:space="preserve">
+    <value>可导出</value>
+  </data>
+  <data name="column_progress" xml:space="preserve">
+    <value>进度</value>
+  </data>
+  <data name="column_state" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="column_partition" xml:space="preserve">
+    <value>分区</value>
+  </data>
+  <data name="column_size" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="about_engine" xml:space="preserve">
+    <value>Payload 引擎：支持 zstd、xz 和 bzip2，多区段操作，并行解包并校验 SHA-256</value>
+  </data>
+  <data name="confirm_title" xml:space="preserve">
+    <value>确定吗？</value>
+  </data>
+  <data name="confirm_erase" xml:space="preserve">
+    <value>要擦除分区“{0}”吗？其中的所有数据都将丢失。</value>
+  </data>
+  <data name="confirm_delete" xml:space="preserve">
+    <value>要从 super 中删除逻辑分区“{0}”吗？此操作无法撤销。</value>
+  </data>
+  <data name="confirm_close_flashing" xml:space="preserve">
+    <value>正在刷写 payload。现在关闭会中途停止，可能导致设备无法启动。仍要关闭吗？</value>
+  </data>
+  <data name="extract_incomplete" xml:space="preserve">
+    <value>部分镜像不完整：当前版本无法执行的操作已用零填充，这些镜像也未与清单校验。</value>
+  </data>
+  <data name="extract_incomplete_detail" xml:space="preserve">
+    <value>已跳过 {0} 个操作，未校验</value>
+  </data>
+  <data name="confirm_close_extracting" xml:space="preserve">
+    <value>正在导出镜像。现在关闭会停止导出并删除未完成的文件。仍要关闭吗？</value>
+  </data>
+  <data name="flash_unverified" xml:space="preserve">
+    <value>以下分区在 payload 中没有 SHA-256，写入前无法校验其镜像：
+
+{0}
+
+仍要刷写吗？</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="dialog_warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="dialog_done" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="about_developer" xml:space="preserve">
+    <value>开发者</value>
+  </data>
+  <data name="about_original" xml:space="preserve">
+    <value>原作者</value>
+  </data>
+  <data name="about_original_detail" xml:space="preserve">
+    <value>基于 LibXZR 的 Fastboot Enhance 开发，以 MIT 许可证发布。Copyright © 2021 LibXZR。</value>
+  </data>
+  <data name="about_original_project" xml:space="preserve">
+    <value>原项目</value>
+  </data>
+  <data name="about_license" xml:space="preserve">
+    <value>许可证</value>
+  </data>
+  <data name="nav_backup" xml:space="preserve">
+    <value>备份</value>
+  </data>
+  <data name="backup_subtitle" xml:space="preserve">
+    <value>通过 adb 将分区和手机上的任意文件保存到这台电脑</value>
+  </data>
+  <data name="backup_adb_devices" xml:space="preserve">
+    <value>ADB 设备</value>
+  </data>
+  <data name="backup_column_model" xml:space="preserve">
+    <value>型号</value>
+  </data>
+  <data name="backup_column_mode" xml:space="preserve">
+    <value>模式</value>
+  </data>
+  <data name="backup_waiting" xml:space="preserve">
+    <value>正在查找设备… 请开启 USB 调试并进入 Android，或进入第三方 Recovery（TWRP、OrangeFox）。</value>
+  </data>
+  <data name="backup_no_device" xml:space="preserve">
+    <value>没有通过 adb 连接的设备。请在开发者选项中开启 USB 调试并连接手机，或进入第三方 Recovery。</value>
+  </data>
+  <data name="backup_unauthorized" xml:space="preserve">
+    <value>请解锁手机屏幕，并允许这台电脑进行 USB 调试。</value>
+  </data>
+  <data name="backup_not_ready" xml:space="preserve">
+    <value>设备处于“{0}”模式。读取分区和文件需要 Android 系统或第三方 Recovery。</value>
+  </data>
+  <data name="backup_root_unknown" xml:space="preserve">
+    <value>现在可以复制文件。备份分区需要 Root（Magisk、KernelSU）或第三方 Recovery；点击“读取分区表”进行检查。</value>
+  </data>
+  <data name="backup_root_direct" xml:space="preserve">
+    <value>已获得 Root shell（Recovery 或 adb root）：可以备份分区。</value>
+  </data>
+  <data name="backup_root_su" xml:space="preserve">
+    <value>已通过 su 获得 Root：可以备份分区。</value>
+  </data>
+  <data name="backup_asking_root" xml:space="preserve">
+    <value>正在请求 Root 权限；如果手机上弹出提示，请允许。</value>
+  </data>
+  <data name="backup_needs_root" xml:space="preserve">
+    <value>读取分区需要 Root。请用 Magisk 或 KernelSU 获取 Root 并允许授权提示，或进入 TWRP、OrangeFox 等第三方 Recovery。仍可在“文件”标签页中复制文件。</value>
+  </data>
+  <data name="backup_no_table" xml:space="preserve">
+    <value>无法从此设备读取分区表。</value>
+  </data>
+  <data name="backup_tab_partitions" xml:space="preserve">
+    <value>分区</value>
+  </data>
+  <data name="backup_tab_files" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="backup_read" xml:space="preserve">
+    <value>读取分区表</value>
+  </data>
+  <data name="backup_select_critical" xml:space="preserve">
+    <value>选择关键分区</value>
+  </data>
+  <data name="backup_select_none" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="backup_filter_hint" xml:space="preserve">
+    <value>按名称筛选</value>
+  </data>
+  <data name="backup_save_to" xml:space="preserve">
+    <value>保存到</value>
+  </data>
+  <data name="backup_change" xml:space="preserve">
+    <value>更改…</value>
+  </data>
+  <data name="backup_start" xml:space="preserve">
+    <value>备份所选</value>
+  </data>
+  <data name="backup_cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="backup_verify" xml:space="preserve">
+    <value>校验备份…</value>
+  </data>
+  <data name="backup_verify_title" xml:space="preserve">
+    <value>备份校验</value>
+  </data>
+  <data name="backup_open_folder" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="backup_note" xml:space="preserve">
+    <value>每个镜像的 SHA-256 都会保存在 SHA256SUMS 中，与 backup-info.txt 放在一起。要恢复某个镜像，请在“设备 › 分区”中刷写它。</value>
+  </data>
+  <data name="backup_state_reading" xml:space="preserve">
+    <value>正在读取</value>
+  </data>
+  <data name="backup_state_saved" xml:space="preserve">
+    <value>已保存</value>
+  </data>
+  <data name="backup_state_skipped" xml:space="preserve">
+    <value>已跳过</value>
+  </data>
+  <data name="backup_state_critical" xml:space="preserve">
+    <value>关键</value>
+  </data>
+  <data name="backup_nothing_selected" xml:space="preserve">
+    <value>请先勾选要备份的分区，或点击“选择关键分区”。</value>
+  </data>
+  <data name="backup_large_warning" xml:space="preserve">
+    <value>以下分区较大，备份需要较长时间并占用大量磁盘空间：
+
+{0}
+
+仍要备份吗？</value>
+  </data>
+  <data name="backup_short_read" xml:space="preserve">
+    <value>已读取 {0} / {1}；设备停止发送数据（权限被拒绝或已断开连接）</value>
+  </data>
+  <data name="backup_done" xml:space="preserve">
+    <value>已保存 {0} 个分区，SHA-256 记录在：
+{1}</value>
+  </data>
+  <data name="backup_partial" xml:space="preserve">
+    <value>已保存 {0} / {1} 个分区，位置：
+{2}</value>
+  </data>
+  <data name="backup_cancelled" xml:space="preserve">
+    <value>已停止。未完成的文件已删除。</value>
+  </data>
+  <data name="backup_verify_none" xml:space="preserve">
+    <value>此文件夹中没有 SHA256SUMS 文件，无法进行校验。</value>
+  </data>
+  <data name="backup_verify_ok" xml:space="preserve">
+    <value>全部 {0} 个文件的 SHA-256 均匹配。</value>
+  </data>
+  <data name="backup_verify_bad" xml:space="preserve">
+    <value>{1} 个文件中有 {0} 个缺失或不匹配：</value>
+  </data>
+  <data name="files_up" xml:space="preserve">
+    <value>上一级</value>
+  </data>
+  <data name="files_go" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="files_quick_storage" xml:space="preserve">
+    <value>内部存储</value>
+  </data>
+  <data name="files_quick_dcim" xml:space="preserve">
+    <value>相机</value>
+  </data>
+  <data name="files_quick_pictures" xml:space="preserve">
+    <value>图片</value>
+  </data>
+  <data name="files_quick_download" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="files_quick_documents" xml:space="preserve">
+    <value>文档</value>
+  </data>
+  <data name="files_column_name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="files_column_kind" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="files_kind_folder" xml:space="preserve">
+    <value>文件夹</value>
+  </data>
+  <data name="files_kind_file" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="files_kind_link" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="files_empty" xml:space="preserve">
+    <value>此文件夹为空，或 Android 不允许在没有 Root 的情况下读取。</value>
+  </data>
+  <data name="files_count" xml:space="preserve">
+    <value>{0} 个文件夹，{1} 个文件</value>
+  </data>
+  <data name="files_copying" xml:space="preserve">
+    <value>正在复制 {0}…</value>
+  </data>
+  <data name="files_pull" xml:space="preserve">
+    <value>复制到电脑</value>
+  </data>
+  <data name="files_note" xml:space="preserve">
+    <value>选择文件或文件夹（按住 Ctrl 或 Shift 多选，Ctrl+A 全选）然后复制。文件夹会连同其中所有内容一起复制。双击文件夹可将其打开。</value>
+  </data>
+  <data name="files_nothing_selected" xml:space="preserve">
+    <value>请先选择要复制的文件或文件夹。</value>
+  </data>
+  <data name="files_done" xml:space="preserve">
+    <value>已复制 {0} 项到：
+{1}</value>
+  </data>
+  <data name="files_partial" xml:space="preserve">
+    <value>已复制 {0} / {1} 项到：
+{2}</value>
+  </data>
+  <data name="payload_container" xml:space="preserve">
+    <value>封装格式</value>
+  </data>
+  <data name="payload_container_inplace" xml:space="preserve">
+    <value>OTA zip（直接读取）</value>
+  </data>
+  <data name="payload_container_unpacked" xml:space="preserve">
+    <value>OTA zip（解压到临时目录）</value>
+  </data>
+  <data name="payload_security_patch" xml:space="preserve">
+    <value>安全补丁</value>
+  </data>
+  <data name="payload_partial_update" xml:space="preserve">
+    <value>部分更新</value>
+  </data>
+  <data name="payload_apex" xml:space="preserve">
+    <value>APEX 包</value>
+  </data>
+  <data name="payload_operations" xml:space="preserve">
+    <value>操作数</value>
+  </data>
+  <data name="flash_file_detail" xml:space="preserve">
+    <value>{0} 个分区  ·  {1}  ·  {2}</value>
+  </data>
+  <data name="flash_written_count" xml:space="preserve">
+    <value>已写入 {0} / {1} 个分区</value>
+  </data>
+  <data name="extract_done_detail" xml:space="preserve">
+    <value>{0}，用时 {1} 秒</value>
+  </data>
+  <data name="chrome_minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="chrome_maximize" xml:space="preserve">
+    <value>最大化</value>
+  </data>
+  <data name="chrome_restore" xml:space="preserve">
+    <value>还原</value>
+  </data>
+  <data name="chrome_close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="language_restart" xml:space="preserve">
+    <value>新语言将在重启后生效。现在重启 Fastboot Studio 吗？</value>
+  </data>
+  <data name="language_busy" xml:space="preserve">
+    <value>请等待当前的刷写或导出完成后再更改语言。</value>
+  </data>
+  <data name="nav_images" xml:space="preserve">
+    <value>镜像工具</value>
+  </data>
+  <data name="images_subtitle" xml:space="preserve">
+    <value>查看、转换和解包 Android 镜像：sparse、super、ext4、EROFS 等</value>
+  </data>
+  <data name="images_open" xml:space="preserve">
+    <value>打开镜像…</value>
+  </data>
+  <data name="images_drop_hint" xml:space="preserve">
+    <value>将镜像拖到这里</value>
+  </data>
+  <data name="images_drop_detail" xml:space="preserve">
+    <value>system.img、super.img、vendor.img… sparse 或 raw 均可。对于拆分成多个部分的镜像（system.img_sparsechunk.0、.1…），打开任意一部分即可，其余部分会自动找到。</value>
+  </data>
+  <data name="images_tab_details" xml:space="preserve">
+    <value>详情</value>
+  </data>
+  <data name="images_tab_partitions" xml:space="preserve">
+    <value>super 中的分区</value>
+  </data>
+  <data name="images_tab_chunks" xml:space="preserve">
+    <value>Sparse 数据块</value>
+  </data>
+  <data name="images_select_all" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="images_column_group" xml:space="preserve">
+    <value>分组</value>
+  </data>
+  <data name="images_column_type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="images_column_start" xml:space="preserve">
+    <value>起始块</value>
+  </data>
+  <data name="images_column_blocks" xml:space="preserve">
+    <value>块数</value>
+  </data>
+  <data name="images_extract" xml:space="preserve">
+    <value>导出分区 (lpunpack)</value>
+  </data>
+  <data name="images_to_raw" xml:space="preserve">
+    <value>转换为 raw (simg2img)</value>
+  </data>
+  <data name="images_to_sparse" xml:space="preserve">
+    <value>转换为 sparse (img2simg)</value>
+  </data>
+  <data name="images_resplit" xml:space="preserve">
+    <value>拆分为多个部分 (simg2simg)</value>
+  </data>
+  <data name="images_split" xml:space="preserve">
+    <value>拆分为每部分最大</value>
+  </data>
+  <data name="images_empty_slot" xml:space="preserve">
+    <value>空槽位</value>
+  </data>
+  <data name="images_parts_not_sparse" xml:space="preserve">
+    <value>选择了多个文件，但它们不是同一镜像的 sparse 分块。请一次打开一个镜像。</value>
+  </data>
+  <data name="images_kind_super" xml:space="preserve">
+    <value>Super（动态分区）</value>
+  </data>
+  <data name="images_kind_ext4" xml:space="preserve">
+    <value>ext4 文件系统</value>
+  </data>
+  <data name="images_kind_erofs" xml:space="preserve">
+    <value>EROFS 文件系统</value>
+  </data>
+  <data name="images_kind_f2fs" xml:space="preserve">
+    <value>F2FS 文件系统</value>
+  </data>
+  <data name="images_kind_boot" xml:space="preserve">
+    <value>Boot 镜像</value>
+  </data>
+  <data name="images_kind_vendor_boot" xml:space="preserve">
+    <value>Vendor boot 镜像</value>
+  </data>
+  <data name="images_kind_vbmeta" xml:space="preserve">
+    <value>vbmeta（Android 验证启动）</value>
+  </data>
+  <data name="images_kind_payload" xml:space="preserve">
+    <value>OTA payload（请在 Payload 解包中打开）</value>
+  </data>
+  <data name="images_kind_zip" xml:space="preserve">
+    <value>Zip 压缩包</value>
+  </data>
+  <data name="images_row_file" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="images_parts" xml:space="preserve">
+    <value>{0} 个部分</value>
+  </data>
+  <data name="images_row_format" xml:space="preserve">
+    <value>格式</value>
+  </data>
+  <data name="images_format_raw" xml:space="preserve">
+    <value>Raw 镜像</value>
+  </data>
+  <data name="images_row_content" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="images_row_size" xml:space="preserve">
+    <value>镜像大小</value>
+  </data>
+  <data name="images_row_disk" xml:space="preserve">
+    <value>占用空间</value>
+  </data>
+  <data name="images_row_block_size" xml:space="preserve">
+    <value>块大小</value>
+  </data>
+  <data name="images_row_blocks" xml:space="preserve">
+    <value>块数</value>
+  </data>
+  <data name="images_blocks_detail" xml:space="preserve">
+    <value>{1} / {2} / {3}</value>
+  </data>
+  <data name="images_row_chunks" xml:space="preserve">
+    <value>数据块</value>
+  </data>
+  <data name="images_row_crc" xml:space="preserve">
+    <value>CRC-32</value>
+  </data>
+  <data name="images_crc_none" xml:space="preserve">
+    <value>未记录</value>
+  </data>
+  <data name="images_row_metadata" xml:space="preserve">
+    <value>元数据</value>
+  </data>
+  <data name="images_metadata_detail" xml:space="preserve">
+    <value>版本 {0}，{1} 个槽位</value>
+  </data>
+  <data name="images_backup_copy" xml:space="preserve">
+    <value>从备份副本读取</value>
+  </data>
+  <data name="images_row_vab" xml:space="preserve">
+    <value>Virtual A/B</value>
+  </data>
+  <data name="images_row_partitions" xml:space="preserve">
+    <value>分区</value>
+  </data>
+  <data name="images_partitions_detail" xml:space="preserve">
+    <value>{0} 个有数据，共 {1} 个</value>
+  </data>
+  <data name="images_row_group" xml:space="preserve">
+    <value>分组</value>
+  </data>
+  <data name="images_unlimited" xml:space="preserve">
+    <value>无限制</value>
+  </data>
+  <data name="images_row_super_size" xml:space="preserve">
+    <value>Super 大小</value>
+  </data>
+  <data name="images_note_super" xml:space="preserve">
+    <value>分区直接从镜像中读取（无论是否为 sparse），并校验每个元数据校验和。每个分区都以 name.img 保存在镜像旁的文件夹中。</value>
+  </data>
+  <data name="images_note_sparse" xml:space="preserve">
+    <value>转换为 raw 会重建完整镜像（合并所有部分），并校验其中的 CRC-32。拆分后得到的各部分可以由 fastboot 逐个刷写。</value>
+  </data>
+  <data name="images_note_raw" xml:space="preserve">
+    <value>转换为 sparse 会将重复的块存为一条记录，这是 fastboot 和官方线刷包使用的格式。输出与 AOSP img2simg 逐字节一致。</value>
+  </data>
+  <data name="images_overwrite" xml:space="preserve">
+    <value>以下文件已存在，将被替换：
+
+{0}
+
+继续吗？</value>
+  </data>
+  <data name="images_done_in" xml:space="preserve">
+    <value>完成，用时 {0} 秒</value>
+  </data>
+  <data name="images_raw_done" xml:space="preserve">
+    <value>Raw 镜像已写入：
+{0}
+{1}</value>
+  </data>
+  <data name="images_crc_line" xml:space="preserve">
+    <value>CRC-32 {0}</value>
+  </data>
+  <data name="images_crc_checked" xml:space="preserve">
+    <value>已校验 {0} 个记录的校验和</value>
+  </data>
+  <data name="images_split_invalid" xml:space="preserve">
+    <value>请输入每部分的最大大小（单位 MB），例如 512。</value>
+  </data>
+  <data name="images_resplit_one" xml:space="preserve">
+    <value>请打开单个 sparse 镜像进行拆分。要合并各部分，请先将它们转换为 raw。</value>
+  </data>
+  <data name="images_sparse_done" xml:space="preserve">
+    <value>已写入 {0} 个 sparse 文件（{1}）：
+{2}</value>
+  </data>
+  <data name="images_nothing_selected" xml:space="preserve">
+    <value>请先勾选要导出的分区。</value>
+  </data>
+  <data name="images_extract_done" xml:space="preserve">
+    <value>已导出 {0} 个分区到：
+{1}</value>
+  </data>
+  <data name="images_row_block_kinds" xml:space="preserve">
+    <value>数据 / 填充 / 无关</value>
+  </data>
+  <data name="backup_fb_title" xml:space="preserve">
+    <value>{0} 处于 Fastboot 模式</value>
+  </data>
+  <data name="backup_fb_why" xml:space="preserve">
+    <value>Fastboot 可以写入分区，但无法读回：零售版手机的 Android 不允许这样做。备份通过 adb 进行，因此手机需要先退出 Fastboot，可选以下方式之一：</value>
+  </data>
+  <data name="backup_fb_android" xml:space="preserve">
+    <value>启动 Android</value>
+  </data>
+  <data name="backup_fb_android_note" xml:space="preserve">
+    <value>可以立即复制文件。必须开启 USB 调试；备份分区还需要 Root（Magisk 或 KernelSU）。</value>
+  </data>
+  <data name="backup_fb_recovery" xml:space="preserve">
+    <value>启动 Recovery</value>
+  </data>
+  <data name="backup_fb_recovery_note" xml:space="preserve">
+    <value>适用于已安装的第三方 Recovery（TWRP、OrangeFox）：可备份分区和文件，无需 Root。官方 Recovery 不支持 adb。</value>
+  </data>
+  <data name="backup_fb_boot" xml:space="preserve">
+    <value>临时启动 Recovery 镜像（不安装）</value>
+  </data>
+  <data name="backup_fb_boot_note" xml:space="preserve">
+    <value>发送适配此手机的 TWRP 或 OrangeFox 镜像并启动；不会改动手机上的任何内容。需要已解锁的 bootloader。</value>
+  </data>
+  <data name="backup_fb_boot_button" xml:space="preserve">
+    <value>选择 Recovery 镜像…</value>
+  </data>
+  <data name="backup_fb_rebooting" xml:space="preserve">
+    <value>正在重启 {0}… 手机在 adb 上响应后，此页面会自动切换。</value>
+  </data>
+  <data name="backup_fb_sending" xml:space="preserve">
+    <value>正在发送 {0} 到手机…</value>
+  </data>
+  <data name="backup_fb_booted" xml:space="preserve">
+    <value>Recovery 镜像已发送并启动。加载完成后，手机会通过 adb 显示在这里，然后即可开始备份。</value>
+  </data>
+  <data name="backup_fb_boot_failed" xml:space="preserve">
+    <value>手机没有启动该镜像。
+
+{0}
+
+请确认 bootloader 已解锁，且镜像是为此手机制作的。部分手机（三星及少数其他品牌）不支持不刷入直接启动镜像。</value>
+  </data>
+  <data name="backup_fb_not_boot_image" xml:space="preserve">
+    <value>此文件不是 boot 或 recovery 镜像。请选择为此手机制作的 TWRP 或 OrangeFox 的 .img 文件。</value>
+  </data>
+  <data name="backup_fb_userspace" xml:space="preserve">
+    <value>手机处于 fastbootd，无法启动镜像。现在重启到 bootloader 吗？返回后请重新选择镜像。</value>
+  </data>
+  <data name="backup_fb_failed" xml:space="preserve">
+    <value>fastboot 未完成：{0}</value>
+  </data>
+  <data name="nav_super" xml:space="preserve">
+    <value>构建 Super</value>
+  </data>
+  <data name="super_subtitle" xml:space="preserve">
+    <value>将多个分区镜像合并为一个可由 fastboot 刷写的 super.img</value>
+  </data>
+  <data name="super_import" xml:space="preserve">
+    <value>从 super.img 导入…</value>
+  </data>
+  <data name="super_read_phone" xml:space="preserve">
+    <value>从手机读取大小</value>
+  </data>
+  <data name="super_layout" xml:space="preserve">
+    <value>布局</value>
+  </data>
+  <data name="super_mode_vab" xml:space="preserve">
+    <value>Virtual A/B</value>
+  </data>
+  <data name="super_mode_ab" xml:space="preserve">
+    <value>A/B</value>
+  </data>
+  <data name="super_mode_single" xml:space="preserve">
+    <value>单槽位</value>
+  </data>
+  <data name="super_mode_imported" xml:space="preserve">
+    <value>与导入的 super 相同</value>
+  </data>
+  <data name="super_mode_note_vab" xml:space="preserve">
+    <value>Android 11 及以后的大多数手机。分区带 _a 和 _b 后缀；与官方线刷包一样，槽位 b 留空。</value>
+  </data>
+  <data name="super_mode_note_ab" xml:space="preserve">
+    <value>没有 Virtual A/B 的 A/B 手机（主要是 Android 10）。每个槽位占 super 的一半。</value>
+  </data>
+  <data name="super_mode_note_single" xml:space="preserve">
+    <value>没有 A/B 槽位的手机：分区保留原名。</value>
+  </data>
+  <data name="super_mode_note_imported" xml:space="preserve">
+    <value>分组、槽位和分区顺序均复制自 {0}。镜像会替换同名分区。</value>
+  </data>
+  <data name="super_size" xml:space="preserve">
+    <value>SUPER 大小（字节）</value>
+  </data>
+  <data name="super_size_hint" xml:space="preserve">
+    <value>例如 9126805504</value>
+  </data>
+  <data name="super_group_size" xml:space="preserve">
+    <value>分组大小（字节）</value>
+  </data>
+  <data name="super_group_name" xml:space="preserve">
+    <value>分组名称</value>
+  </data>
+  <data name="super_auto" xml:space="preserve">
+    <value>自动</value>
+  </data>
+  <data name="super_auto_value" xml:space="preserve">
+    <value>自动：{0}</value>
+  </data>
+  <data name="super_usage" xml:space="preserve">
+    <value>已用 {0} / {1} · 剩余 {2}</value>
+  </data>
+  <data name="super_usage_none" xml:space="preserve">
+    <value>输入 super 的大小，即可查看分区占用了多少空间。</value>
+  </data>
+  <data name="super_add" xml:space="preserve">
+    <value>添加镜像…</value>
+  </data>
+  <data name="super_add_folder" xml:space="preserve">
+    <value>添加文件夹…</value>
+  </data>
+  <data name="super_remove" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="super_clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="super_empty_hint" xml:space="preserve">
+    <value>添加分区镜像（system.img、vendor.img、product.img…）或导入现有 super.img 的布局。由“镜像工具”解包出的镜像会被自动找到。</value>
+  </data>
+  <data name="super_column_image" xml:space="preserve">
+    <value>镜像</value>
+  </data>
+  <data name="super_empty_partition" xml:space="preserve">
+    <value>空</value>
+  </data>
+  <data name="super_output" xml:space="preserve">
+    <value>输出</value>
+  </data>
+  <data name="super_format_sparse" xml:space="preserve">
+    <value>Sparse</value>
+  </data>
+  <data name="super_format_raw" xml:space="preserve">
+    <value>Raw</value>
+  </data>
+  <data name="super_format_note" xml:space="preserve">
+    <value>Sparse 体积更小，也是官方线刷包采用的格式；raw 则是 super 的完整大小。</value>
+  </data>
+  <data name="super_verify" xml:space="preserve">
+    <value>构建后校验镜像</value>
+  </data>
+  <data name="super_build" xml:space="preserve">
+    <value>构建 super.img…</value>
+  </data>
+  <data name="super_building" xml:space="preserve">
+    <value>正在构建 super.img</value>
+  </data>
+  <data name="super_verifying" xml:space="preserve">
+    <value>正在校验 super.img</value>
+  </data>
+  <data name="super_flash_note" xml:space="preserve">
+    <value>刷写命令：fastboot flash super super.img。刷写前请先备份手机当前的 super。</value>
+  </data>
+  <data name="super_done" xml:space="preserve">
+    <value>super.img 已构建并通过校验：每个分区都已读回并与其镜像一致。
+
+{0}
+{1} · {2} 个分区</value>
+  </data>
+  <data name="super_done_unchecked" xml:space="preserve">
+    <value>super.img 已构建完成。
+
+{0}
+{1} · {2} 个分区</value>
+  </data>
+  <data name="super_verify_failed" xml:space="preserve">
+    <value>super.img 已写入但未通过校验，请不要刷写：
+
+{0}</value>
+  </data>
+  <data name="super_problem_no_size" xml:space="preserve">
+    <value>请输入 super 的大小：从手机读取，或导入一个 super.img。</value>
+  </data>
+  <data name="super_problem_size_aligned" xml:space="preserve">
+    <value>super 的大小必须是 4096 字节的整数倍。</value>
+  </data>
+  <data name="super_problem_metadata" xml:space="preserve">
+    <value>此布局的元数据设置无法使用。</value>
+  </data>
+  <data name="super_problem_metadata_large" xml:space="preserve">
+    <value>分区过多，元数据区域放不下。</value>
+  </data>
+  <data name="super_problem_no_images" xml:space="preserve">
+    <value>请至少添加一个分区镜像。</value>
+  </data>
+  <data name="super_problem_bad_name" xml:space="preserve">
+    <value>“{0}”不是有效的名称（只能包含字母、数字、_ . -，最多 36 个字符）。</value>
+  </data>
+  <data name="super_problem_duplicate" xml:space="preserve">
+    <value>“{0}”出现了两次。</value>
+  </data>
+  <data name="super_problem_unknown_group" xml:space="preserve">
+    <value>分组“{0}”不存在。</value>
+  </data>
+  <data name="super_problem_group_full" xml:space="preserve">
+    <value>分组 {0} 太小：其中的分区需要 {1}，而它只允许 {2}。</value>
+  </data>
+  <data name="super_problem_does_not_fit" xml:space="preserve">
+    <value>分区需要 {0}，但 super 只有 {1}。</value>
+  </data>
+  <data name="super_import_source" xml:space="preserve">
+    <value>{0} 的布局 · {1} · {2} 个元数据槽位 · 分组 {3}</value>
+  </data>
+  <data name="super_found_images" xml:space="preserve">
+    <value>在 {1} 中找到 {0} 个分区镜像。</value>
+  </data>
+  <data name="super_not_super" xml:space="preserve">
+    <value>此文件不是 super 镜像。</value>
+  </data>
+  <data name="super_not_filesystem" xml:space="preserve">
+    <value>以下文件不是文件系统镜像，可能不属于 super（boot、vbmeta 等需要单独刷写）：
+
+{0}
+
+仍要添加吗？</value>
+  </data>
+  <data name="super_folder_skipped" xml:space="preserve">
+    <value>已跳过 {0} 个非文件系统镜像的文件：{1}</value>
+  </data>
+  <data name="super_folder_none" xml:space="preserve">
+    <value>此文件夹中没有找到分区镜像。</value>
+  </data>
+  <data name="super_clear_confirm" xml:space="preserve">
+    <value>要从列表中移除所有分区镜像吗？</value>
+  </data>
+  <data name="super_phone_none" xml:space="preserve">
+    <value>没有处于 fastboot 模式的手机。请在 bootloader 或 fastbootd 下连接后重试。</value>
+  </data>
+  <data name="super_phone_read" xml:space="preserve">
+    <value>已从 {0} 读取：super 为 {1}（{2} 字节）。布局：{3}。</value>
+  </data>
+  <data name="super_phone_failed" xml:space="preserve">
+    <value>无法从手机读取 super 的大小：
+
+{0}</value>
+  </data>
+  <data name="super_reading_phone" xml:space="preserve">
+    <value>正在从手机读取…</value>
+  </data>
+  <data name="super_pick_image" xml:space="preserve">
+    <value>为 {0} 选择镜像</value>
+  </data>
+  <data name="super_output_is_input" xml:space="preserve">
+    <value>输出文件是要放入 super 的镜像之一。请换一个文件名。</value>
+  </data>
+  <data name="images_format_pieces" xml:space="preserve">
+    <value>高通线刷包的分片（{0}）</value>
+  </data>
+  <data name="images_note_pieces" xml:space="preserve">
+    <value>这 {0} 个文件是同一个 {1} 镜像的分片，由 {2} 定位。可将它们合并为一个镜像，或直接从分片中导出分区。</value>
+  </data>
+  <data name="images_combine_sparse" xml:space="preserve">
+    <value>合并为 sparse</value>
+  </data>
+  <data name="images_combine_raw" xml:space="preserve">
+    <value>合并为 raw</value>
+  </data>
+  <data name="images_combine_done" xml:space="preserve">
+    <value>已将 {0} 个分片合并为一个镜像：
+
+{1}
+{2}
+
+{3}</value>
+  </data>
+  <data name="images_combine_sparse_note" xml:space="preserve">
+    <value>刷写命令：fastboot flash super super.img</value>
+  </data>
+  <data name="images_combine_raw_note" xml:space="preserve">
+    <value>Raw 镜像是分区的完整大小；用于 fastboot 时 sparse 镜像体积更小。</value>
+  </data>
+  <data name="confirm_type_name" xml:space="preserve">
+    <value>输入 {0} 以确认：</value>
+  </data>
+  <data name="critical_title" xml:space="preserve">
+    <value>关键分区</value>
+  </data>
+  <data name="confirm_critical_flash" xml:space="preserve">
+    <value>{0} 属于启动链，或保存着手机的身份信息（IMEI、校准数据、密钥）。在这里刷入错误的镜像，可能导致手机连 bootloader 都进不去，或丢失任何固件都无法恢复的数据。
+
+只能刷入为这台手机专门制作的镜像，并先备份当前镜像。</value>
+  </data>
+  <data name="confirm_critical_erase" xml:space="preserve">
+    <value>擦除 {0} 可能导致手机无法启动，或永久清除其 IMEI、校准数据或密钥。此操作无法撤销。</value>
+  </data>
+  <data name="slot_switch_title" xml:space="preserve">
+    <value>切换槽位</value>
+  </data>
+  <data name="slot_switch_blocked" xml:space="preserve">
+    <value>槽位 {0} 当前无法启动，因此未将其激活。</value>
+  </data>
+  <data name="slot_switch_danger" xml:space="preserve">
+    <value>槽位 {0} 很可能无法启动。仍要切换吗？</value>
+  </data>
+  <data name="slot_switch_warn" xml:space="preserve">
+    <value>要切换到槽位 {0} 吗？</value>
+  </data>
+  <data name="slot_reason_never_booted" xml:space="preserve">
+    <value>槽位 {0} 尚未完成过一次启动。如果刚刚刷写过它，这是正常的；否则手机可能会回退到另一个槽位或无法启动。</value>
+  </data>
+  <data name="slot_reason_unbootable" xml:space="preserve">
+    <value>Bootloader 将槽位 {0} 标记为不可启动。</value>
+  </data>
+  <data name="slot_reason_no_retries" xml:space="preserve">
+    <value>槽位 {0} 已没有剩余的启动尝试次数，且从未成功启动过。</value>
+  </data>
+  <data name="slot_reason_empty" xml:space="preserve">
+    <value>槽位 {0} 的以下分区缺失或为空：{1}。请先刷写该槽位（或完整固件）。</value>
+  </data>
+  <data name="fastboot_boot_once" xml:space="preserve">
+    <value>临时启动镜像…</value>
+  </data>
+  <data name="fastboot_boot_once_title" xml:space="preserve">
+    <value>临时启动</value>
+  </data>
+  <data name="fastboot_boot_once_note" xml:space="preserve">
+    <value>临时启动一次 boot 或 recovery 镜像而不刷入；重启手机后会回到已安装的系统。</value>
+  </data>
+  <data name="boot_once_no_kernel" xml:space="preserve">
+    <value>此镜像没有内核（init_boot 镜像或同类的 boot 镜像），手机无法单独启动它。请启动完整的 boot.img，或改为刷写 init_boot。</value>
+  </data>
+  <data name="boot_once_vendor_boot" xml:space="preserve">
+    <value>这是 vendor_boot 镜像：只包含 ramdisk 和设备树，不能单独启动。</value>
+  </data>
+  <data name="boot_once_not_boot" xml:space="preserve">
+    <value>此文件不是 boot 或 recovery 镜像。</value>
+  </data>
+  <data name="boot_once_fastbootd" xml:space="preserve">
+    <value>手机处于 fastbootd，无法启动镜像。现在重启到 bootloader 吗？之后请重新选择镜像。</value>
+  </data>
+  <data name="boot_once_started" xml:space="preserve">
+    <value>镜像已发送，手机正在启动它。正常重启手机即可回到已安装的系统。</value>
+  </data>
+  <data name="super_space_title" xml:space="preserve">
+    <value>Super</value>
+  </data>
+  <data name="super_space_bootloader" xml:space="preserve">
+    <value>在 fastbootd 中显示：bootloader 不会列出 super 内的分区。</value>
+  </data>
+  <data name="super_space_unknown" xml:space="preserve">
+    <value>手机没有报告 super 的大小。</value>
+  </data>
+  <data name="super_space_total" xml:space="preserve">
+    <value>共 {0}，约剩余 {1}</value>
+  </data>
+  <data name="super_space_slot" xml:space="preserve">
+    <value>槽位 {0}：{1}</value>
+  </data>
+  <data name="super_space_in_use" xml:space="preserve">
+    <value>（使用中）</value>
+  </data>
+  <data name="super_space_cow" xml:space="preserve">
+    <value>更新副本 (COW)：{0}</value>
+  </data>
+  <data name="super_space_unslotted" xml:space="preserve">
+    <value>无槽位：{0}</value>
+  </data>
+  <data name="super_full_title" xml:space="preserve">
+    <value>super 空间不足</value>
+  </data>
+  <data name="super_full" xml:space="preserve">
+    <value>这些镜像在 super 中还需要约 {0} 的空间（{1}），但只剩约 {2}。fastbootd 会以“Not enough space to resize partition”报错停止。
+
+腾出空间的方法：</value>
+  </data>
+  <data name="super_full_other_slot" xml:space="preserve">
+    <value>删除槽位 {0} 的分区：{1}。在重新刷写之前，槽位 {0} 将无法启动。</value>
+  </data>
+  <data name="super_full_cow" xml:space="preserve">
+    <value>清除之前更新留下的内容：取消待处理的更新（取消更新），或删除 COW 分区。</value>
+  </data>
+  <data name="super_full_nothing" xml:space="preserve">
+    <value>super 没有被其他内容占用；这些镜像比这台手机的 super 还大。</value>
+  </data>
+  <data name="super_full_ask" xml:space="preserve">
+    <value>以上数字为估算值。仍要刷写吗？</value>
+  </data>
+  <data name="create_missing_title" xml:space="preserve">
+    <value>缺少分区</value>
+  </data>
+  <data name="create_missing" xml:space="preserve">
+    <value>手机上没有 {0}。这些是此更新放在 super 内的分区，可以现在在 super 中创建（空分区），然后再写入。
+
+fastbootd 会将新分区放在“default”分组，而不是手机自己的分组（例如 main_a）。手机可以正常启动；下一次完整更新或刷写官方 super 时，它们会回到原来的分组。
+
+创建并继续吗？</value>
+  </data>
+  <data name="create_default_group_note" xml:space="preserve">
+    <value>fastbootd 会将新分区放在“default”分组，而不是手机自己的分组（例如 main_a）。这不影响使用；下一次完整更新会将其放回原来的分组。</value>
+  </data>
+  <data name="usb_check" xml:space="preserve">
+    <value>USB 检查</value>
+  </data>
+  <data name="usb_check_title" xml:space="preserve">
+    <value>USB 检查</value>
+  </data>
+  <data name="usb_missing_driver" xml:space="preserve">
+    <value>{0}：Windows 没有它的驱动，因此 fastboot 和 adb 无法识别。</value>
+  </data>
+  <data name="usb_driver_problem" xml:space="preserve">
+    <value>{0}：驱动已安装但无法正常工作（代码 {1}）。请拔下后重新插入，或重新安装驱动。</value>
+  </data>
+  <data name="usb_edl" xml:space="preserve">
+    <value>{0}：手机处于高通紧急下载模式（EDL，9008），供 QFIL 使用。fastboot 无法访问此模式；长按电源键 10 到 15 秒即可退出。</value>
+  </data>
+  <data name="usb_mediatek" xml:space="preserve">
+    <value>{0}：手机处于联发科 BROM 或 preloader 模式，供 SP Flash Tool 使用。fastboot 无法访问；请拔下手机，并用手机的组合键进入 fastboot。</value>
+  </data>
+  <data name="usb_unisoc" xml:space="preserve">
+    <value>{0}：手机处于紫光展锐（Spreadtrum）下载模式。fastboot 无法访问；请拔下手机，并用手机的组合键进入 fastboot。</value>
+  </data>
+  <data name="usb_samsung" xml:space="preserve">
+    <value>{0}：手机处于三星 Download（Odin）模式。三星手机没有 fastboot；此模式需要使用 Odin。</value>
+  </data>
+  <data name="usb_fastboot_ready" xml:space="preserve">
+    <value>{0}：fastboot 接口，驱动工作正常。如果列表中没有手机，请拔下后重新插入。</value>
+  </data>
+  <data name="usb_adb_ready" xml:space="preserve">
+    <value>{0}：手机以 Android 或 recovery（adb）方式连接，而不是 fastboot。</value>
+  </data>
+  <data name="usb_nothing" xml:space="preserve">
+    <value>Windows 在 USB 上没有检测到手机。
+
+•  请使用数据线；很多线只能充电。
+•  换一个 USB 接口，尽量使用电脑主机上的 USB 2.0 接口。
+•  确认手机处于 fastboot（bootloader 或 fastbootd），或者使用 adb 时已开启 USB 调试。</value>
+  </data>
+  <data name="usb_driver_howto" xml:space="preserve">
+    <value>安装驱动：下载 Google USB Driver（developer.android.com/studio/run/win-usb）或手机厂商的驱动。如果 Windows 仍显示手机没有驱动，请在设备管理器中右键点击它 → 更新驱动程序 → 浏览我的电脑以查找驱动程序 → 让我从计算机上的可用驱动程序列表中选取 → Android Device → fastboot 选“Android Bootloader Interface”，adb 选“Android ADB Interface”。</value>
+  </data>
+  <data name="usb_open_device_manager" xml:space="preserve">
+    <value>现在打开设备管理器吗？</value>
+  </data>
+  <data name="usb_reboot_bootloader_ask" xml:space="preserve">
+    <value>现在将其重启到 bootloader，让它显示在这里吗？</value>
+  </data>
+  <data name="usb_reboot_more_than_one" xml:space="preserve">
+    <value>有多台手机通过 adb 连接（{0}）。请拔下其他手机后重试，以确保重启的是正确的手机。</value>
+  </data>
+  <data name="usb_reboot_none" xml:space="preserve">
+    <value>没有通过 adb 就绪的手机。请在手机上允许 USB 调试后重试。</value>
+  </data>
+  <data name="theme" xml:space="preserve">
+    <value>外观</value>
+  </data>
+  <data name="theme_dark" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="theme_light" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="theme_system" xml:space="preserve">
+    <value>跟随 Windows</value>
+  </data>
+  <data name="theme_restart" xml:space="preserve">
+    <value>新外观将在重启后生效。现在重启 Fastboot Studio 吗？</value>
+  </data>
+  <data name="theme_busy" xml:space="preserve">
+    <value>请等待当前的刷写或导出完成后再更改外观。</value>
+  </data>
+  <data name="nav_terminal" xml:space="preserve">
+    <value>终端</value>
+  </data>
+  <data name="terminal_subtitle" xml:space="preserve">
+    <value>使用软件自带的工具，自己运行 adb 和 fastboot 命令</value>
+  </data>
+  <data name="terminal_folder" xml:space="preserve">
+    <value>文件夹…</value>
+  </data>
+  <data name="terminal_folder_now" xml:space="preserve">
+    <value>文件夹：{0}   ·   未带路径的文件名会在此处查找；将文件拖到输入行即可添加其路径</value>
+  </data>
+  <data name="terminal_run" xml:space="preserve">
+    <value>运行</value>
+  </data>
+  <data name="terminal_stop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="terminal_welcome" xml:space="preserve">
+    <value>输入 adb 或 fastboot 命令并按 Enter，例如：fastboot getvar all
+按上下方向键可调出之前的命令。输入 help 查看更多。</value>
+  </data>
+  <data name="terminal_help" xml:space="preserve">
+    <value>命令以 adb 或 fastboot 开头，并使用软件自带的工具运行。
+  cd FOLDER    更改读取文件的文件夹
+  clear        清空此窗口
+可能导致手机变砖的命令（关键分区、锁定 bootloader、用 dd 写入分区）会先要求你输入一个词进行确认；清除数据的命令也会要求确认。
+adb shell 后面需要跟一条命令，例如 adb shell getprop；“停止”会结束仍在运行的命令，例如 logcat。</value>
+  </data>
+  <data name="terminal_not_tool" xml:space="preserve">
+    <value>这里只能运行 adb 和 fastboot 命令。请以 adb 或 fastboot 开头。</value>
+  </data>
+  <data name="terminal_interactive" xml:space="preserve">
+    <value>在这里 adb shell 后面需要跟一条命令，例如：adb shell getprop ro.product.model</value>
+  </data>
+  <data name="terminal_quote" xml:space="preserve">
+    <value>引号没有闭合。</value>
+  </data>
+  <data name="terminal_busy" xml:space="preserve">
+    <value>正在刷写；请等待完成，避免两者同时与手机通信。</value>
+  </data>
+  <data name="terminal_cancelled" xml:space="preserve">
+    <value>未运行。</value>
+  </data>
+  <data name="terminal_exit" xml:space="preserve">
+    <value>[退出代码 {0}]</value>
+  </data>
+  <data name="terminal_stopped" xml:space="preserve">
+    <value>[已停止]</value>
+  </data>
+  <data name="terminal_no_folder" xml:space="preserve">
+    <value>文件夹不存在：{0}</value>
+  </data>
+  <data name="terminal_start_failed" xml:space="preserve">
+    <value>无法启动命令：{0}</value>
+  </data>
+  <data name="terminal_critical" xml:space="preserve">
+    <value>此命令会写入或擦除 {0}，它属于启动链或手机身份信息（IMEI、校准数据、密钥）的一部分。在这里写入错误的镜像，可能导致手机连 bootloader 都进不去，或丢失任何固件都无法恢复的数据。</value>
+  </data>
+  <data name="terminal_lock" xml:space="preserve">
+    <value>此操作会锁定 bootloader。如果手机运行的不是原厂系统（第三方 ROM、Root、修补过的 boot、GSI），锁定的 bootloader 会拒绝启动：手机可能无法再开机，直到重新解锁，而解锁会清除所有数据。</value>
+  </data>
+  <data name="terminal_dd" xml:space="preserve">
+    <value>此操作会用 dd 直接写入手机的分区。不会检查镜像或分区；一旦出错，手机可能无法启动。</value>
+  </data>
+  <data name="terminal_wipe" xml:space="preserve">
+    <value>此命令会清除手机上的用户数据（应用、照片、文件）。确定运行吗？</value>
+  </data>
+  <data name="boot_check_title" xml:space="preserve">
+    <value>刷写 {0} 前检查</value>
+  </data>
+  <data name="boot_check_failed" xml:space="preserve">
+    <value>无法读取镜像：{0}</value>
+  </data>
+  <data name="boot_find_not_boot" xml:space="preserve">
+    <value>此文件不是 boot 镜像，但 {0} 存放的是 boot 镜像。刷到这里很可能导致手机无法启动。</value>
+  </data>
+  <data name="boot_find_no_kernel" xml:space="preserve">
+    <value>此镜像没有内核（它是 init_boot 镜像，或者结构与之相同），但 {0} 必须包含内核。手机将无法启动。</value>
+  </data>
+  <data name="boot_find_no_kernel_hint" xml:space="preserve">
+    <value>这台手机有 {0}：此镜像应该刷到那里。</value>
+  </data>
+  <data name="boot_find_kernel_in_init_boot" xml:space="preserve">
+    <value>此镜像包含内核，但 {0} 只存放 ramdisk。带内核的镜像应刷到 boot。</value>
+  </data>
+  <data name="boot_find_vendor_mismatch" xml:space="preserve">
+    <value>此镜像不属于 {0}：vendor_boot 镜像应刷到 vendor_boot，boot 镜像则绝不应刷到那里。</value>
+  </data>
+  <data name="boot_find_kmi" xml:space="preserve">
+    <value>此内核是为 {0} 构建的，但手机运行的是 {1}。为其他 KMI 构建的内核无法启动：手机会无限重启。</value>
+  </data>
+  <data name="boot_find_kernel_version" xml:space="preserve">
+    <value>内核版本为 {0}，但手机运行的是 {1}。可能无法启动。</value>
+  </data>
+  <data name="boot_find_older_patch" xml:space="preserve">
+    <value>镜像的安全补丁（{0}）比手机的（{1}）旧。部分手机会拒绝启动，或丢失 keystore 中保存的密钥（指纹、部分应用的登录信息）。</value>
+  </data>
+  <data name="boot_find_kernel" xml:space="preserve">
+    <value>内核：{0}</value>
+  </data>
+  <data name="boot_find_root" xml:space="preserve">
+    <value>Root：{0}</value>
+  </data>
+  <data name="boot_find_stock" xml:space="preserve">
+    <value>未 Root（原厂镜像）。</value>
+  </data>
+  <data name="boot_check_phone_unknown" xml:space="preserve">
+    <value>提示：在 Android 运行时，在“备份”页面打开这台手机一次，这里就会同时检查它的内核和安全补丁。</value>
+  </data>
+  <data name="boot_check_phone_known" xml:space="preserve">
+    <value>已与 {0} 于 {1} 通过 adb 报告的信息进行比较。</value>
+  </data>
+  <data name="boot_check_question" xml:space="preserve">
+    <value>仍要将其刷写到 {0} 吗？</value>
+  </data>
+  <data name="images_row_header" xml:space="preserve">
+    <value>头部</value>
+  </data>
+  <data name="images_header_detail" xml:space="preserve">
+    <value>版本 {0}，页大小 {1}</value>
+  </data>
+  <data name="images_row_android" xml:space="preserve">
+    <value>Android</value>
+  </data>
+  <data name="images_row_patch" xml:space="preserve">
+    <value>安全补丁</value>
+  </data>
+  <data name="images_row_kernel" xml:space="preserve">
+    <value>内核</value>
+  </data>
+  <data name="images_row_kmi" xml:space="preserve">
+    <value>KMI</value>
+  </data>
+  <data name="images_kmi_none" xml:space="preserve">
+    <value>非 GKI</value>
+  </data>
+  <data name="images_row_kernel_compression" xml:space="preserve">
+    <value>内核压缩</value>
+  </data>
+  <data name="images_kernel_unreadable" xml:space="preserve">
+    <value>{0}（无法读取）</value>
+  </data>
+  <data name="images_kernel_no_banner" xml:space="preserve">
+    <value>未找到版本</value>
+  </data>
+  <data name="images_no_kernel" xml:space="preserve">
+    <value>无（init_boot）</value>
+  </data>
+  <data name="images_row_ramdisk" xml:space="preserve">
+    <value>Ramdisk</value>
+  </data>
+  <data name="images_ramdisk_detail" xml:space="preserve">
+    <value>{0}，{1} 个文件</value>
+  </data>
+  <data name="images_row_root" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="images_root_none" xml:space="preserve">
+    <value>无（原厂）</value>
+  </data>
+  <data name="images_row_cmdline" xml:space="preserve">
+    <value>命令行</value>
+  </data>
+  <data name="fastboot_row_adb_kernel" xml:space="preserve">
+    <value>内核（上次通过 adb 获取）</value>
+  </data>
+  <data name="fastboot_row_adb_patch" xml:space="preserve">
+    <value>安全补丁（通过 adb）</value>
+  </data>
+  <data name="adb_phone_seen" xml:space="preserve">
+    <value>{0} 处于 Android：内核 {1}。</value>
+  </data>
+  <data name="adb_phone_companion" xml:space="preserve">
+    <value>{0} 处于 Android：内核 {1}，Fastboot Studio Companion {2}（{3}）。</value>
+  </data>
+  <data name="adb_phone_hint" xml:space="preserve">
+    <value>已记录其内核，刷写前会用它来检查 boot 镜像。使用“USB 检查”可将其重启到 bootloader。</value>
+  </data>
+  <data name="fastboot_row_companion" xml:space="preserve">
+    <value>Companion（通过 adb）</value>
+  </data>
+  <data name="fastboot_row_avb" xml:space="preserve">
+    <value>AVB（通过 adb）</value>
+  </data>
+  <data name="fastboot_row_conflicts" xml:space="preserve">
+    <value>模块冲突（通过 adb）</value>
+  </data>
+  <data name="fastboot_avb_spoofed" xml:space="preserve">
+    <value>有隐藏模块修改了该属性</value>
+  </data>
+  <data name="fastboot_conflicts_none" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="check_module_conflicts" xml:space="preserve">
+    <value>上次手机处于 Android 时，Fastboot Studio Companion 发现 Root 模块之间有 {0} 处冲突。</value>
+  </data>
+  <data name="boot_find_root_change" xml:space="preserve">
+    <value>此镜像使用 {0} Root，但手机使用的是 {1}。刷入后，{1} 的模块和设置将无法使用。</value>
+  </data>
+  <data name="nav_root" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="root_subtitle" xml:space="preserve">
+    <value>使用 Magisk、KernelSU 或 APatch 一步步 Root 手机</value>
+  </data>
+  <data name="root_step1" xml:space="preserve">
+    <value>1 · Root 应用和原厂镜像</value>
+  </data>
+  <data name="root_step1_note" xml:space="preserve">
+    <value>选择要使用的 Root 应用，然后选择手机当前所运行固件的原厂镜像：boot.img 或 init_boot.img，也可以选择整个 OTA（payload.bin 或 zip），软件会从中取出正确的镜像。</value>
+  </data>
+  <data name="root_pick" xml:space="preserve">
+    <value>选择镜像或 OTA…</value>
+  </data>
+  <data name="root_picking" xml:space="preserve">
+    <value>正在读取…</value>
+  </data>
+  <data name="root_image_summary" xml:space="preserve">
+    <value>{0} · {1}</value>
+  </data>
+  <data name="root_image_stock" xml:space="preserve">
+    <value>原厂，未 Root</value>
+  </data>
+  <data name="root_image_rooted" xml:space="preserve">
+    <value>已 Root：{0}</value>
+  </data>
+  <data name="root_needs_init_boot" xml:space="preserve">
+    <value>在有 init_boot 的手机上（Android 13 及以后），{0} 修补的是 init_boot。此 OTA 包含 init_boot，因此将使用该镜像。</value>
+  </data>
+  <data name="root_not_boot" xml:space="preserve">
+    <value>此文件不是 boot 或 init_boot 镜像。</value>
+  </data>
+  <data name="root_no_image_in_ota" xml:space="preserve">
+    <value>此 OTA 中没有 boot 或 init_boot 镜像。</value>
+  </data>
+  <data name="root_already_rooted" xml:space="preserve">
+    <value>此镜像已经修补过（{0}）。请改为修补与手机当前固件相同的原厂镜像。</value>
+  </data>
+  <data name="root_apatch_kernel" xml:space="preserve">
+    <value>APatch 修补的是内核，而内核位于 boot 中：请选择 boot.img（或 OTA）。</value>
+  </data>
+  <data name="root_step2" xml:space="preserve">
+    <value>2 · 发送到手机</value>
+  </data>
+  <data name="root_step2_note" xml:space="preserve">
+    <value>手机必须处于 Android 系统并已开启 USB 调试。镜像会以 {0} 的名称保存到 Download 文件夹。</value>
+  </data>
+  <data name="root_push" xml:space="preserve">
+    <value>发送到手机</value>
+  </data>
+  <data name="root_no_adb" xml:space="preserve">
+    <value>没有通过 adb 找到手机。请在 Android 运行时连接手机，并允许 USB 调试。</value>
+  </data>
+  <data name="root_pushed" xml:space="preserve">
+    <value>已发送到 {1} 上的 {0}。</value>
+  </data>
+  <data name="root_push_failed" xml:space="preserve">
+    <value>无法发送镜像：{0}</value>
+  </data>
+  <data name="root_step3" xml:space="preserve">
+    <value>3 · 在手机上修补</value>
+  </data>
+  <data name="root_how_magisk" xml:space="preserve">
+    <value>打开 Magisk → 安装 → 选择并修补一个文件 → Download → {0} → 开始。显示 All done 后，点击下方按钮。</value>
+  </data>
+  <data name="root_how_kernelsu" xml:space="preserve">
+    <value>打开 KernelSU → 安装 → 选择一个文件 → Download → {0} → 下一步。完成后，点击下方按钮。</value>
+  </data>
+  <data name="root_how_apatch" xml:space="preserve">
+    <value>打开 APatch → 修补（安装按钮）→ 选择 boot 镜像 → Download → {0}，设置超级密钥 → 开始。完成后，点击下方按钮。</value>
+  </data>
+  <data name="root_pull" xml:space="preserve">
+    <value>获取修补后的镜像</value>
+  </data>
+  <data name="root_no_patched" xml:space="preserve">
+    <value>自发送原厂镜像以来，Download 中没有找到修补后的镜像。请先在 Root 应用中进行修补。</value>
+  </data>
+  <data name="root_pulled" xml:space="preserve">
+    <value>已获取 {0}：{1}。</value>
+  </data>
+  <data name="root_patch_not_rooted" xml:space="preserve">
+    <value>修补后的镜像中没有找到 Root。</value>
+  </data>
+  <data name="root_patch_kind" xml:space="preserve">
+    <value>修补后的镜像与原厂镜像类型不同（一个有内核，另一个没有）。</value>
+  </data>
+  <data name="root_patch_kernel" xml:space="preserve">
+    <value>修补后的镜像内核与原厂镜像不同：可能修补了另一个镜像。</value>
+  </data>
+  <data name="root_patch_problems" xml:space="preserve">
+    <value>这个修补后的镜像看起来不对：</value>
+  </data>
+  <data name="root_step4" xml:space="preserve">
+    <value>4 · 刷写</value>
+  </data>
+  <data name="root_step4_note" xml:space="preserve">
+    <value>手机会重启到 bootloader，修补后的镜像将写入当前槽位的 {0}。Bootloader 必须已解锁。原厂镜像会保留在文件夹中，方便以后还原。</value>
+  </data>
+  <data name="root_flash" xml:space="preserve">
+    <value>重启到 bootloader 并刷写</value>
+  </data>
+  <data name="root_boot_once" xml:space="preserve">
+    <value>先临时启动试试</value>
+  </data>
+  <data name="root_boot_once_note" xml:space="preserve">
+    <value>用修补后的 boot 镜像临时启动一次手机，不写入。如果能正常启动，再刷写它，或让 Root 应用自行安装（直接安装）。</value>
+  </data>
+  <data name="root_open_folder" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="root_confirm_flash" xml:space="preserve">
+    <value>将 {0} 重启到 bootloader 并把 {1} 写入 {2} 吗？
+
+Bootloader 必须已解锁。如果之后手机无法启动，请用同样的方式把文件夹中的原厂镜像刷到 {2}。</value>
+  </data>
+  <data name="root_waiting_fastboot" xml:space="preserve">
+    <value>正在等待手机进入 bootloader…</value>
+  </data>
+  <data name="root_no_fastboot" xml:space="preserve">
+    <value>两分钟内手机没有出现在 fastboot 中。请检查驱动（设备页面 → USB 检查），然后在设备页面刷写 {0}。</value>
+  </data>
+  <data name="root_flashing" xml:space="preserve">
+    <value>正在刷写 {0}…</value>
+  </data>
+  <data name="root_flash_failed" xml:space="preserve">
+    <value>刷写失败：{0}</value>
+  </data>
+  <data name="root_flashed" xml:space="preserve">
+    <value>{0} 已刷入修补后的镜像。现在重启手机吗？</value>
+  </data>
+  <data name="root_done" xml:space="preserve">
+    <value>完成。手机启动后，打开 Root 应用：它可能会要求完成设置并再重启一次。</value>
+  </data>
+  <data name="root_booting" xml:space="preserve">
+    <value>正在用修补后的镜像临时启动手机…</value>
+  </data>
+  <data name="root_boot_failed" xml:space="preserve">
+    <value>无法启动镜像：{0}</value>
+  </data>
+  <data name="root_booted" xml:space="preserve">
+    <value>手机正在用修补后的镜像启动。如果 Root 正常，再刷写它，或在 Root 应用中使用“直接安装”。</value>
+  </data>
+  <data name="root_image_patched" xml:space="preserve">
+    <value>已用 {0} 修补</value>
+  </data>
+  <data name="nav_phone" xml:space="preserve">
+    <value>手机</value>
+  </data>
+  <data name="phone_subtitle" xml:space="preserve">
+    <value>运行 Android 时的手机：配置、安全状态和其中的备份，Fastboot Studio Companion 还能提供更多信息。</value>
+  </data>
+  <data name="phone_reboot_recovery" xml:space="preserve">
+    <value>Recovery</value>
+  </data>
+  <data name="phone_reboot_bootloader" xml:space="preserve">
+    <value>重启到 bootloader</value>
+  </data>
+  <data name="phone_read_again" xml:space="preserve">
+    <value>重新读取</value>
+  </data>
+  <data name="phone_empty_title" xml:space="preserve">
+    <value>没有处于 Android 的手机</value>
+  </data>
+  <data name="phone_empty_text" xml:space="preserve">
+    <value>开启 USB 调试后连接手机，并在手机询问时允许这台电脑。处于 bootloader 的手机会显示在“设备”页面。</value>
+  </data>
+  <data name="phone_unauthorized" xml:space="preserve">
+    <value>{0} 正在等待：请在手机屏幕上允许这台电脑进行 USB 调试。</value>
+  </data>
+  <data name="phone_reading" xml:space="preserve">
+    <value>正在读取 {0}…</value>
+  </data>
+  <data name="phone_card_device" xml:space="preserve">
+    <value>设备</value>
+  </data>
+  <data name="phone_model" xml:space="preserve">
+    <value>型号</value>
+  </data>
+  <data name="phone_chip" xml:space="preserve">
+    <value>芯片</value>
+  </data>
+  <data name="phone_android" xml:space="preserve">
+    <value>Android</value>
+  </data>
+  <data name="phone_patch" xml:space="preserve">
+    <value>安全补丁</value>
+  </data>
+  <data name="phone_slot" xml:space="preserve">
+    <value>槽位</value>
+  </data>
+  <data name="phone_battery" xml:space="preserve">
+    <value>电池</value>
+  </data>
+  <data name="phone_storage" xml:space="preserve">
+    <value>存储</value>
+  </data>
+  <data name="phone_card_security" xml:space="preserve">
+    <value>内核与安全</value>
+  </data>
+  <data name="phone_kernel" xml:space="preserve">
+    <value>内核</value>
+  </data>
+  <data name="phone_bootloader" xml:space="preserve">
+    <value>Bootloader</value>
+  </data>
+  <data name="phone_root" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="phone_locked" xml:space="preserve">
+    <value>已锁定</value>
+  </data>
+  <data name="phone_unlocked" xml:space="preserve">
+    <value>已解锁</value>
+  </data>
+  <data name="phone_root_none" xml:space="preserve">
+    <value>未发现</value>
+  </data>
+  <data name="phone_root_unknown" xml:space="preserve">
+    <value>安装 Companion 后可知</value>
+  </data>
+  <data name="phone_spoofed" xml:space="preserve">
+    <value>ROM 或隐藏模块修改了启动属性（ro.boot.*），使其看起来像已锁定。这里显示的是真实状态：只有解锁的 bootloader 才能 Root。</value>
+  </data>
+  <data name="phone_avb_from_props" xml:space="preserve">
+    <value>AVB 状态来自手机的属性；隐藏模块可能会修改它们。Companion 读取的是 bootloader 自身的状态。</value>
+  </data>
+  <data name="phone_boot_checked" xml:space="preserve">
+    <value>刷写前会用这个内核检查 boot 镜像。</value>
+  </data>
+  <data name="phone_battery_health" xml:space="preserve">
+    <value>健康度 {0}%</value>
+  </data>
+  <data name="phone_battery_cycles" xml:space="preserve">
+    <value>{0} 次循环</value>
+  </data>
+  <data name="phone_battery_charge" xml:space="preserve">
+    <value>电量 {0}%</value>
+  </data>
+  <data name="phone_storage_wear" xml:space="preserve">
+    <value>{0} · 磨损 {1}–{2}%</value>
+  </data>
+  <data name="phone_storage_past" xml:space="preserve">
+    <value>{0} · 已超出额定寿命</value>
+  </data>
+  <data name="phone_storage_spare" xml:space="preserve">
+    <value>备用块即将耗尽</value>
+  </data>
+  <data name="phone_slot_none" xml:space="preserve">
+    <value>无 A/B 槽位</value>
+  </data>
+  <data name="phone_dynamic" xml:space="preserve">
+    <value>动态分区</value>
+  </data>
+  <data name="phone_companion_beta" xml:space="preserve">
+    <value>Beta</value>
+  </data>
+  <data name="phone_companion_reading" xml:space="preserve">
+    <value>正在向 Root 管理器请求 Companion 的报告… 如有提示请允许 Shell。</value>
+  </data>
+  <data name="phone_companion_no_root" xml:space="preserve">
+    <value>Companion 是适用于 Magisk、KernelSU 或 APatch 的 Root 模块，而这台手机没有 Root。这里的所有信息都是在没有它的情况下读取的。</value>
+  </data>
+  <data name="phone_companion_missing" xml:space="preserve">
+    <value>这台手机未安装。安装后，此页面还会显示 bootloader 自身的 AVB 状态、Root 管理器、存储磨损以及模块之间的冲突。</value>
+  </data>
+  <data name="phone_companion_get" xml:space="preserve">
+    <value>获取 Companion</value>
+  </data>
+  <data name="phone_companion_refused" xml:space="preserve">
+    <value>Root 请求被拒绝或没有响应。请在 Root 管理器中允许 Shell，然后重新读取。</value>
+  </data>
+  <data name="phone_conflicts_none" xml:space="preserve">
+    <value>{0} 个模块，彼此没有冲突</value>
+  </data>
+  <data name="phone_conflicts_some" xml:space="preserve">
+    <value>模块之间有 {0} 处冲突</value>
+  </data>
+  <data name="phone_conflict_file" xml:space="preserve">
+    <value>相同文件：{0}</value>
+  </data>
+  <data name="phone_conflict_files" xml:space="preserve">
+    <value>{1} 个相同文件：{0}</value>
+  </data>
+  <data name="phone_conflict_replace" xml:space="preserve">
+    <value>{0} 替换了文件夹，隐藏了 {1}</value>
+  </data>
+  <data name="phone_conflict_prop" xml:space="preserve">
+    <value>相同属性：{0}</value>
+  </data>
+  <data name="phone_and" xml:space="preserve">
+    <value> 和 </value>
+  </data>
+  <data name="phone_card_backups" xml:space="preserve">
+    <value>手机上的备份</value>
+  </data>
+  <data name="phone_backups_summary" xml:space="preserve">
+    <value>{0} 个备份 · {1}</value>
+  </data>
+  <data name="phone_backups_last" xml:space="preserve">
+    <value>最近：{0}</value>
+  </data>
+  <data name="phone_backups_open" xml:space="preserve">
+    <value>在电脑上打开备份文件夹</value>
+  </data>
+  <data name="phone_backups_empty" xml:space="preserve">
+    <value>手机上还没有备份。Companion 可以在其“备份”标签页中创建备份，保存到 /sdcard/FastbootStudio/Backups。</value>
+  </data>
+  <data name="phone_backups_note" xml:space="preserve">
+    <value>通过 adb 复制（无需 Root），然后逐个文件与 SHA256SUMS 校验。可以在“设备”页面用它们刷回分区。</value>
+  </data>
+  <data name="phone_col_backup" xml:space="preserve">
+    <value>备份</value>
+  </data>
+  <data name="phone_col_type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="phone_col_files" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="phone_col_size" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="phone_col_date" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="phone_col_pc" xml:space="preserve">
+    <value>电脑上</value>
+  </data>
+  <data name="phone_set_full" xml:space="preserve">
+    <value>完整</value>
+  </data>
+  <data name="phone_set_critical" xml:space="preserve">
+    <value>关键</value>
+  </data>
+  <data name="phone_set_boot" xml:space="preserve">
+    <value>Boot</value>
+  </data>
+  <data name="phone_pc_no" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="phone_pc_yes" xml:space="preserve">
+    <value>已复制</value>
+  </data>
+  <data name="phone_pc_copying" xml:space="preserve">
+    <value>正在复制…</value>
+  </data>
+  <data name="phone_pc_checking" xml:space="preserve">
+    <value>正在校验…</value>
+  </data>
+  <data name="phone_pc_ok" xml:space="preserve">
+    <value>✓ 已复制且一致</value>
+  </data>
+  <data name="phone_pc_bad" xml:space="preserve">
+    <value>✗ {1} 个文件中有 {0} 个不一致</value>
+  </data>
+  <data name="phone_pc_failed" xml:space="preserve">
+    <value>复制失败：{0}</value>
+  </data>
+  <data name="phone_copy" xml:space="preserve">
+    <value>复制并校验</value>
+  </data>
+  <data name="phone_open" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="phone_reboot_confirm" xml:space="preserve">
+    <value>要将 {0} 重启到 {1} 吗？</value>
+  </data>
+  <data name="phone_reboot_failed" xml:space="preserve">
+    <value>手机没有重启：{0}</value>
+  </data>
+  <data name="rendering" xml:space="preserve">
+    <value>绘制方式</value>
+  </data>
+  <data name="rendering_software" xml:space="preserve">
+    <value>软件（稳定）</value>
+  </data>
+  <data name="rendering_gpu" xml:space="preserve">
+    <value>显卡</value>
+  </data>
+  <data name="rendering_note" xml:space="preserve">
+    <value>软件绘制可以消除某些显卡驱动和远程桌面软件造成的闪烁、菜单项消失和按钮条纹等问题。</value>
+  </data>
+  <data name="rendering_restart" xml:space="preserve">
+    <value>新的绘制方式将在重启后生效。现在重启 Fastboot Studio 吗？</value>
+  </data>
+  <data name="flash_both_slots" xml:space="preserve">
+    <value>刷写两个槽位（a 和 b）</value>
+  </data>
+  <data name="flash_both_slots_note" xml:space="preserve">
+    <value>modem、boot 等固件分区也会写入另一个槽位。super 中的分区不包括在内。</value>
+  </data>
+  <data name="flash_both_slots_confirm" xml:space="preserve">
+    <value>除当前使用的槽位外，以下分区也会写入槽位 {0}，这样手机从该槽位启动时也能找到相同的固件：
+
+{1}
+
+super 中的分区（system、vendor…）不包括在内。继续吗？</value>
+  </data>
+  <data name="flash_both_slots_done" xml:space="preserve">
+    <value>也已写入另一个槽位：{0}</value>
+  </data>
+  <data name="update_section" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="update_auto" xml:space="preserve">
+    <value>自动检查更新</value>
+  </data>
+  <data name="update_auto_note" xml:space="preserve">
+    <value>每天一次，从软件的 GitHub 页面检查。关闭后，可以在这里手动检查。</value>
+  </data>
+  <data name="update_check_now" xml:space="preserve">
+    <value>立即检查</value>
+  </data>
+  <data name="update_checking" xml:space="preserve">
+    <value>正在检查…</value>
+  </data>
+  <data name="update_latest" xml:space="preserve">
+    <value>已是最新版本 ✓</value>
+  </data>
+  <data name="update_found" xml:space="preserve">
+    <value>{0} 可用</value>
+  </data>
+  <data name="update_check_failed" xml:space="preserve">
+    <value>无法检查：{0}</value>
+  </data>
+  <data name="update_badge" xml:space="preserve">
+    <value>有可用更新 {0}</value>
+  </data>
+  <data name="update_available_title" xml:space="preserve">
+    <value>有可用更新：{0}</value>
+  </data>
+  <data name="update_have" xml:space="preserve">
+    <value>当前版本 v{0} · 发布于 {1}</value>
+  </data>
+  <data name="update_have_nodate" xml:space="preserve">
+    <value>当前版本 v{0}</value>
+  </data>
+  <data name="update_whats_new" xml:space="preserve">
+    <value>新功能与修复</value>
+  </data>
+  <data name="update_no_notes" xml:space="preserve">
+    <value>更改内容请查看发布页面。</value>
+  </data>
+  <data name="update_note" xml:space="preserve">
+    <value>从软件的 GitHub 页面下载；打开前会校验其 SHA-256。用 winget 安装的？winget upgrade IFOKNR.FastbootStudio</value>
+  </data>
+  <data name="update_download" xml:space="preserve">
+    <value>下载更新</value>
+  </data>
+  <data name="update_later" xml:space="preserve">
+    <value>稍后</value>
+  </data>
+  <data name="update_skip" xml:space="preserve">
+    <value>跳过此版本</value>
+  </data>
+  <data name="update_open_page" xml:space="preserve">
+    <value>打开发布页面</value>
+  </data>
+  <data name="update_downloading" xml:space="preserve">
+    <value>正在下载 {0}…</value>
+  </data>
+  <data name="update_downloading_note" xml:space="preserve">
+    <value>下载完成后会校验 SHA-256 并打开所在文件夹。关闭软件，解压后运行新版本。</value>
+  </data>
+  <data name="update_done_title" xml:space="preserve">
+    <value>已下载，SHA-256 一致 ✓</value>
+  </data>
+  <data name="update_done_where" xml:space="preserve">
+    <value>位于“下载”文件夹：{0}</value>
+  </data>
+  <data name="update_done_note" xml:space="preserve">
+    <value>关闭软件，将其解压覆盖旧版本（或解压到任意文件夹），然后运行 FastbootStudio.exe。你的设置和备份会保持不变。</value>
+  </data>
+  <data name="update_open_close" xml:space="preserve">
+    <value>打开文件夹并关闭软件</value>
+  </data>
+  <data name="update_open_folder" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="update_close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="update_failed_title" xml:space="preserve">
+    <value>更新未下载</value>
+  </data>
+  <data name="update_hash_mismatch" xml:space="preserve">
+    <value>下载的文件与其 SHA-256 不一致，已被删除。请重试，或从发布页面下载。</value>
+  </data>
+  <data name="update_no_hash" xml:space="preserve">
+    <value>该版本没有提供 zip 的 SHA-256，因此软件不会保留它。请从发布页面下载。</value>
+  </data>
+  <data name="update_no_zip" xml:space="preserve">
+    <value>该版本没有软件可以下载的 Windows zip。请打开发布页面获取。</value>
+  </data>
+  <data name="update_download_failed" xml:space="preserve">
+    <value>无法下载：{0}</value>
+  </data>
+  <data name="update_busy" xml:space="preserve">
+    <value>软件正在刷写或导出。完成后再关闭。</value>
+  </data>
+  <data name="all_files" xml:space="preserve">
+    <value>所有文件</value>
+  </data>
+  <data name="nav_samsung" xml:space="preserve">
+    <value>三星</value>
+  </data>
+  <data name="samsung_subtitle" xml:space="preserve">
+    <value>打开三星固件，取出所需的镜像，检查是否适合你的手机，并在 Download 模式下刷写。</value>
+  </data>
+  <data name="samsung_drop_hint" xml:space="preserve">
+    <value>打开三星固件</value>
+  </data>
+  <data name="samsung_drop_detail" xml:space="preserve">
+    <value>AP、BL、CP、CSC 和 HOME_CSC（.tar.md5），或它们所在的文件夹，或它们所在的 zip。拖到这里或手动选择。</value>
+  </data>
+  <data name="samsung_open" xml:space="preserve">
+    <value>打开固件…</value>
+  </data>
+  <data name="samsung_open_folder" xml:space="preserve">
+    <value>打开文件夹…</value>
+  </data>
+  <data name="samsung_opening" xml:space="preserve">
+    <value>正在读取固件…</value>
+  </data>
+  <data name="samsung_unzipping" xml:space="preserve">
+    <value>正在解压 zip · {0}%</value>
+  </data>
+  <data name="samsung_filter" xml:space="preserve">
+    <value>三星固件</value>
+  </data>
+  <data name="samsung_not_firmware" xml:space="preserve">
+    <value>没有找到三星固件文件。它们的文件名以 AP_、BL_、CP_、CSC_ 或 HOME_CSC_ 开头，以 .tar.md5 结尾。</value>
+  </data>
+  <data name="samsung_files" xml:space="preserve">
+    <value>固件文件</value>
+  </data>
+  <data name="samsung_about" xml:space="preserve">
+    <value>关于此固件</value>
+  </data>
+  <data name="samsung_info_model" xml:space="preserve">
+    <value>型号</value>
+  </data>
+  <data name="samsung_info_build" xml:space="preserve">
+    <value>版本号 (PDA)</value>
+  </data>
+  <data name="samsung_info_binary" xml:space="preserve">
+    <value>Bootloader 版本 (Binary)</value>
+  </data>
+  <data name="samsung_info_date" xml:space="preserve">
+    <value>构建日期</value>
+  </data>
+  <data name="samsung_info_android" xml:space="preserve">
+    <value>Android</value>
+  </data>
+  <data name="samsung_info_csc" xml:space="preserve">
+    <value>CSC</value>
+  </data>
+  <data name="samsung_info_other" xml:space="preserve">
+    <value>未读取（不是固件组成部分）</value>
+  </data>
+  <data name="samsung_md5_checking" xml:space="preserve">
+    <value>MD5 {0}%</value>
+  </data>
+  <data name="samsung_md5_ok" xml:space="preserve">
+    <value>MD5 ✓</value>
+  </data>
+  <data name="samsung_md5_none" xml:space="preserve">
+    <value>无 MD5</value>
+  </data>
+  <data name="samsung_md5_bad" xml:space="preserve">
+    <value>MD5 ✕ 已损坏</value>
+  </data>
+  <data name="samsung_unreadable" xml:space="preserve">
+    <value>无法读取</value>
+  </data>
+  <data name="samsung_md5_job" xml:space="preserve">
+    <value>正在校验 {0} 的 MD5</value>
+  </data>
+  <data name="samsung_md5_all" xml:space="preserve">
+    <value>正在校验每个文件的 MD5</value>
+  </data>
+  <data name="samsung_refused_bad" xml:space="preserve">
+    <value>{0} 已损坏或不完整：其 MD5 不一致。请重新下载；不会从中取出任何内容。</value>
+  </data>
+  <data name="samsung_match" xml:space="preserve">
+    <value>固件与手机比对</value>
+  </data>
+  <data name="samsung_read_phone" xml:space="preserve">
+    <value>检查手机</value>
+  </data>
+  <data name="samsung_phone_reading" xml:space="preserve">
+    <value>正在通过 adb 查找手机…</value>
+  </data>
+  <data name="samsung_phone_none" xml:space="preserve">
+    <value>在 Android 下开启 USB 调试并连接手机，然后点击“检查手机”。固件本身仍会单独检查。</value>
+  </data>
+  <data name="samsung_phone_read" xml:space="preserve">
+    <value>已通过 adb 与 {0}（{1}）进行比较。</value>
+  </data>
+  <data name="samsung_verdict_ok" xml:space="preserve">
+    <value>此固件适合你的手机</value>
+  </data>
+  <data name="samsung_verdict_ok_text" xml:space="preserve">
+    <value>用 Odin 刷写：AP、BL 和 CP，加上 HOME_CSC 以保留数据。</value>
+  </data>
+  <data name="samsung_verdict_warn" xml:space="preserve">
+    <value>刷写前请先阅读</value>
+  </data>
+  <data name="samsung_verdict_warn_text" xml:space="preserve">
+    <value>此固件可以刷写，但请先查看下面几点。</value>
+  </data>
+  <data name="samsung_verdict_block" xml:space="preserve">
+    <value>不要在你的手机上刷写此固件</value>
+  </data>
+  <data name="samsung_verdict_block_text" xml:space="preserve">
+    <value>手机会在 Odin 中拒绝它，或者它是为其他手机制作的。</value>
+  </data>
+  <data name="samsung_m_fw_phone" xml:space="preserve">
+    <value>固件 {0} · 手机 {1}</value>
+  </data>
+  <data name="samsung_m_not_samsung" xml:space="preserve">
+    <value>这台手机不是三星</value>
+  </data>
+  <data name="samsung_m_same_model" xml:space="preserve">
+    <value>型号相同</value>
+  </data>
+  <data name="samsung_m_other_model" xml:space="preserve">
+    <value>为其他型号制作</value>
+  </data>
+  <data name="samsung_m_same_binary" xml:space="preserve">
+    <value>Bootloader 版本 (Binary) 相同</value>
+  </data>
+  <data name="samsung_m_newer_binary" xml:space="preserve">
+    <value>Bootloader 版本 (Binary) 更新</value>
+  </data>
+  <data name="samsung_m_newer_binary_detail" xml:space="preserve">
+    <value>固件 {0} · 手机 {1}。刷入后，将无法再安装 Binary 为 {1} 的固件。</value>
+  </data>
+  <data name="samsung_m_older_binary" xml:space="preserve">
+    <value>Bootloader 版本 (Binary) 比手机的旧</value>
+  </data>
+  <data name="samsung_m_older_binary_detail" xml:space="preserve">
+    <value>固件 {0} · 手机 {1}。三星禁止这种降级；Odin 会以 SW REV CHECK FAIL 停止。</value>
+  </data>
+  <data name="samsung_m_android" xml:space="preserve">
+    <value>Android 版本</value>
+  </data>
+  <data name="samsung_m_older_android" xml:space="preserve">
+    <value>Android 版本比手机的旧</value>
+  </data>
+  <data name="samsung_m_older_android_detail" xml:space="preserve">
+    <value>固件 {0} · 手机 {1}。降级需要完整的 CSC，会清除手机数据。</value>
+  </data>
+  <data name="samsung_m_same_csc" xml:space="preserve">
+    <value>此固件包含你的地区</value>
+  </data>
+  <data name="samsung_m_other_csc" xml:space="preserve">
+    <value>其他 CSC（地区）</value>
+  </data>
+  <data name="samsung_m_other_csc_detail" xml:space="preserve">
+    <value>固件 {0} · 手机 {1}。更改地区需要完整的 CSC，会清除手机数据。</value>
+  </data>
+  <data name="samsung_m_csc_wipes" xml:space="preserve">
+    <value>CSC 会清除手机数据</value>
+  </data>
+  <data name="samsung_m_csc_wipes_detail" xml:space="preserve">
+    <value>在 Odin 的 CSC 栏中放入 HOME_CSC 可保留数据。</value>
+  </data>
+  <data name="samsung_m_csc_wipes_no_home" xml:space="preserve">
+    <value>此固件没有 HOME_CSC：刷写会清除手机数据。</value>
+  </data>
+  <data name="samsung_m_mixed" xml:space="preserve">
+    <value>文件来自不同的固件</value>
+  </data>
+  <data name="samsung_contents" xml:space="preserve">
+    <value>包含内容</value>
+  </data>
+  <data name="samsung_select_boot" xml:space="preserve">
+    <value>Boot 镜像</value>
+  </data>
+  <data name="samsung_selected" xml:space="preserve">
+    <value>已选择 {0} 个 · {1}</value>
+  </data>
+  <data name="samsung_column_from" xml:space="preserve">
+    <value>来源</value>
+  </data>
+  <data name="samsung_column_file" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="samsung_extract" xml:space="preserve">
+    <value>导出所选（解开 lz4）</value>
+  </data>
+  <data name="samsung_extract_job" xml:space="preserve">
+    <value>正在导出 {0} 个文件</value>
+  </data>
+  <data name="samsung_extract_done" xml:space="preserve">
+    <value>已保存 {0} 个文件（已解开 LZ4），位置：
+{1}</value>
+  </data>
+  <data name="samsung_pick_first" xml:space="preserve">
+    <value>请先选择要取出的文件。</value>
+  </data>
+  <data name="samsung_super_tools" xml:space="preserve">
+    <value>在镜像工具中打开 super</value>
+  </data>
+  <data name="samsung_magisk" xml:space="preserve">
+    <value>用 Magisk Root…</value>
+  </data>
+  <data name="samsung_magisk_job" xml:space="preserve">
+    <value>正在为 Magisk 准备文件</value>
+  </data>
+  <data name="samsung_magisk_no_ap" xml:space="preserve">
+    <value>请先打开 AP 文件：Magisk 会修补其中的 init_boot（或 boot）和 vbmeta。</value>
+  </data>
+  <data name="samsung_magisk_on_phone" xml:space="preserve">
+    <value>{0} 已在手机的 Download 文件夹中。
+
+在 Magisk 中：安装 › 选择并修补一个文件 › 选中它。Magisk 显示完成后，点击“确定”，软件会取回修补后的文件并进行检查。</value>
+  </data>
+  <data name="samsung_magisk_manual" xml:space="preserve">
+    <value>{0} 已准备好，位置：
+{1}
+
+没有通过 adb 找到手机。请将它复制到手机，在 Magisk 中修补（安装 › 选择并修补一个文件），然后用“检查 Magisk 文件”检查结果。</value>
+  </data>
+  <data name="samsung_magisk_fetch" xml:space="preserve">
+    <value>正在取回修补后的文件</value>
+  </data>
+  <data name="samsung_magisk_not_found" xml:space="preserve">
+    <value>在手机的 Download 文件夹中没有找到比发送的文件更新的 magisk_patched tar。请在 Magisk 中修补后重试。</value>
+  </data>
+  <data name="samsung_check_patched" xml:space="preserve">
+    <value>检查 Magisk 文件…</value>
+  </data>
+  <data name="samsung_magisk_checking" xml:space="preserve">
+    <value>正在检查修补后的文件</value>
+  </data>
+  <data name="samsung_patched_ok" xml:space="preserve">
+    <value>{0} 已用 Magisk 修补 ✓
+
+在 Odin 中，将 {1} 放入 AP，BL、CP 和 CSC 使用同一固件中的文件。切勿只刷 AP。
+• 首次安装 Magisk：使用 CSC 而不是 HOME_CSC。这会清除手机数据，而 Magisk 需要这次清除。
+• 已经 Root 的手机进行更新：使用 HOME_CSC 以保留数据。
+
+这需要已解锁的 bootloader，并且会永久熔断 Knox。</value>
+  </data>
+  <data name="samsung_patched_not" xml:space="preserve">
+    <value>此文件中的 {0} 没有用 Magisk 修补。不要刷写它来 Root 手机。</value>
+  </data>
+  <data name="samsung_patched_no_boot" xml:space="preserve">
+    <value>此 tar 中没有 boot 或 init_boot 镜像。</value>
+  </data>
+  <data name="samsung_build_tar" xml:space="preserve">
+    <value>制作 Odin 用 tar…</value>
+  </data>
+  <data name="samsung_tar_images" xml:space="preserve">
+    <value>镜像</value>
+  </data>
+  <data name="samsung_tar_job" xml:space="preserve">
+    <value>正在制作 Odin 用 tar</value>
+  </data>
+  <data name="samsung_tar_done" xml:space="preserve">
+    <value>{0} 已可放入 Odin 的 AP 栏，包含 {1}。</value>
+  </data>
+  <data name="samsung_tar_long_name" xml:space="preserve">
+    <value>{0}：Odin 要求文件名不超过 99 个字符。</value>
+  </data>
+  <data name="samsung_note" xml:space="preserve">
+    <value>解开 LZ4 后，镜像保存为普通 .img；super 保持 sparse 格式，可用镜像工具解包。刷写仍需使用 Odin。</value>
+  </data>
+  <data name="help_label" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="help_close" xml:space="preserve">
+    <value>关闭帮助 (Esc)</value>
+  </data>
+  <data name="help_tooltip" xml:space="preserve">
+    <value>此页面的帮助</value>
+  </data>
+  <data name="help_ask" xml:space="preserve">
+    <value>在 Telegram 提问</value>
+  </data>
+  <data name="help_ask_note" xml:space="preserve">
+    <value>仍然没解决？到群里提问。</value>
+  </data>
+  <data name="help_missing" xml:space="preserve">
+    <value>此页面暂无帮助内容。</value>
+  </data>
+  <data name="help_purpose" xml:space="preserve">
+    <value>此页面的用途</value>
+  </data>
+  <data name="help_steps" xml:space="preserve">
+    <value>操作步骤</value>
+  </data>
+  <data name="help_tips" xml:space="preserve">
+    <value>注意事项</value>
+  </data>
+  <data name="help_terms" xml:space="preserve">
+    <value>术语解释</value>
+  </data>
+  <data name="help_danger" xml:space="preserve">
+    <value>危险：请先阅读</value>
+  </data>
+  <data name="welcome_section" xml:space="preserve">
+    <value>导览与新功能</value>
+  </data>
+  <data name="welcome_show_again" xml:space="preserve">
+    <value>再次显示导览</value>
+  </data>
+  <data name="whats_new_button" xml:space="preserve">
+    <value>{0} 的新功能</value>
+  </data>
+  <data name="whats_new_none" xml:space="preserve">
+    <value>此版本没有内置更新说明。</value>
+  </data>
+  <data name="whats_new_title" xml:space="preserve">
+    <value>{0} 的新功能</value>
+  </data>
+  <data name="whats_new_intro" xml:space="preserve">
+    <value>Fastboot Studio 已更新。以下是更改内容：</value>
+  </data>
+  <data name="whats_new_ok" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="welcome_take_tour" xml:space="preserve">
+    <value>开始导览</value>
+  </data>
+  <data name="welcome_skip" xml:space="preserve">
+    <value>跳过</value>
+  </data>
+  <data name="welcome_back" xml:space="preserve">
+    <value>上一步</value>
+  </data>
+  <data name="welcome_next" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="welcome_start" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="welcome_title" xml:space="preserve">
+    <value>欢迎使用 Fastboot Studio</value>
+  </data>
+  <data name="welcome_intro" xml:space="preserve">
+    <value>一个软件搞定刷机、Root 和备份。先来个简短导览：只需一分钟，也可以跳过。</value>
+  </data>
+  <data name="welcome_language_current" xml:space="preserve">
+    <value>使用中</value>
+  </data>
+  <data name="welcome_map_title" xml:space="preserve">
+    <value>各页面的功能</value>
+  </data>
+  <data name="welcome_map_intro" xml:space="preserve">
+    <value>每个页面只负责一项工作，并且每个页面角落都有一个 ?，会一步步说明用法。选择一个页面，导览结束后将打开它。</value>
+  </data>
+  <data name="welcome_map_pick" xml:space="preserve">
+    <value>导览结束后打开此页面</value>
+  </data>
+  <data name="welcome_page_device" xml:space="preserve">
+    <value>fastboot 下的手机：状态、分区和快捷重启</value>
+  </data>
+  <data name="welcome_page_phone" xml:space="preserve">
+    <value>Android 下的手机：配置、安全状态和备份</value>
+  </data>
+  <data name="welcome_page_flash" xml:space="preserve">
+    <value>刷写完整 OTA，每个镜像都先经过校验</value>
+  </data>
+  <data name="welcome_page_payload" xml:space="preserve">
+    <value>查看 OTA 内容并取出其中的镜像</value>
+  </data>
+  <data name="welcome_page_images" xml:space="preserve">
+    <value>查看 boot 镜像、转换 sparse、解包 super</value>
+  </data>
+  <data name="welcome_page_super" xml:space="preserve">
+    <value>用分区镜像构建一个 super.img</value>
+  </data>
+  <data name="welcome_page_samsung" xml:space="preserve">
+    <value>三星固件：MD5、匹配检查、Magisk、Odin 用 tar</value>
+  </data>
+  <data name="welcome_page_backup" xml:space="preserve">
+    <value>将分区和文件保存到这台电脑</value>
+  </data>
+  <data name="welcome_page_root" xml:space="preserve">
+    <value>使用 Magisk、KernelSU 或 APatch 一步步 Root</value>
+  </data>
+  <data name="welcome_page_terminal" xml:space="preserve">
+    <value>自己运行 adb 和 fastboot 命令</value>
+  </data>
+  <data name="welcome_page_logs" xml:space="preserve">
+    <value>软件运行过的所有内容，求助时可以复制</value>
+  </data>
+  <data name="welcome_page_about" xml:space="preserve">
+    <value>版本、语言、主题和更新</value>
+  </data>
+  <data name="welcome_check_title" xml:space="preserve">
+    <value>快速检查</value>
+  </data>
+  <data name="welcome_check_intro" xml:space="preserve">
+    <value>在插入手机之前，看看这台电脑已经准备好了什么。</value>
+  </data>
+  <data name="welcome_checking" xml:space="preserve">
+    <value>正在检查…</value>
+  </data>
+  <data name="welcome_check_tools" xml:space="preserve">
+    <value>adb 和 fastboot 已就绪</value>
+  </data>
+  <data name="welcome_check_tools_detail" xml:space="preserve">
+    <value>它们随软件附带（platform-tools 37.0.1）：无需安装。</value>
+  </data>
+  <data name="welcome_check_tools_missing" xml:space="preserve">
+    <value>缺少 adb 或 fastboot</value>
+  </data>
+  <data name="welcome_check_tools_missing_detail" xml:space="preserve">
+    <value>它们应位于 FastbootStudio.exe 旁边。请重新完整解压下载的文件，而不只是 exe。</value>
+  </data>
+  <data name="welcome_check_samsung" xml:space="preserve">
+    <value>已安装三星 USB 驱动</value>
+  </data>
+  <data name="welcome_check_samsung_detail" xml:space="preserve">
+    <value>用于 Download 模式下的三星手机。</value>
+  </data>
+  <data name="welcome_check_samsung_missing" xml:space="preserve">
+    <value>未安装三星 USB 驱动</value>
+  </data>
+  <data name="welcome_check_samsung_missing_detail" xml:space="preserve">
+    <value>只有 Download 模式下的三星手机需要它。软件可以帮你从三星获取。</value>
+  </data>
+  <data name="driver_install" xml:space="preserve">
+    <value>安装…</value>
+  </data>
+  <data name="welcome_check_usb_unknown" xml:space="preserve">
+    <value>无法读取 USB 设备</value>
+  </data>
+  <data name="welcome_check_usb_trouble" xml:space="preserve">
+    <value>有手机的驱动无法正常工作</value>
+  </data>
+  <data name="welcome_check_usb_fastboot" xml:space="preserve">
+    <value>有手机以 fastboot 连接</value>
+  </data>
+  <data name="welcome_check_usb_adb" xml:space="preserve">
+    <value>有手机以 Android 或 recovery（adb）连接</value>
+  </data>
+  <data name="welcome_check_usb_samsung" xml:space="preserve">
+    <value>有三星手机处于 Download 模式</value>
+  </data>
+  <data name="welcome_check_usb_download" xml:space="preserve">
+    <value>有手机处于芯片的下载模式（EDL、BROM…）</value>
+  </data>
+  <data name="welcome_check_usb_none" xml:space="preserve">
+    <value>没有连接手机</value>
+  </data>
+  <data name="welcome_check_usb_none_detail" xml:space="preserve">
+    <value>没关系：稍后再插入。在 Android 中，请在开发者选项里开启 USB 调试。</value>
+  </data>
+  <data name="welcome_safety_title" xml:space="preserve">
+    <value>刷机之前</value>
+  </data>
+  <data name="welcome_safety_intro" xml:space="preserve">
+    <value>四条规则，可以避免大多数问题。</value>
+  </data>
+  <data name="welcome_rule_backup" xml:space="preserve">
+    <value>先备份</value>
+  </data>
+  <data name="welcome_rule_backup_detail" xml:space="preserve">
+    <value>在“备份”页面进行。万一出了问题，可以把手机恢复原样。</value>
+  </data>
+  <data name="welcome_rule_battery" xml:space="preserve">
+    <value>电量高于 50%</value>
+  </data>
+  <data name="welcome_rule_battery_detail" xml:space="preserve">
+    <value>刷机过程中关机的手机可能无法再启动。</value>
+  </data>
+  <data name="welcome_rule_cable" xml:space="preserve">
+    <value>不要拔数据线</value>
+  </data>
+  <data name="welcome_rule_cable_detail" xml:space="preserve">
+    <value>使用质量好的数据线，插在电脑主机的接口上，不要用 USB 集线器，并等到软件提示完成。</value>
+  </data>
+  <data name="welcome_rule_files" xml:space="preserve">
+    <value>使用与你的手机完全对应的文件</value>
+  </data>
+  <data name="welcome_rule_files_detail" xml:space="preserve">
+    <value>型号相同，软件版本也相同。软件会尽可能检查，并在写入前提醒你。</value>
+  </data>
+  <data name="welcome_again_note" xml:space="preserve">
+    <value>可以在“关于”中再次查看此导览。</value>
+  </data>
+  <data name="driver_samsung_title" xml:space="preserve">
+    <value>三星 USB 驱动</value>
+  </data>
+  <data name="driver_samsung_source" xml:space="preserve">
+    <value>来自 developer.samsung.com · 约 37 MB</value>
+  </data>
+  <data name="driver_samsung_already" xml:space="preserve">
+    <value>看起来已经安装了；重新安装也没有坏处。</value>
+  </data>
+  <data name="driver_samsung_offer" xml:space="preserve">
+    <value>Download 模式下的三星手机需要三星自己的驱动；与 Odin 使用的驱动相同。
+
+软件会从三星下载驱动，确认 Windows 能在其上找到三星的签名，然后打开安装程序。Windows 会请求权限：这对驱动来说是正常的。</value>
+  </data>
+  <data name="driver_download_install" xml:space="preserve">
+    <value>下载并安装</value>
+  </data>
+  <data name="driver_downloading" xml:space="preserve">
+    <value>正在下载三星驱动</value>
+  </data>
+  <data name="driver_downloading_note" xml:space="preserve">
+    <value>直接从三星下载。运行前会进行检查。</value>
+  </data>
+  <data name="driver_download_failed" xml:space="preserve">
+    <value>下载失败：{0}</value>
+  </data>
+  <data name="driver_not_https" xml:space="preserve">
+    <value>三星的链接最终没有指向安全（https）地址，因此未使用该文件。</value>
+  </data>
+  <data name="driver_too_big" xml:space="preserve">
+    <value>该文件远大于三星驱动的大小，因此未保留。</value>
+  </data>
+  <data name="driver_signature_bad" xml:space="preserve">
+    <value>Windows 没有在该文件上找到 Samsung Electronics 的有效签名，因此已将其删除且未运行。</value>
+  </data>
+  <data name="driver_installing" xml:space="preserve">
+    <value>三星安装程序已打开</value>
+  </data>
+  <data name="driver_installing_note" xml:space="preserve">
+    <value>按照其步骤操作。完成后，此窗口会检查驱动是否已安装。</value>
+  </data>
+  <data name="driver_no_permission" xml:space="preserve">
+    <value>Windows 没有获得运行安装程序的权限。</value>
+  </data>
+  <data name="driver_done" xml:space="preserve">
+    <value>三星驱动已安装</value>
+  </data>
+  <data name="driver_done_note" xml:space="preserve">
+    <value>如果已插入三星手机，请拔下后重新插入。</value>
+  </data>
+  <data name="driver_close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="driver_not_yet" xml:space="preserve">
+    <value>驱动尚未安装</value>
+  </data>
+  <data name="driver_not_yet_note" xml:space="preserve">
+    <value>如果安装程序仍在运行，请先完成安装，然后点击“重新检查”。</value>
+  </data>
+  <data name="driver_check_again" xml:space="preserve">
+    <value>重新检查</value>
+  </data>
+  <data name="driver_failed" xml:space="preserve">
+    <value>三星驱动未安装</value>
+  </data>
+  <data name="driver_failed_note" xml:space="preserve">
+    <value>你可以自己从三星的页面下载。</value>
+  </data>
+  <data name="driver_try_again" xml:space="preserve">
+    <value>重试</value>
+  </data>
+  <data name="driver_open_page" xml:space="preserve">
+    <value>打开三星页面</value>
+  </data>
+  <data name="boot_check_question_notice" xml:space="preserve">
+    <value>要将其刷写到 {0} 吗？</value>
+  </data>
+  <data name="boot_find_rooted" xml:space="preserve">
+    <value>此镜像已用 {0} Root。用于 Root 手机是正确的；如果要移除 Root，请改为刷写同一固件中的原厂镜像。</value>
+  </data>
+  <data name="boot_find_recovery_try" xml:space="preserve">
+    <value>可以先在“设备”页面用“临时启动镜像…”试一下：它会启动该 Recovery 而不写入 {0}，如果不适合这台手机也不会有任何改动。部分手机无法以这种方式启动镜像。</value>
+  </data>
+  <data name="usb_samsung_driver_ask" xml:space="preserve">
+    <value>这台电脑没有安装三星 USB 驱动，而这台手机需要它。现在从三星下载并安装吗？</value>
+  </data>
+  <data name="samsung_driver_ok" xml:space="preserve">
+    <value>已安装三星 USB 驱动：可以识别 Download 模式。</value>
+  </data>
+  <data name="samsung_driver_missing" xml:space="preserve">
+    <value>未安装三星 USB 驱动。Download 模式需要它。</value>
+  </data>
+  <data name="samsung_m_knox_ok" xml:space="preserve">
+    <value>Knox：完好 (0x0)</value>
+  </data>
+  <data name="samsung_m_knox_ok_detail" xml:space="preserve">
+    <value>根据手机自身报告。刷入任何非三星官方的内容（Root、第三方 Recovery 或内核）都会永久熔断 Knox。</value>
+  </data>
+  <data name="samsung_m_knox_tripped" xml:space="preserve">
+    <value>Knox 已熔断 (0x1)</value>
+  </data>
+  <data name="samsung_m_knox_tripped_detail" xml:space="preserve">
+    <value>Samsung Wallet、安全文件夹和 Samsung Pass 在这台手机上已无法使用。刷回官方固件也无法恢复 Knox。</value>
+  </data>
+  <data name="samsung_m_knox_unlocked" xml:space="preserve">
+    <value>Knox 显示 0x0，但 bootloader 已解锁</value>
+  </data>
+  <data name="samsung_m_knox_unlocked_detail" xml:space="preserve">
+    <value>仅解锁不会熔断 Knox。但如果曾经刷入过任何非官方内容（Root、第三方 Recovery 或内核），Knox 就已永久熔断，是隐藏模块让它显示为 0x0。Samsung Wallet、安全文件夹和 Samsung Pass 以真实的熔丝状态为准。</value>
+  </data>
+  <data name="samsung_odin_button" xml:space="preserve">
+    <value>Download 模式</value>
+  </data>
+  <data name="samsung_odin_tip" xml:space="preserve">
+    <value>读取 Download 模式下的手机：分区表 (PIT)、型号和地区</value>
+  </data>
+  <data name="odin_title" xml:space="preserve">
+    <value>在 Download 模式下读取手机</value>
+  </data>
+  <data name="odin_subtitle" xml:space="preserve">
+    <value>读取分区表 (PIT)、型号和地区；然后根据这些信息检查并刷写。</value>
+  </data>
+  <data name="odin_step_off" xml:space="preserve">
+    <value>关闭手机并拔下数据线。</value>
+  </data>
+  <data name="odin_step_keys" xml:space="preserve">
+    <value>同时按住音量加和音量减，然后将数据线插入电脑。带 Home 键的旧款手机：音量减 + Home + 电源。</value>
+  </data>
+  <data name="odin_step_continue" xml:space="preserve">
+    <value>在蓝色警告界面，按一次音量加继续。屏幕随后会显示 Downloading。</value>
+  </data>
+  <data name="odin_maintenance" xml:space="preserve">
+    <value>One UI 8.5 的 Galaxy S26 和 Z Fold 7：三星可能会要求先开启维修模式（设置 › 设备维护 › 维修模式）。</value>
+  </data>
+  <data name="odin_looking" xml:space="preserve">
+    <value>正在查找手机…</value>
+  </data>
+  <data name="odin_not_found" xml:space="preserve">
+    <value>还没有处于 Download 模式的手机。此处会自动更新。</value>
+  </data>
+  <data name="odin_found" xml:space="preserve">
+    <value>已在 {0} 上找到处于 Download 模式的手机。</value>
+  </data>
+  <data name="odin_found_many" xml:space="preserve">
+    <value>有 {0} 台手机处于 Download 模式：请只保留一台连接。</value>
+  </data>
+  <data name="odin_seen_no_driver" xml:space="preserve">
+    <value>有手机处于 Download 模式，但 Windows 没有可用的驱动：请安装三星 USB 驱动。</value>
+  </data>
+  <data name="odin_no_driver" xml:space="preserve">
+    <value>缺少三星 USB 驱动；Download 模式需要它。</value>
+  </data>
+  <data name="odin_after_title" xml:space="preserve">
+    <value>读取之后：</value>
+  </data>
+  <data name="odin_after_android" xml:space="preserve">
+    <value>重启到 Android</value>
+  </data>
+  <data name="odin_after_download" xml:space="preserve">
+    <value>重启到 Download 模式</value>
+  </data>
+  <data name="odin_after_note" xml:space="preserve">
+    <value>手机每次连接只接受一个 Odin 会话，因此读取后会重启。</value>
+  </data>
+  <data name="odin_read" xml:space="preserve">
+    <value>读取手机</value>
+  </data>
+  <data name="odin_reading_title" xml:space="preserve">
+    <value>正在读取手机…</value>
+  </data>
+  <data name="odin_reading" xml:space="preserve">
+    <value>请保持数据线连接。这需要几秒钟。</value>
+  </data>
+  <data name="odin_failed" xml:space="preserve">
+    <value>读取失败</value>
+  </data>
+  <data name="odin_err_busy" xml:space="preserve">
+    <value>其他程序占用了手机的端口（{0}）：请关闭 Odin、Smart Switch 或其他刷机工具，然后重试。</value>
+  </data>
+  <data name="odin_err_gone" xml:space="preserve">
+    <value>手机的端口消失了：是拔掉了数据线，还是手机退出了 Download 模式？</value>
+  </data>
+  <data name="odin_err_open" xml:space="preserve">
+    <value>无法打开手机的端口：{0}</value>
+  </data>
+  <data name="odin_err_handshake" xml:space="preserve">
+    <value>手机的响应不像处于 Download 模式的手机。</value>
+  </data>
+  <data name="odin_err_other" xml:space="preserve">
+    <value>手机停止响应：{0}</value>
+  </data>
+  <data name="odin_err_restart" xml:space="preserve">
+    <value>重试之前，请将手机重启到 Download 模式：按住音量减 + 电源约 7 秒，在屏幕变黑时按住进入 Download 模式的组合键。</value>
+  </data>
+  <data name="odin_err_cable" xml:space="preserve">
+    <value>请使用能传输数据的数据线，并直接插在电脑上（不要用集线器）。</value>
+  </data>
+  <data name="odin_try_again" xml:space="preserve">
+    <value>重试</value>
+  </data>
+  <data name="odin_done" xml:space="preserve">
+    <value>已读取手机</value>
+  </data>
+  <data name="odin_done_model" xml:space="preserve">
+    <value>已读取 {0}</value>
+  </data>
+  <data name="odin_done_note" xml:space="preserve">
+    <value>没有向手机写入任何内容。</value>
+  </data>
+  <data name="odin_model" xml:space="preserve">
+    <value>型号</value>
+  </data>
+  <data name="odin_serial" xml:space="preserve">
+    <value>序列号</value>
+  </data>
+  <data name="odin_region" xml:space="preserve">
+    <value>地区 (CSC)</value>
+  </data>
+  <data name="odin_carrier" xml:space="preserve">
+    <value>运营商</value>
+  </data>
+  <data name="odin_protocol" xml:space="preserve">
+    <value>Odin 协议</value>
+  </data>
+  <data name="odin_protocol_value" xml:space="preserve">
+    <value>v{0}</value>
+  </data>
+  <data name="odin_protocol_lz4" xml:space="preserve">
+    <value>v{0}，支持 LZ4 固件</value>
+  </data>
+  <data name="odin_pit" xml:space="preserve">
+    <value>分区表</value>
+  </data>
+  <data name="odin_pit_value" xml:space="preserve">
+    <value>{0} 个分区</value>
+  </data>
+  <data name="odin_info_missing" xml:space="preserve">
+    <value>此 bootloader 不提供型号信息；分区表已读取。</value>
+  </data>
+  <data name="odin_info_failed" xml:space="preserve">
+    <value>无法读取型号；分区表已读取。</value>
+  </data>
+  <data name="odin_col_id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="odin_col_partition" xml:space="preserve">
+    <value>分区</value>
+  </data>
+  <data name="odin_col_file" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="odin_col_blocks" xml:space="preserve">
+    <value>块数</value>
+  </data>
+  <data name="odin_ended_android" xml:space="preserve">
+    <value>手机正在重启到 Android。</value>
+  </data>
+  <data name="odin_ended_download" xml:space="preserve">
+    <value>手机正在重启到 Download 模式。</value>
+  </data>
+  <data name="odin_not_ended" xml:space="preserve">
+    <value>手机没有响应会话结束指令：请按住音量减 + 电源约 7 秒来重启。</value>
+  </data>
+  <data name="odin_save_pit" xml:space="preserve">
+    <value>保存 PIT…</value>
+  </data>
+  <data name="odin_saved" xml:space="preserve">
+    <value>已保存：{0}</value>
+  </data>
+  <data name="odin_copy" xml:space="preserve">
+    <value>复制详情</value>
+  </data>
+  <data name="odin_copied" xml:space="preserve">
+    <value>已复制</value>
+  </data>
+  <data name="odin_ended_android_instead" xml:space="preserve">
+    <value>这台手机无法自行重启到 Download 模式：它正在重启到 Android。</value>
+  </data>
+  <data name="nav_settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="settings_subtitle" xml:space="preserve">
+    <value>语言、外观和更新。</value>
+  </data>
+  <data name="settings_look" xml:space="preserve">
+    <value>外观</value>
+  </data>
+  <data name="text_size" xml:space="preserve">
+    <value>文字大小</value>
+  </data>
+  <data name="text_size_note" xml:space="preserve">
+    <value>所有页面会立即应用。</value>
+  </data>
+  <data name="text_size_small" xml:space="preserve">
+    <value>小</value>
+  </data>
+  <data name="text_size_default" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="text_size_large" xml:space="preserve">
+    <value>大</value>
+  </data>
+  <data name="text_size_larger" xml:space="preserve">
+    <value>更大</value>
+  </data>
+  <data name="text_size_preview" xml:space="preserve">
+    <value>文字显示效果如下</value>
+  </data>
+  <data name="text_size_preview_note" xml:space="preserve">
+    <value>安全地刷机、备份和 Root。</value>
+  </data>
+  <data name="about_tagline" xml:space="preserve">
+    <value>在 Windows 上安全地为 Android 手机刷机、备份和 Root。</value>
+  </data>
+  <data name="about_free" xml:space="preserve">
+    <value>免费开源</value>
+  </data>
+  <data name="about_check_updates" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="about_built_on" xml:space="preserve">
+    <value>基于</value>
+  </data>
+  <data name="about_inside" xml:space="preserve">
+    <value>内置</value>
+  </data>
+  <data name="about_checks" xml:space="preserve">
+    <value>检查</value>
+  </data>
+  <data name="about_tools" xml:space="preserve">
+    <value>工具</value>
+  </data>
+  <data name="about_telegram_group" xml:space="preserve">
+    <value>Telegram 群组</value>
+  </data>
+  <data name="about_all_tools" xml:space="preserve">
+    <value>我的所有工具</value>
+  </data>
+  <data name="phone_likely_unlocked" xml:space="preserve">
+    <value>可能已解锁</value>
+  </data>
+  <data name="phone_likely_unlocked_note" xml:space="preserve">
+    <value>属性显示为已锁定，但这台手机有 {0}，而 Root 需要已解锁的 bootloader：ROM 和隐藏模块会让它看起来像已锁定。要读取真实状态，请在 Root 管理器中为 Shell 授予 Root，或重启到 bootloader 并打开“设备”页面。</value>
+  </data>
+  <data name="phone_backups_sign" xml:space="preserve">
+    <value>Companion 的备份</value>
+  </data>
+  <data name="phone_root_not_for_shell" xml:space="preserve">
+    <value>{0}，未授权给 Shell</value>
+  </data>
+  <data name="driver_google_title" xml:space="preserve">
+    <value>Google USB 驱动</value>
+  </data>
+  <data name="driver_google_source" xml:space="preserve">
+    <value>来自 dl.google.com · 约 8 MB</value>
+  </data>
+  <data name="driver_google_offer" xml:space="preserve">
+    <value>Pixel 以及许多使用 Google USB ID 的手机，在 fastboot 和 adb 下需要 Google 的驱动。它与 Android Studio 安装的驱动相同。
+
+软件会从 Google 下载驱动，按照 Google 的列表检查其大小和校验值，然后请 Windows 添加它。与安装任何驱动一样，Windows 会请求权限。</value>
+  </data>
+  <data name="driver_google_downloading" xml:space="preserve">
+    <value>正在下载 Google 驱动</value>
+  </data>
+  <data name="driver_google_downloading_note" xml:space="preserve">
+    <value>直接从 Google 下载。使用前会进行检查。</value>
+  </data>
+  <data name="driver_google_check_bad" xml:space="preserve">
+    <value>该文件与 Google 列出的信息不一致（{0}），因此已将其删除且未使用。</value>
+  </data>
+  <data name="driver_google_installing" xml:space="preserve">
+    <value>正在添加 Google 驱动</value>
+  </data>
+  <data name="driver_google_installing_note" xml:space="preserve">
+    <value>Windows 会请求权限，然后添加驱动。需要几秒钟。</value>
+  </data>
+  <data name="driver_google_done" xml:space="preserve">
+    <value>Google 驱动已安装</value>
+  </data>
+  <data name="driver_google_done_note" xml:space="preserve">
+    <value>如果已插入手机，请拔下后重新插入。其他品牌的手机可能仍需要其厂商自己的驱动。</value>
+  </data>
+  <data name="driver_google_failed" xml:space="preserve">
+    <value>Google 驱动未安装</value>
+  </data>
+  <data name="driver_google_failed_code" xml:space="preserve">
+    <value>Windows 无法添加驱动（pnputil 以代码 {0} 结束）。</value>
+  </data>
+  <data name="driver_google_failed_note" xml:space="preserve">
+    <value>你可以自己从 Google 的页面下载。</value>
+  </data>
+  <data name="driver_google_open_page" xml:space="preserve">
+    <value>打开 Google 页面</value>
+  </data>
+  <data name="driver_google_ok" xml:space="preserve">
+    <value>已安装 Google USB 驱动：可以识别使用 Google USB ID 的 fastboot 和 adb 设备。</value>
+  </data>
+  <data name="driver_google_missing" xml:space="preserve">
+    <value>未安装 Google USB 驱动。Pixel 和使用 Google USB ID 的手机需要它。</value>
+  </data>
+  <data name="driver_section" xml:space="preserve">
+    <value>USB 驱动</value>
+  </data>
+  <data name="driver_section_note" xml:space="preserve">
+    <value>Windows 需要驱动才能识别处于 fastboot、adb 或 Download 模式的手机。</value>
+  </data>
+  <data name="usb_google_driver_ask" xml:space="preserve">
+    <value>Google USB 驱动适用于这台手机（Google 的 USB ID）。现在从 Google 下载并安装吗？</value>
+  </data>
+  <data name="odin_flash" xml:space="preserve">
+    <value>刷写…</value>
+  </data>
+  <data name="odin_flash_title" xml:space="preserve">
+    <value>刷写手机</value>
+  </data>
+  <data name="odin_flash_intro" xml:space="preserve">
+    <value>选择要写入的内容：单个镜像（boot.img、.lz4）、Magisk tar，或固件的 BL、AP、CP 和 HOME_CSC 文件。发送任何内容之前，每个文件都会与这台手机的分区表和型号进行核对。</value>
+  </data>
+  <data name="odin_flash_choose" xml:space="preserve">
+    <value>选择文件…</value>
+  </data>
+  <data name="odin_flash_filter" xml:space="preserve">
+    <value>三星固件和镜像</value>
+  </data>
+  <data name="odin_flash_reading" xml:space="preserve">
+    <value>正在检查 {0}</value>
+  </data>
+  <data name="odin_flash_damaged" xml:space="preserve">
+    <value>{0}
+
+文件已损坏或不完整。请重新下载。</value>
+  </data>
+  <data name="odin_flash_total" xml:space="preserve">
+    <value>{0} 个文件 · {1}</value>
+  </data>
+  <data name="odin_flash_target" xml:space="preserve">
+    <value>{0} 的分区：</value>
+  </data>
+  <data name="odin_flash_ack" xml:space="preserve">
+    <value>我已阅读上述警告，确定继续</value>
+  </data>
+  <data name="odin_flash_restart" xml:space="preserve">
+    <value>完成后重启手机</value>
+  </data>
+  <data name="odin_flash_waiting" xml:space="preserve">
+    <value>将手机置于 Download 模式并连接。找到手机后，“刷写”按钮会启用。</value>
+  </data>
+  <data name="odin_flash_confirm" xml:space="preserve">
+    <value>要将 {0} 个文件（{1}）写入手机吗？
+
+完成之前不要拔下手机或关闭此窗口。如果中途停止，手机会停留在 Download 模式，可以重新刷写。</value>
+  </data>
+  <data name="odin_flash_writing" xml:space="preserve">
+    <value>正在写入 {0}</value>
+  </data>
+  <data name="odin_flash_progress" xml:space="preserve">
+    <value>{0} / {1}</value>
+  </data>
+  <data name="odin_flash_keep" xml:space="preserve">
+    <value>不要拔下手机或关闭此窗口。</value>
+  </data>
+  <data name="odin_flash_done" xml:space="preserve">
+    <value>刷写完成</value>
+  </data>
+  <data name="odin_flash_done_restart" xml:space="preserve">
+    <value>手机现在会重启。刷固件后的首次启动可能需要几分钟。</value>
+  </data>
+  <data name="odin_flash_done_stay" xml:space="preserve">
+    <value>手机停留在 Download 模式。要重启，请按住电源和音量减 7 秒。</value>
+  </data>
+  <data name="odin_flash_written" xml:space="preserve">
+    <value>已写入：{0}</value>
+  </data>
+  <data name="odin_flash_failed" xml:space="preserve">
+    <value>刷写已停止</value>
+  </data>
+  <data name="odin_flash_failed_at" xml:space="preserve">
+    <value>在写入 {0} 时停止：{1}</value>
+  </data>
+  <data name="odin_flash_failed_before" xml:space="preserve">
+    <value>在写入任何内容之前停止：{0}</value>
+  </data>
+  <data name="odin_flash_pit_changed" xml:space="preserve">
+    <value>这台手机的分区表与文件核对时的不同（是否插入了另一台手机？）。没有写入任何内容。请重新读取手机。</value>
+  </data>
+  <data name="odin_flash_failed_note" xml:space="preserve">
+    <value>手机停留在 Download 模式。不要重启：重新连接后再次刷写。如果屏幕上显示错误，请拍照留存。</value>
+  </data>
+  <data name="odin_flash_again" xml:space="preserve">
+    <value>重新刷写</value>
+  </data>
+  <data name="odin_flash_back" xml:space="preserve">
+    <value>返回</value>
+  </data>
+  <data name="odin_check_Empty" xml:space="preserve">
+    <value>没有可刷写的内容：所有文件在这台手机上都没有对应的分区。</value>
+  </data>
+  <data name="odin_check_NotInPit" xml:space="preserve">
+    <value>{0}：这台手机上没有该名称的分区。请在下方选择一个。</value>
+  </data>
+  <data name="odin_check_Skipped" xml:space="preserve">
+    <value>{0}：不是这台手机上的分区；已跳过，与 Odin 的处理方式相同。</value>
+  </data>
+  <data name="odin_check_PitSkipped" xml:space="preserve">
+    <value>{0}：这是分区表。不会刷写；手机的分区保持不变。</value>
+  </data>
+  <data name="odin_check_TooBig" xml:space="preserve">
+    <value>{0} 超出了 {1} 的容量（{2}，最多 {3}）。</value>
+  </data>
+  <data name="odin_check_Protected" xml:space="preserve">
+    <value>{0} 保存着手机的身份信息（IMEI、密钥）。这里绝不会刷写它。</value>
+  </data>
+  <data name="odin_check_Twice" xml:space="preserve">
+    <value>{0} 有两个文件。请保留一个。</value>
+  </data>
+  <data name="odin_check_BothCsc" xml:space="preserve">
+    <value>同时选择了 CSC 和 HOME_CSC。保留 HOME_CSC 可保留数据，保留 CSC 则会清除手机数据。</value>
+  </data>
+  <data name="odin_check_OtherModel" xml:space="preserve">
+    <value>此固件适用于 {0}，但这台手机是 {1}。无法刷写。</value>
+  </data>
+  <data name="odin_check_ModelUnknown" xml:space="preserve">
+    <value>手机没有报告型号，因此无法将固件（{0}）与其匹配。请确认它适用于这台手机。</value>
+  </data>
+  <data name="odin_check_Mixed" xml:space="preserve">
+    <value>以下文件来自其他版本：{0}。请使用同一固件的 BL、AP、CP 和 CSC。</value>
+  </data>
+  <data name="odin_check_Bootloader" xml:space="preserve">
+    <value>{0} 是 bootloader 的一部分。刷入错误的版本可能导致手机无法启动，且手机会拒绝较旧的版本。</value>
+  </data>
+  <data name="odin_check_Modem" xml:space="preserve">
+    <value>{0} 是基带。刷入错误的版本可能导致手机没有信号。</value>
+  </data>
+  <data name="odin_check_WipesData" xml:space="preserve">
+    <value>{0} 会清除手机上的所有内容（恢复出厂设置）。使用 HOME_CSC 可保留数据。</value>
+  </data>
+  <data name="odin_check_EmptyFile" xml:space="preserve">
+    <value>{0} 是空的：没有可刷写的内容。</value>
+  </data>
+  <data name="odin_check_TarUnknown" xml:space="preserve">
+    <value>{0} 的命名不像三星固件，因此无法检查它适用于哪台手机。只有在确定它适用于这台手机时才刷写。</value>
+  </data>
+  <data name="payload_bad_names" xml:space="preserve">
+    <value>payload 中的分区名称无法用于命令行：{0}。没有刷写任何内容。文件可能已损坏或被篡改。</value>
+  </data>
+  <data name="odin_check_MayNotFit" xml:space="preserve">
+    <value>{0} 在 UFS 手机上可以放入 {1}，但在 eMMC 手机上放不下（{2}；eMMC 分区最多容纳 {3}），而 PIT 没有说明这台手机是哪一种。在 eMMC 手机上，bootloader 会在刷写中途拒绝它。</value>
+  </data>
+  <data name="terminal_slot" xml:space="preserve">
+    <value>此命令会更改当前槽位：手机下次将从另一个槽位启动，无论其中是什么。如果该槽位中是较旧或损坏的系统，手机可能无法启动。确定运行吗？</value>
+  </data>
+  <data name="summary_ack" xml:space="preserve">
+    <value>我已阅读</value>
+  </data>
+  <data name="flash_summary_title" xml:space="preserve">
+    <value>确认刷写</value>
+  </data>
+  <data name="flash_summary" xml:space="preserve">
+    <value>{0}：{1} 个分区，{2}。在所有镜像都解包并通过哈希校验之前，不会写入任何内容。</value>
+  </data>
+  <data name="flash_summary_go" xml:space="preserve">
+    <value>刷写</value>
+  </data>
+  <data name="confirm_device_line" xml:space="preserve">
+    <value>手机：{0} · {1} · 槽位 {2} · {3}</value>
+  </data>
+  <data name="logs_open_folder" xml:space="preserve">
+    <value>打开日志文件夹</value>
+  </data>
+  <data name="logs_file_note" xml:space="preserve">
+    <value>每次刷写也会以文件形式保存在日志文件夹中（保留最新的 30 个）。</value>
+  </data>
+  <data name="step_cancelled" xml:space="preserve">
+    <value>已由你停止。手机上可能有写入一半的分区；重启前请重新刷写。</value>
+  </data>
+  <data name="bar_cancel" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="settings_phone" xml:space="preserve">
+    <value>手机</value>
+  </data>
+  <data name="root_probe" xml:space="preserve">
+    <value>手机通过 ADB 连接时请求 Root</value>
+  </data>
+  <data name="root_probe_note" xml:space="preserve">
+    <value>读取 Companion 的报告（Root 状态、AVB、模块冲突）。Magisk 第一次会在手机上弹出提示。关闭后，只有在你手动读取手机时，“手机”页面才会请求。</value>
+  </data>
+  <data name="nav_group_phone" xml:space="preserve">
+    <value>手机</value>
+  </data>
+  <data name="nav_group_files" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="nav_group_more" xml:space="preserve">
+    <value>更多工具</value>
+  </data>
+  <data name="bar_reboot" xml:space="preserve">
+    <value>重启 ▾</value>
+  </data>
+  <data name="bar_no_device" xml:space="preserve">
+    <value>未连接手机</value>
+  </data>
+  <data name="bar_no_device_hint" xml:space="preserve">
+    <value>插入处于 fastboot 的手机；通过 ADB 连接的 Android 手机会在“手机”页面读取。</value>
+  </data>
+  <data name="bar_serial" xml:space="preserve">
+    <value>SN {0}</value>
+  </data>
+  <data name="bar_slot" xml:space="preserve">
+    <value>槽位 {0}</value>
+  </data>
+  <data name="bar_unlocked" xml:space="preserve">
+    <value>已解锁</value>
+  </data>
+  <data name="bar_locked" xml:space="preserve">
+    <value>已锁定</value>
+  </data>
+  <data name="status_last" xml:space="preserve">
+    <value>上次：fastboot {0} · {1}</value>
+  </data>
+  <data name="status_seconds" xml:space="preserve">
+    <value>{0} 秒</value>
+  </data>
+  <data name="flash_result_title" xml:space="preserve">
+    <value>已写入 {0} / {1} 个分区</value>
+  </data>
+  <data name="flash_result_log" xml:space="preserve">
+    <value>打开日志</value>
+  </data>
+  <data name="flash_result_reboot" xml:space="preserve">
+    <value>重启手机</value>
+  </data>
+  <data name="flash_critical" xml:space="preserve">
+    <value>关键</value>
+  </data>
+  <data name="drop_title" xml:space="preserve">
+    <value>将文件拖到这里，或选择一个文件</value>
+  </data>
+  <data name="samsung_match_phone_label" xml:space="preserve">
+    <value>手机（Download 模式）</value>
+  </data>
+  <data name="samsung_match_unknown" xml:space="preserve">
+    <value>尚未读取</value>
+  </data>
+  <data name="samsung_details" xml:space="preserve">
+    <value>关于此固件</value>
+  </data>
+  <data name="super_drop_hint" xml:space="preserve">
+    <value>将分区镜像拖到这里，或导入</value>
+  </data>
+  <data name="super_drop_detail" xml:space="preserve">
+    <value>system、vendor、product… raw 或 sparse 镜像均可；也可以从处于 fastbootd 的手机读取布局。</value>
+  </data>
+  <data name="root_prereq" xml:space="preserve">
+    <value>开始之前</value>
+  </data>
+  <data name="root_prereq_unlock" xml:space="preserve">
+    <value>Bootloader 已解锁</value>
+  </data>
+  <data name="root_prereq_adb" xml:space="preserve">
+    <value>已开启 USB 调试，手机处于 Android</value>
+  </data>
+  <data name="root_prereq_image" xml:space="preserve">
+    <value>手机当前固件的原厂镜像</value>
+  </data>
+  <data name="root_prereq_backup" xml:space="preserve">
+    <value>已备份 boot 和重要数据</value>
+  </data>
+  <data name="root_step_done" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="root_step_current" xml:space="preserve">
+    <value>当前</value>
+  </data>
+  <data name="settings_backdrop" xml:space="preserve">
+    <value>窗口背后的毛玻璃效果（Windows 11）</value>
+  </data>
+  <data name="settings_backdrop_note" xml:space="preserve">
+    <value>透过窗口可以看到模糊的桌面。关闭后，窗口使用自身的渐变背景。</value>
+  </data>
+  <data name="settings_shortcuts" xml:space="preserve">
+    <value>键盘快捷键</value>
+  </data>
+  <data name="shortcut_open" xml:space="preserve">
+    <value>在此页面打开文件</value>
+  </data>
+  <data name="shortcut_log" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="shortcut_help" xml:space="preserve">
+    <value>此页面的帮助</value>
+  </data>
+  <data name="shortcut_settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="about_links" xml:space="preserve">
+    <value>链接</value>
   </data>
 </root>

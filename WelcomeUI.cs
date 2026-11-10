@@ -221,7 +221,7 @@ namespace FastbootEnhance
 
             WrapPanel choices = new WrapPanel { HorizontalAlignment = HorizontalAlignment.Center };
             Languages.Option current = Languages.CurrentOption;
-            foreach (Languages.Option option in Languages.All)
+            foreach (Languages.Option option in Languages.Offered)
             {
                 Languages.Option choice = option;
                 bool on = choice == current;
