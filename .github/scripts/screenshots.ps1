@@ -1241,9 +1241,29 @@ if ($Arabic) {
 }
 Write-Host "tour, What's new and help: shown, the picked page opened, the help followed the page"
 
-# ---------------------------------------------------------------- Download mode (Odin, reading only)
+# ---------------------------------------------------------------- Download mode (Odin)
 # A stand-in phone answers the Odin protocol on a made-up COM9: the window finds it, reads its
-# PIT and model, and restarts it. Then a port another program holds, which must fail clearly.
+# PIT and model, and restarts it. Then it flashes two images to it: the plan, the question, the
+# result. Then a port another program holds, which must fail clearly.
+$odinFiles = Join-Path $env:TEMP 'odin-flash'
+New-Item -ItemType Directory -Force -Path $odinFiles | Out-Null
+$rng = New-Object System.Random 7
+foreach ($f in @(@('boot.img', 3145853), @('dtbo.img', 307207))) {
+    $bytes = New-Object byte[] $f[1]; $rng.NextBytes($bytes)
+    [System.IO.File]::WriteAllBytes((Join-Path $odinFiles $f[0]), $bytes)
+}
+$env:FASTBOOT_STUDIO_FAKE_ODIN_FILES = (Join-Path $odinFiles 'boot.img') + '|' + (Join-Path $odinFiles 'dtbo.img')
+
+# A window of the app other than the main one and other than $not.
+function Find-Other-Dialog($not) {
+    $cond = New-Object System.Windows.Automation.PropertyCondition($UIA::ProcessIdProperty, $script:proc.Id)
+    foreach ($w in $UIA::RootElement.FindAll($Scope::Descendants, $cond)) {
+        if ($w.Current.ControlType -ne $Type::Window) { continue }
+        $h = [IntPtr]$w.Current.NativeWindowHandle
+        if ($h -ne $script:hwnd -and $h -ne [IntPtr]$not.Current.NativeWindowHandle -and $h -ne [IntPtr]::Zero) { return $w }
+    }
+    return $null
+}
 function Save-Dialog($dialog, [string] $name) {
     [Win32]::SetForegroundWindow([IntPtr]$dialog.Current.NativeWindowHandle) | Out-Null
     Start-Sleep -Milliseconds 800
@@ -1271,11 +1291,30 @@ function Odin([string] $prefix, [string] $mode) {
     if ($mode -eq 'phone') {
         Wait-For { Shown $dialog 'odin_extra' } 30 "the reading to finish ($prefix)" | Out-Null
         Save-Dialog $dialog "$prefix-odin-2-read"
+
+        # Flash: the two images are read and checked, the stand-in phone is found again.
+        (By-Id $dialog 'odin_primary').GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+        Wait-For { Shown $dialog 'odin_flash_choose' } 20 "the flash plan ($prefix)" | Out-Null
+        $go = Wait-For { $b = By-Id $dialog 'odin_primary'; if ($null -ne $b -and $b.Current.IsEnabled) { $b } } 30 "the plan to allow flashing ($prefix)"
+        Save-Dialog $dialog "$prefix-odin-4-plan"
+        if ($prefix -eq 'en') {
+            $go.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+            $ask = Wait-For { Find-Other-Dialog $dialog } 20 "the flash question"
+            Start-Sleep -Milliseconds 600
+            Answer-Dialog $ask 'Yes'
+            Wait-For { $b = By-Id $dialog 'odin_primary'; $null -ne $b -and $b.Current.IsEnabled -and -not $b.Current.IsOffscreen } 60 "the flash to end" | Out-Null
+            Save-Dialog $dialog "$prefix-odin-5-flashed"
+        } else {
+            # Back to the reading, from where the window closes as usual.
+            (By-Id $dialog 'odin_secondary').GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+            Wait-For { Shown $dialog 'odin_extra' } 20 "the reading again ($prefix)" | Out-Null
+        }
     } else {
         Wait-For { $b = By-Id $dialog 'odin_primary'; $null -ne $b -and $b.Current.Name -ne $label -and -not $b.Current.IsOffscreen } 30 "the failure ($prefix)" | Out-Null
         Save-Dialog $dialog "$prefix-odin-3-$mode"
     }
-    $close = By-Id $dialog 'odin_secondary'
+    # After a flash the window's one button is Close.
+    $close = if ($mode -eq 'phone' -and $prefix -eq 'en') { By-Id $dialog 'odin_primary' } else { By-Id $dialog 'odin_secondary' }
     $close.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
     Wait-For { $null -eq (Find-Dialog) } 10 "the Download mode window to close ($prefix)" | Out-Null
     Go 'logs_tab' | Out-Null
@@ -1284,6 +1323,12 @@ function Odin([string] $prefix, [string] $mode) {
         if ($logText -notmatch 'odin: handshake LOKE') { Fail "the Odin handshake was not logged ($prefix)" }
         if ($logText -notmatch 'odin: PIT, \d+ bytes') { Fail "the PIT was not read ($prefix)" }
         if ($logText -notmatch 'odin: restart Normal') { Fail "the phone was not restarted ($prefix)" }
+        if ($logText -notmatch 'flash: 2 files, \d+ bytes, allowed') { Fail "the flash plan was not made ($prefix)" }
+        if ($prefix -eq 'en') {
+            if ($logText -notmatch 'odin: BOOT, 3145853 bytes written') { Fail "boot.img was not flashed" }
+            if ($logText -notmatch 'odin: DTBO, 307207 bytes written') { Fail "dtbo.img was not flashed" }
+            if ($logText -notmatch 'flash: done, BOOT, DTBO') { Fail "the flash did not end well" }
+        }
     } elseif ($logText -notmatch 'odin: reading failed') {
         Fail "the failure was not logged ($prefix)"
     }
@@ -1299,7 +1344,8 @@ if ($Arabic) {
     Odin 'ar' 'phone'
     Remove-Item Env:FASTBOOT_STUDIO_LANG
 }
-Write-Host "Download mode: the stand-in phone found, read and restarted; a busy port reported"
+Remove-Item Env:FASTBOOT_STUDIO_FAKE_ODIN_FILES
+Write-Host "Download mode: the stand-in phone found, read, restarted and flashed; a busy port reported"
 
 # ---------------------------------------------------------------- the update dialog
 # A test feed stands in for GitHub: a newer release whose zip is a local file. The dialog must

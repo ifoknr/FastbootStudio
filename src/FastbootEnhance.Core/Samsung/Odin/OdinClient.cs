@@ -17,14 +17,20 @@ namespace FastbootEnhance.Core.Samsung.Odin
     }
 
     /// <summary>
-    /// Talks to a Samsung phone in Download mode. This version only reads: the handshake, a
-    /// session, the PIT and the device information, and the end of the session. It has no
-    /// command that writes to the phone.
+    /// Talks to a Samsung phone in Download mode: the handshake, a session, the PIT and the
+    /// device information, the end of the session, and writing a file to a partition the way
+    /// Heimdall (MIT) does. Only <see cref="OdinFlasher"/> writes, after its checks.
     /// </summary>
     public sealed class OdinClient
     {
         public const int HandshakeTimeoutMs = 2000;
         public const int ResponseTimeoutMs = 5000;
+
+        /// <summary>How long one file part may take to be sent and answered.</summary>
+        public const int PartTimeoutMs = 30000;
+
+        /// <summary>How long the phone may take to write a sequence (up to 100 MB) before it answers; Heimdall waits 2 minutes.</summary>
+        public const int SequenceTimeoutMs = 120000;
 
         /// <summary>How long a leftover transfer is waited for after a dump, as Heimdall reads its empty packet.</summary>
         const int DrainTimeoutMs = 200;
@@ -46,6 +52,13 @@ namespace FastbootEnhance.Core.Samsung.Odin
 
         public bool InSession { get; private set; }
 
+        /// <summary>What Begin Session answered; not 0 when the bootloader takes a larger file part size.</summary>
+        public int SessionAnswer { get; private set; }
+
+        /// <summary>The size of each file part, and how many make a sequence: Heimdall's defaults until <see cref="PrepareTransfers"/>.</summary>
+        public int PartSize { get; private set; } = OdinPacket.DefaultPartSize;
+        public int SequenceParts { get; private set; } = OdinPacket.DefaultSequenceParts;
+
         /// <summary>"ODIN", answered by "LOKE" from a phone in Download mode.</summary>
         public void Handshake()
         {
@@ -66,6 +79,7 @@ namespace FastbootEnhance.Core.Samsung.Odin
         {
             int value = Command("begin session", OdinPacket.TypeSession, OdinPacket.SessionBegin, OdinPacket.RequestedProtocol);
             InSession = true;
+            SessionAnswer = value;
             ProtocolVersion = value == 0 ? 1 : (value >> 16) & 0xFFFF;
             TakesLz4 = (value & OdinPacket.Lz4Flag) != 0;
             log("odin: session, protocol " + ProtocolVersion + (TakesLz4 ? ", LZ4" : "") + " (0x" + value.ToString("X") + ")");
@@ -109,6 +123,109 @@ namespace FastbootEnhance.Core.Samsung.Odin
             OdinDeviceInfo info = OdinDeviceInfo.Parse(data);
             log("odin: device information, " + size + " bytes" + (info == null ? ", not readable" : ""));
             return info;
+        }
+
+        /// <summary>
+        /// Before a flash: a bootloader whose Begin Session answer is not 0 takes 1 MiB file
+        /// parts, and is told so (Heimdall does the same); the others keep 128 KiB.
+        /// </summary>
+        public void PrepareTransfers()
+        {
+            RequireSession();
+            if (SessionAnswer == 0)
+                return;
+            int result = Command("file part size", OdinPacket.TypeSession, OdinPacket.SessionFilePartSize, OdinPacket.LargePartSize);
+            if (result != 0)
+                throw new OdinException("file part size: the phone answered " + result + " instead of 0");
+            PartSize = OdinPacket.LargePartSize;
+            SequenceParts = OdinPacket.LargeSequenceParts;
+            log("odin: file parts of " + PartSize / 1024 + " KiB, " + SequenceParts + " to a sequence");
+        }
+
+        /// <summary>
+        /// The size of everything about to be flashed, which the bootloader wants before the
+        /// first file. Sent as 64 bits (low word first); older bootloaders read the low word only.
+        /// </summary>
+        public void SendTotalBytes(long total)
+        {
+            RequireSession();
+            int result = Command("total size", OdinPacket.TypeSession, OdinPacket.SessionTotalBytes,
+                (int)(total & 0xFFFFFFFF), (int)(total >> 32));
+            if (result != 0)
+                throw new OdinException("total size: the phone answered " + result + " instead of 0", result);
+            log("odin: total " + total + " bytes");
+        }
+
+        /// <summary>
+        /// Writes <paramref name="size"/> bytes from <paramref name="data"/> to the partition of
+        /// <paramref name="entry"/>, as Heimdall's SendFile: a flash request, then sequences of
+        /// file parts (the last part padded with zeros), each part answered with its index, and
+        /// each sequence closed with its real length, the partition and whether it is the last.
+        /// A modem (CP) partition is closed with the modem's packet. <paramref name="sent"/> gets
+        /// the bytes sent so far. There is no stopping half-way: a partition left half written is
+        /// worse than one written whole.
+        /// </summary>
+        public void FlashFile(System.IO.Stream data, long size, PitEntry entry, Action<long> sent = null)
+        {
+            RequireSession();
+            if (size <= 0)
+                throw new ArgumentException("nothing to flash to " + entry.Partition);
+            Command("flash " + entry.Partition, OdinPacket.TypeFile, OdinPacket.FileFlash);
+
+            long sequenceBytes = (long)SequenceParts * PartSize;
+            long done = 0;
+            byte[] part = new byte[PartSize];
+            byte[] answer = new byte[OdinPacket.ResponseSize];
+            while (done < size)
+            {
+                long length = Math.Min(sequenceBytes, size - done);
+                int parts = (int)((length + PartSize - 1) / PartSize);
+                bool last = done + length >= size;
+                Command("sequence of " + entry.Partition, OdinPacket.TypeFile, OdinPacket.FilePart, parts * PartSize);
+
+                for (int i = 0; i < parts; i++)
+                {
+                    int want = (int)Math.Min(PartSize, length - (long)i * PartSize);
+                    readFull(data, part, want, entry.Partition);
+                    Array.Clear(part, want, PartSize - want);
+                    // Heimdall sends an empty transfer before every part but the first of a sequence.
+                    if (i > 0)
+                        link.EndPacket();
+                    link.Write(part, 0, PartSize, PartTimeoutMs);
+                    if (ReadUpTo(answer, answer.Length, PartTimeoutMs) < answer.Length)
+                        throw new OdinException(entry.Partition + ": part " + i + " was not answered");
+                    int index = OdinPacket.ResponseValue(answer, OdinPacket.TypeFilePartAnswer, entry.Partition + " part " + i);
+                    if (index != i)
+                        throw new OdinException(entry.Partition + ": the phone answered part " + index + " for part " + i);
+                    sent?.Invoke(done + Math.Min(length, (long)(i + 1) * PartSize));
+                }
+
+                byte[] end = entry.IsModem
+                    ? OdinPacket.Command(OdinPacket.TypeFile, OdinPacket.FileEnd, OdinPacket.DestinationModem, (int)length, 0,
+                        entry.DeviceType, last ? 1 : 0)
+                    : OdinPacket.Command(OdinPacket.TypeFile, OdinPacket.FileEnd, OdinPacket.DestinationPhone, (int)length, 0,
+                        entry.DeviceType, entry.PartitionId, last ? 1 : 0);
+                // The end of a sequence has an empty transfer before and after it.
+                link.EndPacket();
+                Send(end);
+                if (ReadUpTo(answer, answer.Length, SequenceTimeoutMs) < answer.Length)
+                    throw new OdinException(entry.Partition + ": the phone did not confirm the written sequence");
+                OdinPacket.ResponseValue(answer, OdinPacket.TypeFile, "end of a sequence of " + entry.Partition);
+                done += length;
+            }
+            log("odin: " + entry.Partition + ", " + size + " bytes written");
+        }
+
+        static void readFull(System.IO.Stream data, byte[] buffer, int count, string what)
+        {
+            int got = 0;
+            while (got < count)
+            {
+                int read = data.Read(buffer, got, count - got);
+                if (read <= 0)
+                    throw new System.IO.EndOfStreamException("the file for " + what + " ended early");
+                got += read;
+            }
         }
 
         /// <summary>

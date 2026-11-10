@@ -5,10 +5,11 @@ using System.Text;
 namespace FastbootEnhance.Core.Samsung.Odin
 {
     /// <summary>
-    /// A Samsung phone in Download mode, made up: it answers the reading half of the protocol
-    /// (handshake, session, PIT and device-information dumps, end of session) the way the
-    /// bootloader does, so tests and the app's stand-in mode run without a phone. It refuses
-    /// every packet it does not know with 0xFF, as a bootloader does.
+    /// A Samsung phone in Download mode, made up: it answers the protocol (handshake, session,
+    /// PIT and device-information dumps, file part size, total size, file transfers, end of
+    /// session) the way the bootloader does, and keeps what was flashed to each partition, so
+    /// tests and the app's stand-in mode run without a phone. It refuses every packet it does
+    /// not know with 0xFF, as a bootloader does.
     /// </summary>
     public sealed class FakeOdinDevice : IOdinTransport
     {
@@ -16,6 +17,13 @@ namespace FastbootEnhance.Core.Samsung.Odin
         readonly List<byte> incoming = new List<byte>();
         bool shookHands;
         bool inSession;
+
+        // A file transfer: the parts of the sequence under way, and how many are still to come.
+        int partSize = OdinPacket.DefaultPartSize;
+        bool fileOpen;
+        int partsLeft;
+        int partIndex;
+        readonly System.IO.MemoryStream sequence = new System.IO.MemoryStream();
 
         public FakeOdinDevice(byte[] pit = null, byte[] deviceInfo = null)
         {
@@ -45,6 +53,24 @@ namespace FastbootEnhance.Core.Samsung.Odin
 
         /// <summary>Restarts without answering the restart request, as phones often do.</summary>
         public bool RestartsSilently { get; set; }
+
+        /// <summary>The total size the flash announced; null before it does.</summary>
+        public long? TotalBytes { get; private set; }
+
+        /// <summary>The part size agreed for file transfers.</summary>
+        public int PartSize => partSize;
+
+        /// <summary>What was flashed, by partition name, in the order the files ended.</summary>
+        public Dictionary<string, byte[]> Written { get; } = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
+        public List<string> Flashed { get; } = new List<string>();
+        readonly Dictionary<string, System.IO.MemoryStream> writing = new Dictionary<string, System.IO.MemoryStream>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Refuses (0xFF) the end of a sequence for this partition, as a bootloader that rejects an image does.</summary>
+        public string RefusePartition { get; set; }
+
+        /// <summary>Stops answering after this many file parts in all: a cable pulled mid-flash.</summary>
+        public int? SilentAfterParts { get; set; }
+        int partsSeen;
 
         /// <summary>Every packet received after the handshake, as "type/command".</summary>
         public List<string> Received { get; } = new List<string>();
@@ -78,8 +104,19 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 return;
             }
 
-            while (incoming.Count >= OdinPacket.CommandSize)
+            while (true)
             {
+                if (partsLeft > 0)
+                {
+                    if (incoming.Count < partSize)
+                        return;
+                    byte[] data = incoming.GetRange(0, partSize).ToArray();
+                    incoming.RemoveRange(0, partSize);
+                    TakePart(data);
+                    continue;
+                }
+                if (incoming.Count < OdinPacket.CommandSize)
+                    return;
                 byte[] packet = incoming.GetRange(0, OdinPacket.CommandSize).ToArray();
                 incoming.RemoveRange(0, OdinPacket.CommandSize);
                 Handle(packet);
@@ -129,6 +166,42 @@ namespace FastbootEnhance.Core.Samsung.Odin
                     Dump(Pit, type, command, OdinPacket.PitDump, OdinPacket.PitDumpBlock, OdinPacket.PitDumpEnd, argument);
                     return;
 
+                case OdinPacket.TypeSession when inSession && command == OdinPacket.SessionFilePartSize:
+                    if (argument <= 0 || argument > 8 * 1024 * 1024)
+                    {
+                        Refuse(-1);
+                        return;
+                    }
+                    partSize = argument;
+                    Reply(type, 0);
+                    return;
+
+                case OdinPacket.TypeSession when inSession && command == OdinPacket.SessionTotalBytes:
+                    TotalBytes = (uint)argument | (long)OdinPacket.GetInt(packet, 12) << 32;
+                    Reply(type, 0);
+                    return;
+
+                case OdinPacket.TypeFile when inSession && command == OdinPacket.FileFlash:
+                    fileOpen = true;
+                    Reply(type, 0);
+                    return;
+
+                case OdinPacket.TypeFile when fileOpen && command == OdinPacket.FilePart:
+                    if (argument <= 0 || argument % partSize != 0)
+                    {
+                        Refuse(-1);
+                        return;
+                    }
+                    partsLeft = argument / partSize;
+                    partIndex = 0;
+                    sequence.SetLength(0);
+                    Reply(type, 0);
+                    return;
+
+                case OdinPacket.TypeFile when fileOpen && command == OdinPacket.FileEnd:
+                    EndSequence(packet);
+                    return;
+
                 case OdinPacket.TypeDeviceInfo when inSession && DeviceInfo != null:
                     Dump(DeviceInfo, type, command, OdinPacket.DeviceInfoDump, OdinPacket.DeviceInfoBlock, OdinPacket.DeviceInfoEnd, argument);
                     return;
@@ -148,8 +221,58 @@ namespace FastbootEnhance.Core.Samsung.Odin
                     Restarted = command == OdinPacket.EndSessionReboot ? "reboot" : "download";
                     return;
             }
-            // Anything else, writing included, is refused: this phone takes no changes.
             Refuse(-1);
+        }
+
+        void TakePart(byte[] data)
+        {
+            partsSeen++;
+            if (SilentAfterParts != null && partsSeen > SilentAfterParts)
+            {
+                partsLeft = 0;
+                return;
+            }
+            sequence.Write(data, 0, data.Length);
+            Reply(OdinPacket.TypeFilePartAnswer, partIndex++);
+            partsLeft--;
+        }
+
+        void EndSequence(byte[] packet)
+        {
+            int destination = OdinPacket.GetInt(packet, 8);
+            int length = OdinPacket.GetInt(packet, 12);
+            int deviceType = OdinPacket.GetInt(packet, 20);
+            SamsungPit pit = SamsungPit.Parse(Pit);
+            PitEntry entry = null;
+            bool last;
+            if (destination == OdinPacket.DestinationModem)
+            {
+                entry = pit.Entries.Find(e => e.IsModem && e.DeviceType == deviceType);
+                last = OdinPacket.GetInt(packet, 24) == 1;
+            }
+            else
+            {
+                int id = OdinPacket.GetInt(packet, 24);
+                entry = pit.Entries.Find(e => !e.IsModem && e.PartitionId == id);
+                last = OdinPacket.GetInt(packet, 28) == 1;
+            }
+            if (entry == null || length < 0 || length > sequence.Length || partsLeft != 0
+                || string.Equals(entry.Partition, RefusePartition, StringComparison.OrdinalIgnoreCase))
+            {
+                Refuse(-1);
+                return;
+            }
+            if (!writing.TryGetValue(entry.Partition, out System.IO.MemoryStream file))
+                writing[entry.Partition] = file = new System.IO.MemoryStream();
+            file.Write(sequence.GetBuffer(), 0, length);
+            if (last)
+            {
+                Written[entry.Partition] = file.ToArray();
+                writing.Remove(entry.Partition);
+                Flashed.Add(entry.Partition);
+                fileOpen = false;
+            }
+            Reply(OdinPacket.TypeFile, 0);
         }
 
         void Dump(byte[] data, int type, int command, int start, int block, int end, int index)
