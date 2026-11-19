@@ -451,8 +451,10 @@ namespace FastbootEnhance.Core.Images
                 problems.Add(new SuperProblem(SuperProblemKind.NoSize));
             else if (DeviceSize % SuperBuilder.BlockSize != 0)
                 problems.Add(new SuperProblem(SuperProblemKind.SizeNotAligned, null, SuperBuilder.BlockSize, DeviceSize));
-            if (MetadataMaxSize == 0 || MetadataMaxSize % SuperBuilder.BlockSize != 0)
-                problems.Add(new SuperProblem(SuperProblemKind.MetadataNotAligned, null, SuperBuilder.BlockSize, MetadataMaxSize));
+            // liblp asks for whole 512-byte sectors, not whole blocks: an imported super may have
+            // a metadata size such as 65024, and must be rebuilt with it.
+            if (MetadataMaxSize == 0 || MetadataMaxSize % SuperImage.SectorSize != 0)
+                problems.Add(new SuperProblem(SuperProblemKind.MetadataNotAligned, null, SuperImage.SectorSize, MetadataMaxSize));
 
             int extents = Partitions.Count(p => p.HasImage && p.ImageLength > 0);
             long metadataBytes = (ExpandedHeader ? 256 : 128) + 52L * Partitions.Count + 24L * extents

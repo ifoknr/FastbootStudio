@@ -208,6 +208,15 @@ namespace FastbootEnhance.Core.Tests
         }
 
         [Fact]
+        public void Gzip_output_over_the_limit_is_refused_after_the_first_bytes_too()
+        {
+            // Past the first buffer: some output is already there when the limit is met, which
+            // must not be taken for "bytes after the gzip member" and returned cut short.
+            byte[] gz = Gzip(new byte[1 << 20]);
+            Assert.Throws<InvalidDataException>(() => Compression.Decompress(gz, 0, gz.Length, CompressionKind.Gzip, 300000));
+        }
+
+        [Fact]
         public void Damaged_lz4_is_reported_not_crashed()
         {
             byte[] packed = Convert.FromBase64String(CompressedFixtures.Lz4Frame);

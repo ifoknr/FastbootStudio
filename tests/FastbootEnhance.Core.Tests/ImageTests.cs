@@ -141,6 +141,39 @@ namespace FastbootEnhance.Core.Tests
         }
 
         [Fact]
+        public void A_shorter_split_removes_the_parts_an_earlier_one_left()
+        {
+            File.WriteAllBytes(P("raw.img"), MixedImage(800, 0, seed: 4));
+            SparseWriteResult first = SparseConverter.ToSparse(P("raw.img"), P("system.img"), 4096, 600_000, null, CancellationToken.None);
+            Assert.True(first.Files.Count > 2);
+            File.WriteAllText(P("system.img.99"), "someone's notes");
+            File.WriteAllText(P("system.img.txt"), "not a part");
+
+            SparseWriteResult second = SparseConverter.ToSparse(P("raw.img"), P("system.img"), 4096, 4_000_000, null, CancellationToken.None);
+            Assert.True(second.Files.Count < first.Files.Count);
+            foreach (string old in first.Files.Skip(second.Files.Count))
+                Assert.False(File.Exists(old), old + " was left behind");
+            Assert.Equal(second.Files, SparseConverter.FindParts(second.Files[0]));
+            // Only sparse parts are removed.
+            Assert.True(File.Exists(P("system.img.99")));
+            Assert.True(File.Exists(P("system.img.txt")));
+        }
+
+        [Fact]
+        public void A_file_that_is_not_itself_a_part_is_not_swapped_for_its_neighbours()
+        {
+            File.WriteAllBytes(P("raw.img"), MixedImage(40, 0));
+            SparseConverter.ToSparse(P("raw.img"), P("one.simg"), 4096, null, null, CancellationToken.None);
+            File.Copy(P("one.simg"), P("super.img.1"));
+            File.Copy(P("one.simg"), P("super.img.2"));
+            // A raw image that only looks like part 0 by its name.
+            File.Copy(P("raw.img"), P("super.img.0"));
+
+            Assert.Equal(new[] { P("super.img.0") }, SparseConverter.FindParts(P("super.img.0")));
+            Assert.Equal(new[] { P("super.img.1"), P("super.img.2") }, SparseConverter.FindParts(P("super.img.2")));
+        }
+
+        [Fact]
         public void Parts_are_ordered_numerically_not_alphabetically()
         {
             byte[] raw = MixedImage(40, 0);

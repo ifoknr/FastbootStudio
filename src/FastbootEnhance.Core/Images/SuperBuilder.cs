@@ -282,10 +282,15 @@ namespace FastbootEnhance.Core.Images
             using (SparseWriter writer = sparse ? new SparseWriter(part.Stream, BlockSize, totalSize / BlockSize) : null)
             {
                 FileStream file = part.Stream;
+                // A metadata size in sectors, not blocks, can end the area inside a block: the
+                // rest of that block is zeros (partitions start at the alignment, never inside it).
+                byte[] metadata = layout.Metadata;
+                if (metadata.Length % BlockSize != 0)
+                    Array.Resize(ref metadata, (int)Align(metadata.Length, BlockSize));
                 if (writer != null)
                 {
-                    for (int at = 0; at < layout.Metadata.Length; at += BlockSize)
-                        writer.Write(layout.Metadata, at);
+                    for (int at = 0; at < metadata.Length; at += BlockSize)
+                        writer.Write(metadata, at);
                 }
                 else
                 {
@@ -293,7 +298,7 @@ namespace FastbootEnhance.Core.Images
                     file.Write(layout.Metadata, 0, layout.Metadata.Length);
                 }
 
-                long position = layout.Metadata.Length;
+                long position = metadata.Length;
                 foreach (SuperPlacement place in layout.Placements.OrderBy(p => p.Offset))
                 {
                     if (writer != null)

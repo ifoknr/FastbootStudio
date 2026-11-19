@@ -227,6 +227,68 @@ namespace FastbootEnhance.Core.Tests
         }
 
         [Fact]
+        public void A_metadata_size_in_sectors_not_blocks_builds_raw_and_sparse()
+        {
+            // liblp only asks for whole 512-byte sectors; an imported super may have such a size.
+            Dictionary<string, string> files = Fixtures();
+            SuperPlan plan = Plan(SuperSlotMode.VirtualAB, files);
+            plan.MetadataMaxSize = 127 * 512;
+            Assert.True(plan.Check().CanBuild, string.Join("; ", plan.Check().Problems));
+
+            plan.Build(P("odd.raw"), false, null, CancellationToken.None);
+            plan.Build(P("odd.simg"), true, null, CancellationToken.None);
+            SparseConverter.ToRaw(new[] { P("odd.simg") }, P("odd.expanded"), null, CancellationToken.None);
+            Assert.Equal(Sha256(P("odd.raw")), Sha256(P("odd.expanded")));
+            foreach (string output in new[] { P("odd.raw"), P("odd.simg") })
+            {
+                SuperVerifyResult verify = plan.Verify(output, null, CancellationToken.None);
+                Assert.True(verify.Ok, string.Join("; ", verify.Problems));
+            }
+            using (FileStream stream = File.OpenRead(P("odd.raw")))
+                Assert.Equal(127u * 512, SuperPlan.FromImage(SuperImage.Read(stream)).MetadataMaxSize);
+
+            plan.MetadataMaxSize = 65536 + 100;
+            Assert.Contains(plan.Check().Problems, p => p.Kind == SuperProblemKind.MetadataNotAligned);
+        }
+
+        [Fact]
+        public void A_super_empty_image_is_read_like_lpdump_reads_it()
+        {
+            // What lpmake writes without images: the geometry block, then one copy of the
+            // metadata; no reserved bytes before, no backups, no partition data.
+            Dictionary<string, string> files = Fixtures();
+            Plan(SuperSlotMode.VirtualAB, files).Build(P("full.img"), false, null, CancellationToken.None);
+            byte[] full = File.ReadAllBytes(P("full.img"));
+            byte[] empty = new byte[4096 + 65536];
+            Buffer.BlockCopy(full, 4096, empty, 0, 4096);
+            Buffer.BlockCopy(full, 4096 + 2 * 4096, empty, 4096, 65536);
+            File.WriteAllBytes(P("super_empty.img"), empty);
+
+            Assert.Equal(ImageKind.Super, ImageProbe.Identify(P("super_empty.img")).Kind);
+            using (FileStream stream = File.OpenRead(P("super_empty.img")))
+            using (FileStream whole = File.OpenRead(P("full.img")))
+            {
+                Assert.True(SuperImage.IsSuper(stream));
+                SuperImage read = SuperImage.Read(stream);
+                SuperImage reference = SuperImage.Read(whole);
+                Assert.True(read.IsEmptyImage);
+                Assert.False(reference.IsEmptyImage);
+                Assert.False(read.UsedBackup);
+                Assert.Equal(reference.Partitions.Select(p => p.Name + ":" + p.Size), read.Partitions.Select(p => p.Name + ":" + p.Size));
+                Assert.Equal(reference.Groups.Select(g => g.Name), read.Groups.Select(g => g.Name));
+                Assert.Equal(Size, (long)read.BlockDevices[0].Size);
+                Assert.Equal(Size, SuperPlan.FromImage(read).DeviceSize);
+                // Nothing to extract: the partitions' data is not in this file.
+                Assert.Throws<InvalidDataException>(() =>
+                    SuperImage.Extract(stream, read.Partitions.First(p => !p.IsEmpty), new MemoryStream(), null, CancellationToken.None));
+            }
+
+            // Damaged metadata in such a file has no backup copy to fall back on.
+            empty[4096 + 200] ^= 0xFF;
+            Assert.Throws<InvalidDataException>(() => SuperImage.Read(new MemoryStream(empty)));
+        }
+
+        [Fact]
         public void An_imported_layout_rebuilds_the_same_image()
         {
             Dictionary<string, string> files = Fixtures();

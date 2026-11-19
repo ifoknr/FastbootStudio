@@ -125,6 +125,13 @@ namespace FastbootEnhance.Core.Images
 
         public bool IsVirtualAB => (HeaderFlags & 1) != 0;
 
+        /// <summary>
+        /// True for a "super_empty.img" (lpmake without images, what fastboot's update-super
+        /// takes): the geometry at the very start and one copy of the metadata after it, with no
+        /// reserved bytes, no backups and no partition data, so nothing can be extracted from it.
+        /// </summary>
+        public bool IsEmptyImage { get; private set; }
+
         /// <summary>True when the stream has super's geometry block at 4096.</summary>
         public static bool IsSuper(Stream stream)
         {
@@ -132,6 +139,10 @@ namespace FastbootEnhance.Core.Images
                 return false;
             stream.Position = ReservedBytes;
             byte[] magic = new byte[4];
+            if (StreamUtil.TryReadExactly(stream, magic) && BitConverter.ToUInt32(magic, 0) == GeometryMagic)
+                return true;
+            // A super_empty.img starts with the geometry itself.
+            stream.Position = 0;
             return StreamUtil.TryReadExactly(stream, magic) && BitConverter.ToUInt32(magic, 0) == GeometryMagic;
         }
 
@@ -140,6 +151,12 @@ namespace FastbootEnhance.Core.Images
         {
             SuperImage image = new SuperImage { Slot = slot };
             byte[] geometry = ReadGeometry(stream, ReservedBytes) ?? ReadGeometry(stream, ReservedBytes + GeometrySize);
+            if (geometry == null)
+            {
+                // As liblp's ReadFromImageBlob: an image file without the reserved bytes.
+                geometry = ReadGeometry(stream, 0);
+                image.IsEmptyImage = geometry != null;
+            }
             if (geometry == null)
                 throw new InvalidDataException("no valid super geometry block (bad magic or checksum in both copies)");
 
@@ -158,6 +175,13 @@ namespace FastbootEnhance.Core.Images
                           + (long)image.MetadataMaxSize * slot;
 
             string problem;
+            if (image.IsEmptyImage)
+            {
+                // One copy, right after the geometry block, whatever slot is asked for.
+                if (!image.TryReadMetadata(stream, GeometrySize, out problem))
+                    throw new InvalidDataException("super metadata is damaged: " + problem);
+                return image;
+            }
             if (!image.TryReadMetadata(stream, primary, out problem))
             {
                 string backupProblem;

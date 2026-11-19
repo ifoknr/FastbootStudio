@@ -269,7 +269,43 @@ namespace FastbootEnhance.Core.Images
                 }
             }
 
+            // Parts left by an earlier, longer split ("output.5" when this one ends at
+            // "output.3") would be read as parts of this image by anything that gathers them.
+            if (maxPartBytes.HasValue)
+                RemoveStaleParts(output, parts.Count);
+
             return new SparseWriteResult { Files = files, Blocks = plan.TotalBlocks, Chunks = chunks, Bytes = bytes };
+        }
+
+        /// <summary>Deletes the sparse files "output.N" with N at or past <paramref name="count"/>.</summary>
+        static void RemoveStaleParts(string output, int count)
+        {
+            string folder = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(output));
+            string prefix = System.IO.Path.GetFileName(output) + ".";
+            foreach (string candidate in Directory.GetFiles(folder))
+            {
+                string name = System.IO.Path.GetFileName(candidate);
+                if (!name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                    continue;
+                string number = name.Substring(prefix.Length);
+                long n;
+                if (number.Length == 0 || !number.All(c => c >= '0' && c <= '9')
+                    || !long.TryParse(number, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out n)
+                    || n < count)
+                    continue;
+                try
+                {
+                    // Only what a split wrote: a sparse image, never some other numbered file.
+                    if (SparseImage.IsSparse(candidate))
+                        File.Delete(candidate);
+                }
+                catch (IOException)
+                {
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+            }
         }
 
         /// <summary>
@@ -478,6 +514,11 @@ namespace FastbootEnhance.Core.Images
             }
 
             if (found.Count < 2)
+                return new[] { path };
+            // The file asked for must be one of them: when it is not a sparse part itself (a raw
+            // "super.img.0" next to someone else's parts), the others are not its pieces.
+            string full = System.IO.Path.GetFullPath(path);
+            if (!found.Any(f => string.Equals(System.IO.Path.GetFullPath(f.Value), full, StringComparison.OrdinalIgnoreCase)))
                 return new[] { path };
             return found.OrderBy(f => f.Key).Select(f => f.Value).ToList();
         }

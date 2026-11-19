@@ -112,16 +112,21 @@ namespace FastbootEnhance.Core.Images
             {
                 byte[] buffer = new byte[1 << 16];
                 int read;
+                bool tooLarge = false;
                 try
                 {
                     while ((read = gzip.Read(buffer, 0, buffer.Length)) > 0)
                     {
                         if (output.Length + read > maxOutput)
+                        {
+                            // Not the same as bytes after the member: this one is not kept quiet.
+                            tooLarge = true;
                             throw new InvalidDataException("Decompressed data larger than allowed.");
+                        }
                         output.Write(buffer, 0, read);
                     }
                 }
-                catch (InvalidDataException) when (output.Length > 0)
+                catch (InvalidDataException) when (output.Length > 0 && !tooLarge)
                 {
                     // Bytes after the gzip member (an appended DTB) are not gzip; what came
                     // before them is the kernel.
