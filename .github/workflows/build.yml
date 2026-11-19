@@ -21,6 +21,10 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      # Every page has its line on the tour's map and its help, in every language.
+      - name: Check the pages' tour text and help
+        run: bash .github/scripts/check-pages.sh
+
       - name: Restore
         run: |
           dotnet restore src/FastbootEnhance.Core/FastbootEnhance.Core.csproj
