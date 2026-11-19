@@ -568,6 +568,10 @@ namespace FastbootEnhance
             IList<string> inputs = parts;
             long total = info.ImageLength;
             string output = Path.Combine(outputFolder, stem() + ".raw.img");
+            // A sparse image that is itself named "x.raw.img": writing over the file being read
+            // would fail, and the clean-up after a failure deletes the output, here the input.
+            if (inputs.Any(f => string.Equals(Path.GetFullPath(f), Path.GetFullPath(output), StringComparison.OrdinalIgnoreCase)))
+                output = Path.Combine(outputFolder, stem() + ".expanded.raw.img");
             if (!confirmOverwrite(new[] { output }))
                 return;
 
@@ -655,6 +659,10 @@ namespace FastbootEnhance
             string output = split.HasValue
                 ? Path.Combine(outputFolder, stem() + ".img_sparsechunk")
                 : Path.Combine(outputFolder, stem() + ".sparse.img");
+            // A lone part named like the parts about to be written ("x.img_sparsechunk.0"): the
+            // same trap as in toRaw, so the new parts get a name of their own.
+            if (split.HasValue && isPartOf(input, output))
+                output = Path.Combine(outputFolder, stem() + ".resplit.img_sparsechunk");
             string firstPart = split.HasValue ? output + ".0" : output;
             if (!confirmOverwrite(new[] { firstPart }))
                 return;
@@ -664,10 +672,28 @@ namespace FastbootEnhance
             {
                 SparseWriteResult result = SparseConverter.ToSparse(input, output, 4096, split,
                     new Progress(done => report(done, total)), token);
+                // Parts left by an earlier split into more files carry on the numbering, and would
+                // be read (and flashed) as parts of this image.
+                if (split.HasValue)
+                {
+                    for (int stale = result.Files.Count; File.Exists(output + "." + stale); stale++)
+                    {
+                        log("  removed " + output + "." + stale + ", left by an earlier split");
+                        deleteQuietly(output + "." + stale);
+                    }
+                }
                 lastOutput = outputFolder;
                 return string.Format(Properties.Resources.images_sparse_done, result.Files.Count, Helper.byte2AUnit(result.Bytes),
                     string.Join("\n", result.Files.Select(Path.GetFileName).Take(12)) + (result.Files.Count > 12 ? "\n…" : ""));
             }, split.HasValue ? Enumerable.Range(0, 4096).Select(i => output + "." + i).ToList() : new List<string> { output });
+        }
+
+        /// <summary>True when <paramref name="file"/> is "output.N", one of the parts a split writes.</summary>
+        static bool isPartOf(string file, string output)
+        {
+            string full = Path.GetFullPath(file), prefix = Path.GetFullPath(output) + ".";
+            return full.Length > prefix.Length && full.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+                && full.Substring(prefix.Length).All(char.IsDigit);
         }
 
         static void extract()

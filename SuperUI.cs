@@ -617,6 +617,13 @@ namespace FastbootEnhance
         {
             if (busy)
                 return;
+            // A second fastboot asking the phone its variables mid-flash could break the flash.
+            if (FastbootUI.flashing)
+            {
+                ThemedDialog.Show(Properties.Resources.terminal_busy, Properties.Resources.nav_super,
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             W.super_read_phone.IsEnabled = false;
             W.super_progress_text.Text = Properties.Resources.super_reading_phone;
 

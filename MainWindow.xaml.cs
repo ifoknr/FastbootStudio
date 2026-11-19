@@ -131,7 +131,7 @@ namespace FastbootEnhance
                 {
                     if (choice == Languages.CurrentOption)
                         return;
-                    if (FastbootUI.flashing || PayloadUI.extracting)
+                    if (UpdateUI.Busy)
                     {
                         ThemedDialog.Show(Properties.Resources.language_busy);
                         return;
@@ -165,7 +165,7 @@ namespace FastbootEnhance
                 {
                     if (mode == Theme.Chosen)
                         return;
-                    if (FastbootUI.flashing || PayloadUI.extracting)
+                    if (UpdateUI.Busy)
                     {
                         ThemedDialog.Show(Properties.Resources.theme_busy);
                         return;
@@ -199,7 +199,7 @@ namespace FastbootEnhance
                 {
                     if (mode == Rendering.Chosen)
                         return;
-                    if (FastbootUI.flashing || PayloadUI.extracting)
+                    if (UpdateUI.Busy)
                     {
                         ThemedDialog.Show(Properties.Resources.theme_busy);
                         return;

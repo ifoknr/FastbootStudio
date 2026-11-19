@@ -79,17 +79,24 @@ namespace FastbootEnhance
         static FastbootStatus cur_status;
         static void refreshDeviceList()
         {
-            MainWindow.THIS.Dispatcher.Invoke(new Action(delegate
+            try
             {
-                MainWindow.THIS.fastboot_devices_list.Items.Clear();
-                foreach (fastboot_devices_row row in devices)
+                MainWindow.THIS.Dispatcher.Invoke(new Action(delegate
                 {
-                    MainWindow.THIS.fastboot_devices_list.Items.Add(row);
-                }
-                MainWindow.THIS.fastboot_devices_empty.Visibility =
-                    devices.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-                setStatus(string.Format(Properties.Resources.rail_devices, devices.Count));
-            }));
+                    MainWindow.THIS.fastboot_devices_list.Items.Clear();
+                    foreach (fastboot_devices_row row in devices)
+                    {
+                        MainWindow.THIS.fastboot_devices_list.Items.Add(row);
+                    }
+                    MainWindow.THIS.fastboot_devices_empty.Visibility =
+                        devices.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                    setStatus(string.Format(Properties.Resources.rail_devices, devices.Count));
+                }));
+            }
+            catch (System.Threading.Tasks.TaskCanceledException)
+            {
+                // The app closed while the list was being read: there is no window left to update.
+            }
         }
 
         static bool checkCurDevExist()
@@ -336,6 +343,17 @@ namespace FastbootEnhance
             MainWindow.THIS.fastboot_single_part_op.IsEnabled = true;
             MainWindow.THIS.fastboot_flash_payload.IsEnabled = true;
             MainWindow.THIS.fastboot_remove.IsEnabled = true;
+        }
+
+        /// <summary>
+        /// The device bar's Restart and Disconnect sit outside the pages action_lock covers.
+        /// While a command or a flash is writing they are off: a restart sent then would cut
+        /// the write, and Cancel is the way to stop it.
+        /// </summary>
+        static void setBarBusy(bool busy)
+        {
+            MainWindow.THIS.bar_reboot.IsEnabled = !busy;
+            MainWindow.THIS.bar_disconnect.IsEnabled = !busy;
         }
 
         static Helper.ListHelper<fastboot_partition_row> listHelper;
@@ -641,12 +659,18 @@ namespace FastbootEnhance
                 + "\n" + string.Join("\n", ways.Select(w => "•  " + w));
         }
 
+        static bool usbChecking;
+
         /// <summary>
         /// The USB check: looks at what Windows sees on USB and explains why a phone may be
         /// missing from the list (no driver, a broken driver, a download mode, Android mode).
         /// </summary>
         internal static void checkUsb()
         {
+            // The device bar's button and the tour's start this too: one check, one answer, at a time.
+            if (usbChecking)
+                return;
+            usbChecking = true;
             MainWindow.THIS.fastboot_usb_check.IsEnabled = false;
             IReadOnlyList<UsbFinding> findings = null;
             Exception failure = null;
@@ -667,6 +691,7 @@ namespace FastbootEnhance
                 }
             }), new Action(delegate
             {
+                usbChecking = false;
                 MainWindow.THIS.fastboot_usb_check.IsEnabled = true;
                 if (failure != null)
                 {
@@ -996,6 +1021,9 @@ namespace FastbootEnhance
             action_lock();
             flashing = true;
             MainWindow.THIS.bar_cancel.Visibility = Visibility.Visible;
+            setBarBusy(true);
+            // The last flash's result offers a restart; it is out of date once another command runs.
+            MainWindow.THIS.flash_result.Visibility = Visibility.Collapsed;
             if (param.step_count <= 0)
                 MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = true;
 
@@ -1063,6 +1091,7 @@ namespace FastbootEnhance
                 flashing = false;
                 MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = false;
                 MainWindow.THIS.bar_cancel.Visibility = Visibility.Collapsed;
+                setBarBusy(false);
                 setLastCommand(param.cmd, took.Elapsed);
                 action_unlock();
 
@@ -1681,6 +1710,7 @@ namespace FastbootEnhance
             // The lock taken by openPayloadThenFlash carries over and is released when this ends.
             flashing = true;
             MainWindow.THIS.bar_cancel.Visibility = Visibility.Visible;
+            setBarBusy(true);
 
             CancellationTokenSource cancel = new CancellationTokenSource();
             flashCancel = cancel;
@@ -1924,6 +1954,7 @@ namespace FastbootEnhance
                     clock.Stop();
                     MainWindow.THIS.flash_elapsed.Text = clock.Elapsed.ToString(@"mm\:ss");
                     MainWindow.THIS.bar_cancel.Visibility = Visibility.Collapsed;
+                    setBarBusy(false);
                     setLastCommand("flash (" + parts.Count + " partitions)", clock.Elapsed);
                     action_unlock();
                     appendLog(summary == null ? "flash finished: " + flashedCount + " of " + parts.Count + " written in "

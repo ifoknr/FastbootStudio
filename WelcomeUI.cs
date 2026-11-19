@@ -281,6 +281,10 @@ namespace FastbootEnhance
             UniformGrid grid = new UniformGrid { Columns = 4 };
             foreach (TabItem tab in W.main_tabs.Items.OfType<TabItem>())
             {
+                // The rail's group titles and its rule are tab items too, but not pages: as tiles
+                // they were blank, and picking one ended the tour on an empty page.
+                if (string.IsNullOrEmpty(tab.Name))
+                    continue;
                 string page = tab.Name.EndsWith("_tab", StringComparison.Ordinal) ? tab.Name.Substring(0, tab.Name.Length - 4) : tab.Name;
                 string what = Properties.Resources.ResourceManager.GetString("welcome_page_" + page, Properties.Resources.Culture);
                 TabItem target = tab;

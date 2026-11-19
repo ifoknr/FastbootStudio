@@ -211,6 +211,7 @@ namespace FastbootEnhance
 
         static void showDevices(List<AdbDevice> latest)
         {
+            List<AdbDevice> previous = devices;
             devices = latest;
             W.backup_devices.ItemsSource = latest;
             W.backup_devices_empty.Visibility = latest.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -223,6 +224,8 @@ namespace FastbootEnhance
             {
                 if (!busy)
                     selectDevice(null);
+                else if (current != null)
+                    devices = previous;   // the phone left during a job: looked at again on the next poll
                 return;
             }
 
@@ -230,7 +233,14 @@ namespace FastbootEnhance
             W.backup_devices.SelectedItem = keep;
             choosing = false;
             if (current == null || keep.Serial != current.Serial || keep.State != current.State)
-                selectDevice(keep);
+            {
+                // selectDevice does nothing during a job. Keeping the old list makes the next
+                // poll see the change again, instead of the page staying on the phone as it was.
+                if (busy)
+                    devices = previous;
+                else
+                    selectDevice(keep);
+            }
         }
 
         // ------------------------------------------------------------------ phone in fastboot

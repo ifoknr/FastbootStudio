@@ -47,7 +47,17 @@ namespace FastbootEnhance
 
         static void log(string line) => LogStore.Append("phone: " + line);
 
-        static void ui(Action action) => W.Dispatcher.Invoke(action);
+        static void ui(Action action)
+        {
+            try
+            {
+                W.Dispatcher.Invoke(action);
+            }
+            catch (System.Threading.Tasks.TaskCanceledException)
+            {
+                // The app closed while the phone was being read: there is no page left to update.
+            }
+        }
 
         static string backupsOnPc => Path.Combine(BackupUI.SaveRoot, "Backups");
 
@@ -245,7 +255,8 @@ namespace FastbootEnhance
                 : phone.Android + (phone.Sdk != null ? " (SDK " + phone.Sdk + ")" : ""));
             add(rows, Properties.Resources.phone_patch, phone.Patch);
             add(rows, Properties.Resources.phone_slot, join(
-                phone.Slot != null ? phone.Slot + " · A/B" : Properties.Resources.phone_slot_none,
+                // Kept in reading order: right to left, the "_" of "_a" was drawn away from its letter.
+                phone.Slot != null ? Helper.ltr(phone.Slot + " · A/B") : Properties.Resources.phone_slot_none,
                 phone.Dynamic == true ? Properties.Resources.phone_dynamic : null));
 
             List<string> battery = new List<string>();

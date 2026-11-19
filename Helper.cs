@@ -39,7 +39,14 @@ namespace FastbootEnhance
             Thread thread = new Thread(new ThreadStart(delegate
             {
                 bigtask();
-                MainWindow.THIS.Dispatcher.Invoke(callbackOnUIThread);
+                try
+                {
+                    MainWindow.THIS.Dispatcher.Invoke(callbackOnUIThread);
+                }
+                catch (System.Threading.Tasks.TaskCanceledException)
+                {
+                    // The app closed while the task ran: there is no window left to tell.
+                }
             }));
             thread.IsBackground = true;
             thread.Start();

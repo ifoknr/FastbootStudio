@@ -60,6 +60,8 @@ namespace FastbootEnhance
             stockPath = null;
             stock = null;
             partition = null;
+            // Without this the page jumped to step 3 with no image picked, and "Get it back" failed.
+            adbSerial = null;
             patchedPath = null;
             W.root_image_text.Text = "";
             W.root_push_text.Text = "";
