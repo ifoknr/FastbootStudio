@@ -2724,7 +2724,7 @@ This needs an unlocked bootloader, and trips Knox for good.</value>
     <value>Everything the app ran, to copy when you ask for help</value>
   </data>
   <data name="welcome_page_about" xml:space="preserve">
-    <value>Version, language, theme and updates</value>
+    <value>Version, what's new, links and the licence</value>
   </data>
   <data name="welcome_check_title" xml:space="preserve">
     <value>A quick check</value>
@@ -3516,5 +3516,44 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
   </data>
   <data name="about_links" xml:space="preserve">
     <value>Links</value>
+  </data>
+  <data name="welcome_page_settings" xml:space="preserve">
+    <value>Language, theme, text size, updates and USB drivers</value>
+  </data>
+  <data name="confirm_close_fastboot" xml:space="preserve">
+    <value>fastboot is still running ({0}). If you close now it is left to finish on its own, so a write is not cut half-way, but the app will not show how it ended. Close anyway?</value>
+  </data>
+  <data name="confirm_close_terminal" xml:space="preserve">
+    <value>A Terminal command is still running ({0}). Closing stops it. Close anyway?</value>
+  </data>
+  <data name="confirm_close_backup" xml:space="preserve">
+    <value>A backup or a copy from the phone is running. Closing stops it and removes the unfinished file. Close anyway?</value>
+  </data>
+  <data name="confirm_close_root" xml:space="preserve">
+    <value>The Root page is still working. A transfer over adb is stopped; a flash that already started is left to finish on its own. Close anyway?</value>
+  </data>
+  <data name="busy_wait" xml:space="preserve">
+    <value>Wait for the job that is running ({0}) to finish first.</value>
+  </data>
+  <data name="busy_fastboot" xml:space="preserve">
+    <value>fastboot is busy with another job ({0}); wait for it to finish so the two do not talk to the phone at once.</value>
+  </data>
+  <data name="version_test_build" xml:space="preserve">
+    <value>test build</value>
+  </data>
+  <data name="backup_size_unknown" xml:space="preserve">
+    <value>The phone did not say how big this partition is, so the copy ({0}) cannot be checked against it and is not kept.</value>
+  </data>
+  <data name="backup_adb_failed" xml:space="preserve">
+    <value>adb ended with an error while reading: {0}</value>
+  </data>
+  <data name="copy_value" xml:space="preserve">
+    <value>Copy value</value>
+  </data>
+  <data name="copy_all" xml:space="preserve">
+    <value>Copy all</value>
+  </data>
+  <data name="device_checking" xml:space="preserve">
+    <value>Checking that the phone is still there…</value>
   </data>
 </root>

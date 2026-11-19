@@ -15,7 +15,10 @@ namespace FastbootEnhance
         internal const string version = "3.0.0";
 
         /// <summary>"v3.0.0", for the rail and About.</summary>
-        public static string versionLabel => "v" + version;
+        public static string versionLabel => "v" + version + (isTestBuild ? " · " + Properties.Resources.version_test_build : "");
+
+        /// <summary>A version with a dash ("3.1.0-beta.1") is a test build, and is shown as one.</summary>
+        public static bool isTestBuild => version.IndexOf('-') >= 0;
 
         public MainWindow()
         {
@@ -71,7 +74,8 @@ namespace FastbootEnhance
             // Esc closes the tour or the help panel, whichever is on top; then the shortcuts.
             PreviewKeyDown += (sender, e) =>
             {
-                if (!WelcomeUI.HandleKey(e) && !HelpUI.HandleKey(e))
+                // Not under the tour or What's new: they cover the pages the shortcuts act on.
+                if (!WelcomeUI.HandleKey(e) && !HelpUI.HandleKey(e) && !WelcomeUI.IsOpen)
                     handleShortcut(e);
             };
 
@@ -87,9 +91,7 @@ namespace FastbootEnhance
             // half written, so it has to be a deliberate choice.
             Closing += delegate (object sender, System.ComponentModel.CancelEventArgs e)
             {
-                string question = FastbootUI.flashing ? Properties.Resources.confirm_close_flashing
-                    : PayloadUI.extracting || ImageToolsUI.busy || SuperUI.busy || SamsungUI.busy ? Properties.Resources.confirm_close_extracting
-                    : null;
+                string question = closeQuestion();
                 if (question == null)
                     return;
 
@@ -100,6 +102,8 @@ namespace FastbootEnhance
 
             Closed += delegate
             {
+                // A payload flash is stopped; a single fastboot command (a flash, an erase) is left
+                // to finish on its own, as the question said: cutting one write is the worse end.
                 FastbootUI.abortFlash();
                 BackupUI.shutdown();
                 ImageToolsUI.shutdown();
@@ -110,6 +114,36 @@ namespace FastbootEnhance
                 PayloadUI.closeCurrent();
                 clearStagingDirectories();
             };
+        }
+
+        /// <summary>
+        /// What closing now would interrupt, as a question; null when nothing is running. Every
+        /// page reports its jobs to <see cref="Busy"/>, so a Terminal command, a backup and the
+        /// Root page are asked about too, and each question says what closing really does.
+        /// </summary>
+        static string closeQuestion()
+        {
+            if (Busy.Is(Busy.Job.Flash))
+            {
+                string step = FastbootUI.runningStep;
+                return FastbootUI.flashingPayload || step == null ? Properties.Resources.confirm_close_flashing
+                    : string.Format(Properties.Resources.confirm_close_fastboot, Helper.ltr(shortCommand("fastboot " + step)));
+            }
+            if (Busy.Is(Busy.Job.RootFlash) || Busy.Is(Busy.Job.Root))
+                return Properties.Resources.confirm_close_root;
+            if (Busy.Is(Busy.Job.TerminalFastboot))
+                return string.Format(Properties.Resources.confirm_close_fastboot, Helper.ltr(shortCommand(TerminalUI.runningLine)));
+            if (Busy.Is(Busy.Job.TerminalAdb))
+                return string.Format(Properties.Resources.confirm_close_terminal, Helper.ltr(shortCommand(TerminalUI.runningLine)));
+            if (Busy.Is(Busy.Job.Backup))
+                return Properties.Resources.confirm_close_backup;
+            return Busy.Any ? Properties.Resources.confirm_close_extracting : null;
+        }
+
+        static string shortCommand(string command)
+        {
+            command = command ?? "";
+            return command.Length > 60 ? command.Substring(0, 57) + "…" : command;
         }
 
         /// <summary>One button per language; the one in use is highlighted.</summary>
@@ -131,9 +165,9 @@ namespace FastbootEnhance
                 {
                     if (choice == Languages.CurrentOption)
                         return;
-                    if (UpdateUI.Busy)
+                    if (Busy.Any)
                     {
-                        ThemedDialog.Show(Properties.Resources.language_busy);
+                        ThemedDialog.Show(string.Format(Properties.Resources.busy_wait, Busy.Names));
                         return;
                     }
                     Languages.Save(choice.Code);
@@ -165,9 +199,9 @@ namespace FastbootEnhance
                 {
                     if (mode == Theme.Chosen)
                         return;
-                    if (UpdateUI.Busy)
+                    if (Busy.Any)
                     {
-                        ThemedDialog.Show(Properties.Resources.theme_busy);
+                        ThemedDialog.Show(string.Format(Properties.Resources.busy_wait, Busy.Names));
                         return;
                     }
                     Theme.Save(mode);
@@ -199,9 +233,9 @@ namespace FastbootEnhance
                 {
                     if (mode == Rendering.Chosen)
                         return;
-                    if (UpdateUI.Busy)
+                    if (Busy.Any)
                     {
-                        ThemedDialog.Show(Properties.Resources.theme_busy);
+                        ThemedDialog.Show(string.Format(Properties.Resources.busy_wait, Busy.Names));
                         return;
                     }
                     Rendering.Save(mode);

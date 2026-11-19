@@ -40,6 +40,22 @@ namespace FastbootEnhance
         static string folder;
         static volatile Process running;
 
+        /// <summary>The line being run, for the question asked when the window closes; null when idle.</summary>
+        public static volatile string runningLine;
+        static Busy.Job runningJob;
+
+        /// <summary>
+        /// The length of the output box's text. Reading TextBox.Text copies the whole document,
+        /// which a chatty command (logcat) would do ten times a second, so it is counted here.
+        /// </summary>
+        static int outputLength;
+
+        static void clearOutput()
+        {
+            W.terminal_output.Clear();
+            outputLength = 0;
+        }
+
         // Output arrives line by line from other threads and is shown in batches, so a chatty
         // command (logcat) does not flood the window with one update per line.
         static readonly ConcurrentQueue<string> pending = new ConcurrentQueue<string>();
@@ -81,7 +97,7 @@ namespace FastbootEnhance
 
             W.terminal_run.Click += delegate { submit(); };
             W.terminal_stop.Click += delegate { stop(); };
-            W.terminal_clear.Click += delegate { W.terminal_output.Clear(); };
+            W.terminal_clear.Click += delegate { clearOutput(); };
             W.terminal_folder.Click += delegate { chooseFolder(); };
             W.terminal_input.PreviewKeyDown += onKey;
 
@@ -114,6 +130,10 @@ namespace FastbootEnhance
         /// <summary>Stops a command still running when the app closes.</summary>
         public static void shutdown()
         {
+            // A fastboot command is left to finish on its own, as the closing question says: a
+            // write cut half-way is worse than one that ends without the app. adb is stopped.
+            if (runningJob == Busy.Job.TerminalFastboot && running != null)
+                return;
             stop();
         }
 
@@ -159,7 +179,7 @@ namespace FastbootEnhance
             string lower = line.ToLowerInvariant();
             if (lower == "clear" || lower == "cls")
             {
-                W.terminal_output.Clear();
+                clearOutput();
                 return;
             }
             if (lower == "help")
@@ -190,9 +210,10 @@ namespace FastbootEnhance
             }
 
             // A second fastboot talking to the phone mid-flash could break the flash.
-            if (FastbootUI.flashing)
+            Busy.Job? other = Busy.Fastboot();
+            if (other != null)
             {
-                write(Properties.Resources.terminal_busy);
+                write(string.Format(Properties.Resources.busy_fastboot, Busy.Name(other.Value)));
                 return;
             }
 
@@ -257,6 +278,9 @@ namespace FastbootEnhance
                 Adb.StartedServer = true;
             LogStore.Append("terminal> " + line);
             running = process;
+            runningLine = line;
+            runningJob = command.Tool == TerminalTool.Adb ? Busy.Job.TerminalAdb : Busy.Job.TerminalFastboot;
+            Busy.Set(runningJob, true);
             setRunning(true);
 
             process.BeginOutputReadLine();
@@ -285,6 +309,8 @@ namespace FastbootEnhance
                 {
                     flush();
                     running = null;
+                    runningLine = null;
+                    Busy.Set(runningJob, false);
                     setRunning(false);
                     write(string.Format(Properties.Resources.terminal_exit, code?.ToString() ?? "?"));
                     LogStore.Append("terminal: exit " + (code?.ToString() ?? "?"));
@@ -376,8 +402,14 @@ namespace FastbootEnhance
 
             System.Windows.Controls.TextBox output = W.terminal_output;
             output.AppendText(batch.ToString());
-            if (output.Text.Length > MaxOutputChars)
-                output.Text = output.Text.Substring(output.Text.Length - MaxOutputChars / 2);
+            outputLength += batch.Length;
+            if (outputLength > MaxOutputChars)
+            {
+                string text = output.Text;
+                string kept = text.Length > MaxOutputChars / 2 ? text.Substring(text.Length - MaxOutputChars / 2) : text;
+                output.Text = kept;
+                outputLength = kept.Length;
+            }
             output.ScrollToEnd();
         }
     }

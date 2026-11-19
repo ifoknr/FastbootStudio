@@ -14,6 +14,12 @@ namespace FastbootEnhance
         public static readonly TimeSpan LongCommand = TimeSpan.FromMinutes(15);
 
         /// <summary>
+        /// For commands that write nothing big: a restart, a slot switch, cancelling an update.
+        /// Three minutes covers a phone coming back in fastbootd; past that it is not answering.
+        /// </summary>
+        public static readonly TimeSpan ControlCommand = TimeSpan.FromMinutes(3);
+
+        /// <summary>
         /// For commands that write to the device. A fixed limit could kill fastboot halfway
         /// through a large image on slow USB and leave the partition partly written, which is
         /// worse than a command that takes its time.
@@ -88,6 +94,48 @@ namespace FastbootEnhance
                 output = standard + errors.Result;
                 return fastboot.WaitForExit();
             }
+        }
+
+        /// <summary>
+        /// Reads what fastboot reports, line by line, until it ends. fastboot writes its progress
+        /// and its answers to stderr; stdout is read alongside and returned, because a pipe left
+        /// unread fills up and would stall fastboot (and this loop with it).
+        /// </summary>
+        public string ReadErrorLines(Action<string> onLine)
+        {
+            System.Threading.Tasks.Task<string> standard = stdout.ReadToEndAsync();
+            while (true)
+            {
+                string line = stderr.ReadLine();
+                if (line == null)
+                    break;
+                if (onLine != null)
+                    onLine(line);
+            }
+            try
+            {
+                return standard.Result;
+            }
+            catch (AggregateException)
+            {
+                return "";
+            }
+        }
+
+        /// <summary>The phones fastboot lists, as (serial, mode) pairs: "fastboot" or "fastbootd".</summary>
+        public static System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>> ListDevices()
+        {
+            System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>> found =
+                new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
+            string output;
+            Run(null, "devices", ShortCommand, out output);
+            foreach (string raw in output.Split('\n'))
+            {
+                string[] parts = raw.TrimEnd('\r').Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length >= 2)
+                    found.Add(new System.Collections.Generic.KeyValuePair<string, string>(parts[0], parts[1]));
+            }
+            return found;
         }
 
         /// <summary>Serials of the phones in fastboot (bootloader or fastbootd) right now.</summary>

@@ -308,6 +308,7 @@ namespace FastbootEnhance
 
                     cancellation = null;
                     extractionWorker = null;
+                    Busy.Set(Busy.Job.Payload, false);
                     source.Dispose();
 
                     if (failure != null)
@@ -349,6 +350,7 @@ namespace FastbootEnhance
 
             worker.IsBackground = true;
             extractionWorker = worker;
+            Busy.Set(Busy.Job.Payload, true);
             worker.Start();
         }
 

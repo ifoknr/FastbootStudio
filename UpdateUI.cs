@@ -47,8 +47,7 @@ namespace FastbootEnhance
         public static bool AutoCheck => Settings.Get(AutoKey) != "off";
 
         /// <summary>A flash, an extraction or a build is running: no dialog pops up, and the app is not closed.</summary>
-        public static bool Busy =>
-            FastbootUI.flashing || PayloadUI.extracting || ImageToolsUI.busy || SuperUI.busy || SamsungUI.busy;
+        public static bool Busy => FastbootEnhance.Busy.Any;
 
         public static void init()
         {

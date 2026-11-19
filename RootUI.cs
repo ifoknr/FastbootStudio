@@ -117,9 +117,10 @@ namespace FastbootEnhance
         /// the work throws, done is not run: the error is shown instead, so a failed step is
         /// never reported as a finished one.
         /// </summary>
-        static void run(Action work, Action done)
+        static void run(Action work, Action done, Busy.Job job = Busy.Job.Root)
         {
             busy = true;
+            Busy.Set(job, true);
             refresh();
             Exception failure = null;
             Helper.offloadAndRun(delegate
@@ -136,6 +137,7 @@ namespace FastbootEnhance
             }, delegate
             {
                 busy = false;
+                Busy.Set(job, false);
                 if (failure != null)
                     ThemedDialog.Show(failure.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
                 else
@@ -384,8 +386,25 @@ namespace FastbootEnhance
             return null;
         }
 
+        /// <summary>
+        /// The Flash page or the Terminal has fastboot talking to a phone: says so and returns
+        /// true. The patched image is not flashed or booted beside it.
+        /// </summary>
+        static bool fastbootBusyElsewhere()
+        {
+            Busy.Job? other = Busy.Fastboot(Busy.Job.RootFlash);
+            if (other == null)
+                return false;
+            log("not started: fastboot is busy (" + other.Value + ")");
+            ThemedDialog.Show(string.Format(Properties.Resources.busy_fastboot, Busy.Name(other.Value)),
+                Properties.Resources.nav_root, MessageBoxButton.OK, MessageBoxImage.Information);
+            return true;
+        }
+
         static void flash()
         {
+            if (fastbootBusyElsewhere())
+                return;
             string image = patchedPath, target = partition, serial = adbSerial;
             if (!ThemedDialog.ConfirmTyped(string.Format(Properties.Resources.root_confirm_flash, serial, Path.GetFileName(image), target),
                     Properties.Resources.nav_root, target))
@@ -418,16 +437,31 @@ namespace FastbootEnhance
                 }
                 if (Helper.confirm(string.Format(Properties.Resources.root_flashed, target), Properties.Resources.nav_root))
                 {
-                    string output;
-                    Fastboot.Run(fastbootSerial, "reboot", Fastboot.ShortCommand, out output);
+                    // On a worker: a fastboot that does not answer must not freeze the window.
+                    string rebootSerial = fastbootSerial;
+                    Helper.offloadAndRun(delegate
+                    {
+                        try
+                        {
+                            string output;
+                            int? code = Fastboot.Run(rebootSerial, "reboot", Fastboot.ShortCommand, out output);
+                            log("fastboot reboot (" + rebootSerial + ") -> " + code);
+                        }
+                        catch (Exception e)
+                        {
+                            log("fastboot reboot failed: " + e.Message);
+                        }
+                    }, delegate { });
                 }
                 W.root_flash_text.Text = Properties.Resources.root_done;
-            });
+            }, Busy.Job.RootFlash);
         }
 
         /// <summary>"fastboot boot": the patched boot image runs once, from memory, without being written.</summary>
         static void bootOnce()
         {
+            if (fastbootBusyElsewhere())
+                return;
             string image = patchedPath, serial = adbSerial, error = null;
             W.root_flash_text.Text = Properties.Resources.root_waiting_fastboot;
             run(delegate
@@ -447,7 +481,7 @@ namespace FastbootEnhance
             }, delegate
             {
                 W.root_flash_text.Text = error ?? Properties.Resources.root_booted;
-            });
+            }, Busy.Job.RootFlash);
         }
 
         static void openFolder()

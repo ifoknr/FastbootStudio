@@ -340,6 +340,7 @@ namespace FastbootEnhance
         static void setBusy(bool value)
         {
             busy = value;
+            Busy.Set(Busy.Job.Super, value);
             W.super_editor.IsEnabled = !value;
             W.super_import.IsEnabled = !value;
             W.super_read_phone.IsEnabled = !value;
@@ -618,9 +619,10 @@ namespace FastbootEnhance
             if (busy)
                 return;
             // A second fastboot asking the phone its variables mid-flash could break the flash.
-            if (FastbootUI.flashing)
+            Busy.Job? fastboot = Busy.Fastboot();
+            if (fastboot != null)
             {
-                ThemedDialog.Show(Properties.Resources.terminal_busy, Properties.Resources.nav_super,
+                ThemedDialog.Show(string.Format(Properties.Resources.busy_fastboot, Busy.Name(fastboot.Value)), Properties.Resources.nav_super,
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }

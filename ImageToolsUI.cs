@@ -58,7 +58,7 @@ namespace FastbootEnhance
             W.images_open_other.Click += delegate { pickFiles(); };
             W.images_close.Click += delegate
             {
-                if (!busy)
+                if (!busy && !opening)
                     close();
             };
 
@@ -148,8 +148,17 @@ namespace FastbootEnhance
                 open(new[] { path });
         }
 
+        /// <summary>
+        /// True while an image is being read. Until it is shown, no second image is opened and no
+        /// conversion starts: both would otherwise work on a mix of the two.
+        /// </summary>
+        static bool opening;
+
         static void open(string[] files)
         {
+            if (opening || busy)
+                return;
+            opening = true;
             W.images_opening.Visibility = Visibility.Visible;
             W.images_open.Visibility = Visibility.Hidden;
 
@@ -200,8 +209,6 @@ namespace FastbootEnhance
                         using (Stream stream = openImage(chosen, pieced))
                             boot = BootImageAnalysis.Analyze(stream);
                     }
-                    parts = chosen;
-                    pieces = pieced;
                 }
                 catch (Exception e)
                 {
@@ -209,8 +216,9 @@ namespace FastbootEnhance
                     chosen = null;
                 }
 
-                W.Dispatcher.Invoke(delegate
+                ui(delegate
                 {
+                    opening = false;
                     W.images_opening.Visibility = Visibility.Hidden;
                     W.images_open.Visibility = Visibility.Visible;
                     if (failure != null)
@@ -219,6 +227,9 @@ namespace FastbootEnhance
                         ThemedDialog.Show(failure.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
+                    // Set here, on the UI thread, together with what the page shows.
+                    parts = chosen;
+                    pieces = pieced;
                     show(chosen, opened, sparse, table, boot);
                 });
             }, delegate { });
@@ -433,6 +444,7 @@ namespace FastbootEnhance
         static void setBusy(bool value)
         {
             busy = value;
+            Busy.Set(Busy.Job.Images, value);
             foreach (UIElement control in new UIElement[]
             {
                 W.images_extract, W.images_to_raw, W.images_to_sparse, W.images_split, W.images_split_mb,
@@ -476,7 +488,7 @@ namespace FastbootEnhance
         /// <summary>Runs one job on a worker thread, with progress, cancellation and clean-up of partial output.</summary>
         static void run(string what, Func<CancellationToken, Action<long, long>, string> work, IList<string> cleanupOnFailure)
         {
-            if (busy)
+            if (busy || opening)
                 return;
             CancellationTokenSource source = new CancellationTokenSource();
             cancel = source;

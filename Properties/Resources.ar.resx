@@ -2724,7 +2724,7 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
     <value>كل اللي سواه التطبيق، تنسخه لو تبي مساعدة</value>
   </data>
   <data name="welcome_page_about" xml:space="preserve">
-    <value>الإصدار واللغة والمظهر والتحديثات</value>
+    <value>الإصدار والجديد والروابط والترخيص</value>
   </data>
   <data name="welcome_check_title" xml:space="preserve">
     <value>فحص سريع</value>
@@ -3516,5 +3516,44 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   </data>
   <data name="about_links" xml:space="preserve">
     <value>الروابط</value>
+  </data>
+  <data name="welcome_page_settings" xml:space="preserve">
+    <value>اللغة والمظهر وحجم الخط والتحديثات وتعريفات USB</value>
+  </data>
+  <data name="confirm_close_fastboot" xml:space="preserve">
+    <value>fastboot للحين شغّال ({0}). لو سكّرت الحين يكمّل لحاله عشان ما تنقطع الكتابة بالنص، بس التطبيق ما راح يعرض لك النتيجة. تبي تسكّر؟</value>
+  </data>
+  <data name="confirm_close_terminal" xml:space="preserve">
+    <value>فيه أمر في الطرفية للحين شغّال ({0}). الإغلاق يوقفه. تبي تسكّر؟</value>
+  </data>
+  <data name="confirm_close_backup" xml:space="preserve">
+    <value>فيه نسخ احتياطي أو نسخ ملفات من الجوال شغّال. الإغلاق يوقفه ويحذف الملف اللي ما اكتمل. تبي تسكّر؟</value>
+  </data>
+  <data name="confirm_close_root" xml:space="preserve">
+    <value>صفحة الروت للحين تشتغل. النقل عبر adb يتوقف؛ والتفليش اللي بدأ يكمّل لحاله. تبي تسكّر؟</value>
+  </data>
+  <data name="busy_wait" xml:space="preserve">
+    <value>انتظر لين تخلص العملية الشغّالة ({0}) أول.</value>
+  </data>
+  <data name="busy_fastboot" xml:space="preserve">
+    <value>fastboot مشغول بعملية ثانية ({0})؛ انتظر لين تخلص عشان ما يكلّمون الجوال الاثنين بنفس الوقت.</value>
+  </data>
+  <data name="version_test_build" xml:space="preserve">
+    <value>نسخة تجريبية</value>
+  </data>
+  <data name="backup_size_unknown" xml:space="preserve">
+    <value>الجوال ما قال كم حجم هذا القسم، فما نقدر نتحقق من النسخة ({0}) وما راح تنحفظ.</value>
+  </data>
+  <data name="backup_adb_failed" xml:space="preserve">
+    <value>adb انتهى بخطأ أثناء القراءة: {0}</value>
+  </data>
+  <data name="copy_value" xml:space="preserve">
+    <value>انسخ القيمة</value>
+  </data>
+  <data name="copy_all" xml:space="preserve">
+    <value>انسخ الكل</value>
+  </data>
+  <data name="device_checking" xml:space="preserve">
+    <value>نتأكد إن الجوال للحين موصّل…</value>
   </data>
 </root>

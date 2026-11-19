@@ -99,26 +99,61 @@ namespace FastbootEnhance
             }
         }
 
-        static bool checkCurDevExist()
-        {
-            using (Fastboot fastboot = new Fastboot(null, "devices"))
-            {
-                // stderr is drained alongside: a full pipe would otherwise stall fastboot.
-                System.Threading.Tasks.Task<string> errors = fastboot.stderr.ReadToEndAsync();
-                while (true)
-                {
-                    string line = fastboot.stdout.ReadLine();
-                    if (line == null)
-                        break;
+        /// <summary>True while <see cref="whenDevicePresent"/> is asking fastboot; a second click waits its turn.</summary>
+        static bool checkingDevice;
 
-                    string[] param = line.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (param.Length > 0 && cur_serial == param[0])
-                        return true;
+        /// <summary>
+        /// Makes sure the open phone is still listed by fastboot, then runs <paramref name="then"/>
+        /// on the UI thread. "fastboot devices" runs on a worker, with the controls locked, so a
+        /// fastboot that hangs no longer freezes the window. A phone that has gone is said so and
+        /// the page goes back to the device list, as before.
+        /// </summary>
+        static void whenDevicePresent(Action then)
+        {
+            if (checkingDevice)
+                return;
+            string serial = cur_serial;
+            bool present = false;
+            Exception failure = null;
+
+            checkingDevice = true;
+            action_lock();
+            setBarBusy(true);
+            MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = true;
+            // stdout and stderr are both read (Fastboot.Run): a full pipe would otherwise stall fastboot.
+            Helper.offloadAndRun(delegate
+            {
+                try
+                {
+                    present = serial != null && Fastboot.ListDevices().Any(d => d.Key == serial);
                 }
-                ThemedDialog.Show(Properties.Resources.fastboot_device_not_exist);
-                leaveDevice();
-                return false;
-            }
+                catch (Exception e)
+                {
+                    failure = e;
+                }
+            }, delegate
+            {
+                checkingDevice = false;
+                MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = false;
+                action_unlock();
+                setBarBusy(flashing);
+                if (failure != null)
+                {
+                    appendLog("fastboot devices failed: " + failure.Message);
+                    ThemedDialog.Show(failure.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                // Disconnected, or another phone opened, while fastboot was asked.
+                if (cur_serial != serial)
+                    return;
+                if (!present)
+                {
+                    ThemedDialog.Show(Properties.Resources.fastboot_device_not_exist);
+                    leaveDevice();
+                    return;
+                }
+                then();
+            });
         }
 
         /// <summary>
@@ -254,23 +289,8 @@ namespace FastbootEnhance
         static List<fastboot_devices_row> listDevices()
         {
             List<fastboot_devices_row> found = new List<fastboot_devices_row>();
-
-            using (Fastboot fastboot = new Fastboot(null, "devices"))
-            {
-                while (true)
-                {
-                    string line = fastboot.stdout.ReadLine();
-                    if (line == null)
-                        break;
-
-                    string[] param = line.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (param.Length < 2)
-                        continue;
-
-                    found.Add(new fastboot_devices_row(param[0], param[1]));
-                }
-            }
-
+            foreach (KeyValuePair<string, string> device in Fastboot.ListDevices())
+                found.Add(new fastboot_devices_row(device.Key, device.Value));
             return found;
         }
 
@@ -381,7 +401,10 @@ namespace FastbootEnhance
                     using (Fastboot fastboot = new Fastboot(serial, "getvar all", GetvarTimeout))
                     {
                         // fastboot bug: Must read stderr first or stdout would be blocked
-                        string output = fastboot.stderr.ReadToEnd();
+                        // (stdout is read alongside now, so neither pipe can fill up and stall it)
+                        System.Text.StringBuilder said = new System.Text.StringBuilder();
+                        fastboot.ReadErrorLines(line => said.Append(line).Append('\n'));
+                        string output = said.ToString();
                         int? exitCode = fastboot.WaitForExit();
                         if (exitCode == null)
                         {
@@ -418,7 +441,7 @@ namespace FastbootEnhance
                     return;
                 }
 
-                MainWindow.THIS.Dispatcher.Invoke(delegate
+                MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
                 {
                     MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = false;
                     action_unlock();
@@ -426,7 +449,7 @@ namespace FastbootEnhance
                         return;
                     fastbootData = loaded;
                     showFastbootVars();
-                });
+                }));
             }));
             loader.IsBackground = true;
             loader.Start();
@@ -1005,7 +1028,10 @@ namespace FastbootEnhance
             {
                 // Every step command gets a deadline: a phone that stops answering mid-flash no
                 // longer hangs the app for good. Fifteen minutes is far beyond any image over USB.
-                this.timeout = Fastboot.LongCommand;
+                // Since then Cancel can stop any command, so the ones that write (flash, erase, boot)
+                // have no deadline at all: on slow USB a large image can take longer than any fixed
+                // limit, and being killed part way is the worse outcome. The rest keep one.
+                this.timeout = timeoutFor(cmd);
                 this.cmd = cmd;
                 this.step_count = step_count;
                 this.show_dialog_on_done = hint_on_done;
@@ -1014,12 +1040,61 @@ namespace FastbootEnhance
             }
         }
 
-        static void runStep(StepCmdRunnerParam param)
+        /// <summary>
+        /// How long a step command may take: nothing that writes an image or wipes a partition is
+        /// ever killed by the clock; changes to super's table get fifteen minutes; restarts, slot
+        /// switches and the like get three, after which the phone is simply not answering.
+        /// </summary>
+        static TimeSpan timeoutFor(string cmd)
         {
+            string verb = (cmd ?? "").TrimStart().Split(' ')[0];
+            switch (verb)
+            {
+                case "flash":
+                case "erase":
+                case "format":
+                case "boot":
+                    return Fastboot.NoLimit;
+                case "create-logical-partition":
+                case "resize-logical-partition":
+                case "delete-logical-partition":
+                    return Fastboot.LongCommand;
+                default:
+                    return Fastboot.ControlCommand;
+            }
+        }
+
+        /// <summary>The step command running now ("flash boot …"), for the question asked on closing; null otherwise.</summary>
+        public static volatile string runningStep;
+
+        /// <summary>True while a payload flash (not a single command) is running.</summary>
+        public static bool flashingPayload => flashWorker != null;
+
+        /// <summary>
+        /// Another page's fastboot is talking to a phone (the Root page flashing, a Terminal
+        /// command): says so and returns true. Two at once could break a write.
+        /// </summary>
+        static bool fastbootBusyElsewhere()
+        {
+            Busy.Job? other = Busy.Fastboot(Busy.Job.Flash);
+            if (other == null)
+                return false;
+            ThemedDialog.Show(string.Format(Properties.Resources.busy_fastboot, Busy.Name(other.Value)),
+                Properties.Resources.nav_flash, MessageBoxButton.OK, MessageBoxImage.Information);
+            return true;
+        }
+
+        /// <summary>Starts the command on a worker; false when it was not started.</summary>
+        static bool runStep(StepCmdRunnerParam param)
+        {
+            if (fastbootBusyElsewhere())
+                return false;
             // Locked here, on the click, so a second click cannot start the command again
             // before the worker gets going.
             action_lock();
             flashing = true;
+            runningStep = param.cmd;
+            Busy.Set(Busy.Job.Flash, true);
             MainWindow.THIS.bar_cancel.Visibility = Visibility.Visible;
             setBarBusy(true);
             // The last flash's result offers a restart; it is out of date once another command runs.
@@ -1030,6 +1105,7 @@ namespace FastbootEnhance
             Thread worker = new Thread(new ParameterizedThreadStart(step_cmd_runner_err));
             worker.IsBackground = true;
             worker.Start(param);
+            return true;
         }
 
         static void step_cmd_runner_err(object raw_param)
@@ -1046,13 +1122,8 @@ namespace FastbootEnhance
                 {
                     activeStep = fastboot;
                     int count = 0;
-                    while (true)
+                    fastboot.ReadErrorLines(delegate (string err)
                     {
-                        string err = fastboot.stderr.ReadLine();
-
-                        if (err == null)
-                            break;
-
                         appendLog(err);
 
                         if (param.step_count > 0)
@@ -1063,7 +1134,7 @@ namespace FastbootEnhance
                                 MainWindow.THIS.fastboot_progress_bar.Value = percent;
                                 Helper.TaskbarItemHelper.update(percent);
                             }));
-                    }
+                    });
 
                     int? exitCode = fastboot.WaitForExit();
                     activeStep = null;
@@ -1089,6 +1160,8 @@ namespace FastbootEnhance
             MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
             {
                 flashing = false;
+                runningStep = null;
+                Busy.Set(Busy.Job.Flash, false);
                 MainWindow.THIS.fastboot_progress_bar.IsIndeterminate = false;
                 MainWindow.THIS.bar_cancel.Visibility = Visibility.Collapsed;
                 setBarBusy(false);
@@ -1579,13 +1652,7 @@ namespace FastbootEnhance
                 using (Fastboot fastboot = new Fastboot(serial,
                     "create-logical-partition " + AdbCommand.WindowsArgument(name) + " 0", Fastboot.LongCommand))
                 {
-                    while (true)
-                    {
-                        string line = fastboot.stderr.ReadLine();
-                        if (line == null)
-                            break;
-                        appendLog(line);
-                    }
+                    fastboot.ReadErrorLines(appendLog);
                     exitCode = fastboot.WaitForExit();
                 }
                 if (exitCode != 0)
@@ -1709,6 +1776,7 @@ namespace FastbootEnhance
 
             // The lock taken by openPayloadThenFlash carries over and is released when this ends.
             flashing = true;
+            Busy.Set(Busy.Job.Flash, true);
             MainWindow.THIS.bar_cancel.Visibility = Visibility.Visible;
             setBarBusy(true);
 
@@ -1807,14 +1875,11 @@ namespace FastbootEnhance
                                     // abortFlash may have looked for a process just before this one started.
                                     if (cancel.IsCancellationRequested)
                                         fastboot.Abort();
-                                    while (true)
+                                    fastboot.ReadErrorLines(delegate (string line)
                                     {
-                                        string line = fastboot.stderr.ReadLine();
-                                        if (line == null)
-                                            break;
                                         appendLog(line);
                                         output.AppendLine(line);
-                                    }
+                                    });
 
                                     exitCode = fastboot.WaitForExit();
                                     activeFlash = null;
@@ -1948,6 +2013,7 @@ namespace FastbootEnhance
                 MainWindow.THIS.Dispatcher.BeginInvoke(new Action(delegate
                 {
                     flashing = false;
+                    Busy.Set(Busy.Job.Flash, false);
                     flashWorker = null;
                     flashCancel = null;
                     ticker.Stop();
@@ -2054,13 +2120,16 @@ namespace FastbootEnhance
                 return;
 
             fastboot_devices_row cur = (fastboot_devices_row)MainWindow.THIS.fastboot_devices_list.SelectedItem;
-            cur_serial = cur.serial;
-            if (!checkCurDevExist())
+            if (checkingDevice)
                 return;
-            cur_status = FastbootStatus.show_actions;
-            MainWindow.THIS.fastboot_cur_device.Content = cur.serial;
-            appendLog("Opened device " + cur.serial + " (" + cur.name + ")");
-            change_page();
+            cur_serial = cur.serial;
+            whenDevicePresent(delegate
+            {
+                cur_status = FastbootStatus.show_actions;
+                MainWindow.THIS.fastboot_cur_device.Content = cur.serial;
+                appendLog("Opened device " + cur.serial + " (" + cur.name + ")");
+                change_page();
+            });
         }
 
         public static void init()
@@ -2102,10 +2171,11 @@ namespace FastbootEnhance
             MainWindow.THIS.flash_result_reboot.Click += delegate
             {
                 MainWindow.THIS.flash_result.Visibility = Visibility.Collapsed;
-                if (!checkCurDevExist())
-                    return;
-                runStep(new StepCmdRunnerParam("reboot", 0, false, true));
-                leaveDevice();
+                whenDevicePresent(delegate
+                {
+                    if (runStep(new StepCmdRunnerParam("reboot", 0, false, true)))
+                        leaveDevice();
+                });
             };
             MainWindow.THIS.bar_disconnect.Click += delegate { leaveDevice(); };
             MainWindow.THIS.bar_usb_check.Click += delegate { checkUsb(); };
@@ -2118,176 +2188,179 @@ namespace FastbootEnhance
             };
             MainWindow.THIS.bar_reboot_system.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-                runStep(new StepCmdRunnerParam("reboot", 0, false, true));
-                leaveDevice();
+                whenDevicePresent(delegate
+                {
+                    if (runStep(new StepCmdRunnerParam("reboot", 0, false, true)))
+                        leaveDevice();
+                });
             };
             MainWindow.THIS.bar_reboot_recovery.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-                runStep(new StepCmdRunnerParam("reboot recovery", 0, false, true));
-                leaveDevice();
+                whenDevicePresent(delegate
+                {
+                    if (runStep(new StepCmdRunnerParam("reboot recovery", 0, false, true)))
+                        leaveDevice();
+                });
             };
             MainWindow.THIS.bar_reboot_bootloader.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-                runStep(new StepCmdRunnerParam("reboot bootloader", 2, false));
+                whenDevicePresent(delegate
+                {
+                    runStep(new StepCmdRunnerParam("reboot bootloader", 2, false));
+                });
             };
             MainWindow.THIS.bar_reboot_fastbootd.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-                runStep(new StepCmdRunnerParam("reboot fastboot", 3, false));
+                whenDevicePresent(delegate
+                {
+                    runStep(new StepCmdRunnerParam("reboot fastboot", 3, false));
+                });
             };
             readToolVersions();
 
             MainWindow.THIS.fastboot_reboot_d.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-
-                if (fastbootData.fastbootd)
+                whenDevicePresent(delegate
                 {
-                    runStep(new StepCmdRunnerParam("reboot bootloader", 2, false));
-                }
-                else
-                {
-                    runStep(new StepCmdRunnerParam("reboot fastboot", 3, false));
-                }
+                    if (fastbootData.fastbootd)
+                    {
+                        runStep(new StepCmdRunnerParam("reboot bootloader", 2, false));
+                    }
+                    else
+                    {
+                        runStep(new StepCmdRunnerParam("reboot fastboot", 3, false));
+                    }
+                });
             };
 
             MainWindow.THIS.fastboot_reboot_system.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-
-                runStep(new StepCmdRunnerParam("reboot", 0, false, true));
-
-                leaveDevice();
+                whenDevicePresent(delegate
+                {
+                    if (runStep(new StepCmdRunnerParam("reboot", 0, false, true)))
+                        leaveDevice();
+                });
             };
 
             MainWindow.THIS.fastboot_reboot_recovery.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-
-                runStep(new StepCmdRunnerParam("reboot recovery", 0, false, true));
-
-                leaveDevice();
+                whenDevicePresent(delegate
+                {
+                    if (runStep(new StepCmdRunnerParam("reboot recovery", 0, false, true)))
+                        leaveDevice();
+                });
             };
 
             MainWindow.THIS.fastboot_ab_switch.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-
-                string slot = fastbootData.current_slot?.TrimStart('_');
-                string target = slot == "a" ? "b" : slot == "b" ? "a" : null;
-                if (target == null)
+                whenDevicePresent(delegate
                 {
-                    ThemedDialog.Show(Properties.Resources.operation_not_supported);
-                    return;
-                }
-                if (!slotSwitchAllowed(target))
-                    return;
-                runStep(new StepCmdRunnerParam("set_active " + target, 2, false));
+                    string slot = fastbootData.current_slot?.TrimStart('_');
+                    string target = slot == "a" ? "b" : slot == "b" ? "a" : null;
+                    if (target == null)
+                    {
+                        ThemedDialog.Show(Properties.Resources.operation_not_supported);
+                        return;
+                    }
+                    if (!slotSwitchAllowed(target))
+                        return;
+                    runStep(new StepCmdRunnerParam("set_active " + target, 2, false));
+                });
             };
 
             MainWindow.THIS.fastboot_boot_once.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-                Helper.fileSelect(new Helper.PathSelectCallback(bootOnce), "Boot / recovery images|*.img;*.bin|All files|*.*");
+                whenDevicePresent(delegate
+                {
+                    Helper.fileSelect(new Helper.PathSelectCallback(bootOnce), "Boot / recovery images|*.img;*.bin|All files|*.*");
+                });
             };
 
             // Cancel a staged Virtual A/B update.
             MainWindow.THIS.fastboot_cancel_update.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-
-                runStep(new StepCmdRunnerParam("snapshot-update cancel", 2, true));
+                whenDevicePresent(delegate
+                {
+                    runStep(new StepCmdRunnerParam("snapshot-update cancel", 2, true));
+                });
             };
 
             MainWindow.THIS.fastboot_flash.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-
-                if (singlePartitionCheck())
-                    return;
-
-                if (vabStagingCheck())
-                    return;
-
-                string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
-
-                if (PartitionSafety.IsBrickRisk(target) && !ThemedDialog.ConfirmTyped(
-                        string.Format(Properties.Resources.confirm_critical_flash, target) + "\n\n" + deviceLine(),
-                        Properties.Resources.critical_title, target))
+                whenDevicePresent(delegate
                 {
-                    appendLog("flash of critical partition " + target + " not confirmed");
-                    return;
-                }
+                    if (singlePartitionCheck())
+                        return;
 
-                Helper.fileSelect(new Helper.PathSelectCallback(delegate (string path)
-                {
-                    // fastbootd resizes a logical partition to its image: check super has room.
-                    bool? isLogical;
-                    if (fastbootData.partition_is_logical.TryGetValue(target, out isLogical) && isLogical == true)
+                    if (vabStagingCheck())
+                        return;
+
+                    string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
+
+                    if (PartitionSafety.IsBrickRisk(target) && !ThemedDialog.ConfirmTyped(
+                            string.Format(Properties.Resources.confirm_critical_flash, target) + "\n\n" + deviceLine(),
+                            Properties.Resources.critical_title, target))
                     {
-                        long imageSize;
-                        try
-                        {
-                            imageSize = SuperSpace.WrittenSize(path);
-                        }
-                        catch (Exception e)
-                        {
-                            ThemedDialog.Show(e.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-                        if (!superSpaceAllowed(new[] { new KeyValuePair<string, long>(target, imageSize) }))
-                            return;
+                        appendLog("flash of critical partition " + target + " not confirmed");
+                        return;
                     }
 
-                    string ext_arg = "";
-
-                    if (target == "vbmeta" || target == "vbmeta_" + fastbootData.current_slot?.TrimStart('_')
-                    || target == "vbmeta_a" || target == "vbmeta_b")
+                    Helper.fileSelect(new Helper.PathSelectCallback(delegate (string path)
                     {
-                        if (Helper.confirm(Properties.Resources.fastboot_vbmeta_disable_verify + "\n\n" + deviceLine(),
-                                Properties.Resources.fastboot_vbmeta_disable_verify_title))
+                        // fastbootd resizes a logical partition to its image: check super has room.
+                        bool? isLogical;
+                        if (fastbootData.partition_is_logical.TryGetValue(target, out isLogical) && isLogical == true)
                         {
-                            ext_arg += "--disable-verity --disable-verification";
+                            long imageSize;
+                            try
+                            {
+                                imageSize = SuperSpace.WrittenSize(path);
+                            }
+                            catch (Exception e)
+                            {
+                                ThemedDialog.Show(e.Message, Properties.Resources.error, MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+                            if (!superSpaceAllowed(new[] { new KeyValuePair<string, long>(target, imageSize) }))
+                                return;
                         }
-                    }
-                    string command = "flash " + ext_arg + " " + AdbCommand.WindowsArgument(target) + " " + AdbCommand.WindowsArgument(path);
-                    checkBootImage(target, path, delegate { runStep(new StepCmdRunnerParam(command, -1, true)); });
-                }), "Image File|*.img;*.image");
+
+                        string ext_arg = "";
+
+                        if (target == "vbmeta" || target == "vbmeta_" + fastbootData.current_slot?.TrimStart('_')
+                        || target == "vbmeta_a" || target == "vbmeta_b")
+                        {
+                            if (Helper.confirm(Properties.Resources.fastboot_vbmeta_disable_verify + "\n\n" + deviceLine(),
+                                    Properties.Resources.fastboot_vbmeta_disable_verify_title))
+                            {
+                                ext_arg += "--disable-verity --disable-verification";
+                            }
+                        }
+                        string command = "flash " + ext_arg + " " + AdbCommand.WindowsArgument(target) + " " + AdbCommand.WindowsArgument(path);
+                        checkBootImage(target, path, delegate { runStep(new StepCmdRunnerParam(command, -1, true)); });
+                    }), "Image File|*.img;*.image");
+                });
             };
 
             MainWindow.THIS.fastboot_erase.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
+                whenDevicePresent(delegate
+                {
+                    if (singlePartitionCheck())
+                        return;
 
-                if (singlePartitionCheck())
-                    return;
+                    string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
 
-                string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
+                    bool confirmed = PartitionSafety.IsBrickRisk(target)
+                        ? ThemedDialog.ConfirmTyped(string.Format(Properties.Resources.confirm_critical_erase, target) + "\n\n" + deviceLine(),
+                            Properties.Resources.critical_title, target)
+                        : Helper.confirm(string.Format(Properties.Resources.confirm_erase, target) + "\n\n" + deviceLine(),
+                            Properties.Resources.confirm_title, true);
+                    if (!confirmed)
+                        return;
 
-                bool confirmed = PartitionSafety.IsBrickRisk(target)
-                    ? ThemedDialog.ConfirmTyped(string.Format(Properties.Resources.confirm_critical_erase, target) + "\n\n" + deviceLine(),
-                        Properties.Resources.critical_title, target)
-                    : Helper.confirm(string.Format(Properties.Resources.confirm_erase, target) + "\n\n" + deviceLine(),
-                        Properties.Resources.confirm_title, true);
-                if (!confirmed)
-                    return;
-
-                runStep(new StepCmdRunnerParam("erase " + AdbCommand.WindowsArgument(target), 2, false));
+                    runStep(new StepCmdRunnerParam("erase " + AdbCommand.WindowsArgument(target), 2, false));
+                });
             };
 
             MainWindow.THIS.fastboot_partition_list.SelectionChanged += delegate
@@ -2336,56 +2409,56 @@ namespace FastbootEnhance
 
             MainWindow.THIS.fastboot_logical_delete.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
+                whenDevicePresent(delegate
+                {
+                    if (singlePartitionCheck() || logicalCheck())
+                        return;
 
-                if (singlePartitionCheck() || logicalCheck())
-                    return;
+                    string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
 
-                string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
+                    if (!Helper.confirm(string.Format(Properties.Resources.confirm_delete, target) + "\n\n" + deviceLine(),
+                            Properties.Resources.confirm_title, true))
+                        return;
 
-                if (!Helper.confirm(string.Format(Properties.Resources.confirm_delete, target) + "\n\n" + deviceLine(),
-                        Properties.Resources.confirm_title, true))
-                    return;
-
-                runStep(new StepCmdRunnerParam("delete-logical-partition " + AdbCommand.WindowsArgument(target), 2, false));
+                    runStep(new StepCmdRunnerParam("delete-logical-partition " + AdbCommand.WindowsArgument(target), 2, false));
+                });
             };
 
             MainWindow.THIS.fastboot_logical_create.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
-
-                new FastbootActionWindow(FastbootActionWindow.StartType.CREATE, "", 0,
-                    delegate (string name, ulong size)
-                   {
-                       if (!AdbCommand.IsSafePartitionName(name))
+                whenDevicePresent(delegate
+                {
+                    new FastbootActionWindow(FastbootActionWindow.StartType.CREATE, "", 0,
+                        delegate (string name, ulong size)
                        {
-                           ThemedDialog.Show(Properties.Resources.operation_not_supported);
-                           return;
-                       }
-                       runStep(new StepCmdRunnerParam(
-                            "create-logical-partition " + AdbCommand.WindowsArgument(name) + " " + size.ToString(), 2, false));
-                   }).ShowDialog();
+                           if (!AdbCommand.IsSafePartitionName(name))
+                           {
+                               ThemedDialog.Show(Properties.Resources.operation_not_supported);
+                               return;
+                           }
+                           runStep(new StepCmdRunnerParam(
+                                "create-logical-partition " + AdbCommand.WindowsArgument(name) + " " + size.ToString(), 2, false));
+                       }).ShowDialog();
+                });
             };
 
             MainWindow.THIS.fastboot_logical_resize.Click += delegate
             {
-                if (!checkCurDevExist())
-                    return;
+                whenDevicePresent(delegate
+                {
+                    if (singlePartitionCheck() || logicalCheck())
+                        return;
 
-                if (singlePartitionCheck() || logicalCheck())
-                    return;
+                    string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
 
-                string target = ((fastboot_partition_row)MainWindow.THIS.fastboot_partition_list.SelectedItem).name;
-
-                new FastbootActionWindow(FastbootActionWindow.StartType.RESIZE, target,
-                    fastbootData.partition_size[target],
-                    delegate (string name, ulong size)
-                    {
-                        runStep(new StepCmdRunnerParam(
-                             "resize-logical-partition \"" + name + "\" \"" + size.ToString() + "\"", 2, false));
-                    }).ShowDialog();
+                    new FastbootActionWindow(FastbootActionWindow.StartType.RESIZE, target,
+                        fastbootData.partition_size[target],
+                        delegate (string name, ulong size)
+                        {
+                            runStep(new StepCmdRunnerParam(
+                                 "resize-logical-partition \"" + name + "\" \"" + size.ToString() + "\"", 2, false));
+                        }).ShowDialog();
+                });
             };
 
             MainWindow.THIS.fastboot_flash_payload.Click += delegate
@@ -2396,16 +2469,18 @@ namespace FastbootEnhance
                     MainWindow.THIS.main_tabs.SelectedItem = MainWindow.THIS.device_tab;
                     return;
                 }
-
-                if (!checkCurDevExist())
+                if (fastbootBusyElsewhere())
                     return;
 
-                // The pending-update questions are part of the one summary shown before the flash.
-                string serial = cur_serial;
-                Helper.fileSelect(new Helper.PathSelectCallback(delegate (string path)
+                whenDevicePresent(delegate
                 {
-                    openPayloadThenFlash(path, serial);
-                }), "Payload or OTA package|*.bin;*.zip|All Files|*.*");
+                    // The pending-update questions are part of the one summary shown before the flash.
+                    string serial = cur_serial;
+                    Helper.fileSelect(new Helper.PathSelectCallback(delegate (string path)
+                    {
+                        openPayloadThenFlash(path, serial);
+                    }), "Payload or OTA package|*.bin;*.zip|All Files|*.*");
+                });
             };
 
             listHelper = new Helper.ListHelper<fastboot_partition_row>(MainWindow.THIS.fastboot_partition_list,

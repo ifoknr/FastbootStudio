@@ -2724,7 +2724,7 @@ Odin에서 AP에 {1}을(를) 넣고, BL, CP, CSC는 같은 펌웨어의 것을 �
     <value>앱이 실행한 모든 기록, 도움을 요청할 때 복사</value>
   </data>
   <data name="welcome_page_about" xml:space="preserve">
-    <value>버전, 언어, 테마, 업데이트</value>
+    <value>버전, 새로운 기능, 링크, 라이선스</value>
   </data>
   <data name="welcome_check_title" xml:space="preserve">
     <value>빠른 점검</value>
@@ -3516,5 +3516,44 @@ Odin에서 AP에 {1}을(를) 넣고, BL, CP, CSC는 같은 펌웨어의 것을 �
   </data>
   <data name="about_links" xml:space="preserve">
     <value>링크</value>
+  </data>
+  <data name="welcome_page_settings" xml:space="preserve">
+    <value>언어, 테마, 글자 크기, 업데이트, USB 드라이버</value>
+  </data>
+  <data name="confirm_close_fastboot" xml:space="preserve">
+    <value>fastboot가 아직 실행 중입니다({0}). 지금 닫으면 쓰기가 중간에 끊기지 않도록 fastboot가 혼자 끝까지 실행되지만, 앱에는 결과가 표시되지 않습니다. 닫을까요?</value>
+  </data>
+  <data name="confirm_close_terminal" xml:space="preserve">
+    <value>터미널 명령이 아직 실행 중입니다({0}). 닫으면 중지됩니다. 닫을까요?</value>
+  </data>
+  <data name="confirm_close_backup" xml:space="preserve">
+    <value>백업 또는 휴대폰에서 복사하는 작업이 실행 중입니다. 닫으면 중지되고 완료되지 않은 파일은 삭제됩니다. 닫을까요?</value>
+  </data>
+  <data name="confirm_close_root" xml:space="preserve">
+    <value>루트 페이지가 아직 작업 중입니다. adb 전송은 중지되고, 이미 시작된 플래싱은 혼자 끝까지 실행됩니다. 닫을까요?</value>
+  </data>
+  <data name="busy_wait" xml:space="preserve">
+    <value>실행 중인 작업({0})이 끝날 때까지 기다려 주세요.</value>
+  </data>
+  <data name="busy_fastboot" xml:space="preserve">
+    <value>fastboot가 다른 작업({0})에 사용 중입니다. 둘이 동시에 휴대폰과 통신하지 않도록 끝날 때까지 기다려 주세요.</value>
+  </data>
+  <data name="version_test_build" xml:space="preserve">
+    <value>테스트 빌드</value>
+  </data>
+  <data name="backup_size_unknown" xml:space="preserve">
+    <value>휴대폰이 이 파티션의 크기를 알려 주지 않아 사본({0})을 확인할 수 없으므로 저장하지 않습니다.</value>
+  </data>
+  <data name="backup_adb_failed" xml:space="preserve">
+    <value>읽는 중 adb가 오류로 종료되었습니다: {0}</value>
+  </data>
+  <data name="copy_value" xml:space="preserve">
+    <value>값 복사</value>
+  </data>
+  <data name="copy_all" xml:space="preserve">
+    <value>모두 복사</value>
+  </data>
+  <data name="device_checking" xml:space="preserve">
+    <value>휴대폰이 아직 연결되어 있는지 확인 중…</value>
   </data>
 </root>

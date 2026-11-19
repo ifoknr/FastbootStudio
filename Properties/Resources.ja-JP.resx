@@ -2724,7 +2724,7 @@ Odin で {1} を AP に入れ、同じファームウェアの BL、CP、CSC と
     <value>アプリが実行したすべての記録。ヘルプを求めるときにコピー</value>
   </data>
   <data name="welcome_page_about" xml:space="preserve">
-    <value>バージョン、言語、テーマ、アップデート</value>
+    <value>バージョン、新機能、リンク、ライセンス</value>
   </data>
   <data name="welcome_check_title" xml:space="preserve">
     <value>簡単なチェック</value>
@@ -3516,5 +3516,44 @@ Odin で {1} を AP に入れ、同じファームウェアの BL、CP、CSC と
   </data>
   <data name="about_links" xml:space="preserve">
     <value>リンク</value>
+  </data>
+  <data name="welcome_page_settings" xml:space="preserve">
+    <value>言語、テーマ、文字サイズ、アップデート、USB ドライバー</value>
+  </data>
+  <data name="confirm_close_fastboot" xml:space="preserve">
+    <value>fastboot はまだ実行中です（{0}）。今閉じると、書き込みが途中で切れないよう fastboot はそのまま最後まで実行されますが、結果はアプリに表示されません。閉じますか？</value>
+  </data>
+  <data name="confirm_close_terminal" xml:space="preserve">
+    <value>ターミナルのコマンドがまだ実行中です（{0}）。閉じると停止します。閉じますか？</value>
+  </data>
+  <data name="confirm_close_backup" xml:space="preserve">
+    <value>バックアップまたはスマートフォンからのコピーを実行中です。閉じると停止し、未完了のファイルは削除されます。閉じますか？</value>
+  </data>
+  <data name="confirm_close_root" xml:space="preserve">
+    <value>Root ページはまだ作業中です。adb の転送は停止し、すでに始まった書き込みはそのまま最後まで実行されます。閉じますか？</value>
+  </data>
+  <data name="busy_wait" xml:space="preserve">
+    <value>実行中の作業（{0}）が終わるまでお待ちください。</value>
+  </data>
+  <data name="busy_fastboot" xml:space="preserve">
+    <value>fastboot は別の作業（{0}）で使用中です。両方が同時にスマートフォンと通信しないよう、終わるまでお待ちください。</value>
+  </data>
+  <data name="version_test_build" xml:space="preserve">
+    <value>テスト版</value>
+  </data>
+  <data name="backup_size_unknown" xml:space="preserve">
+    <value>スマートフォンがこのパーティションのサイズを返さなかったため、コピー（{0}）を照合できず、保存されません。</value>
+  </data>
+  <data name="backup_adb_failed" xml:space="preserve">
+    <value>読み取り中に adb がエラーで終了しました: {0}</value>
+  </data>
+  <data name="copy_value" xml:space="preserve">
+    <value>値をコピー</value>
+  </data>
+  <data name="copy_all" xml:space="preserve">
+    <value>すべてコピー</value>
+  </data>
+  <data name="device_checking" xml:space="preserve">
+    <value>スマートフォンがまだ接続されているか確認中…</value>
   </data>
 </root>

@@ -160,6 +160,7 @@ namespace FastbootEnhance
             if (busy)
                 return;
             busy = true;
+            Busy.Set(Busy.Job.Samsung, true);
             W.samsung_open_buttons.Visibility = Visibility.Hidden;
             W.samsung_opening.Visibility = Visibility.Visible;
             W.samsung_opening_bar.IsIndeterminate = true;
@@ -208,6 +209,7 @@ namespace FastbootEnhance
                     worker = null;
                     cancel = null;
                     busy = false;
+                    Busy.Set(Busy.Job.Samsung, false);
                     W.samsung_open_buttons.Visibility = Visibility.Visible;
                     W.samsung_opening.Visibility = Visibility.Hidden;
                     W.samsung_opening_bar.IsIndeterminate = false;
@@ -556,6 +558,7 @@ namespace FastbootEnhance
         static void setBusy(bool value)
         {
             busy = value;
+            Busy.Set(Busy.Job.Samsung, value);
             foreach (UIElement control in new UIElement[]
             {
                 W.samsung_extract, W.samsung_magisk, W.samsung_check_patched, W.samsung_build_tar, W.samsung_change_folder,

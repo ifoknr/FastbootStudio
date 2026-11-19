@@ -9985,5 +9985,122 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("about_links", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language, theme, text size, updates and USB drivers.
+        /// </summary>
+        public static string welcome_page_settings {
+            get {
+                return ResourceManager.GetString("welcome_page_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fastboot is still running ({0}). If you close now it is left to finish on its own, so a write is not cut half-way, but the app will not show how it ended. Close anyway?.
+        /// </summary>
+        public static string confirm_close_fastboot {
+            get {
+                return ResourceManager.GetString("confirm_close_fastboot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A Terminal command is still running ({0}). Closing stops it. Close anyway?.
+        /// </summary>
+        public static string confirm_close_terminal {
+            get {
+                return ResourceManager.GetString("confirm_close_terminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A backup or a copy from the phone is running. Closing stops it and removes the unfinished file. Close anyway?.
+        /// </summary>
+        public static string confirm_close_backup {
+            get {
+                return ResourceManager.GetString("confirm_close_backup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Root page is still working. A transfer over adb is stopped; a flash that already started is left to finish on its own. Close anyway?.
+        /// </summary>
+        public static string confirm_close_root {
+            get {
+                return ResourceManager.GetString("confirm_close_root", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait for the job that is running ({0}) to finish first..
+        /// </summary>
+        public static string busy_wait {
+            get {
+                return ResourceManager.GetString("busy_wait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fastboot is busy with another job ({0}); wait for it to finish so the two do not talk to the phone at once..
+        /// </summary>
+        public static string busy_fastboot {
+            get {
+                return ResourceManager.GetString("busy_fastboot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to test build.
+        /// </summary>
+        public static string version_test_build {
+            get {
+                return ResourceManager.GetString("version_test_build", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The phone did not say how big this partition is, so the copy ({0}) cannot be checked against it and is not kept..
+        /// </summary>
+        public static string backup_size_unknown {
+            get {
+                return ResourceManager.GetString("backup_size_unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to adb ended with an error while reading: {0}.
+        /// </summary>
+        public static string backup_adb_failed {
+            get {
+                return ResourceManager.GetString("backup_adb_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy value.
+        /// </summary>
+        public static string copy_value {
+            get {
+                return ResourceManager.GetString("copy_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy all.
+        /// </summary>
+        public static string copy_all {
+            get {
+                return ResourceManager.GetString("copy_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking that the phone is still there….
+        /// </summary>
+        public static string device_checking {
+            get {
+                return ResourceManager.GetString("device_checking", resourceCulture);
+            }
+        }
     }
 }

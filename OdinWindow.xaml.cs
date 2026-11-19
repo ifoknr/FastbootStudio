@@ -229,6 +229,7 @@ namespace FastbootEnhance
             OdinReboot reboot = after_download.IsChecked == true ? OdinReboot.Download : OdinReboot.Normal;
             poll.Stop();
             reading = true;
+            Busy.Set(Busy.Job.Odin, true);
 
             heading.Text = Properties.Resources.odin_reading_title;
             subheading.Text = Helper.ltr(port.Port);
@@ -249,6 +250,7 @@ namespace FastbootEnhance
             }).ContinueWith(task =>
             {
                 reading = false;
+                Busy.Set(Busy.Job.Odin, false);
                 secondary.IsEnabled = true;
                 if (task.IsFaulted)
                 {
@@ -655,6 +657,7 @@ namespace FastbootEnhance
             OdinReboot reboot = plan_restart.IsChecked == true ? OdinReboot.Normal : OdinReboot.None;
             poll.Stop();
             reading = true;
+            Busy.Set(Busy.Job.Odin, true);
 
             heading.Text = Properties.Resources.odin_flash_title;
             subheading.Text = Helper.ltr(port.Port);
@@ -695,6 +698,7 @@ namespace FastbootEnhance
             }).ContinueWith(task =>
             {
                 reading = false;
+                Busy.Set(Busy.Job.Odin, false);
                 secondary.IsEnabled = true;
                 message.Foreground = Palette.Get("Text");
                 progress_text.Visibility = Visibility.Collapsed;

@@ -194,7 +194,7 @@ namespace FastbootEnhance
                 // A phone in the bootloader or fastbootd is invisible to adb. Look for it there
                 // too, so the page can say what is wrong instead of waiting forever. Not while a
                 // flash is running: that fastboot has the phone and must not be disturbed.
-                List<string> inFastboot = found.Any(d => d.Usable) || FastbootUI.flashing
+                List<string> inFastboot = found.Any(d => d.Usable) || Busy.Fastboot() != null
                     ? new List<string>() : listFastboot();
 
                 bool same = found.Count == devices.Count && found.Zip(devices,
@@ -336,6 +336,14 @@ namespace FastbootEnhance
         {
             if (fastbootBusy)
                 return;
+            // Another page's fastboot has a phone (a flash, a Terminal command): not a second one beside it.
+            Busy.Job? other = Busy.Fastboot();
+            if (other != null)
+            {
+                ThemedDialog.Show(string.Format(Properties.Resources.busy_fastboot, Busy.Name(other.Value)),
+                    Properties.Resources.nav_backup, MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             fastbootBusy = true;
             fastbootTarget = serial;
             W.backup_fb_status.Text = status;
@@ -542,6 +550,7 @@ namespace FastbootEnhance
         static void setBusy(bool value)
         {
             busy = value;
+            Busy.Set(Busy.Job.Backup, value);
             bool ready = current != null && current.Usable && !value;
             W.backup_devices.IsEnabled = !value;
             W.backup_read.IsEnabled = ready;
@@ -774,6 +783,8 @@ namespace FastbootEnhance
                     try
                     {
                         HashingCopy.Result copied;
+                        int? adbExit;
+                        string adbSaid;
                         using (Adb adb = new Adb(AdbCommand.ExecOut(device.Serial,
                             AdbCommand.AsRoot(AdbCommand.ReadPartitionCommand(directory, row.Name), access)), Fastboot.NoLimit))
                         {
@@ -795,15 +806,33 @@ namespace FastbootEnhance
                                     });
                                 }), token);
                             }
-                            adb.WaitForExit();
+                            adbExit = adb.WaitForExit();
+                            adbSaid = adb.Errors;
                             activeAdb = null;
                         }
 
                         token.ThrowIfCancellationRequested();
+                        // A backup is kept only when it is the whole partition: exactly as many bytes
+                        // as the phone listed for it. Fewer means the phone stopped sending; more (or a
+                        // different count) means something other than the partition came down the pipe.
                         if (copied.Bytes == 0 || (expected > 0 && copied.Bytes != expected))
                         {
+                            log("  " + row.Name + ": " + copied.Bytes + " bytes received, " + expected + " listed"
+                                + (string.IsNullOrEmpty(adbSaid) ? "" : "; adb: " + adbSaid));
                             throw new IOException(string.Format(Properties.Resources.backup_short_read,
                                 ByteSize.Format(copied.Bytes), expected > 0 ? ByteSize.Format(expected) : "?"));
+                        }
+                        // No listed size, nothing to compare with: a copy that cannot be checked is not a backup.
+                        if (expected <= 0)
+                        {
+                            log("  " + row.Name + ": " + copied.Bytes + " bytes received, but the phone listed no size");
+                            throw new IOException(string.Format(Properties.Resources.backup_size_unknown, ByteSize.Format(copied.Bytes)));
+                        }
+                        // adb itself failed (the phone left, the server died) even though the count matched.
+                        if (adbExit != 0)
+                        {
+                            throw new IOException(string.Format(Properties.Resources.backup_adb_failed,
+                                string.IsNullOrEmpty(adbSaid) ? "exit " + (adbExit?.ToString() ?? "?") : adbSaid));
                         }
 
                         hashes.Add(new KeyValuePair<string, string>(fileName, copied.Sha256));
@@ -939,7 +968,7 @@ namespace FastbootEnhance
                     }
 
                     log("Checked " + folder + ": " + report.Good.Count + " good, " + report.Bad.Count + " bad");
-                    W.Dispatcher.Invoke(delegate
+                    ui(delegate
                     {
                         setBusy(false);
                         if (!report.HadSums)
