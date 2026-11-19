@@ -75,6 +75,9 @@ namespace FastbootEnhance.Core.Tests
         /// <summary>Last chance to fill in manifest fields the builder does not set itself.</summary>
         public Action<DeltaArchiveManifest> CustomizeManifest { get; set; }
 
+        /// <summary>Called after the builder has set the signature's offset and size, to change them.</summary>
+        public Action<DeltaArchiveManifest> CustomizeSignature { get; set; }
+
         public PartSpec AddPartition(string name, byte[] expectedImage)
         {
             PartSpec spec = new PartSpec { Name = name, ExpectedImage = expectedImage };
@@ -170,6 +173,7 @@ namespace FastbootEnhance.Core.Tests
 
                 manifest.SignaturesOffset = (ulong)blobBytes.Length;
                 manifest.SignaturesSize = (ulong)trailingBytes.Length;
+                CustomizeSignature?.Invoke(manifest);
 
                 byte[] manifestBytes = manifest.ToByteArray();
                 byte[] metadataSignature = new Signatures().ToByteArray();

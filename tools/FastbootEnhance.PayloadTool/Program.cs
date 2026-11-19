@@ -304,7 +304,14 @@ namespace FastbootEnhance.PayloadTool
 
                     foreach (PartitionResult result in report.Results)
                     {
-                        if (result.Succeeded)
+                        if (result.Succeeded && !result.Complete)
+                        {
+                            // --force left operations out: the image is not whole and was not checked.
+                            Console.WriteLine("  PART  " + result.Partition.PadRight(16)
+                                + ByteSize.Format(result.Size).PadLeft(10)
+                                + "  " + result.SkippedOperations + " operations left out, image incomplete");
+                        }
+                        else if (result.Succeeded)
                         {
                             double seconds = Math.Max(result.Elapsed.TotalSeconds, 0.0001);
                             Console.WriteLine("  ok    " + result.Partition.PadRight(16)
@@ -320,17 +327,24 @@ namespace FastbootEnhance.PayloadTool
 
                     Console.WriteLine();
                     double total = Math.Max(report.Elapsed.TotalSeconds, 0.0001);
-                    Console.WriteLine(report.SucceededCount + " ok, " + report.FailedCount + " failed, "
+                    Console.WriteLine((report.SucceededCount - report.IncompleteCount) + " ok, "
+                        + (report.IncompleteCount > 0 ? report.IncompleteCount + " incomplete, " : "") + report.FailedCount + " failed, "
                         + ByteSize.Format(report.TotalBytes) + " in " + report.Elapsed.TotalSeconds.ToString("F2") + " s ("
                         + (report.TotalBytes / total / (1024 * 1024)).ToString("F0") + " MB/s aggregate)");
 
-                    return report.AllSucceeded ? 0 : 1;
+                    return ExitCode(report);
                 }
             }
             finally
             {
                 TryRemoveDirectory(temp);
             }
+        }
+
+        /// <summary>0 only when every image is whole: one built with operations left out (--force) is not.</summary>
+        internal static int ExitCode(ExtractionReport report)
+        {
+            return report.AllSucceeded && report.IncompleteCount == 0 ? 0 : 1;
         }
 
         // ---------- plumbing ----------

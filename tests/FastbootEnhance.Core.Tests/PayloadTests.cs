@@ -874,6 +874,60 @@ namespace FastbootEnhance.Core.Tests
             }
         }
 
+        [Theory]
+        [InlineData(long.MaxValue - 100000, 200000UL)]   // offset + size wraps past long.MaxValue
+        [InlineData(1L << 40, 64UL)]                      // far past the end of the file
+        [InlineData(-5L, 64UL)]                           // reads as negative
+        public void A_signature_offset_outside_the_file_does_not_stop_the_payload_opening(long offset, ulong size)
+        {
+            byte[] image = Data((int)BlockSize, 922);
+            TestPayloadBuilder builder = new TestPayloadBuilder
+            {
+                BlockSize = BlockSize,
+                CustomizeSignature = manifest =>
+                {
+                    manifest.SignaturesOffset = unchecked((ulong)offset);
+                    manifest.SignaturesSize = size;
+                }
+            };
+            PartSpec part = builder.AddPartition("boot", image);
+            part.Ops.Add(new OpSpec { Type = InstallOperation.Types.Type.Replace, Content = image, Dst = At((0, 1)) });
+            string path = builder.WriteToFile(workDir, "sigoffset" + size + ".bin");
+
+            using (PayloadFile payload = PayloadFile.Open(path, workDir))
+            {
+                Assert.Null(payload.PayloadSignature);
+                Assert.InRange(payload.DataLength, 0, new FileInfo(path).Length);
+                MemoryStream output = new MemoryStream();
+                PartitionExtractor.Extract(payload, "boot", output);
+                Assert.Equal(image, output.ToArray());
+            }
+        }
+
+        [Fact]
+        public void Names_that_differ_only_in_case_do_not_write_over_each_other()
+        {
+            byte[] lower = Data((int)BlockSize * 2, 923), upper = Data((int)BlockSize * 2, 924);
+            TestPayloadBuilder builder = new TestPayloadBuilder { BlockSize = BlockSize };
+            builder.AddPartition("boot", lower).Ops.Add(new OpSpec { Type = InstallOperation.Types.Type.Replace, Content = lower, Dst = At((0, 2)) });
+            builder.AddPartition("Boot", upper).Ops.Add(new OpSpec { Type = InstallOperation.Types.Type.Replace, Content = upper, Dst = At((0, 2)) });
+            string path = builder.WriteToFile(workDir, "case.bin");
+            string outDir = Path.Combine(workDir, "case-out");
+
+            using (PayloadFile payload = PayloadFile.Open(path, workDir))
+            {
+                ExtractionReport report = PayloadExtractor.ExtractAll(payload, outDir);
+
+                Assert.Equal(new[] { "boot", "Boot" }, report.Results.Select(r => r.Partition));
+                Assert.True(report.Results[0].Succeeded, report.Results[0].Error);
+                Assert.False(report.Results[1].Succeeded);
+                Assert.Contains("upper and lower case", report.Results[1].Error);
+                Assert.False(report.AllSucceeded);
+                Assert.Equal(lower, File.ReadAllBytes(report.Results[0].OutputPath));
+                Assert.Single(Directory.GetFiles(outDir));
+            }
+        }
+
         [Fact]
         public void A_zip_whose_directory_points_past_the_file_is_refused_with_a_format_error()
         {

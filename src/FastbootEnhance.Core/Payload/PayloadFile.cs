@@ -164,12 +164,16 @@ namespace FastbootEnhance.Core.Payload
 
             DataStart = stream.Position;
             DataLength = Manifest.HasSignaturesOffset ? (long)Manifest.SignaturesOffset : stream.Length - DataStart;
+            // A signature offset past the file (or one that reads as negative) is not a length.
+            if (DataLength < 0 || DataLength > stream.Length - DataStart)
+                DataLength = stream.Length - DataStart;
 
             if (Manifest.HasSignaturesOffset && Manifest.HasSignaturesSize && Manifest.SignaturesSize > 0)
             {
                 long offset = DataStart + (long)Manifest.SignaturesOffset;
                 long size = (long)Manifest.SignaturesSize;
-                if (size <= MaxManifestSize && offset >= 0 && offset + size <= stream.Length)
+                // Checked this way round: "offset + size" would wrap for an offset near long.MaxValue.
+                if (size > 0 && size <= MaxManifestSize && offset >= DataStart && offset <= stream.Length - size)
                 {
                     stream.Position = offset;
                     try
@@ -178,6 +182,11 @@ namespace FastbootEnhance.Core.Payload
                     }
                     catch (InvalidProtocolBufferException)
                     {
+                        PayloadSignature = null;
+                    }
+                    catch (PayloadFormatException)
+                    {
+                        // Cut short inside the signature: the payload itself is still readable.
                         PayloadSignature = null;
                     }
                 }

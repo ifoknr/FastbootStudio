@@ -73,6 +73,28 @@ namespace FastbootEnhance.Core.Payload
             ConcurrentDictionary<string, PartitionResult> collected =
                 new ConcurrentDictionary<string, PartitionResult>(StringComparer.Ordinal);
 
+            // "Boot" and "boot" are two partitions to the manifest and one file to Windows: two
+            // workers would write the same "boot.img.part". The first keeps the file name; the
+            // others are reported, not extracted over it.
+            HashSet<string> fileNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            List<string> extract = new List<string>(names.Count);
+            foreach (string name in names)
+            {
+                if (name == null || fileNames.Add(name))
+                {
+                    extract.Add(name);
+                    continue;
+                }
+                collected[name] = new PartitionResult
+                {
+                    Partition = name,
+                    OutputPath = null,
+                    Size = 0,
+                    Elapsed = TimeSpan.Zero,
+                    Error = "partition name \"" + name + "\" differs from another only in upper and lower case; both would be the same file"
+                };
+            }
+
             Stopwatch overall = Stopwatch.StartNew();
 
             ParallelOptions parallelOptions = new ParallelOptions
@@ -83,7 +105,7 @@ namespace FastbootEnhance.Core.Payload
 
             try
             {
-                Parallel.ForEach(names, parallelOptions, name =>
+                Parallel.ForEach(extract, parallelOptions, name =>
                 {
                     collected[name] = ExtractOne(payload, name, outputDirectory, options, progress, cancellationToken);
                 });
