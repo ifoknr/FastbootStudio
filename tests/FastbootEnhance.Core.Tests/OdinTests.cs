@@ -89,6 +89,20 @@ namespace FastbootEnhance.Core.Tests
         }
 
         [Fact]
+        public void A_block_count_with_its_top_bit_set_is_large_not_negative()
+        {
+            byte[] data = SamsungPit.Build("COM_TAR2", "", new[]
+            {
+                SamsungPit.Entry(1, "BOOT", "boot.img", 1000, 16),
+                SamsungPit.Entry(2, "USERDATA", "userdata.img", unchecked((int)0x90000000u), unchecked((int)0x80000010u), deviceType: 2),
+            });
+            PitEntry userdata = SamsungPit.Parse(data).ForPartition("USERDATA");
+            Assert.Equal(0x80000010L, userdata.Blocks);
+            Assert.Equal(0x90000000L, userdata.SizeOrStart);
+            Assert.Equal(16, SamsungPit.Parse(data).ForPartition("BOOT").Blocks);
+        }
+
+        [Fact]
         public void What_is_not_a_PIT_or_is_cut_short_is_refused()
         {
             Assert.False(SamsungPit.LooksLikePit(null));

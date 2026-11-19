@@ -418,7 +418,7 @@ namespace FastbootEnhance.Core.Samsung.Odin
         {
             if (!pit.IsVersion2)
             {
-                long size = entry.BlockSizeOrStart;
+                long size = entry.SizeOrStart;
                 // A sane block size: a power of two from a sector to 64 KiB.
                 return size >= MinSector && size <= 65536 && (size & (size - 1)) == 0 ? size : (long?)null;
             }
@@ -490,15 +490,15 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 // sectors: 512 bytes on eMMC, 4096 on UFS. The entry's device type says which;
                 // when it says neither, the UFS size is certain and the eMMC one a warning.
                 long? sector = SectorSize(pit, entry);
-                long most = entry.BlockCount * (sector ?? MaxSector);
-                if (entry.BlockCount > 0 && source.Size > most)
+                long most = entry.Blocks * (sector ?? MaxSector);
+                if (entry.Blocks > 0 && source.Size > most)
                     add(OdinCheckLevel.Block, OdinCheckCode.TooBig, source.Name, entry.Partition,
                         source.Size.ToString(System.Globalization.CultureInfo.InvariantCulture),
                         most.ToString(System.Globalization.CultureInfo.InvariantCulture));
-                else if (entry.BlockCount > 0 && sector == null && source.Size > entry.BlockCount * MinSector)
+                else if (entry.Blocks > 0 && sector == null && source.Size > entry.Blocks * MinSector)
                     add(OdinCheckLevel.Warn, OdinCheckCode.MayNotFit, source.Name, entry.Partition,
                         source.Size.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                        (entry.BlockCount * MinSector).ToString(System.Globalization.CultureInfo.InvariantCulture));
+                        (entry.Blocks * MinSector).ToString(System.Globalization.CultureInfo.InvariantCulture));
                 if (source.Part == null && BootChain.Contains(entry.Partition))
                     add(OdinCheckLevel.Warn, OdinCheckCode.Bootloader, entry.Partition);
                 if (source.Part == null && entry.IsModem)
@@ -636,8 +636,10 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 }
                 result.FailedAt = null;
             }
-            catch (Exception e) when (e is OdinException || e is IOException || e is TimeoutException || e is InvalidDataException
-                || e is ArgumentException)
+            // Whatever goes wrong once the session is open (a pulled cable makes the port throw
+            // ObjectDisposedException, UnauthorizedAccessException or InvalidOperationException)
+            // is a failed flash with a result, never an exception that leaves the phone waiting.
+            catch (Exception e)
             {
                 result.Error = e;
                 log("odin: flash stopped: " + e.Message);
@@ -658,7 +660,8 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 done = client.EndSession(reboot);
                 return true;
             }
-            catch (Exception e) when (e is OdinException || e is IOException || e is TimeoutException)
+            // A link that is gone throws what it likes; the end is only ever tried.
+            catch (Exception e)
             {
                 log("odin: ending the session failed: " + e.Message);
                 return false;

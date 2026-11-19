@@ -199,6 +199,59 @@ namespace FastbootEnhance.Core.Tests
             Assert.Throws<InvalidOperationException>(() => OdinFlasher.Flash(new FakeOdinDevice(), plan, OdinReboot.None));
         }
 
+        /// <summary>A link that works for a number of writes, then throws as a closed serial port does.</summary>
+        sealed class PulledCable : IOdinTransport
+        {
+            readonly FakeOdinDevice phone = new FakeOdinDevice();
+            readonly Func<Exception> failure;
+            int writesLeft;
+
+            public PulledCable(int writes, Func<Exception> failure)
+            {
+                writesLeft = writes;
+                this.failure = failure;
+            }
+
+            public void Write(byte[] buffer, int offset, int count, int timeoutMs)
+            {
+                if (writesLeft-- <= 0)
+                    throw failure();
+                phone.Write(buffer, offset, count, timeoutMs);
+            }
+
+            public void EndPacket() => phone.EndPacket();
+            public int Read(byte[] buffer, int offset, int count, int timeoutMs) => phone.Read(buffer, offset, count, timeoutMs);
+            public void Dispose() => phone.Dispose();
+        }
+
+        [Fact]
+        public void A_cable_pulled_mid_flash_is_a_failed_flash_whatever_the_port_throws()
+        {
+            OdinFlashPlan plan = Plan(new[] { File("boot.img", Bytes(3 * 1024 * 1024, 41)) });
+            Func<Exception>[] failures =
+            {
+                () => new ObjectDisposedException("SerialPort"),
+                () => new UnauthorizedAccessException("Access to the port is denied."),
+                () => new InvalidOperationException("The port is closed."),
+                () => new IOException("A device attached to the system is not functioning."),
+            };
+            foreach (Func<Exception> failure in failures)
+            {
+                // The handshake, the session, the part size, the total, the PIT's packets, the flash
+                // request and the sequence go through; a file part does not.
+                List<string> log = new List<string>();
+                OdinFlashResult result = OdinFlasher.Flash(new PulledCable(12, failure), plan, OdinReboot.Normal, null, log.Add);
+
+                Assert.NotNull(result.Error);
+                Assert.Equal(failure().GetType(), result.Error.GetType());
+                Assert.Equal("BOOT", result.FailedAt);
+                Assert.Empty(result.Written);
+                Assert.False(result.Ended);
+                Assert.Equal(OdinReboot.None, result.Restart);
+                Assert.Contains(log, l => l.StartsWith("odin: ending the session failed"));
+            }
+        }
+
         [Fact]
         public void An_image_bigger_than_its_partition_is_refused()
         {

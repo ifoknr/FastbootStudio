@@ -22,6 +22,15 @@ namespace FastbootEnhance.Core.Samsung.Odin
         /// <summary>The block size (v1), or the first block (v2).</summary>
         public int BlockSizeOrStart { get; internal set; }
         public int BlockCount { get; internal set; }
+
+        /// <summary>
+        /// <see cref="BlockCount"/> as the PIT means it, without a sign: a partition of 2^31
+        /// blocks or more is not a negative one.
+        /// </summary>
+        public long Blocks => (uint)BlockCount;
+
+        /// <summary><see cref="BlockSizeOrStart"/> without a sign.</summary>
+        public long SizeOrStart => (uint)BlockSizeOrStart;
         public int FileOffset { get; internal set; }
         public int FileSize { get; internal set; }
 

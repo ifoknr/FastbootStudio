@@ -84,7 +84,8 @@ namespace FastbootEnhance.Core.Samsung.Odin
                 done = client.EndSession(reboot);
                 return true;
             }
-            catch (Exception e) when (e is OdinException || e is System.IO.IOException || e is TimeoutException)
+            // A link that is gone throws what it likes; the first failure is the one to report.
+            catch (Exception e)
             {
                 log("odin: ending the session failed: " + e.Message);
                 return false;
