@@ -3,7 +3,7 @@ Opens an OTA zip or a payload.bin on this computer to look inside and take out p
 
 ## steps
 1. Drop the OTA zip or payload.bin on the page, or press **Browse**.
-2. **Basic Properties** shows the package: full or incremental, security patch, timestamp and how it is compressed.
+2. **Basic properties** shows the package: full or incremental, security patch, timestamp and how it is compressed.
 3. In **Partitions**, select the images you want (Ctrl or Shift for several) and press **Extract Image**.
 4. Pick a folder: each image is saved there as <name>.img and checked against its SHA-256.
 5. **Dynamic Partition Metadata** shows the groups and partitions that live in super.

@@ -4,7 +4,7 @@ Flashes a whole OTA (an OTA zip or a payload.bin) to the phone opened on the Dev
 ## steps
 1. Open the phone on the **Device** page. In **fastbootd** every partition can be written; the bootloader cannot write logical ones.
 2. Back up first on the Backup page.
-3. Press **Flash Payload.bin** and pick the OTA zip or payload.bin made for this phone.
+3. Press **Flash payload.bin** and pick the OTA zip or payload.bin made for this phone.
 4. Read the one summary before the flash: the file, the phone (serial, product, slot, mode) and every point to know: partitions the phone lacks (created empty in fastbootd), a payload without SHA-256, room in super, the second slot. A point that can cost data needs **I have read this** ticked. Then **Flash**.
 5. Watch the queue: Extracting, Verified, Flashing, Flashed. Partitions fastbootd refuses (a OnePlus modem, for one) are written from the bootloader at the end.
 6. When the green strip says how many partitions were written, press **Restart the phone**, or **Open the log**. The whole flash is also saved as a file (Logs → Open log folder).
@@ -14,7 +14,7 @@ Flashes a whole OTA (an OTA zip or a payload.bin) to the phone opened on the Dev
 - An OTA for another model or region can stop the phone from starting, or break calls and mobile data.
 - Only full OTAs can be flashed; an incremental one is refused.
 - **Flash both slots** writes the firmware partitions to slot a and slot b; use it only when you mean both slots to carry this firmware.
-- **Ignore Unknown Partitions** skips partitions the phone does not have; use it only when you know they are not needed.
+- **Ignore unknown partitions** skips partitions the phone does not have; use it only when you know they are not needed.
 
 ## tips
 - Images are written to the active slot.

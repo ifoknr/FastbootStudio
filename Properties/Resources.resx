@@ -139,7 +139,7 @@
     <value>Unknown</value>
   </data>
   <data name="fastboot_basic_prop" xml:space="preserve">
-    <value>Basic Properties</value>
+    <value>Basic properties</value>
   </data>
   <data name="fastboot_cancel_update" xml:space="preserve">
     <value>Cancel pending update</value>
@@ -163,22 +163,22 @@
     <value>Create new logical partition</value>
   </data>
   <data name="fastboot_current_device" xml:space="preserve">
-    <value>Current Device: </value>
+    <value>Current device: </value>
   </data>
   <data name="fastboot_current_slot" xml:space="preserve">
-    <value>Current Slot</value>
+    <value>Current slot</value>
   </data>
   <data name="fastboot_device" xml:space="preserve">
     <value>Device</value>
   </data>
   <data name="fastboot_device_name" xml:space="preserve">
-    <value>Device Name</value>
+    <value>Device name</value>
   </data>
   <data name="fastboot_device_not_exist" xml:space="preserve">
     <value>Target device is not exist</value>
   </data>
   <data name="fastboot_enhance" xml:space="preserve">
-    <value>Fastboot Visualization</value>
+    <value>Fastboot visualization</value>
   </data>
   <data name="fastboot_expand_dynamic_partition" xml:space="preserve">
     <value>Expand logical partition</value>
@@ -187,13 +187,13 @@
     <value>Filter by name:</value>
   </data>
   <data name="fastboot_flash_payload" xml:space="preserve">
-    <value>Flash Payload.bin</value>
+    <value>Flash payload.bin</value>
   </data>
   <data name="fastboot_ignore_unknown" xml:space="preserve">
-    <value>Ignore Unknown Partitions</value>
+    <value>Ignore unknown partitions</value>
   </data>
   <data name="fastboot_is_userspace" xml:space="preserve">
-    <value>In Fastbootd</value>
+    <value>In fastbootd</value>
   </data>
   <data name="fastboot_not_support_multiselect" xml:space="preserve">
     <value>This operation does not allow multiple partitions to be selected.</value>
@@ -220,7 +220,7 @@
     <value>Resize</value>
   </data>
   <data name="fastboot_partition_is_dynamic" xml:space="preserve">
-    <value>is Logical</value>
+    <value>Is logical</value>
   </data>
   <data name="fastboot_partition_name" xml:space="preserve">
     <value>Name</value>
@@ -253,34 +253,34 @@
     <value>Value</value>
   </data>
   <data name="fastboot_reboot_bootloader" xml:space="preserve">
-    <value>Reboot to BootLoader</value>
+    <value>Reboot to bootloader</value>
   </data>
   <data name="fastboot_reboot_fastbootd" xml:space="preserve">
-    <value>Reboot to Fastbootd</value>
+    <value>Reboot to fastbootd</value>
   </data>
   <data name="fastboot_reboot_recovery" xml:space="preserve">
-    <value>Reboot to Recovery</value>
+    <value>Reboot to recovery</value>
   </data>
   <data name="fastboot_reboot_system" xml:space="preserve">
-    <value>Reboot to System</value>
+    <value>Reboot to system</value>
   </data>
   <data name="fastboot_remove_device" xml:space="preserve">
     <value>Disconnect</value>
   </data>
   <data name="fastboot_seamless_update" xml:space="preserve">
-    <value>Seamless Update</value>
+    <value>Seamless update</value>
   </data>
   <data name="fastboot_secure_boot" xml:space="preserve">
-    <value>Secure Boot</value>
+    <value>Secure boot</value>
   </data>
   <data name="fastboot_serial_num" xml:space="preserve">
-    <value>Serial Number</value>
+    <value>Serial number</value>
   </data>
   <data name="fastboot_setactive_a" xml:space="preserve">
-    <value>Activate Slot A</value>
+    <value>Activate slot A</value>
   </data>
   <data name="fastboot_setactive_b" xml:space="preserve">
-    <value>Activate Slot B</value>
+    <value>Activate slot B</value>
   </data>
   <data name="fastboot_show_logs" xml:space="preserve">
     <value>Show logs</value>
@@ -298,7 +298,7 @@
     <value>You may need to reboot to fastbootd mode.</value>
   </data>
   <data name="fastboot_update_status" xml:space="preserve">
-    <value>System Update Status</value>
+    <value>System update status</value>
   </data>
   <data name="fastboot_update_status_merging" xml:space="preserve">
     <value>Merging</value>
@@ -348,7 +348,7 @@ Needed for a custom or patched system. It works only with an unlocked bootloader
     <value>Operation is not supported.</value>
   </data>
   <data name="payload_basic_properties" xml:space="preserve">
-    <value>Basic Properties</value>
+    <value>Basic properties</value>
   </data>
   <data name="payload_blocksize" xml:space="preserve">
     <value>Blocksize</value>
@@ -360,13 +360,13 @@ Needed for a custom or patched system. It works only with an unlocked bootloader
     <value>Current file: </value>
   </data>
   <data name="payload_data_size" xml:space="preserve">
-    <value>Data Blobs Size</value>
+    <value>Data blobs size</value>
   </data>
   <data name="payload_dumper" xml:space="preserve">
     <value>Payload Dumper</value>
   </data>
   <data name="payload_dynamic_partition_metadata" xml:space="preserve">
-    <value>Dynamic Partition Metadata</value>
+    <value>Dynamic partition metadata</value>
   </data>
   <data name="payload_error_occur" xml:space="preserve">
     <value>An error has occurred.</value>
@@ -378,7 +378,7 @@ Needed for a custom or patched system. It works only with an unlocked bootloader
     <value>Ignore checksum</value>
   </data>
   <data name="payload_extract_image" xml:space="preserve">
-    <value>Extract Image</value>
+    <value>Extract image</value>
   </data>
   <data name="payload_extract_incremental" xml:space="preserve">
     <value>Allow incremental</value>
@@ -387,19 +387,19 @@ Needed for a custom or patched system. It works only with an unlocked bootloader
     <value>Extracting options</value>
   </data>
   <data name="payload_full_package" xml:space="preserve">
-    <value>Full Package</value>
+    <value>Full package</value>
   </data>
   <data name="payload_incremental_warning" xml:space="preserve">
     <value>Unable to extract images from an incremental package.</value>
   </data>
   <data name="payload_manifest_size" xml:space="preserve">
-    <value>Manifest Size</value>
+    <value>Manifest size</value>
   </data>
   <data name="payload_metadata_signature" xml:space="preserve">
-    <value>Metadata Signatures (Base64)</value>
+    <value>Metadata signatures (Base64)</value>
   </data>
   <data name="payload_metadata_signature_size" xml:space="preserve">
-    <value>Metadata Signatures Size</value>
+    <value>Metadata signatures size</value>
   </data>
   <data name="payload_no_dynamic_metadata" xml:space="preserve">
     <value>No dynamic partition metadata</value>
@@ -423,13 +423,13 @@ Needed for a custom or patched system. It works only with an unlocked bootloader
     <value>Size</value>
   </data>
   <data name="payload_partition_group_include" xml:space="preserve">
-    <value>Partitions Included: </value>
+    <value>Partitions included: </value>
   </data>
   <data name="payload_partition_group_name" xml:space="preserve">
-    <value>Partition Group Name: </value>
+    <value>Partition group name: </value>
   </data>
   <data name="payload_partition_group_size" xml:space="preserve">
-    <value>Partition Group Size: </value>
+    <value>Partition group size: </value>
   </data>
   <data name="payload_property_name" xml:space="preserve">
     <value>Name</value>
@@ -444,7 +444,7 @@ Needed for a custom or patched system. It works only with an unlocked bootloader
     <value>Signatures (Base64)</value>
   </data>
   <data name="payload_signature_size" xml:space="preserve">
-    <value>Signatures Size</value>
+    <value>Signatures size</value>
   </data>
   <data name="payload_snapshot_enabled" xml:space="preserve">
     <value>Snapshot enabled: </value>
@@ -462,7 +462,7 @@ Needed for a custom or patched system. It works only with an unlocked bootloader
     <value>Incompatible file format.</value>
   </data>
   <data name="payload_version" xml:space="preserve">
-    <value>Payload Version</value>
+    <value>Payload version</value>
   </data>
   <data name="program_already_running" xml:space="preserve">
     <value>The program is already running</value>
@@ -1163,7 +1163,7 @@ Continue?</value>
     <value>Data / fill / don't care</value>
   </data>
   <data name="backup_fb_title" xml:space="preserve">
-    <value>{0} is in Fastboot mode</value>
+    <value>{0} is in fastboot mode</value>
   </data>
   <data name="backup_fb_why" xml:space="preserve">
     <value>Fastboot can write partitions but cannot read them back: on retail phones Android does not allow it. Backup works over adb, so the phone has to leave Fastboot first, in one of these ways:</value>
