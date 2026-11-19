@@ -20,6 +20,29 @@ namespace FastbootEnhance
         [DllImport("user32.dll")]
         static extern int GetSystemMetrics(int index);
 
+        // Windows 10 1607 and later: the metrics of the monitor the window is on, not of the main one.
+        [DllImport("user32.dll")]
+        static extern int GetSystemMetricsForDpi(int index, uint dpi);
+
+        [DllImport("user32.dll")]
+        static extern uint GetDpiForWindow(IntPtr hwnd);
+
+        /// <summary>A frame metric in device pixels, at the scale of the window's own monitor when Windows can tell.</summary>
+        static int metric(Window window, int index)
+        {
+            try
+            {
+                IntPtr hwnd = new System.Windows.Interop.WindowInteropHelper(window).Handle;
+                uint dpi = hwnd != IntPtr.Zero ? GetDpiForWindow(hwnd) : 0;
+                if (dpi > 0)
+                    return GetSystemMetricsForDpi(index, dpi);
+            }
+            catch (EntryPointNotFoundException)
+            {
+            }
+            return GetSystemMetrics(index);
+        }
+
         public static void Attach(Window window)
         {
             window.Style = (Style)window.FindResource("ThemedWindow");
@@ -36,6 +59,8 @@ namespace FastbootEnhance
             window.SourceInitialized += delegate { DarkTitleBar.Apply(window); };
             window.StateChanged += delegate { fitFrame(window); };
             window.Loaded += delegate { fitFrame(window); };
+            // Moved to a monitor with another scale: the overhang is a different number of pixels there.
+            window.DpiChanged += delegate { fitFrame(window); };
         }
 
         static void fitFrame(Window window)
@@ -51,8 +76,8 @@ namespace FastbootEnhance
             }
 
             // The overhang, in device pixels, turned into the window's own units for this DPI.
-            int x = GetSystemMetrics(SM_CXSIZEFRAME) + GetSystemMetrics(SM_CXPADDEDBORDER);
-            int y = GetSystemMetrics(SM_CYSIZEFRAME) + GetSystemMetrics(SM_CXPADDEDBORDER);
+            int x = metric(window, SM_CXSIZEFRAME) + metric(window, SM_CXPADDEDBORDER);
+            int y = metric(window, SM_CYSIZEFRAME) + metric(window, SM_CXPADDEDBORDER);
             PresentationSource source = PresentationSource.FromVisual(window);
             double scaleX = 1, scaleY = 1;
             if (source != null && source.CompositionTarget != null)

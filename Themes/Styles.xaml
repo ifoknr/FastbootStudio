@@ -78,6 +78,7 @@
     <Style x:Key="StatValue" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Mono}"/>
         <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
     </Style>
 
@@ -90,6 +91,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="16"/>
         <Setter Property="Padding" Value="20,18"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
 
     <Style x:Key="WarnCard" TargetType="Border" BasedOn="{StaticResource Card}">
@@ -110,6 +112,7 @@
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="Padding" Value="11,4"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
 
     <Style x:Key="Chip" TargetType="Border">
@@ -120,6 +123,29 @@
         <Setter Property="CornerRadius" Value="11"/>
         <Setter Property="Padding" Value="12,4"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- Keyboard focus: one ring for every control, drawn just outside it in the accent. It shows
+         for the keyboard only (Tab, arrows), never after a mouse click. -->
+    <Style x:Key="FocusRing">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="-3" CornerRadius="13" BorderBrush="{StaticResource Accent}" BorderThickness="2" SnapsToDevicePixels="True"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- The same ring inside the control's own edge, for rows and tabs that sit edge to edge. -->
+    <Style x:Key="FocusRingInside">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="1" CornerRadius="7" BorderBrush="{StaticResource Accent}" BorderThickness="2" SnapsToDevicePixels="True"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- Buttons: one template; variants only change colours. -->
@@ -132,30 +158,32 @@
         <Setter Property="MinHeight" Value="36"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
+                <!-- The shape, a tint laid over it for hover and pressed, and the label on top. The
+                     label is never made see-through for a state: that softened its letters. -->
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="bd"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="10"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
-                    </Border>
+                    <Grid SnapsToDevicePixels="True">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"/>
+                        <Border x:Name="tint" CornerRadius="10" Background="{StaticResource HoverTint}" Visibility="Collapsed"/>
+                        <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="bd" Property="Opacity" Value="0.86"/>
+                            <Setter TargetName="tint" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="bd" Property="Opacity" Value="0.72"/>
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                            <Setter TargetName="tint" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="tint" Property="Background" Value="{StaticResource PressTint}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="bd" Property="Opacity" Value="0.4"/>
+                            <Setter Property="Opacity" Value="0.45"/>
                             <Setter Property="Cursor" Value="Arrow"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -169,9 +197,42 @@
         <Setter Property="BorderBrush" Value="{StaticResource AccentLine}"/>
         <Setter Property="Foreground" Value="{StaticResource AccentInk}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Effect">
+        <!-- The blue glow comes from an empty shape under the button. As an effect on the button
+             itself it turned the whole button, label included, into a picture: soft letters and
+             edges, worse at 125% and 150%. -->
+        <Setter Property="Template">
             <Setter.Value>
-                <DropShadowEffect BlurRadius="18" ShadowDepth="4" Opacity="0.35" Color="#2F6BFF"/>
+                <ControlTemplate TargetType="Button">
+                    <Grid SnapsToDevicePixels="True">
+                        <Border x:Name="glow" CornerRadius="10" Margin="8,8,8,1" Background="{StaticResource AccentFill}">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="14" ShadowDepth="3" Direction="270" Opacity="0.5" Color="#2F6BFF"/>
+                            </Border.Effect>
+                        </Border>
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"/>
+                        <Border x:Name="tint" CornerRadius="10" Background="{StaticResource HoverTint}" Visibility="Collapsed"/>
+                        <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="tint" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="tint" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="tint" Property="Background" Value="{StaticResource PressTint}"/>
+                            <Setter TargetName="glow" Property="Visibility" Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                            <Setter TargetName="glow" Property="Visibility" Value="Hidden"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
@@ -226,7 +287,7 @@
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="0,2,0,0"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -258,7 +319,7 @@
         <Setter Property="Width" Value="34"/>
         <Setter Property="Height" Value="34"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
         <Setter Property="Foreground" Value="{StaticResource Accent}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontWeight" Value="Bold"/>
@@ -267,15 +328,15 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="bd" CornerRadius="10" Background="{StaticResource Glass2}"
-                            BorderBrush="{StaticResource Raised}" BorderThickness="1">
+                            BorderBrush="{StaticResource GlassLine2}" BorderThickness="1" SnapsToDevicePixels="True">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
                         </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource AccentSoft}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -300,7 +361,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="10">
+                            CornerRadius="10" SnapsToDevicePixels="True">
                         <Grid>
                             <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" Focusable="False"/>
                             <!-- Tag doubles as a placeholder, shown while the box is empty. -->
@@ -312,6 +373,9 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="Text" Value="">
                             <Setter TargetName="hint" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Dim}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
@@ -329,7 +393,7 @@
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
         <Setter Property="FontSize" Value="12.5"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
@@ -339,7 +403,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Border x:Name="box" Width="18" Height="18" CornerRadius="5" VerticalAlignment="Top" Margin="0,1,0,0"
-                                Background="{StaticResource Bg}" BorderBrush="{StaticResource Line}" BorderThickness="1">
+                                Background="{StaticResource Bg}" BorderBrush="{StaticResource GlassLine2}" BorderThickness="1" SnapsToDevicePixels="True">
                             <Path x:Name="mark" FlowDirection="LeftToRight" Data="M3.5,8.5 L7,12 L13,4.5" Stroke="{StaticResource AccentInk}"
                                   StrokeThickness="2.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Visibility="Collapsed"/>
                         </Border>
@@ -347,14 +411,11 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="box" Property="Background" Value="{StaticResource Accent}"/>
-                            <Setter TargetName="box" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                            <Setter TargetName="box" Property="Background" Value="{StaticResource AccentFill}"/>
+                            <Setter TargetName="box" Property="BorderBrush" Value="{StaticResource AccentFill}"/>
                             <Setter TargetName="mark" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="box" Property="BorderBrush" Value="{StaticResource Dim}"/>
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="box" Property="BorderBrush" Value="{StaticResource Accent}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
@@ -372,28 +433,27 @@
         <Setter Property="Foreground" Value="{StaticResource Dim}"/>
         <Setter Property="FontSize" Value="12.5"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
         <Setter Property="MinHeight" Value="32"/>
         <Setter Property="Padding" Value="12,4"/>
         <Setter Property="Margin" Value="0,0,6,6"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
-                    <Border x:Name="bd" CornerRadius="10" Background="{StaticResource Glass2}" BorderBrush="{StaticResource GlassLine}"
-                            BorderThickness="1" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="bd" CornerRadius="10" Background="{StaticResource Glass2}" BorderBrush="{StaticResource GlassLine2}"
+                            BorderThickness="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Dim}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Text}"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="bd" Property="Background" Value="{StaticResource Accent}"/>
-                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource AccentFill}"/>
+                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource AccentFill}"/>
                             <Setter Property="Foreground" Value="{StaticResource AccentInk}"/>
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.45"/>
@@ -486,6 +546,9 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
         <Setter Property="FontSize" Value="12.5"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <!-- Digits of one width, so sizes and counts line up down a column and do not shift as they change. -->
+        <Setter Property="Typography.NumeralAlignment" Value="Tabular"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -539,7 +602,7 @@
     <Style TargetType="ListViewItem">
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRingInside}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
@@ -566,6 +629,8 @@
     <Style TargetType="TabControl">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <!-- The control itself takes no focus mark: Windows' dotted rectangle around the whole area showed in the light theme. -->
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabControl">
@@ -575,7 +640,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Border Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="1"
-                                CornerRadius="10" Padding="3" HorizontalAlignment="Left" Margin="0,0,0,14">
+                                CornerRadius="10" Padding="3" HorizontalAlignment="Left" Margin="0,0,0,14" SnapsToDevicePixels="True">
                             <StackPanel Orientation="Horizontal" IsItemsHost="True" KeyboardNavigation.TabIndex="1"/>
                         </Border>
                         <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Row="1" ContentSource="SelectedContent"/>
@@ -590,16 +655,18 @@
     <Style TargetType="TabItem">
         <Setter Property="Foreground" Value="{StaticResource Dim}"/>
         <Setter Property="FontSize" Value="12.5"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRingInside}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="bd" Background="Transparent" CornerRadius="8" Padding="14,6" Margin="0,0,2,0" Cursor="Hand">
+                    <!-- 7 px: the strip's 10 px corner less its 3 px padding, so the two curves run parallel. -->
+                    <Border x:Name="bd" Background="Transparent" CornerRadius="7" Padding="14,6" Margin="0,0,2,0" Cursor="Hand">
                         <ContentPresenter ContentSource="Header" VerticalAlignment="Center" RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource HoverTint}"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="bd" Property="Background" Value="{StaticResource Glass2}"/>
@@ -620,11 +687,11 @@
         <Setter Property="DockPanel.Dock" Value="Top"/>
         <Setter Property="Foreground" Value="{StaticResource Dim}"/>
         <Setter Property="FontSize" Value="13.5"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRingInside}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="bd" Background="Transparent" BorderBrush="Transparent" BorderThickness="1" CornerRadius="11" Height="34" Margin="0,1" Cursor="Hand">
+                    <Border x:Name="bd" Background="Transparent" BorderBrush="Transparent" BorderThickness="1" CornerRadius="10" Height="34" Margin="0,1" Cursor="Hand" SnapsToDevicePixels="True">
                         <StackPanel Orientation="Horizontal" Margin="12,0" VerticalAlignment="Center">
                             <Path x:Name="icon" Data="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
                                   Stroke="{TemplateBinding Foreground}" StrokeThickness="1.7"
@@ -687,12 +754,18 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ContextMenu">
-                    <Border Background="{StaticResource Raised}" BorderBrush="{StaticResource GlassLine2}" BorderThickness="1" CornerRadius="12" Padding="6" Margin="8">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.4" Color="#000000"/>
-                        </Border.Effect>
-                        <StackPanel IsItemsHost="True"/>
-                    </Border>
+                    <!-- The shadow comes from an empty sheet behind the menu, so the items' text is not blurred by it. -->
+                    <Grid Margin="8" SnapsToDevicePixels="True">
+                        <Border Background="{StaticResource Raised}" CornerRadius="12">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.4" Color="#000000"/>
+                            </Border.Effect>
+                        </Border>
+                        <Border Background="{StaticResource Raised}" BorderBrush="{StaticResource GlassLine2}" BorderThickness="1" CornerRadius="12" Padding="6"
+                                RenderOptions.ClearTypeHint="Enabled">
+                            <StackPanel IsItemsHost="True"/>
+                        </Border>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -707,7 +780,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="True">
-                            <Setter TargetName="bd" Property="Background" Value="{StaticResource Glass2}"/>
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource Hover}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.45"/>
@@ -718,8 +791,27 @@
         </Setter>
     </Style>
 
+    <!-- Tool tips in the theme's own colours (Windows' default is a white box, glaring on charcoal). -->
+    <Style TargetType="ToolTip">
+        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+        <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="HasDropShadow" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Border Background="{StaticResource Raised}" BorderBrush="{StaticResource GlassLine2}" BorderThickness="1" CornerRadius="8"
+                            Padding="10,6" SnapsToDevicePixels="True" RenderOptions.ClearTypeHint="Enabled">
+                        <ContentPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="NavRail" TargetType="TabControl">
         <Setter Property="TabStripPlacement" Value="Left"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource NavItem}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -746,7 +838,7 @@
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border x:Name="bd" Background="{StaticResource AccentSoft}" BorderBrush="{StaticResource AccentLine}"
-                                                    BorderThickness="1" CornerRadius="11" Padding="12,8">
+                                                    BorderThickness="1" CornerRadius="10" Padding="12,8" SnapsToDevicePixels="True">
                                                 <DockPanel>
                                                     <Ellipse DockPanel.Dock="Left" Width="8" Height="8" Fill="{StaticResource Accent}"
                                                              Margin="0,0,9,0" VerticalAlignment="Center"/>
@@ -916,7 +1008,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Window">
                     <Border x:Name="frame" Background="{TemplateBinding Background}"
-                            BorderBrush="{StaticResource GlassLine2}" BorderThickness="1">
+                            BorderBrush="{StaticResource GlassLine2}" BorderThickness="1" SnapsToDevicePixels="True">
                         <DockPanel>
                             <Grid DockPanel.Dock="Top" Height="34" Background="{StaticResource Glass}">
                                 <TextBlock x:Name="caption" Text="{TemplateBinding Title}" Margin="14,0,150,0"

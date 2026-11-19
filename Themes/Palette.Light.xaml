@@ -13,18 +13,24 @@
     <SolidColorBrush x:Key="Line" Color="#D3D8E2"/>
     <SolidColorBrush x:Key="Text" Color="#151821"/>
     <SolidColorBrush x:Key="Dim" Color="#5A6070"/>
-    <SolidColorBrush x:Key="Faint" Color="#8C92A3"/>
-    <SolidColorBrush x:Key="Accent" Color="#2F6BFF"/>
+    <!-- Faint was #8C92A3 (3.1:1 on white). Now 5.3:1 on white, 4.7:1 on the page. -->
+    <SolidColorBrush x:Key="Faint" Color="#656B7C"/>
+    <!-- Accent, amber, red and green are each a step darker than before, so text in them reaches
+         4.5:1 on the page and on their own soft backgrounds (green was 3.3:1 on white). -->
+    <SolidColorBrush x:Key="Accent" Color="#255BE6"/>
     <SolidColorBrush x:Key="AccentInk" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="AccentFill" Color="#255BE6"/>
+    <SolidColorBrush x:Key="HoverTint" Color="#0F000000"/>
+    <SolidColorBrush x:Key="PressTint" Color="#24000000"/>
     <SolidColorBrush x:Key="AccentSoft" Color="#DEE7FF"/>
     <SolidColorBrush x:Key="AccentLine" Color="#A9C0FF"/>
-    <SolidColorBrush x:Key="Warn" Color="#B45309"/>
+    <SolidColorBrush x:Key="Warn" Color="#A34A07"/>
     <SolidColorBrush x:Key="WarnSoft" Color="#FFF1D6"/>
     <SolidColorBrush x:Key="WarnLine" Color="#F3C77A"/>
-    <SolidColorBrush x:Key="Danger" Color="#DC2626"/>
+    <SolidColorBrush x:Key="Danger" Color="#C81E1E"/>
     <SolidColorBrush x:Key="DangerSoft" Color="#FFE1E1"/>
     <SolidColorBrush x:Key="DangerLine" Color="#F3A9A9"/>
-    <SolidColorBrush x:Key="Ok" Color="#16A34A"/>
+    <SolidColorBrush x:Key="Ok" Color="#117A39"/>
     <SolidColorBrush x:Key="OkSoft" Color="#DCF5E5"/>
     <SolidColorBrush x:Key="OkLine" Color="#9ED9B4"/>
     <SolidColorBrush x:Key="Sel" Color="#E3E8F3"/>
@@ -38,8 +44,8 @@
     <SolidColorBrush x:Key="GlassLine2" Color="#CDD3DE"/>
     <SolidColorBrush x:Key="SkyBrush" Color="#EEF0F5"/>
     <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#4A80FF" Offset="0"/>
-        <GradientStop Color="#245BE0" Offset="1"/>
+        <GradientStop Color="#2A64F2" Offset="0"/>
+        <GradientStop Color="#1F53D6" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Scroll bar corners and other bits WPF draws in system colours. -->

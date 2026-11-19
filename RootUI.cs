@@ -121,8 +121,8 @@ namespace FastbootEnhance
             bool done = step < current, now = step == current;
             card.Opacity = done || now ? 1 : 0.6;
             card.BorderBrush = Palette.Get(now ? "AccentLine" : "GlassLine");
-            circle.Background = Palette.Get(done ? "OkSoft" : now ? "Accent" : "Glass2");
-            circle.BorderBrush = Palette.Get(done ? "OkLine" : now ? "Accent" : "GlassLine2");
+            circle.Background = Palette.Get(done ? "OkSoft" : now ? "AccentFill" : "Glass2");
+            circle.BorderBrush = Palette.Get(done ? "OkLine" : now ? "AccentFill" : "GlassLine2");
             number.Foreground = Palette.Get(now ? "AccentInk" : "Dim");
             number.Visibility = done ? Visibility.Collapsed : Visibility.Visible;
             tick.Visibility = done ? Visibility.Visible : Visibility.Collapsed;

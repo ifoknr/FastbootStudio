@@ -25,6 +25,8 @@ namespace FastbootEnhance
             Rendering.Apply();
             // Before any window or dialog exists, so everything is drawn in the chosen theme.
             Theme.Apply(Resources);
+            // How text and edges are drawn, for every window, menu and tool tip.
+            Crisp.Register();
 
             // Checked before any window exists. Doing it in the window's constructor, as before,
             // left WPF showing a window that had already been told to shut down.

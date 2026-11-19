@@ -16,9 +16,16 @@
     <SolidColorBrush x:Key="Line" Color="#2C2C32"/>
     <SolidColorBrush x:Key="Text" Color="#ECECF1"/>
     <SolidColorBrush x:Key="Dim" Color="#A2A2AD"/>
-    <SolidColorBrush x:Key="Faint" Color="#6D6D78"/>
+    <!-- Faint was #6D6D78 (3.4:1 on a card); small labels in it were hard to read. Now 5.3:1 on a card, 4.6:1 on a raised tile. -->
+    <SolidColorBrush x:Key="Faint" Color="#8E8E9A"/>
     <SolidColorBrush x:Key="Accent" Color="#7AA2FF"/>
     <SolidColorBrush x:Key="AccentInk" Color="#FFFFFF"/>
+    <!-- The accent as a background under white text (a chosen option, a ticked box): deep enough for 4.5:1.
+         "Accent" itself stays the light blue, for text, icons and lines on charcoal. -->
+    <SolidColorBrush x:Key="AccentFill" Color="#3F6FE8"/>
+    <!-- Laid over a control while the mouse is on it, and while it is pressed. -->
+    <SolidColorBrush x:Key="HoverTint" Color="#14FFFFFF"/>
+    <SolidColorBrush x:Key="PressTint" Color="#33000000"/>
     <SolidColorBrush x:Key="AccentSoft" Color="#1E2840"/>
     <SolidColorBrush x:Key="AccentLine" Color="#34497A"/>
     <SolidColorBrush x:Key="Warn" Color="#FBBF24"/>
@@ -44,8 +51,9 @@
     <SolidColorBrush x:Key="SkyBrush" Color="#121214"/>
     <!-- The accent button: a slight gradient so it reads as a glass pill, not a flat block. -->
     <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#7AA2FF" Offset="0"/>
-        <GradientStop Color="#4A74E6" Offset="1"/>
+        <!-- Was #7AA2FF to #4A74E6: white on its top was 2.5:1. Now 4.5:1 at the top, 5.5:1 at the bottom. -->
+        <GradientStop Color="#3F6FE8" Offset="0"/>
+        <GradientStop Color="#3560D6" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Default templates fill the corner where two scroll bars meet with the system control
