@@ -19,6 +19,13 @@ namespace FastbootEnhance.Core.Adb
 
         public bool Unauthorized => State == "unauthorized";
 
+        /// <summary>The states adb gives a device in its list.</summary>
+        static readonly HashSet<string> KnownStates = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "device", "recovery", "sideload", "rescue", "bootloader", "host", "offline", "unauthorized",
+            "authorizing", "connecting", "detached",
+        };
+
         /// <summary>
         /// Parses "adb devices -l". Lines that are not devices (the header, "* daemon started"
         /// notices, blank lines) are skipped.
@@ -37,6 +44,13 @@ namespace FastbootEnhance.Core.Adb
 
                 string[] parts = line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length < 2)
+                    continue;
+
+                // A device line is "serial<tab>state", or with -l "serial   state key:value ...".
+                // Anything else is adb talking ("adb server version (41) doesn't match this
+                // client (39); killing..."), not a device called "adb".
+                bool tabbed = line.Length > parts[0].Length && line[parts[0].Length] == '\t';
+                if (!tabbed && !KnownStates.Contains(parts[1]) && parts[1] != "no")
                     continue;
 
                 AdbDevice device = new AdbDevice { Serial = parts[0], State = parts[1] };

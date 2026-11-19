@@ -149,9 +149,11 @@ namespace FastbootEnhance.Core.Fastboot
         static long parseHex(string raw)
         {
             string value = raw.StartsWith("0x", StringComparison.OrdinalIgnoreCase) ? raw.Substring(2) : raw;
-            long parsed;
-            if (long.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out parsed))
-                return parsed;
+            // Unsigned: "0xFFFFFFFFFFFFFFFF" is a very large size (some bootloaders say it for
+            // "unknown"), not -1 or another negative number; it is held at the largest long.
+            ulong parsed;
+            if (ulong.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out parsed))
+                return parsed > long.MaxValue ? long.MaxValue : (long)parsed;
             return -1;
         }
 

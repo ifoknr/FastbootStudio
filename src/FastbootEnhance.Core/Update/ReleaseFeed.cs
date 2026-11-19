@@ -230,7 +230,40 @@ namespace FastbootEnhance.Core.Update
                 if (x != y)
                     return x > y;
             }
-            return false;
+            // The same numbers: a final is newer than its own pre-releases ("3.1.0" after
+            // "3.1.0-beta.1"), and pre-releases follow each other (beta.1, beta.2, rc.1).
+            return ComparePreRelease(PreRelease(latest), PreRelease(installed)) > 0;
+        }
+
+        /// <summary>"beta.1" from "v3.1.0-beta.1+build"; null for a final version.</summary>
+        static string PreRelease(string version)
+        {
+            string core = (version ?? "").Trim().Split('+', ' ')[0];
+            int dash = core.IndexOf('-');
+            return dash < 0 || dash == core.Length - 1 ? null : core.Substring(dash + 1);
+        }
+
+        /// <summary>
+        /// Orders two pre-release labels as semantic versioning does: none (a final) is the
+        /// highest; otherwise part by part, numbers by value and before words, words by letters.
+        /// </summary>
+        static int ComparePreRelease(string a, string b)
+        {
+            if (a == null || b == null)
+                return a == null ? (b == null ? 0 : 1) : -1;
+            string[] x = a.Split('.'), y = b.Split('.');
+            for (int i = 0; i < Math.Min(x.Length, y.Length); i++)
+            {
+                int p, q;
+                bool pn = int.TryParse(x[i], System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out p);
+                bool qn = int.TryParse(y[i], System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out q);
+                int c = pn && qn ? p.CompareTo(q)
+                    : pn != qn ? (pn ? -1 : 1)
+                    : string.Compare(x[i], y[i], StringComparison.OrdinalIgnoreCase);
+                if (c != 0)
+                    return c;
+            }
+            return x.Length.CompareTo(y.Length);
         }
 
         /// <summary>A file the app may download: only from the project's own releases.</summary>

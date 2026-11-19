@@ -48,6 +48,22 @@ namespace FastbootEnhance.Core.Tests
         }
 
         [Fact]
+        public void What_adb_says_about_itself_is_not_a_device()
+        {
+            List<AdbDevice> devices = AdbDevice.ParseList(
+                "adb server version (41) doesn't match this client (39); killing...\n" +
+                "* daemon started successfully\n" +
+                "List of devices attached\n" +
+                "error: protocol fault (couldn't read status)\n" +
+                "ABC123\tdevice\n" +
+                "DEF456\tsomething-new\n" +
+                "GHI789         offline usb:1-1\n");
+
+            Assert.Equal(new[] { "ABC123", "DEF456", "GHI789" }, devices.Select(d => d.Serial));
+            Assert.Equal("something-new", devices[1].State);
+        }
+
+        [Fact]
         public void Parses_the_partition_listing()
         {
             const string output = "DIR:/dev/block/by-name\n" +
@@ -141,6 +157,28 @@ namespace FastbootEnhance.Core.Tests
             Assert.Equal("cat /dev/block/by-name/boot_a 2>/dev/null",
                 AdbCommand.ReadPartitionCommand("/dev/block/by-name", "boot_a"));
             Assert.Throws<ArgumentException>(() => AdbCommand.ReadPartitionCommand("/dev/block/by-name", "boot_a$(reboot)"));
+        }
+
+        [Fact]
+        public void A_partition_copy_is_whole_only_when_its_size_or_the_phones_hash_says_so()
+        {
+            string hash = new string('a', 64), other = new string('b', 64);
+            Assert.Equal("sha256sum /dev/block/by-name/boot_a", AdbCommand.HashPartitionCommand("/dev/block/by-name", "boot_a"));
+            Assert.Throws<ArgumentException>(() => AdbCommand.HashPartitionCommand("/dev/block/by-name", "boot_a;reboot"));
+            Assert.Equal(hash, AdbCommand.ParseHash(hash.ToUpperInvariant() + "  /dev/block/by-name/boot_a\r\n"));
+            Assert.Equal(hash, AdbCommand.ParseHash(hash));
+            Assert.Null(AdbCommand.ParseHash("sha256sum: /dev/block/by-name/boot_a: I/O error"));
+            Assert.Null(AdbCommand.ParseHash("/system/bin/sh: sha256sum: inaccessible or not found"));
+            Assert.Null(AdbCommand.ParseHash(null));
+
+            Assert.True(AdbCommand.CopyIsWhole(4096, 4096, hash, null));
+            Assert.False(AdbCommand.CopyIsWhole(4096, 2048, hash, null));
+            Assert.False(AdbCommand.CopyIsWhole(4096, 0, hash, null));
+            // The listing gave no size: a read that stopped early is only seen by the hash.
+            Assert.True(AdbCommand.CopyIsWhole(-1, 2048, hash, hash));
+            Assert.False(AdbCommand.CopyIsWhole(-1, 2048, hash, other));
+            Assert.False(AdbCommand.CopyIsWhole(-1, 2048, hash, null));
+            Assert.False(AdbCommand.CopyIsWhole(4096, 4096, hash, other));
         }
 
         [Fact]

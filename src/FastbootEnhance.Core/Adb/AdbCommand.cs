@@ -150,6 +150,60 @@ namespace FastbootEnhance.Core.Adb
         }
 
         /// <summary>
+        /// The phone's own SHA-256 of a partition, to hold against the hash of the copy. The read
+        /// above keeps errors out of the image's bytes, so a read that stops early looks like a
+        /// shorter partition; when the listing gave no size to compare with, this is what tells.
+        /// Its output goes through <see cref="ParseHash"/>.
+        /// </summary>
+        public static string HashPartitionCommand(string directory, string partition)
+        {
+            if (!IsSafeDevicePath(directory))
+                throw new ArgumentException("unexpected partition directory: " + directory, nameof(directory));
+            if (!IsSafePartitionName(partition))
+                throw new ArgumentException("unexpected partition name: " + partition, nameof(partition));
+            return "sha256sum " + directory + "/" + partition;
+        }
+
+        /// <summary>
+        /// The hash in what sha256sum printed ("hash  /dev/block/by-name/boot_a"), lower case;
+        /// null when it printed an error or nothing (no sha256sum, no permission, a read error).
+        /// </summary>
+        public static string ParseHash(string output)
+        {
+            foreach (string raw in (output ?? "").Split('\n'))
+            {
+                string line = raw.Trim();
+                if (line.Length < 64 || (line.Length > 64 && line[64] != ' '))
+                    continue;
+                string hash = line.Substring(0, 64).ToLowerInvariant();
+                bool hex = true;
+                foreach (char c in hash)
+                    hex &= (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f');
+                if (hex)
+                    return hash;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Whether a partition's copy is whole. <paramref name="listedSize"/> is the size the
+        /// listing gave (0 or less when it gave none), <paramref name="phoneHash"/> what
+        /// <see cref="ParseHash"/> read (null when not asked or not answered). A size that
+        /// differs or a hash that differs is a failed copy; with neither a size nor a hash to
+        /// compare, nothing says the copy is whole, and that is a failure too.
+        /// </summary>
+        public static bool CopyIsWhole(long listedSize, long copiedBytes, string copiedHash, string phoneHash)
+        {
+            if (copiedBytes <= 0)
+                return false;
+            if (listedSize > 0 && copiedBytes != listedSize)
+                return false;
+            if (phoneHash != null)
+                return string.Equals(phoneHash, copiedHash, StringComparison.OrdinalIgnoreCase);
+            return listedSize > 0;
+        }
+
+        /// <summary>
         /// Lists a folder as "type|size|path" lines, hidden entries included. Runs as the
         /// shell user, so it needs no root and takes any path.
         /// </summary>

@@ -143,6 +143,21 @@ Finished. Total time: 0.050s
             Assert.Equal(size, new FastbootData("(bootloader) max-download-size: " + said + "\n").max_download_size);
         }
 
+        [Theory]
+        [InlineData("0xFFFFFFFFFFFFFFFF", long.MaxValue)]
+        [InlineData("0x8000000000000000", long.MaxValue)]
+        [InlineData("FFFFFFFFFFFFFFFF", long.MaxValue)]
+        [InlineData("0x7FFFFFFFFFFFFFFF", long.MaxValue)]
+        [InlineData("0x1FFFFFFFFFFFFFFFF", -1L)]
+        [InlineData("0x-1", -1L)]
+        public void A_size_with_its_top_bit_set_is_large_not_negative(string said, long size)
+        {
+            FastbootData data = new FastbootData(
+                "(bootloader) partition-size:userdata: " + said + "\n(bootloader) max-download-size: " + said + "\n");
+            Assert.Equal(size, data.partition_size["userdata"]);
+            Assert.Equal(size, data.max_download_size);
+        }
+
         [Fact]
         public void No_snapshot_status_means_nothing_pending()
         {

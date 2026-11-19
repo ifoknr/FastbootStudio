@@ -151,7 +151,13 @@ namespace FastbootEnhance.Core.Terminal
             // "format:ext4 userdata" names the file system with a colon.
             int colon = action.IndexOf(':');
             if (colon > 0)
+            {
+                // The protocol's own spelling, "erase:userdata": the partition is after the colon.
+                // Not so for "format:ext4 userdata" (a file system) or "flash:raw boot" (a mode).
+                if (colon + 1 < action.Length && action.Substring(0, colon) == "erase")
+                    next = words[verb].Substring(colon + 1);
                 action = action.Substring(0, colon);
+            }
 
             switch (action)
             {
@@ -164,6 +170,13 @@ namespace FastbootEnhance.Core.Terminal
 
                 case "set_active":
                     Raise(TerminalRisk.ChangesSlot);
+                    break;
+
+                // Both rewrite super's partition table: every logical partition is at stake.
+                case "wipe-super":
+                case "update-super":
+                    Raise(TerminalRisk.CriticalPartition);
+                    RiskTarget = next ?? "super";
                     break;
 
                 case "delete-logical-partition":

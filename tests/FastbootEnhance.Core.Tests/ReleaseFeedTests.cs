@@ -103,6 +103,15 @@ namespace FastbootEnhance.Core.Tests
         [InlineData("2.5.2", "2.5.3", false)]
         [InlineData("3.0", "2.9.9", true)]
         [InlineData("x", "2.5.3", false)]
+        [InlineData("3.1.0", "3.1.0-beta.1", true)]
+        [InlineData("3.1.0-beta.1", "3.1.0", false)]
+        [InlineData("3.1.0-beta.2", "3.1.0-beta.1", true)]
+        [InlineData("3.1.0-beta.10", "3.1.0-beta.9", true)]
+        [InlineData("3.1.0-rc.1", "3.1.0-beta.2", true)]
+        [InlineData("3.1.0-beta.1", "3.1.0-rc.1", false)]
+        [InlineData("3.1.0-beta.1", "3.1.0-beta.1", false)]
+        [InlineData("v3.1.0-beta.1", "3.0.9", true)]
+        [InlineData("3.0.9", "3.1.0-beta.1", false)]
         public void Compares_versions_by_number(string latest, string installed, bool newer)
         {
             Assert.Equal(newer, ReleaseFeed.IsNewer(latest, installed));
