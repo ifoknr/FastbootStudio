@@ -113,6 +113,12 @@ namespace FastbootEnhance
             W.samsung_odin.Click += odin;
             W.samsung_odin_main.Click += odin;
             showDriver();
+
+            // The right column fills the page, and scrolls once the window is too short for the
+            // actions card and a usable list above it.
+            Action fitSide = PageFit.Attach(W.samsung_side_scroll, W.samsung_side,
+                () => W.samsung_actions_card.ActualHeight + 12 + 220);
+            W.samsung_actions_card.SizeChanged += delegate { fitSide(); };
         }
 
         /// <summary>Whether Samsung's USB driver is installed, which Download mode needs; read off the UI thread.</summary>

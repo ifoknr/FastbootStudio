@@ -89,6 +89,10 @@ namespace FastbootEnhance
             };
             poll.Tick += delegate { scan(); };
 
+            // On a short screen (768 px) the partition table gives up some of its height, so the
+            // dialog's buttons do not end up under the taskbar.
+            pit_scroll.MaxHeight = Math.Max(110, Math.Min(230, SystemParameters.WorkArea.Height - 560));
+
             fillSteps();
             checkDriver();
             showPrepare();

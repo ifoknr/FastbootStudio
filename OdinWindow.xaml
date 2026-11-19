@@ -96,7 +96,7 @@
                         <DockPanel>
                             <Grid x:Name="pit_head" DockPanel.Dock="Top" Margin="12,8,12,6"/>
                             <Border DockPanel.Dock="Top" Height="1" Background="{StaticResource Line}"/>
-                            <ScrollViewer MaxHeight="230" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ScrollViewer x:Name="pit_scroll" MaxHeight="230" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                 <StackPanel x:Name="pit_rows" Margin="12,4,12,6"/>
                             </ScrollViewer>
                         </DockPanel>
