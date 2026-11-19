@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource SkyBrush}" Foreground="{StaticResource Text}"
         FontFamily="{StaticResource UiFont}" FontSize="13"
-        TextOptions.TextFormattingMode="Display" UseLayoutRounding="True">
+        UseLayoutRounding="True" SnapsToDevicePixels="True">
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo x:Name="taskbariteminfo"/>
     </Window.TaskbarItemInfo>
@@ -173,6 +173,9 @@
                                                     <UniformGrid.Resources>
                                                         <!-- Longer labels (Arabic) wrap instead of being cut off. -->
                                                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                            <!-- Room above and below a label on two lines, and all four the same height. -->
+                                                            <Setter Property="Padding" Value="12,7"/>
+                                                            <Setter Property="MinHeight" Value="40"/>
                                                             <Setter Property="ContentTemplate">
                                                                 <Setter.Value>
                                                                     <DataTemplate>
@@ -513,7 +516,11 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="28,16,28,20">
+                <!-- The page scrolls when the window is too small for its cards (PageFit gives the
+                     body its height); before, the live log was squeezed until it was cut off. -->
+                <ScrollViewer x:Name="flash_scroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                              Focusable="False">
+                <Grid x:Name="flash_body" Margin="28,16,28,20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -525,7 +532,7 @@
                     <Border x:Name="flash_result" Style="{StaticResource Card}" Background="{StaticResource OkSoft}" BorderBrush="{StaticResource OkLine}"
                             Padding="16,12" Margin="0,0,0,16" Visibility="Collapsed">
                         <DockPanel>
-                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
                                 <Button x:Name="flash_result_log" Style="{StaticResource GhostButton}" MinHeight="32" Margin="0,0,8,0" Content="{x:Static props:Resources.flash_result_log}"/>
                                 <Button x:Name="flash_result_reboot" Style="{StaticResource AccentButton}" MinHeight="32" Content="{x:Static props:Resources.flash_result_reboot}"/>
                             </StackPanel>
@@ -568,18 +575,22 @@
 
                     <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.25*"/>
                             <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="0.85*" MinWidth="300"/>
+                            <ColumnDefinition Width="*" MinWidth="290"/>
                         </Grid.ColumnDefinitions>
 
                         <Border Style="{StaticResource Card}">
                             <DockPanel>
                                 <TextBlock DockPanel.Dock="Top" Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.payload_partitions}"/>
-                                <ListView x:Name="flash_queue" local:ColumnFill.Column="2" local:ColumnFill.MinWidth="60">
+                                <!-- The progress column takes the width left over and steps aside in a narrow
+                                     window (the State column says the same in words), so the table never
+                                     scrolls sideways or cuts its headings. -->
+                                <ListView x:Name="flash_queue" local:ColumnFill.Column="2" local:ColumnFill.MinWidth="56" local:ColumnFill.HideWhenNarrow="True"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                     <ListView.View>
                                         <GridView>
-                                            <GridViewColumn Header="{x:Static props:Resources.column_partition}" Width="150">
+                                            <GridViewColumn Header="{x:Static props:Resources.column_partition}" Width="146">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <StackPanel Orientation="Horizontal">
@@ -593,7 +604,7 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{x:Static props:Resources.column_size}" Width="85" DisplayMemberBinding="{Binding Size}"/>
+                                            <GridViewColumn Header="{x:Static props:Resources.column_size}" Width="80" DisplayMemberBinding="{Binding Size}"/>
                                             <GridViewColumn Header="{x:Static props:Resources.column_progress}" Width="115">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
@@ -601,7 +612,7 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{x:Static props:Resources.column_state}" Width="120">
+                                            <GridViewColumn Header="{x:Static props:Resources.column_state}" Width="112">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <StackPanel Orientation="Horizontal">
@@ -649,6 +660,7 @@
                         </Grid>
                     </Grid>
                 </Grid>
+                </ScrollViewer>
             </Grid>
         </TabItem>
         <TabItem x:Name="backup_tab" Header="{x:Static props:Resources.nav_backup}" Tag="{StaticResource IconBackup}">
@@ -811,7 +823,9 @@
                                     </DockPanel>
                                 </Border>
 
-                                <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
+                                <!-- Scrolls in a short window; before, the foot of the card was cut off. -->
+                                <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+                                <Border Style="{StaticResource Card}" VerticalAlignment="Top">
                                     <StackPanel>
                                         <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.backup_save_to}"/>
                                         <DockPanel Margin="0,0,0,14">
@@ -831,6 +845,7 @@
                                         <TextBlock Style="{StaticResource Note}" Text="{x:Static props:Resources.backup_note}"/>
                                     </StackPanel>
                                 </Border>
+                                </ScrollViewer>
                             </Grid>
                         </TabItem>
 
@@ -891,7 +906,9 @@
                                     </DockPanel>
                                 </Border>
 
-                                <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
+                                <!-- Scrolls in a short window; before, the foot of the card was cut off. -->
+                                <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+                                <Border Style="{StaticResource Card}" VerticalAlignment="Top">
                                     <StackPanel>
                                         <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.backup_save_to}"/>
                                         <DockPanel Margin="0,0,0,14">
@@ -908,6 +925,7 @@
                                         <TextBlock Style="{StaticResource Note}" Text="{x:Static props:Resources.files_note}"/>
                                     </StackPanel>
                                 </Border>
+                                </ScrollViewer>
                             </Grid>
                         </TabItem>
                     </TabControl>
@@ -1159,7 +1177,9 @@
                                         </DockPanel>
                                     </Border>
 
-                                    <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
+                                    <!-- Scrolls in a short window; before, the foot of the card was cut off. -->
+                                    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+                                    <Border Style="{StaticResource Card}" VerticalAlignment="Top">
                                         <StackPanel>
                                             <Button x:Name="payload_extract" Style="{StaticResource AccentButton}" MinHeight="40" Margin="0,0,0,18"
                                                     Content="{x:Static props:Resources.payload_extract_image}"/>
@@ -1173,6 +1193,7 @@
                                             </Border>
                                         </StackPanel>
                                     </Border>
+                                    </ScrollViewer>
                                 </Grid>
                             </TabItem>
 
@@ -1322,7 +1343,9 @@
                             </TabItem>
                         </TabControl>
 
-                        <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
+                        <!-- Scrolls in a short window; before, the foot of the card was cut off. -->
+                        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+                        <Border Style="{StaticResource Card}" VerticalAlignment="Top">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource SectionLabel}" Text="{x:Static props:Resources.backup_save_to}"/>
                                 <DockPanel Margin="0,0,0,14">
@@ -1355,6 +1378,7 @@
                                 <TextBlock x:Name="images_note" Style="{StaticResource Note}"/>
                             </StackPanel>
                         </Border>
+                        </ScrollViewer>
                     </Grid>
                 </Grid>
             </Grid>

@@ -2259,6 +2259,16 @@ namespace FastbootEnhance
             };
             readToolVersions();
 
+            // The Flash page fills the window, and scrolls once the window is too small for its
+            // cards: the file card, the result card when it shows, and the queue beside the log.
+            Action fitFlash = PageFit.Attach(MainWindow.THIS.flash_scroll, MainWindow.THIS.flash_body, delegate
+            {
+                FrameworkElement result = MainWindow.THIS.flash_result;
+                return 460 + (result.IsVisible ? result.ActualHeight + 16 : 0);
+            });
+            MainWindow.THIS.flash_result.IsVisibleChanged += delegate { fitFlash(); };
+            MainWindow.THIS.flash_result.SizeChanged += delegate { fitFlash(); };
+
             MainWindow.THIS.fastboot_reboot_d.Click += delegate
             {
                 whenDevicePresent(delegate

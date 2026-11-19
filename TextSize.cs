@@ -14,6 +14,9 @@ namespace FastbootEnhance
 
         public static string Chosen { get; private set; } = "default";
 
+        /// <summary>The main window's smallest size at the default text size (MainWindow.xaml).</summary>
+        const double BaseMinWidth = 1000, BaseMinHeight = 680;
+
         public static double Scale(string code)
         {
             int i = System.Array.IndexOf(Codes, code);
@@ -33,6 +36,18 @@ namespace FastbootEnhance
             Chosen = code;
             double k = Scale(code);
             content.LayoutTransform = k == 1.0 ? Transform.Identity : new ScaleTransform(k, k);
+
+            // Larger text needs a larger window to hold the same pages: the smallest size the
+            // window may take grows with the text (as far as the screen allows), so a page laid
+            // out for 1000 x 680 is never squeezed into less.
+            Window window = Window.GetWindow(content);
+            if (window != null)
+            {
+                double grow = System.Math.Max(1.0, k);
+                Rect work = SystemParameters.WorkArea;
+                window.MinWidth = System.Math.Min(BaseMinWidth * grow, work.Width);
+                window.MinHeight = System.Math.Min(BaseMinHeight * grow, work.Height);
+            }
         }
 
         public static bool Save(string code)
