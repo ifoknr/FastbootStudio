@@ -181,6 +181,34 @@ namespace FastbootEnhance.Core.Tests
             }
         }
 
+        [Theory]
+        [InlineData(8L << 30)]
+        [InlineData(9L << 30)]
+        [InlineData(80L << 30)]
+        public void The_writer_gives_a_file_of_8_GiB_or_more_a_base_256_size(long size)
+        {
+            // Only the header is looked at: the content ends at once, after the header is written.
+            MemoryStream tar = new MemoryStream();
+            using (OdinTarWriter w = new OdinTarWriter(tar))
+                Assert.Throws<IOException>(() => w.Add("super.img", new MemoryStream(), size));
+            byte[] header = tar.ToArray();
+            Assert.Equal(512, header.Length);
+            Assert.Equal(0x80, header[124]);
+            long read = 0;
+            for (int i = 125; i < 136; i++)
+                read = (read << 8) | header[i];
+            Assert.Equal(size, read);
+        }
+
+        [Fact]
+        public void The_writer_keeps_an_octal_size_below_8_GiB()
+        {
+            MemoryStream tar = new MemoryStream();
+            using (OdinTarWriter w = new OdinTarWriter(tar))
+                Assert.Throws<IOException>(() => w.Add("super.img", new MemoryStream(), (8L << 30) - 2));
+            Assert.Equal("77777777776\0", Encoding.ASCII.GetString(tar.ToArray(), 124, 12));
+        }
+
         static byte[] TarHeader(string name, long size, char type)
         {
             byte[] header = new byte[512];

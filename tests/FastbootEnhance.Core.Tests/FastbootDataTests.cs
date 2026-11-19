@@ -123,6 +123,27 @@ Finished. Total time: 0.050s
         }
 
         [Fact]
+        public void A_slot_said_with_an_underscore_is_the_same_slot()
+        {
+            // Older bootloaders answer "_a"; every check here builds "boot" + "_" + slot from it.
+            FastbootData data = new FastbootData(
+                "(bootloader) current-slot:_b\n(bootloader) partition-size:boot_b:0x4000000\n");
+
+            Assert.Equal("b", data.current_slot);
+            Assert.True(MissingPartitions.Find(data, new[] { "boot" }, new string[0]).None);
+        }
+
+        [Theory]
+        [InlineData("0x10000000", 0x10000000L)]
+        [InlineData("268435456", 268435456L)]
+        [InlineData("1000000A", 0x1000000AL)]
+        [InlineData("soon", -1L)]
+        public void The_download_size_is_decimal_without_0x_as_fastboot_reads_it(string said, long size)
+        {
+            Assert.Equal(size, new FastbootData("(bootloader) max-download-size: " + said + "\n").max_download_size);
+        }
+
+        [Fact]
         public void No_snapshot_status_means_nothing_pending()
         {
             Assert.False(new FastbootData("(bootloader) product:x\n").HasPendingUpdate);

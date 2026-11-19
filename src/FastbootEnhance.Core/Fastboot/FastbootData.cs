@@ -87,7 +87,8 @@ namespace FastbootEnhance.Core.Fastboot
                         break;
 
                     case "current-slot":
-                        current_slot = tmp[2];
+                        // Some older bootloaders say "_a"; fastboot itself drops the underscore.
+                        current_slot = tmp[2].TrimStart('_');
                         break;
 
                     case "is-userspace":
@@ -95,7 +96,7 @@ namespace FastbootEnhance.Core.Fastboot
                         break;
 
                     case "max-download-size":
-                        max_download_size = parseHex(tmp[2]);
+                        max_download_size = parseSize(tmp[2]);
                         break;
 
                     case "snapshot-update-status":
@@ -152,6 +153,19 @@ namespace FastbootEnhance.Core.Fastboot
             if (long.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out parsed))
                 return parsed;
             return -1;
+        }
+
+        /// <summary>
+        /// A size as fastboot itself reads max-download-size: hex with "0x", decimal without
+        /// (older bootloaders print "268435456"); a bare number with hex letters is still hex.
+        /// </summary>
+        static long parseSize(string raw)
+        {
+            long parsed;
+            if (!raw.StartsWith("0x", StringComparison.OrdinalIgnoreCase)
+                && long.TryParse(raw, NumberStyles.None, CultureInfo.InvariantCulture, out parsed))
+                return parsed;
+            return parseHex(raw);
         }
     }
 }

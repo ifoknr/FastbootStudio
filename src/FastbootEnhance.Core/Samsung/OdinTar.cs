@@ -329,7 +329,8 @@ namespace FastbootEnhance.Core.Samsung
             Octal(header, 100, 8, Convert.ToInt64("644", 8));
             Octal(header, 108, 8, 0);
             Octal(header, 116, 8, 0);
-            if (size < 077777777777L)
+            // Eleven octal digits hold up to 8 GiB - 1 (C# has no octal literals: 077777777777 is decimal).
+            if (size < 0x1FFFFFFFFL)
             {
                 Octal(header, 124, 12, size);
             }
