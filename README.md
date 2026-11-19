@@ -36,11 +36,22 @@ nothing to install.
 - **One question before a flash.** The file, the phone (serial, product, slot, mode) and every
   point worth knowing in one summary; a point that can cost data needs *I have read this*. The
   result stays on the page, and every flash is also saved as a log file.
-- **Stop.** A fastboot command that hangs can be stopped from the bar; each one has a deadline.
+- **Stop.** A fastboot command that hangs can be stopped from the bar. Restarts and slot switches
+  have a deadline; a command that writes (flash, erase, boot) has none, so a large image on slow
+  USB is never cut half way.
 - **Samsung, safer.** The size limit of each partition comes from the phone's storage type
   (eMMC or UFS), and a firmware is always written in Odin's order: BL, AP, CP, CSC.
 - **Five languages**, every screen translated: English, العربية, 中文, 日本語, 한국어.
 - Keyboard shortcuts: Ctrl+O opens a file, Ctrl+L the log, F1 the page's help.
+- **Honest closing questions.** Closing the window while something runs says what closing
+  really does: a payload flash is stopped, a single fastboot command is left to finish on its
+  own, a backup or a Terminal command is named. Two fastboot jobs never run at once.
+- **Small things.** Right-click (or Ctrl+C) copies the phone's variables and partition names;
+  each file picker opens in the folder it last used; the stock image or OTA can be dropped on
+  step 1 of Root; a version with a dash shows as a *test build*.
+- **Sharp at any scale.** The app draws itself at each monitor's own scale (125%, 150%, a
+  second screen), text and edges are crisp in every window, the keyboard focus is always
+  visible, and faint text is readable in both themes.
 
 ### Samsung: flash in Download mode, inside the app
 
