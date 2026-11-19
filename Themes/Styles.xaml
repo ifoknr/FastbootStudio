@@ -257,6 +257,12 @@
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
     </Style>
 
+    <!-- A button label that wraps onto a second line instead of being cut (long labels, Arabic). Used
+         with Padding="12,7" so two lines have room. -->
+    <DataTemplate x:Key="WrapLabel">
+        <TextBlock Text="{Binding}" TextWrapping="Wrap" TextAlignment="Center"/>
+    </DataTemplate>
+
     <!-- A square button holding one icon (the About page's links). -->
     <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Width" Value="44"/>
@@ -471,12 +477,40 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
-                    <Grid>
+                    <Grid ClipToBounds="True">
                         <Border x:Name="PART_Track" CornerRadius="3" Background="{StaticResource Glass2}"/>
                         <Border x:Name="PART_Indicator" CornerRadius="3" HorizontalAlignment="Left"
                                 Background="{TemplateBinding Foreground}"/>
+                        <!-- "Working, no percentage yet": a short bar that runs along the track. -->
+                        <Border x:Name="runner" Width="90" CornerRadius="3" HorizontalAlignment="Left" Visibility="Collapsed"
+                                Background="{TemplateBinding Foreground}">
+                            <Border.RenderTransform>
+                                <TranslateTransform X="-90"/>
+                            </Border.RenderTransform>
+                        </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <!-- Only when Windows' own "animate controls" setting is on; otherwise the dimmed bar below stays as the sign. -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsIndeterminate, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding IsVisible, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                <Condition Binding="{Binding Source={x:Static SystemParameters.ClientAreaAnimation}}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="runner" Property="Visibility" Value="Visible"/>
+                            <MultiDataTrigger.EnterActions>
+                                <BeginStoryboard x:Name="running">
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetName="runner"
+                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                         From="-90" To="900" Duration="0:0:1.8"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiDataTrigger.EnterActions>
+                            <MultiDataTrigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="running"/>
+                            </MultiDataTrigger.ExitActions>
+                        </MultiDataTrigger>
                         <!-- With no animation part the indicator fills the track; dim it so it reads as "working". -->
                         <Trigger Property="IsIndeterminate" Value="True">
                             <Setter TargetName="PART_Indicator" Property="Opacity" Value="0.45"/>
@@ -661,7 +695,7 @@
                 <ControlTemplate TargetType="TabItem">
                     <!-- 7 px: the strip's 10 px corner less its 3 px padding, so the two curves run parallel. -->
                     <Border x:Name="bd" Background="Transparent" CornerRadius="7" Padding="14,6" Margin="0,0,2,0" Cursor="Hand">
-                        <ContentPresenter ContentSource="Header" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                        <ContentPresenter x:Name="header" ContentSource="Header" VerticalAlignment="Center" RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -671,7 +705,9 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="bd" Property="Background" Value="{StaticResource Glass2}"/>
                             <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <!-- On the tab's own label only. Set on the tab, the weight was inherited by the
+                                 whole page the tab shows: every line of it came out semi-bold. -->
+                            <Setter TargetName="header" Property="TextElement.FontWeight" Value="SemiBold"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -697,7 +733,7 @@
                                   Stroke="{TemplateBinding Foreground}" StrokeThickness="1.7"
                                   StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                   Width="17" Height="17" Stretch="Uniform" VerticalAlignment="Center"/>
-                            <ContentPresenter ContentSource="Header" Margin="11,0,0,0" VerticalAlignment="Center"/>
+                            <ContentPresenter x:Name="header" ContentSource="Header" Margin="11,0,0,0" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -710,7 +746,8 @@
                             <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource GlassLine2}"/>
                             <Setter TargetName="icon" Property="Stroke" Value="{StaticResource Accent}"/>
                             <Setter Property="Foreground" Value="{StaticResource Text}"/>
-                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <!-- On the label only: set on the item, the page it shows inherited it (see the inner tabs). -->
+                            <Setter TargetName="header" Property="TextElement.FontWeight" Value="SemiBold"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -741,6 +778,91 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
                     <Border Height="1" Background="{StaticResource GlassLine}" Margin="4,8,4,8"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- A drop-down list (the partition picker when flashing a Samsung file): the box of a text
+         field with a chevron, and a list drawn like the menus. Windows' own grey box stood out. -->
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="bd" Background="Transparent" CornerRadius="7" Padding="10,6" Cursor="Hand">
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource AccentSoft}"/>
+                        </Trigger>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource Hover}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ComboBox">
+        <Setter Property="Foreground" Value="{StaticResource Text}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="MinHeight" Value="34"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <ToggleButton Focusable="False" ClickMode="Press"
+                                      IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Border x:Name="bd" Background="{StaticResource Well}" BorderBrush="{StaticResource GlassLine2}" BorderThickness="1"
+                                            CornerRadius="10" SnapsToDevicePixels="True">
+                                        <Path HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0" Data="M0,0 L4,4 L8,0"
+                                              Stroke="{StaticResource Dim}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                              StrokeLineJoin="Round"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Dim}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                        </ToggleButton>
+                        <ContentPresenter IsHitTestVisible="False" Margin="12,6,30,6" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                          Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+                        <Popup x:Name="PART_Popup" Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade"
+                               IsOpen="{TemplateBinding IsDropDownOpen}">
+                            <Border MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}" Margin="0,4,0,0"
+                                    Background="{StaticResource Raised}" BorderBrush="{StaticResource GlassLine2}" BorderThickness="1"
+                                    CornerRadius="10" Padding="4" SnapsToDevicePixels="True" RenderOptions.ClearTypeHint="Enabled"
+                                    TextElement.Foreground="{StaticResource Text}">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
