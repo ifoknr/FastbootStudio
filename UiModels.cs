@@ -222,7 +222,12 @@ namespace FastbootEnhance
         }
 
         public FastbootEnhance.Core.Adb.DeviceEntry Entry { get; }
-        public string Name => Entry.Name;
+        /// <summary>
+        /// A name in Latin letters is kept in reading order: right to left, the dot of ".config"
+        /// or the bracket of "photo (1).jpg" would be drawn at the wrong end. A name with Arabic
+        /// or Hebrew letters is left to read its own way.
+        /// </summary>
+        public string Name => Helper.ltrLatin(Entry.Name);
         public string Size => Entry.IsFolder ? "" : Helper.byte2AUnit(Entry.Size);
         public string Kind => Entry.IsFolder ? Properties.Resources.files_kind_folder
             : Entry.IsLink ? Properties.Resources.files_kind_link

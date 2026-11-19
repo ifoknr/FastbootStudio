@@ -3553,7 +3553,4 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="copy_all" xml:space="preserve">
     <value>انسخ الكل</value>
   </data>
-  <data name="device_checking" xml:space="preserve">
-    <value>نتأكد إن الجوال للحين موصّل…</value>
-  </data>
 </root>

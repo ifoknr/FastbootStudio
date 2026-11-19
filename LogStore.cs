@@ -42,7 +42,8 @@ namespace FastbootEnhance
             if (line == null)
                 return;
 
-            string stamped = DateTime.Now.ToString("HH:mm:ss") + "  " + line;
+            // Invariant: ":" in a format is the region's own time separator otherwise ("12.30.45").
+            string stamped = DateTime.Now.ToString("HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture) + "  " + line;
             lock (gate)
             {
                 text.Append(stamped).Append('\n');
@@ -98,7 +99,7 @@ namespace FastbootEnhance
                     string safe = new string((what ?? "").Select(c => Path.GetInvalidFileNameChars().Contains(c) ? '_' : c).ToArray());
                     string path = Path.Combine(Folder, "flash-" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + (safe.Length > 0 ? "-" + safe : "") + ".log");
                     file = new StreamWriter(path, false, new UTF8Encoding(false)) { AutoFlush = true };
-                    file.WriteLine("Fastboot Studio " + MainWindow.version + " · " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    file.WriteLine("Fastboot Studio " + MainWindow.version + " · " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture));
                     CurrentFile = path;
                     prune();
                     return path;

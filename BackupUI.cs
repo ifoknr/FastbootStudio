@@ -497,7 +497,7 @@ namespace FastbootEnhance
                     });
                     ThemedDialog.Done(Properties.Resources.backup_fb_booted);
                 });
-            }, "Boot / recovery images|*.img;*.bin|All files|*.*");
+            }, "Boot / recovery images|*.img;*.bin|All files|*.*", "boot_image");
         }
 
         // ------------------------------------------------------------------ adb device
@@ -865,7 +865,7 @@ namespace FastbootEnhance
                     File.WriteAllText(Path.Combine(folder, Sha256Sums.FileName), Sha256Sums.Format(hashes));
                     File.WriteAllText(Path.Combine(folder, "backup-info.txt"),
                         "Fastboot Studio backup\n" +
-                        "date\t" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss zzz") + "\n" +
+                        "date\t" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss zzz", System.Globalization.CultureInfo.InvariantCulture) + "\n" +
                         "serial\t" + device.Serial + "\n" +
                         "model\t" + (device.Model ?? "") + "\n" +
                         "product\t" + (device.Product ?? "") + "\n" +
@@ -982,7 +982,7 @@ namespace FastbootEnhance
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                     });
                 }, delegate { });
-            });
+            }, "backup_verify");
         }
 
         // ------------------------------------------------------------------ files

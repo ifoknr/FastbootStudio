@@ -3553,7 +3553,4 @@ super 中的分区（system、vendor…）不包括在内。继续吗？</value>
   <data name="copy_all" xml:space="preserve">
     <value>全部复制</value>
   </data>
-  <data name="device_checking" xml:space="preserve">
-    <value>正在确认手机仍然连接…</value>
-  </data>
 </root>

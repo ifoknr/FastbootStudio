@@ -956,7 +956,8 @@ namespace FastbootEnhance
         static void setLastCommand(string command, TimeSpan took)
         {
             string shown = command.Length > 48 ? command.Substring(0, 45) + "…" : command;
-            MainWindow.THIS.status_last.Text = string.Format(Properties.Resources.status_last, shown,
+            // A command is Latin from end to end; its closing quote or dash stays where it was typed.
+            MainWindow.THIS.status_last.Text = string.Format(Properties.Resources.status_last, Helper.ltr(shown),
                 string.Format(Properties.Resources.status_seconds, took.TotalSeconds.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)));
         }
 
@@ -2132,6 +2133,46 @@ namespace FastbootEnhance
             });
         }
 
+        /// <summary>
+        /// "Copy value" and "Copy all" on a list's right-click menu, and Ctrl+C for the selected
+        /// rows. <paramref name="one"/> gives what a single row copies, <paramref name="line"/>
+        /// its line in "Copy all".
+        /// </summary>
+        static void addCopyMenu(System.Windows.Controls.ListView list, Func<object, string> one, Func<object, string> line)
+        {
+            System.Windows.Controls.MenuItem copyOne = new System.Windows.Controls.MenuItem { Header = Properties.Resources.copy_value };
+            copyOne.Click += delegate
+            {
+                List<string> chosen = list.SelectedItems.Cast<object>().Select(one).Where(v => v != null).ToList();
+                if (chosen.Count > 0)
+                    Helper.copyText(string.Join("\n", chosen));
+            };
+            System.Windows.Controls.MenuItem copyAll = new System.Windows.Controls.MenuItem { Header = Properties.Resources.copy_all };
+            copyAll.Click += delegate
+            {
+                List<string> all = list.Items.Cast<object>().Select(line).Where(v => v != null).ToList();
+                if (all.Count > 0)
+                    Helper.copyText(string.Join("\n", all));
+            };
+            System.Windows.Controls.ContextMenu menu = new System.Windows.Controls.ContextMenu();
+            menu.Items.Add(copyOne);
+            menu.Items.Add(copyAll);
+            menu.Opened += delegate { copyOne.IsEnabled = list.SelectedItems.Count > 0; };
+            list.ContextMenu = menu;
+
+            list.KeyDown += delegate (object sender, System.Windows.Input.KeyEventArgs e)
+            {
+                if (e.Key != System.Windows.Input.Key.C
+                    || (System.Windows.Input.Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) == 0)
+                    return;
+                List<string> chosen = list.SelectedItems.Cast<object>().Select(line).Where(v => v != null).ToList();
+                if (chosen.Count == 0)
+                    return;
+                Helper.copyText(string.Join("\n", chosen));
+                e.Handled = true;
+            };
+        }
+
         public static void init()
         {
             devices = new List<fastboot_devices_row>();
@@ -2272,7 +2313,7 @@ namespace FastbootEnhance
             {
                 whenDevicePresent(delegate
                 {
-                    Helper.fileSelect(new Helper.PathSelectCallback(bootOnce), "Boot / recovery images|*.img;*.bin|All files|*.*");
+                    Helper.fileSelect(new Helper.PathSelectCallback(bootOnce), "Boot / recovery images|*.img;*.bin|All files|*.*", "boot_image");
                 });
             };
 
@@ -2338,7 +2379,7 @@ namespace FastbootEnhance
                         }
                         string command = "flash " + ext_arg + " " + AdbCommand.WindowsArgument(target) + " " + AdbCommand.WindowsArgument(path);
                         checkBootImage(target, path, delegate { runStep(new StepCmdRunnerParam(command, -1, true)); });
-                    }), "Image File|*.img;*.image");
+                    }), "Image File|*.img;*.image", "partition_image");
                 });
             };
 
@@ -2479,9 +2520,17 @@ namespace FastbootEnhance
                     Helper.fileSelect(new Helper.PathSelectCallback(delegate (string path)
                     {
                         openPayloadThenFlash(path, serial);
-                    }), "Payload or OTA package|*.bin;*.zip|All Files|*.*");
+                    }), "Payload or OTA package|*.bin;*.zip|All Files|*.*", "payload");
                 });
             };
+
+            // What the phone reported can be copied for a support thread: right-click, or Ctrl+C.
+            addCopyMenu(MainWindow.THIS.fastboot_info_list,
+                item => item is fastboot_info_row row ? row.value : null,
+                item => item is fastboot_info_row row ? row.name + ": " + row.value : null);
+            addCopyMenu(MainWindow.THIS.fastboot_partition_list,
+                item => item is fastboot_partition_row row ? row.name : null,
+                item => item is fastboot_partition_row row ? row.name + "\t" + row.size + "\t" + row.is_logical : null);
 
             listHelper = new Helper.ListHelper<fastboot_partition_row>(MainWindow.THIS.fastboot_partition_list,
                 new Helper.ListHelper<fastboot_partition_row>.Filter(delegate (fastboot_partition_row row)

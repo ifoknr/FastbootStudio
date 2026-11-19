@@ -54,6 +54,8 @@ namespace FastbootEnhance
                 };
             }
 
+            // The button shows only "✕": a screen reader gets the words of its tool tip.
+            AutomationProperties.SetName(W.help_close, Properties.Resources.help_close);
             W.help_close.Click += delegate { close(); };
             W.help_scrim.MouseLeftButtonDown += delegate { close(); };
             W.help_ask.Click += delegate { openLink(AskUrl); };

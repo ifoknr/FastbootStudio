@@ -3553,7 +3553,4 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
   <data name="copy_all" xml:space="preserve">
     <value>Copy all</value>
   </data>
-  <data name="device_checking" xml:space="preserve">
-    <value>Checking that the phone is still there…</value>
-  </data>
 </root>

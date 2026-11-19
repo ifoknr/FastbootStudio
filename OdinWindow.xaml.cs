@@ -485,7 +485,7 @@ namespace FastbootEnhance
                 Multiselect = true,
                 Filter = Properties.Resources.odin_flash_filter + "|*.tar.md5;*.tar;*.img;*.bin;*.lz4;*.mbn;*.elf|*.*|*.*",
             };
-            if (open.ShowDialog(this) == true)
+            if (Helper.showOpen(open, "odin", this))
                 readFiles(open.FileNames);
         }
 

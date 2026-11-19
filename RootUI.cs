@@ -47,6 +47,24 @@ namespace FastbootEnhance
             W.root_flash.Click += delegate { flash(); };
             W.root_boot_once.Click += delegate { bootOnce(); };
             W.root_open_folder.Click += delegate { openFolder(); };
+
+            // The stock image (or the OTA) can be dropped on step 1 instead of picked.
+            W.root_step1.AllowDrop = true;
+            DragEventHandler over = delegate (object sender, DragEventArgs e)
+            {
+                e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) && !busy ? DragDropEffects.Copy : DragDropEffects.None;
+                e.Handled = true;
+            };
+            W.root_step1.DragEnter += over;
+            W.root_step1.DragOver += over;
+            W.root_step1.Drop += delegate (object sender, DragEventArgs e)
+            {
+                string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
+                if (files == null || files.Length != 1 || busy || !File.Exists(files[0]))
+                    return;
+                e.Handled = true;
+                useImage(files[0]);
+            };
             foreach (var radio in new[] { W.root_tool_magisk, W.root_tool_kernelsu, W.root_tool_apatch })
                 radio.Checked += delegate { toolChanged(); };
             refresh();
@@ -150,7 +168,14 @@ namespace FastbootEnhance
 
         static void pick()
         {
-            Helper.fileSelect(new Helper.PathSelectCallback(delegate (string path)
+            Helper.fileSelect(new Helper.PathSelectCallback(useImage), "Boot image or OTA|*.img;*.bin;*.zip|All files|*.*", "root_image");
+        }
+
+        /// <summary>Step 1 with the file at <paramref name="path"/>, picked in the dialog or dropped on the step.</summary>
+        static void useImage(string path)
+        {
+            if (busy)
+                return;
             {
                 RootTool chosen = tool;
                 string error = null, note = null;
@@ -236,7 +261,7 @@ namespace FastbootEnhance
                     W.root_image_text.Text = describe(partition, analysis) + (note != null ? "\n" + note : "");
                     log("stock " + partition + " ready in " + folder + " (from " + path + ")");
                 });
-            }), "Boot image or OTA|*.img;*.bin;*.zip|All files|*.*");
+            }
         }
 
         /// <summary>"init_boot.img · Android 14 · 2024-09 · android14-6.1 · stock".</summary>

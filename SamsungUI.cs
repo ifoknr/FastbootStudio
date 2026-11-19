@@ -50,7 +50,7 @@ namespace FastbootEnhance
 
             W.samsung_open.Click += delegate { pickFiles(); };
             W.samsung_open_other.Click += delegate { pickFiles(); };
-            W.samsung_open_folder_pick.Click += delegate { Helper.pathSelect(path => open(new[] { path })); };
+            W.samsung_open_folder_pick.Click += delegate { Helper.pathSelect(path => open(new[] { path }), "samsung"); };
             W.samsung_close.Click += delegate
             {
                 if (!busy)
@@ -151,7 +151,7 @@ namespace FastbootEnhance
                 Multiselect = true,
                 Filter = Properties.Resources.samsung_filter + "|*.tar.md5;*.tar;*.zip|" + Properties.Resources.all_files + "|*.*",
             };
-            if (dialog.ShowDialog() == true)
+            if (Helper.showOpen(dialog, "samsung"))
                 open(dialog.FileNames);
         }
 
@@ -256,23 +256,44 @@ namespace FastbootEnhance
                     }
                     log("unzipping " + e.Name);
                     string part = target + ".part";
-                    using (Stream input = e.Open())
-                    using (FileStream output = new FileStream(part, FileMode.Create, FileAccess.Write, FileShare.None, 1 << 20))
+                    try
                     {
-                        int n;
-                        while ((n = input.Read(buffer, 0, buffer.Length)) > 0)
+                        using (Stream input = e.Open())
+                        using (FileStream output = new FileStream(part, FileMode.Create, FileAccess.Write, FileShare.None, 1 << 20))
                         {
-                            token.ThrowIfCancellationRequested();
-                            output.Write(buffer, 0, n);
-                            done += n;
-                            int percent = (int)(done * 100 / total);
-                            ui(delegate
+                            int n;
+                            int shown = -1;
+                            while ((n = input.Read(buffer, 0, buffer.Length)) > 0)
                             {
-                                W.samsung_opening_bar.IsIndeterminate = false;
-                                W.samsung_opening_bar.Value = percent;
-                                W.samsung_opening_text.Text = string.Format(Properties.Resources.samsung_unzipping, percent);
-                            });
+                                token.ThrowIfCancellationRequested();
+                                output.Write(buffer, 0, n);
+                                done += n;
+                                int percent = (int)(done * 100 / total);
+                                // One update per percent, not one per megabyte read.
+                                if (percent == shown)
+                                    continue;
+                                shown = percent;
+                                ui(delegate
+                                {
+                                    W.samsung_opening_bar.IsIndeterminate = false;
+                                    W.samsung_opening_bar.Value = percent;
+                                    W.samsung_opening_text.Text = string.Format(Properties.Resources.samsung_unzipping, percent);
+                                });
+                            }
                         }
+                    }
+                    catch
+                    {
+                        // Cancelled, the disk filled up or the zip is damaged: gigabytes of a
+                        // half-unpacked tar are not left beside the firmware.
+                        try
+                        {
+                            File.Delete(part);
+                        }
+                        catch (Exception x) when (x is IOException || x is UnauthorizedAccessException)
+                        {
+                        }
+                        throw;
                     }
                     if (File.Exists(target))
                         File.Delete(target);

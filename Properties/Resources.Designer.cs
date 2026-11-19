@@ -10093,14 +10093,5 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("copy_all", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Checking that the phone is still there….
-        /// </summary>
-        public static string device_checking {
-            get {
-                return ResourceManager.GetString("device_checking", resourceCulture);
-            }
-        }
     }
 }

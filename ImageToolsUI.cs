@@ -137,7 +137,7 @@ namespace FastbootEnhance
                 Multiselect = true,
                 Filter = "Android images|*.img;*.simg;*.raw;*.bin;*sparsechunk*;*.img.*|All files|*.*",
             };
-            if (dialog.ShowDialog() == true)
+            if (Helper.showOpen(dialog, "image"))
                 open(dialog.FileNames);
         }
 

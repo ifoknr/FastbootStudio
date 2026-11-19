@@ -3553,7 +3553,4 @@ Odin에서 AP에 {1}을(를) 넣고, BL, CP, CSC는 같은 펌웨어의 것을 �
   <data name="copy_all" xml:space="preserve">
     <value>모두 복사</value>
   </data>
-  <data name="device_checking" xml:space="preserve">
-    <value>휴대폰이 아직 연결되어 있는지 확인 중…</value>
-  </data>
 </root>

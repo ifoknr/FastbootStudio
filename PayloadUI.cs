@@ -159,7 +159,7 @@ namespace FastbootEnhance
                 Helper.fileSelect(new Helper.PathSelectCallback(delegate (string ret)
                 {
                     onLoad(ret);
-                }), "Payload or OTA package|*.bin;*.zip|All Files|*.*");
+                }), "Payload or OTA package|*.bin;*.zip|All Files|*.*", "payload");
             };
 
             MainWindow.THIS.payload_remove.Click += delegate
@@ -240,7 +240,7 @@ namespace FastbootEnhance
                         string.Join("\n", existing.Select(Path.GetFileName))), Properties.Resources.confirm_title, true))
                     return;
                 startExtraction(selected, path, ignoreUnsupported, skipChecks);
-            }));
+            }), "payload_out");
         }
 
         static void startExtraction(

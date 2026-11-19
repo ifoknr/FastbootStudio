@@ -3553,7 +3553,4 @@ Odin で {1} を AP に入れ、同じファームウェアの BL、CP、CSC と
   <data name="copy_all" xml:space="preserve">
     <value>すべてコピー</value>
   </data>
-  <data name="device_checking" xml:space="preserve">
-    <value>スマートフォンがまだ接続されているか確認中…</value>
-  </data>
 </root>

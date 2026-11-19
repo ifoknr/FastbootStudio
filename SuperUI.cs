@@ -376,7 +376,7 @@ namespace FastbootEnhance
             if (busy)
                 return;
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog { Filter = ImageFilter };
-            if (dialog.ShowDialog() != true)
+            if (!Helper.showOpen(dialog, "super"))
                 return;
 
             try
@@ -437,7 +437,7 @@ namespace FastbootEnhance
             if (busy)
                 return;
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog { Multiselect = true, Filter = ImageFilter };
-            if (dialog.ShowDialog() == true)
+            if (Helper.showOpen(dialog, "super_images"))
                 addFiles(dialog.FileNames);
         }
 
