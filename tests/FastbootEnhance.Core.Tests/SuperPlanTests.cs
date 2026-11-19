@@ -288,6 +288,25 @@ namespace FastbootEnhance.Core.Tests
             Assert.Throws<InvalidDataException>(() => SuperImage.Read(new MemoryStream(empty)));
         }
 
+        [Theory]
+        [InlineData("..\\..\\evil")]
+        [InlineData("../evil")]
+        [InlineData("a:b")]
+        [InlineData("..")]
+        public void A_partition_name_with_a_path_in_it_is_a_damaged_table(string name)
+        {
+            // The name is what an extracted partition's file is called.
+            SuperBuilder builder = new SuperBuilder();
+            builder.AddGroup("main", 0);
+            builder.AddPartition(name, "main", new MemoryStream(Image(4, 9)));
+            builder.AddPartition("vendor_a", "main", new MemoryStream(Image(4, 10)));
+            MemoryStream image = new MemoryStream();
+            builder.Write(image, 16L << 20);
+
+            InvalidDataException e = Assert.Throws<InvalidDataException>(() => SuperImage.Read(image));
+            Assert.Contains("not a plain name", e.Message);
+        }
+
         [Fact]
         public void An_imported_layout_rebuilds_the_same_image()
         {

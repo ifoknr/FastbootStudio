@@ -320,6 +320,13 @@ namespace FastbootEnhance.Core.Images
                     problem = "partition " + name + " points past the extent table";
                     return false;
                 }
+                // The name becomes a file name when the partition is extracted ("system_a.img"):
+                // one with a path in it ("..\\..\\x") comes from a crafted table, not from a phone.
+                if (!IsPlainName(name))
+                {
+                    problem = "a partition name is not a plain name";
+                    return false;
+                }
                 partitions.Add(new SuperPartition(name, attributes,
                     group < groups.Count ? groups[(int)group].Name : "?",
                     extents.Skip((int)first).Take((int)count).ToList()));
@@ -334,6 +341,19 @@ namespace FastbootEnhance.Core.Images
                 // first_logical_sector@0, alignment@8, alignment_offset@12, size@16, partition_name[36]@24, flags@60
                 .Select(d => new SuperBlockDevice(CString(d, 24, 36), BitConverter.ToUInt64(d, 16), BitConverter.ToUInt64(d, 0), BitConverter.ToUInt32(d, 8)))
                 .ToList();
+            return true;
+        }
+
+        /// <summary>No separators, drive colons, wildcards or control characters, and not "." or "..".</summary>
+        static bool IsPlainName(string name)
+        {
+            if (name.Length == 0 || name == "." || name == "..")
+                return false;
+            foreach (char c in name)
+            {
+                if (c < 0x20 || c > 0x7E || "/\\:*?\"<>|".IndexOf(c) >= 0)
+                    return false;
+            }
             return true;
         }
 

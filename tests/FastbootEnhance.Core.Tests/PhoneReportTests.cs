@@ -257,6 +257,20 @@ namespace FastbootEnhance.Core.Tests
             Assert.Empty(phone.Conflicts);
         }
 
+        [Fact]
+        public void List_items_that_are_not_objects_are_passed_over_not_thrown_on()
+        {
+            PhoneReport phone = PhoneReport.Parse(Basic);
+            phone.ApplyCompanion(true, Companion.Substring(0, Companion.IndexOf("@@", StringComparison.Ordinal) + 3)
+                + "{\"modules\":[7,\"x\",null,{\"id\":\"zygisk\",\"name\":\"Zygisk\"}],"
+                + "\"conflicts\":[3,\"file\",{\"kind\":\"prop\",\"key\":\"ro.x\",\"values\":[1,{\"module\":\"zygisk\",\"value\":\"1\"}]}]}");
+            Assert.Equal(CompanionState.Ready, phone.Companion);
+            Assert.Equal(1, phone.ModuleCount);
+            ModuleConflict conflict = Assert.Single(phone.Conflicts);
+            Assert.Equal("ro.x", conflict.Key);
+            Assert.Equal(new[] { "Zygisk" }, conflict.Modules);
+        }
+
         [Theory]
         [InlineData("Mediatek", "", "", "MediaTek")]
         [InlineData("QTI", "", "", "Qualcomm")]

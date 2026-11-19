@@ -691,6 +691,10 @@ namespace FastbootEnhance.Core.Adb
         static string Str(JsonElement element, string name)
         {
             JsonElement value;
+            // A list item that is not an object (a number, a string) has no properties to ask
+            // for: TryGetProperty would throw InvalidOperationException, which nothing here catches.
+            if (element.ValueKind != JsonValueKind.Object)
+                return null;
             if (!element.TryGetProperty(name, out value))
                 return null;
             string text = value.ValueKind == JsonValueKind.String ? value.GetString()
@@ -702,6 +706,8 @@ namespace FastbootEnhance.Core.Adb
         static int? IntOf(JsonElement element, string name)
         {
             JsonElement value;
+            if (element.ValueKind != JsonValueKind.Object)
+                return null;
             int parsed;
             if (!element.TryGetProperty(name, out value))
                 return null;
@@ -713,6 +719,8 @@ namespace FastbootEnhance.Core.Adb
         static bool? BoolOf(JsonElement element, string name)
         {
             JsonElement value;
+            if (element.ValueKind != JsonValueKind.Object)
+                return null;
             if (!element.TryGetProperty(name, out value))
                 return null;
             if (value.ValueKind == JsonValueKind.True) return true;
@@ -723,6 +731,8 @@ namespace FastbootEnhance.Core.Adb
         static IEnumerable<string> Strings(JsonElement element, string name)
         {
             JsonElement value;
+            if (element.ValueKind != JsonValueKind.Object)
+                yield break;
             if (!element.TryGetProperty(name, out value) || value.ValueKind != JsonValueKind.Array)
                 yield break;
             foreach (JsonElement item in value.EnumerateArray())
