@@ -823,10 +823,21 @@ namespace FastbootEnhance
                                 ByteSize.Format(copied.Bytes), expected > 0 ? ByteSize.Format(expected) : "?"));
                         }
                         // No listed size, nothing to compare with: a copy that cannot be checked is not a backup.
+                        // The phone is asked for the partition's own SHA-256 instead; the copy is kept
+                        // only when the two agree.
                         if (expected <= 0)
                         {
-                            log("  " + row.Name + ": " + copied.Bytes + " bytes received, but the phone listed no size");
-                            throw new IOException(string.Format(Properties.Resources.backup_size_unknown, ByteSize.Format(copied.Bytes)));
+                            Adb.Result hashed = Adb.Run(AdbCommand.Shell(device.Serial,
+                                AdbCommand.AsRoot(AdbCommand.HashPartitionCommand(directory, row.Name), access)), TimeSpan.FromMinutes(15));
+                            token.ThrowIfCancellationRequested();
+                            string phoneHash = hashed.Succeeded ? AdbCommand.ParseHash(hashed.Output) : null;
+                            if (!AdbCommand.CopyIsWhole(expected, copied.Bytes, copied.Sha256, phoneHash))
+                            {
+                                log("  " + row.Name + ": " + copied.Bytes + " bytes received, but the phone listed no size"
+                                    + (phoneHash == null ? " and gave no hash" : " and its hash differs: " + phoneHash));
+                                throw new IOException(string.Format(Properties.Resources.backup_size_unknown, ByteSize.Format(copied.Bytes)));
+                            }
+                            log("  " + row.Name + ": no listed size; the phone's own hash matches");
                         }
                         // adb itself failed (the phone left, the server died) even though the count matched.
                         if (adbExit != 0)
