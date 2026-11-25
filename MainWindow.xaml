@@ -21,12 +21,12 @@
 
         <!-- The device bar above every page: which phone, in which mode, and the actions that apply to it. -->
         <local:Rail.TopBar>
-            <Border x:Name="device_bar" Height="52" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,0,0,1" Padding="20,0">
+            <Border x:Name="device_bar" Height="46" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,0,0,1" Padding="20,0">
                 <DockPanel VerticalAlignment="Center">
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button x:Name="bar_cancel" Style="{StaticResource DangerButton}" MinHeight="32" Margin="0,0,8,0" Visibility="Collapsed"
+                        <Button x:Name="bar_cancel" Style="{StaticResource DangerButton}" MinHeight="30" Margin="0,0,8,0" Visibility="Collapsed"
                                 Content="{x:Static props:Resources.bar_cancel}"/>
-                        <Button x:Name="bar_reboot" Style="{StaticResource GhostButton}" MinHeight="32" Margin="0,0,8,0" Visibility="Collapsed"
+                        <Button x:Name="bar_reboot" Style="{StaticResource GhostButton}" MinHeight="30" Margin="0,0,8,0" Visibility="Collapsed"
                                 Content="{x:Static props:Resources.bar_reboot}">
                             <Button.ContextMenu>
                                 <ContextMenu Placement="Bottom">
@@ -37,9 +37,9 @@
                                 </ContextMenu>
                             </Button.ContextMenu>
                         </Button>
-                        <Button x:Name="bar_disconnect" Style="{StaticResource GhostButton}" MinHeight="32" Visibility="Collapsed"
+                        <Button x:Name="bar_disconnect" Style="{StaticResource GhostButton}" MinHeight="30" Visibility="Collapsed"
                                 Foreground="{StaticResource Danger}" Content="{x:Static props:Resources.fastboot_remove_device}"/>
-                        <Button x:Name="bar_usb_check" Style="{StaticResource GhostButton}" MinHeight="32" Content="{x:Static props:Resources.usb_check}"/>
+                        <Button x:Name="bar_usb_check" Style="{StaticResource GhostButton}" MinHeight="30" Content="{x:Static props:Resources.usb_check}"/>
                     </StackPanel>
                     <Border DockPanel.Dock="Left" Width="34" Height="34" CornerRadius="10" Background="{StaticResource Glass2}"
                             BorderBrush="{StaticResource GlassLine2}" BorderThickness="1" VerticalAlignment="Center">
@@ -67,7 +67,7 @@
 
         <!-- The status bar: how many phones fastboot sees, the last command, the tools' versions. -->
         <local:Rail.BottomBar>
-            <Border x:Name="status_bar" Height="26" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,1,0,0" Padding="16,0">
+            <Border x:Name="status_bar" Height="24" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,1,0,0" Padding="16,0">
                 <DockPanel VerticalAlignment="Center">
                     <TextBlock x:Name="status_tools" DockPanel.Dock="Right" Style="{StaticResource StatusText}" FlowDirection="LeftToRight" FontFamily="{StaticResource Mono}"/>
                     <TextBlock x:Name="status_devices" Style="{StaticResource StatusText}"/>
@@ -107,7 +107,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="28,20,28,16">
+                <Grid Grid.Row="1" Margin="24,10,24,16">
 
                     <!-- Device picker -->
                     <Border x:Name="fastboot_devices_page" Style="{StaticResource Card}">
@@ -147,7 +147,7 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="12"/>
                                         <ColumnDefinition Width="380"/>
                                     </Grid.ColumnDefinitions>
 
@@ -168,7 +168,7 @@
                                     <!-- The cards of this column scroll when the window is too short for them; a card is never cut by the window edge. -->
                                     <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
                                     <StackPanel>
-                                        <Border x:Name="fastboot_action_bar" Style="{StaticResource Card}" Padding="20,16" Margin="0,0,0,12">
+                                        <Border x:Name="fastboot_action_bar" Style="{StaticResource Card}" Margin="0,0,0,12">
                                             <StackPanel>
                                                 <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.quick_actions}"/>
                                                 <UniformGrid Columns="2">
@@ -206,7 +206,7 @@
                                                         <DataTemplate>
                                                             <Grid Margin="0,0,0,10">
                                                                 <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="18"/>
+                                                                    <ColumnDefinition Width="12"/>
                                                                     <ColumnDefinition Width="*"/>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Ellipse Width="8" Height="8" Fill="{Binding Brush}" VerticalAlignment="Top" Margin="0,5,0,0"/>
@@ -226,7 +226,7 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="12"/>
                                         <ColumnDefinition Width="240"/>
                                     </Grid.ColumnDefinitions>
 
@@ -267,7 +267,7 @@
                                     </Border>
 
                                     <!-- How super is shared out; fastbootd only lists logical partitions. -->
-                                    <Border Style="{StaticResource Card}" Margin="0,18,0,0">
+                                    <Border Style="{StaticResource Card}" Margin="0,12,0,0">
                                         <StackPanel>
                                             <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.super_space_title}"/>
                                             <ProgressBar x:Name="fastboot_super_bar" Height="8" Margin="0,0,0,10" Maximum="100"/>
@@ -282,7 +282,7 @@
                     </Grid>
                 </Grid>
 
-                <ProgressBar x:Name="fastboot_progress_bar" Grid.Row="2" Margin="28,0,28,16" Visibility="Hidden"/>
+                <ProgressBar x:Name="fastboot_progress_bar" Grid.Row="2" Margin="24,0,24,12" Visibility="Hidden"/>
             </Grid>
         </TabItem>
         <TabItem x:Name="phone_tab" Header="{x:Static props:Resources.nav_phone}" Tag="{StaticResource IconPhoneInfo}">
@@ -310,7 +310,7 @@
                 </Border>
 
                 <!-- No phone in Android yet -->
-                <Border x:Name="phone_empty" Grid.Row="1" Margin="28,18,28,18" Style="{StaticResource Card}">
+                <Border x:Name="phone_empty" Grid.Row="1" Margin="24,10,24,16" Style="{StaticResource Card}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="460">
                         <Path Data="{StaticResource IconPhoneInfo}" Stroke="{StaticResource Faint}" StrokeThickness="1.6" Width="34" Height="34"
                               Stretch="Uniform" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0,0,0,14"/>
@@ -324,16 +324,16 @@
                 <!-- The phone: the page scrolls as a whole, so every backup is in the table on a small screen too -->
                 <ScrollViewer x:Name="phone_page" Grid.Row="1" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
                     <!-- Three cards side by side on a wide window; on a narrower one the Companion goes under the other two (PhoneUI.layout). -->
-                    <Grid x:Name="phone_grid" Margin="28,18,28,18">
+                    <Grid x:Name="phone_grid" Margin="24,10,24,16">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="16"/>
+                            <RowDefinition Height="12"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition x:Name="phone_gap_column" Width="16"/>
                             <ColumnDefinition x:Name="phone_third_column" Width="*"/>
@@ -525,21 +525,21 @@
                      body its height); before, the live log was squeezed until it was cut off. -->
                 <ScrollViewer x:Name="flash_scroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                               Focusable="False">
-                <Grid x:Name="flash_body" Margin="28,16,28,20">
+                <Grid x:Name="flash_body" Margin="24,10,24,16">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="12"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <!-- The result, in place of a pop-up: how many partitions were written, in how long. -->
                     <Border x:Name="flash_result" Style="{StaticResource Card}" Background="{StaticResource OkSoft}" BorderBrush="{StaticResource OkLine}"
-                            Padding="16,12" Margin="0,0,0,16" Visibility="Collapsed">
+                            Padding="16,12" Margin="0,0,0,12" Visibility="Collapsed">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
-                                <Button x:Name="flash_result_log" Style="{StaticResource GhostButton}" MinHeight="32" Margin="0,0,8,0" Content="{x:Static props:Resources.flash_result_log}"/>
-                                <Button x:Name="flash_result_reboot" Style="{StaticResource AccentButton}" MinHeight="32" Content="{x:Static props:Resources.flash_result_reboot}"/>
+                                <Button x:Name="flash_result_log" Style="{StaticResource GhostButton}" MinHeight="30" Margin="0,0,8,0" Content="{x:Static props:Resources.flash_result_log}"/>
+                                <Button x:Name="flash_result_reboot" Style="{StaticResource AccentButton}" MinHeight="30" Content="{x:Static props:Resources.flash_result_reboot}"/>
                             </StackPanel>
                             <Border DockPanel.Dock="Left" Width="34" Height="34" CornerRadius="10" Background="{StaticResource OkSoft}" BorderBrush="{StaticResource OkLine}" BorderThickness="1" Margin="0,0,14,0">
                                 <Path FlowDirection="LeftToRight" Data="M5,12.5 L10,17.5 L19.5,7" Stroke="{StaticResource Ok}" StrokeThickness="2.4" Width="16" Height="16" Stretch="Uniform"
@@ -581,7 +581,7 @@
                     <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.25*"/>
-                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="*" MinWidth="290"/>
                         </Grid.ColumnDefinitions>
 
@@ -639,12 +639,12 @@
                         <Grid Grid.Column="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="16"/>
+                                <RowDefinition Height="12"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Border Style="{StaticResource Card}">
                                 <StackPanel>
-                                    <Button x:Name="fastboot_flash_payload" Style="{StaticResource AccentButton}" MinHeight="42" Margin="0,0,0,14"
+                                    <Button x:Name="fastboot_flash_payload" Style="{StaticResource AccentButton}" MinHeight="38" Margin="0,0,0,14"
                                             Content="{x:Static props:Resources.fastboot_flash_payload}"/>
                                     <CheckBox x:Name="ignore_unknown_part" Margin="0,0,0,10" Content="{x:Static props:Resources.fastboot_ignore_unknown}"/>
                                     <CheckBox x:Name="flash_both_slots" Margin="0,0,0,4" Content="{x:Static props:Resources.flash_both_slots}"/>
@@ -684,14 +684,14 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="28,16,28,20">
+                <Grid Grid.Row="1" Margin="24,10,24,16">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <!-- Device over adb -->
-                    <Border Style="{StaticResource Card}" Padding="20,14" Margin="0,0,0,14">
+                    <Border Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,12">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -780,7 +780,7 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="18"/>
+                                    <ColumnDefinition Width="12"/>
                                     <ColumnDefinition Width="240"/>
                                 </Grid.ColumnDefinitions>
 
@@ -859,7 +859,7 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="18"/>
+                                    <ColumnDefinition Width="12"/>
                                     <ColumnDefinition Width="240"/>
                                 </Grid.ColumnDefinitions>
 
@@ -958,14 +958,14 @@
                 </Border>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <Grid Margin="28,16,28,20">
+                    <Grid Margin="24,10,24,16">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="300"/>
                         </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <Border x:Name="root_step1" Style="{StaticResource Card}" Padding="18,14" Margin="0,0,0,10">
+                        <Border x:Name="root_step1" Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,10">
                             <StackPanel>
                                 <DockPanel Margin="0,0,0,8">
                                     <Border x:Name="root_step1_no" Style="{StaticResource StepNo}">
@@ -992,7 +992,7 @@
                                 </DockPanel>
                             </StackPanel>
                         </Border>
-                        <Border x:Name="root_step2" Style="{StaticResource Card}" Padding="18,14" Margin="0,0,0,10">
+                        <Border x:Name="root_step2" Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,10">
                             <StackPanel>
                                 <DockPanel Margin="0,0,0,8">
                                     <Border x:Name="root_step2_no" Style="{StaticResource StepNo}">
@@ -1014,7 +1014,7 @@
                                 </DockPanel>
                             </StackPanel>
                         </Border>
-                        <Border x:Name="root_step3" Style="{StaticResource Card}" Padding="18,14" Margin="0,0,0,10">
+                        <Border x:Name="root_step3" Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,10">
                             <StackPanel>
                                 <DockPanel Margin="0,0,0,8">
                                     <Border x:Name="root_step3_no" Style="{StaticResource StepNo}">
@@ -1036,7 +1036,7 @@
                                 </DockPanel>
                             </StackPanel>
                         </Border>
-                        <Border x:Name="root_step4" Style="{StaticResource Card}" Padding="18,14" Margin="0,0,0,10">
+                        <Border x:Name="root_step4" Style="{StaticResource Card}" Padding="16,12" Margin="0,0,0,10">
                             <StackPanel>
                                 <DockPanel Margin="0,0,0,8">
                                     <Border x:Name="root_step4_no" Style="{StaticResource StepNo}">
@@ -1103,7 +1103,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="28,20,28,20">
+                <Grid Grid.Row="1" Margin="24,10,24,16">
                     <Grid x:Name="payload_before_load" AllowDrop="True" Background="Transparent">
                         <Grid Width="560" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Rectangle RadiusX="16" RadiusY="16" Stroke="{StaticResource GlassLine2}" StrokeThickness="1.5" StrokeDashArray="5 4" Fill="{StaticResource Glass}"/>
@@ -1120,7 +1120,7 @@
                                     <Border Style="{StaticResource FormatChip}"><TextBlock Text=".zip (OTA)"/></Border>
                                 </WrapPanel>
                                 <Grid HorizontalAlignment="Center">
-                                    <Button x:Name="payload_load_btn" Style="{StaticResource AccentButton}" MinWidth="180" MinHeight="40"
+                                    <Button x:Name="payload_load_btn" Style="{StaticResource AccentButton}" MinWidth="180" MinHeight="36"
                                             Content="{x:Static props:Resources.payload_browse}"/>
                                     <ProgressBar x:Name="payload_opening" Width="260" IsIndeterminate="True" Visibility="Hidden" VerticalAlignment="Center"/>
                                 </Grid>
@@ -1147,7 +1147,7 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="12"/>
                                         <ColumnDefinition Width="250"/>
                                     </Grid.ColumnDefinitions>
 
@@ -1186,7 +1186,7 @@
                                     <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
                                     <Border Style="{StaticResource Card}" VerticalAlignment="Top">
                                         <StackPanel>
-                                            <Button x:Name="payload_extract" Style="{StaticResource AccentButton}" MinHeight="40" Margin="0,0,0,18"
+                                            <Button x:Name="payload_extract" Style="{StaticResource AccentButton}" MinHeight="36" Margin="0,0,0,18"
                                                     Content="{x:Static props:Resources.payload_extract_image}"/>
                                             <Border x:Name="payload_extract_options">
                                                 <StackPanel>
@@ -1241,7 +1241,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="28,20,28,20">
+                <Grid Grid.Row="1" Margin="24,10,24,16">
                     <!-- Nothing open: drop zone -->
                     <Grid x:Name="images_empty" AllowDrop="True" Background="Transparent">
                         <Grid Width="600" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -1263,7 +1263,7 @@
                                     <Border Style="{StaticResource FormatChip}"><TextBlock Text=".zip"/></Border>
                                 </WrapPanel>
                                 <Grid HorizontalAlignment="Center">
-                                    <Button x:Name="images_open" Style="{StaticResource AccentButton}" MinWidth="180" MinHeight="40"
+                                    <Button x:Name="images_open" Style="{StaticResource AccentButton}" MinWidth="180" MinHeight="36"
                                             Content="{x:Static props:Resources.images_open}"/>
                                     <ProgressBar x:Name="images_opening" Width="260" IsIndeterminate="True" Visibility="Hidden" VerticalAlignment="Center"/>
                                 </Grid>
@@ -1275,7 +1275,7 @@
                     <Grid x:Name="images_loaded" Visibility="Collapsed" AllowDrop="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="18"/>
+                            <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="250"/>
                         </Grid.ColumnDefinitions>
 
@@ -1409,17 +1409,17 @@
                 </Border>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <Grid Margin="28,20,28,20">
+                <Grid Margin="24,10,24,16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="18"/>
+                        <ColumnDefinition Width="12"/>
                         <ColumnDefinition Width="290"/>
                     </Grid.ColumnDefinitions>
 
                     <Grid x:Name="super_editor">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="16"/>
+                            <RowDefinition Height="12"/>
                             <RowDefinition Height="*" MinHeight="260"/>
                         </Grid.RowDefinitions>
 
@@ -1554,7 +1554,7 @@
                                 <TextBlock x:Name="super_problems" Foreground="{StaticResource Danger}" FontSize="12" TextWrapping="Wrap" LineHeight="18"/>
                             </Border>
 
-                            <Button x:Name="super_build" Style="{StaticResource AccentButton}" MinHeight="40" Margin="0,0,0,8"
+                            <Button x:Name="super_build" Style="{StaticResource AccentButton}" MinHeight="36" Margin="0,0,0,8"
                                     Content="{x:Static props:Resources.super_build}"/>
                             <Button x:Name="super_cancel" Style="{StaticResource DangerButton}" Margin="0,0,0,8" Visibility="Collapsed"
                                     Content="{x:Static props:Resources.backup_cancel}"/>
@@ -1596,7 +1596,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="28,20,28,20">
+                <Grid Grid.Row="1" Margin="24,10,24,16">
                     <!-- Nothing open -->
                     <Grid x:Name="samsung_empty" AllowDrop="True" Background="Transparent">
                         <Grid Width="620" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -1619,9 +1619,9 @@
                                 </WrapPanel>
                                 <Grid HorizontalAlignment="Center">
                                     <StackPanel x:Name="samsung_open_buttons" Orientation="Horizontal">
-                                        <Button x:Name="samsung_open" Style="{StaticResource AccentButton}" MinWidth="170" MinHeight="40" Margin="0,0,10,0"
+                                        <Button x:Name="samsung_open" Style="{StaticResource AccentButton}" MinWidth="170" MinHeight="36" Margin="0,0,10,0"
                                                 Content="{x:Static props:Resources.samsung_open}"/>
-                                        <Button x:Name="samsung_open_folder_pick" MinWidth="150" MinHeight="40"
+                                        <Button x:Name="samsung_open_folder_pick" MinWidth="150" MinHeight="36"
                                                 Content="{x:Static props:Resources.samsung_open_folder}"/>
                                     </StackPanel>
                                     <StackPanel x:Name="samsung_opening" Visibility="Hidden" VerticalAlignment="Center">
@@ -1648,7 +1648,7 @@
                     <Grid x:Name="samsung_loaded" Visibility="Collapsed" AllowDrop="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -1822,7 +1822,7 @@
                                                Foreground="{StaticResource Dim}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,0,8,0"/>
                                 </DockPanel>
                                 <!-- One main action: a phone in Download mode, its PIT and model read, then the flash checked against them. -->
-                                <Button x:Name="samsung_odin_main" Style="{StaticResource AccentButton}" MinHeight="42" Margin="0,0,0,10"
+                                <Button x:Name="samsung_odin_main" Style="{StaticResource AccentButton}" MinHeight="38" Margin="0,0,0,10"
                                         Content="{x:Static props:Resources.samsung_odin_button}" ToolTip="{x:Static props:Resources.samsung_odin_tip}"/>
                                 <UniformGrid Columns="2" Margin="0,0,0,8">
                                     <Button x:Name="samsung_extract" Margin="0,0,4,4" Padding="12,7" ContentTemplate="{StaticResource WrapLabel}" Content="{x:Static props:Resources.samsung_extract}"/>
@@ -1868,7 +1868,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="28,16,28,18">
+                <Grid Grid.Row="1" Margin="24,10,24,16">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
@@ -1920,7 +1920,7 @@
                     </DockPanel>
                 </Border>
 
-                <Border Grid.Row="1" Margin="28,20,28,20" Style="{StaticResource Card}" Background="{StaticResource Well}" BorderThickness="1">
+                <Border Grid.Row="1" Margin="24,10,24,16" Style="{StaticResource Card}" Background="{StaticResource Well}" BorderThickness="1">
                     <TextBox FlowDirection="LeftToRight" x:Name="log_text" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0"
                              FontFamily="{StaticResource Mono}" FontSize="12" Foreground="{StaticResource Dim}"
                              TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
@@ -1930,19 +1930,19 @@
         <!-- Settings and About sit at the foot of the rail (the items host is a DockPanel). -->
         <TabItem x:Name="about_tab" DockPanel.Dock="Bottom" Header="{x:Static props:Resources.about}" Tag="{StaticResource IconAbout}">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <Grid Margin="28,22,28,24">
+                <Grid Margin="24,10,24,16">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.1*"/>
-                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="12"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- The hero: the app, what it does, its version. -->
-                    <Border Grid.ColumnSpan="3" Style="{StaticResource Card}" Background="{StaticResource Glass2}" BorderBrush="{StaticResource GlassLine2}" Padding="26,24" Margin="0,0,0,16">
+                    <Border Grid.ColumnSpan="3" Style="{StaticResource Card}" Background="{StaticResource Glass2}" BorderBrush="{StaticResource GlassLine2}" Padding="26,24" Margin="0,0,0,12">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -2010,7 +2010,7 @@
                                 </WrapPanel>
                             </StackPanel>
                         </Border>
-                        <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                        <Border Style="{StaticResource Card}" Margin="0,12,0,0">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,10" Text="{x:Static props:Resources.about_inside}"/>
                                 <Grid>
@@ -2056,10 +2056,10 @@
                 </Border>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <Grid Margin="28,16,28,24">
+                    <Grid Margin="24,10,24,16">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="12"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -2085,7 +2085,7 @@
                                 <TextBlock Style="{StaticResource Note}" Margin="0,3,0,0" FontSize="11.5" TextWrapping="Wrap" Text="{x:Static props:Resources.rendering_note}"/>
                             </StackPanel>
                         </Border>
-                        <Border Grid.Row="1" Style="{StaticResource Card}" VerticalAlignment="Top" Margin="0,16,0,0">
+                        <Border Grid.Row="1" Style="{StaticResource Card}" VerticalAlignment="Top" Margin="0,12,0,0">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.settings_shortcuts}"/>
                                 <Grid FlowDirection="LeftToRight">
@@ -2119,10 +2119,10 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                            <Border Style="{StaticResource Card}" Margin="0,12,0,0">
                                 <StackPanel>
                                     <DockPanel Margin="0,0,0,10">
-                                        <Button x:Name="update_check_now" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" MinHeight="32" Margin="12,0,0,0"
+                                        <Button x:Name="update_check_now" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" MinHeight="30" Margin="12,0,0,0"
                                                 VerticalAlignment="Center" Content="{x:Static props:Resources.update_check_now}"/>
                                         <StackPanel VerticalAlignment="Center">
                                             <TextBlock Style="{StaticResource CardTitle}" Margin="0" Text="{x:Static props:Resources.update_section}"/>
@@ -2136,13 +2136,13 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                            <Border Style="{StaticResource Card}" Margin="0,12,0,0">
                                 <StackPanel>
                                     <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,4" Text="{x:Static props:Resources.driver_section}"/>
                                     <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="0,0,0,12" TextWrapping="Wrap"
                                                Text="{x:Static props:Resources.driver_section_note}"/>
                                     <DockPanel Margin="0,0,0,10">
-                                        <Button x:Name="settings_google_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" MinHeight="32" Margin="12,0,0,0"
+                                        <Button x:Name="settings_google_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" MinHeight="30" Margin="12,0,0,0"
                                                 VerticalAlignment="Center" Content="{x:Static props:Resources.driver_install}"/>
                                         <Ellipse x:Name="settings_google_driver_dot" DockPanel.Dock="Left" Width="9" Height="9" Fill="{StaticResource Faint}" Margin="0,0,12,0" VerticalAlignment="Center"/>
                                         <StackPanel VerticalAlignment="Center">
@@ -2151,7 +2151,7 @@
                                         </StackPanel>
                                     </DockPanel>
                                     <DockPanel>
-                                        <Button x:Name="settings_samsung_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" MinHeight="32" Margin="12,0,0,0"
+                                        <Button x:Name="settings_samsung_driver" DockPanel.Dock="Right" Style="{StaticResource GhostButton}" MinHeight="30" Margin="12,0,0,0"
                                                 VerticalAlignment="Center" Content="{x:Static props:Resources.driver_install}"/>
                                         <Ellipse x:Name="settings_samsung_driver_dot" DockPanel.Dock="Left" Width="9" Height="9" Fill="{StaticResource Faint}" Margin="0,0,12,0" VerticalAlignment="Center"/>
                                         <StackPanel VerticalAlignment="Center">
@@ -2162,7 +2162,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                            <Border Style="{StaticResource Card}" Margin="0,12,0,0">
                                 <StackPanel>
                                     <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,12" Text="{x:Static props:Resources.settings_phone}"/>
                                     <CheckBox x:Name="root_probe" Margin="0,0,0,2" Content="{x:Static props:Resources.root_probe}"/>
@@ -2171,7 +2171,7 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                            <Border Style="{StaticResource Card}" Margin="0,12,0,0">
                                 <StackPanel>
                                     <TextBlock Style="{StaticResource CardTitle}" Margin="0,0,0,12" Text="{x:Static props:Resources.welcome_section}"/>
                                     <WrapPanel>
@@ -2242,7 +2242,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="welcome_back" HorizontalAlignment="Left" Style="{StaticResource GhostButton}" MinWidth="110" MinHeight="40"/>
+            <Button x:Name="welcome_back" HorizontalAlignment="Left" Style="{StaticResource GhostButton}" MinWidth="110" MinHeight="36"/>
             <StackPanel x:Name="welcome_dots" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"/>
             <Button x:Name="welcome_next" Grid.Column="2" HorizontalAlignment="Right" Style="{StaticResource AccentButton}"
                     MinWidth="140" MinHeight="40" IsDefault="True"/>

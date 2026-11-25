@@ -2264,7 +2264,7 @@ namespace FastbootEnhance
             Action fitFlash = PageFit.Attach(MainWindow.THIS.flash_scroll, MainWindow.THIS.flash_body, delegate
             {
                 FrameworkElement result = MainWindow.THIS.flash_result;
-                return 460 + (result.IsVisible ? result.ActualHeight + 16 : 0);
+                return 410 + (result.IsVisible ? result.ActualHeight + 16 : 0);
             });
             MainWindow.THIS.flash_result.IsVisibleChanged += delegate { fitFlash(); };
             MainWindow.THIS.flash_result.SizeChanged += delegate { fitFlash(); };

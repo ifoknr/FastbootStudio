@@ -42,23 +42,23 @@
     </Style>
 
     <Style x:Key="PageTitle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
     </Style>
 
     <Style x:Key="PageSubtitle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="12.5"/>
+        <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground" Value="{StaticResource Dim}"/>
-        <Setter Property="Margin" Value="0,3,0,0"/>
+        <Setter Property="Margin" Value="0,2,0,0"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
     <Style x:Key="CardTitle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="13.5"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{StaticResource Text}"/>
-        <Setter Property="Margin" Value="0,0,0,12"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
     </Style>
 
     <Style x:Key="SectionLabel" TargetType="TextBlock">
@@ -85,12 +85,14 @@
     <!-- Surfaces -->
     <!-- Every card is a sheet of glass: translucent over the sky gradient, with a hairline edge
          and the same 16 px corners everywhere. -->
+    <!-- The scale since the density pass: cards 14 px corners with 16 x 14 padding and 12 px between
+         them; controls 10 px corners; small tiles and tabs 7 to 8 px. -->
     <Style x:Key="Card" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource Glass}"/>
         <Setter Property="BorderBrush" Value="{StaticResource GlassLine}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="16"/>
-        <Setter Property="Padding" Value="20,18"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="16,14"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
 
@@ -102,7 +104,7 @@
     <Style x:Key="PageHeader" TargetType="Border">
         <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="28,18,28,10"/>
+        <Setter Property="Padding" Value="24,14,24,8"/>
     </Style>
 
     <Style x:Key="Badge" TargetType="Border">
@@ -154,8 +156,8 @@
         <Setter Property="Background" Value="{StaticResource Glass2}"/>
         <Setter Property="BorderBrush" Value="{StaticResource GlassLine2}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="16,0"/>
-        <Setter Property="MinHeight" Value="36"/>
+        <Setter Property="Padding" Value="14,0"/>
+        <Setter Property="MinHeight" Value="32"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
@@ -322,8 +324,8 @@
     </Style>
 
     <Style x:Key="HelpButton" TargetType="Button">
-        <Setter Property="Width" Value="34"/>
-        <Setter Property="Height" Value="34"/>
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
         <Setter Property="Foreground" Value="{StaticResource Accent}"/>
@@ -356,7 +358,7 @@
         <Setter Property="Background" Value="{StaticResource Well}"/>
         <Setter Property="BorderBrush" Value="{StaticResource GlassLine2}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="Padding" Value="8,5"/>
         <Setter Property="CaretBrush" Value="{StaticResource Text}"/>
         <Setter Property="SelectionBrush" Value="{StaticResource Accent}"/>
         <Setter Property="FontSize" Value="13"/>
@@ -440,8 +442,8 @@
         <Setter Property="FontSize" Value="12.5"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRing}"/>
-        <Setter Property="MinHeight" Value="32"/>
-        <Setter Property="Padding" Value="12,4"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="Padding" Value="12,3"/>
         <Setter Property="Margin" Value="0,0,6,6"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -664,7 +666,7 @@
                 <ControlTemplate TargetType="GridViewColumnHeader">
                     <Grid>
                         <Border Background="Transparent" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,0,0,1">
-                            <ContentPresenter Margin="10,8" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            <ContentPresenter Margin="10,6" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="Center" RecognizesAccessKey="True"/>
                         </Border>
                         <Thumb x:Name="PART_HeaderGripper" HorizontalAlignment="Right" Width="8" Cursor="SizeWE">
@@ -688,7 +690,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
                     <Border x:Name="bd" Background="Transparent" BorderBrush="{StaticResource GlassLine}"
-                            BorderThickness="0,0,0,1" Padding="4,7" SnapsToDevicePixels="True">
+                            BorderThickness="0,0,0,1" Padding="4,5" SnapsToDevicePixels="True">
                         <GridViewRowPresenter Columns="{TemplateBinding GridView.ColumnCollection}"
                                               Content="{TemplateBinding Content}" VerticalAlignment="Center"/>
                     </Border>
@@ -721,7 +723,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Border Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="1"
-                                CornerRadius="10" Padding="3" HorizontalAlignment="Left" Margin="0,0,0,14" SnapsToDevicePixels="True">
+                                CornerRadius="10" Padding="3" HorizontalAlignment="Left" Margin="0,0,0,10" SnapsToDevicePixels="True">
                             <StackPanel Orientation="Horizontal" IsItemsHost="True" KeyboardNavigation.TabIndex="1"/>
                         </Border>
                         <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Row="1" ContentSource="SelectedContent"/>
@@ -741,7 +743,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
                     <!-- 7 px: the strip's 10 px corner less its 3 px padding, so the two curves run parallel. -->
-                    <Border x:Name="bd" Background="Transparent" CornerRadius="7" Padding="14,6" Margin="0,0,2,0" Cursor="Hand">
+                    <Border x:Name="bd" Background="Transparent" CornerRadius="7" Padding="12,5" Margin="0,0,2,0" Cursor="Hand">
                         <ContentPresenter x:Name="header" ContentSource="Header" VerticalAlignment="Center" RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -769,12 +771,12 @@
     <Style x:Key="NavItem" TargetType="TabItem">
         <Setter Property="DockPanel.Dock" Value="Top"/>
         <Setter Property="Foreground" Value="{StaticResource Dim}"/>
-        <Setter Property="FontSize" Value="13.5"/>
+        <Setter Property="FontSize" Value="13"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusRingInside}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="bd" Background="Transparent" BorderBrush="Transparent" BorderThickness="1" CornerRadius="10" Height="34" Margin="0,1" Cursor="Hand" SnapsToDevicePixels="True">
+                    <Border x:Name="bd" Background="Transparent" BorderBrush="Transparent" BorderThickness="1" CornerRadius="10" Height="32" Margin="0,1" Cursor="Hand" SnapsToDevicePixels="True">
                         <StackPanel Orientation="Horizontal" Margin="12,0" VerticalAlignment="Center">
                             <Path x:Name="icon" Data="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
                                   Stroke="{TemplateBinding Foreground}" StrokeThickness="1.7"
@@ -987,7 +989,7 @@
                 <ControlTemplate TargetType="TabControl">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="224"/>
+                            <ColumnDefinition Width="212"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Border Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,0,1,0">
@@ -1053,8 +1055,8 @@
     <!-- A page with nothing open yet: a dashed frame, a big icon, "drop a file here" and the formats. -->
     <Style x:Key="EmptyFrame" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource Glass}"/>
-        <Setter Property="CornerRadius" Value="16"/>
-        <Setter Property="Padding" Value="40,36"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="32,28"/>
     </Style>
     <Style x:Key="EmptyIcon" TargetType="Border">
         <Setter Property="Width" Value="76"/>
