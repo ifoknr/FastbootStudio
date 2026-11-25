@@ -44,6 +44,12 @@
     <!-- The cards and bars: solid charcoal one step above the page (IFOKNR chose solid over see-through, 9 Nov). -->
     <SolidColorBrush x:Key="Glass" Color="#1B1B1F"/>
     <SolidColorBrush x:Key="Glass2" Color="#26262B"/>
+    <!-- The card's own colour fading in from clear: laid over the foot of a list that has more rows
+         below, so the last row reads as "more to scroll", not as cut off. -->
+    <LinearGradientBrush x:Key="GlassFade" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#001B1B1F" Offset="0"/>
+        <GradientStop Color="#F21B1B1F" Offset="1"/>
+    </LinearGradientBrush>
     <SolidColorBrush x:Key="GlassLine" Color="#2C2C32"/>
     <SolidColorBrush x:Key="GlassLine2" Color="#3A3A42"/>
     <!-- Behind everything: a diagonal gradient, blue-tinted at the top start. A plain gradient, because

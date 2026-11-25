@@ -168,7 +168,7 @@
                                     <!-- The cards of this column scroll when the window is too short for them; a card is never cut by the window edge. -->
                                     <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
                                     <StackPanel>
-                                        <Border x:Name="fastboot_action_bar" Style="{StaticResource Card}" Margin="0,0,0,18">
+                                        <Border x:Name="fastboot_action_bar" Style="{StaticResource Card}" Padding="20,16" Margin="0,0,0,12">
                                             <StackPanel>
                                                 <TextBlock Style="{StaticResource CardTitle}" Text="{x:Static props:Resources.quick_actions}"/>
                                                 <UniformGrid Columns="2">
@@ -176,7 +176,7 @@
                                                         <!-- Longer labels (Arabic) wrap instead of being cut off. -->
                                                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                                             <!-- Room above and below a label on two lines; a one-line label keeps the usual height. -->
-                                                            <Setter Property="Padding" Value="12,7"/>
+                                                            <Setter Property="Padding" Value="10,4"/>
                                                             <Setter Property="ContentTemplate">
                                                                 <Setter.Value>
                                                                     <DataTemplate>
@@ -186,10 +186,10 @@
                                                             </Setter>
                                                         </Style>
                                                     </UniformGrid.Resources>
-                                                    <Button x:Name="fastboot_reboot_d" Margin="0,0,6,8" Content="{x:Static props:Resources.fastboot_reboot_fastbootd}"/>
-                                                    <Button x:Name="fastboot_ab_switch" Margin="6,0,0,8" Content="{x:Static props:Resources.fastboot_setactive_b}"/>
-                                                    <Button x:Name="fastboot_reboot_system" Margin="0,0,6,8" Content="{x:Static props:Resources.fastboot_reboot_system}"/>
-                                                    <Button x:Name="fastboot_reboot_recovery" Margin="6,0,0,8" Content="{x:Static props:Resources.fastboot_reboot_recovery}"/>
+                                                    <Button x:Name="fastboot_reboot_d" Margin="0,0,6,6" Content="{x:Static props:Resources.fastboot_reboot_fastbootd}"/>
+                                                    <Button x:Name="fastboot_ab_switch" Margin="6,0,0,6" Content="{x:Static props:Resources.fastboot_setactive_b}"/>
+                                                    <Button x:Name="fastboot_reboot_system" Margin="0,0,6,6" Content="{x:Static props:Resources.fastboot_reboot_system}"/>
+                                                    <Button x:Name="fastboot_reboot_recovery" Margin="6,0,0,6" Content="{x:Static props:Resources.fastboot_reboot_recovery}"/>
                                                 </UniformGrid>
                                                 <Button x:Name="fastboot_cancel_update" Style="{StaticResource WarnButton}" Visibility="Collapsed"
                                                         Content="{x:Static props:Resources.fastboot_cancel_update}"/>
@@ -1690,17 +1690,20 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <DockPanel Margin="0,5">
-                                                        <Border DockPanel.Dock="Left" Style="{StaticResource Badge}" Padding="8,2" Margin="0,0,10,0" MinWidth="86" VerticalAlignment="Center">
+                                                        <Border DockPanel.Dock="Left" Style="{StaticResource Badge}" Padding="8,2" Margin="0,0,10,0" MinWidth="82" VerticalAlignment="Center">
                                                             <TextBlock Text="{Binding Part}" FontWeight="SemiBold" FontSize="12" FlowDirection="LeftToRight" HorizontalAlignment="Center"/>
                                                         </Border>
                                                         <Border DockPanel.Dock="Right" Style="{StaticResource Chip}" Padding="9,2" Margin="8,0,0,0" VerticalAlignment="Center">
                                                             <TextBlock Text="{Binding State}" Foreground="{Binding StateBrush}" FontSize="11.5"/>
                                                         </Border>
-                                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Size}" Foreground="{StaticResource Dim}" Margin="8,0,0,0" MinWidth="64"
-                                                                   TextAlignment="Right" FlowDirection="LeftToRight" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="12.5"
-                                                                   Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" FlowDirection="LeftToRight"
-                                                                   VerticalAlignment="Center"/>
+                                                        <!-- The size sits under the name, so the name has the row's free width
+                                                             (it was cut to "AP_S918BX…" beside the size). -->
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="12.5"
+                                                                       Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" FlowDirection="LeftToRight"/>
+                                                            <TextBlock Text="{Binding Size}" Foreground="{StaticResource Dim}" FontSize="11.5" Margin="0,1,0,0"
+                                                                       FlowDirection="LeftToRight" HorizontalAlignment="Left"/>
+                                                        </StackPanel>
                                                     </DockPanel>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
@@ -1765,7 +1768,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Border Style="{StaticResource Card}">
+                        <Border Style="{StaticResource Card}" Padding="14,16">
                             <DockPanel>
                                 <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8">
                                     <TextBlock x:Name="samsung_selected_count" DockPanel.Dock="Right" Foreground="{StaticResource Faint}" FontSize="11.5" VerticalAlignment="Center"/>
@@ -1775,7 +1778,8 @@
                                     <Button x:Name="samsung_select_boot" Margin="0,0,8,0" Padding="10,4" Content="{x:Static props:Resources.samsung_select_boot}"/>
                                     <Button x:Name="samsung_select_none" Style="{StaticResource GhostButton}" Padding="10,4" Content="{x:Static props:Resources.backup_select_none}"/>
                                 </WrapPanel>
-                                <ListView x:Name="samsung_entries" SelectionMode="Single" local:ColumnFill.Column="2" local:ColumnFill.MinWidth="110">
+                                <ListView x:Name="samsung_entries" SelectionMode="Single" local:ColumnFill.Column="2" local:ColumnFill.MinWidth="80"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn Width="34">
@@ -1785,19 +1789,19 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{x:Static props:Resources.samsung_column_from}" Width="52" DisplayMemberBinding="{Binding Part}"/>
+                                            <GridViewColumn Header="{x:Static props:Resources.samsung_column_from}" Width="46" DisplayMemberBinding="{Binding Part}"/>
                                             <GridViewColumn Header="{x:Static props:Resources.samsung_column_file}" Width="160">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="12.5" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="12.5" TextTrimming="CharacterEllipsis"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="{x:Static props:Resources.column_size}" Width="76" DisplayMemberBinding="{Binding Size}"/>
-                                            <GridViewColumn Width="70">
+                                            <GridViewColumn Header="{x:Static props:Resources.column_size}" Width="72" DisplayMemberBinding="{Binding Size}"/>
+                                            <GridViewColumn Width="60">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding State}" Foreground="{Binding StateBrush}" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text="{Binding State}" ToolTip="{Binding State}" Foreground="{Binding StateBrush}" TextTrimming="CharacterEllipsis"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>

@@ -117,7 +117,7 @@ namespace FastbootEnhance
             // The right column fills the page, and scrolls once the window is too short for the
             // actions card and a usable list above it.
             Action fitSide = PageFit.Attach(W.samsung_side_scroll, W.samsung_side,
-                () => W.samsung_actions_card.ActualHeight + 12 + 220);
+                () => W.samsung_actions_card.ActualHeight + 12 + 320);
             W.samsung_actions_card.SizeChanged += delegate { fitSide(); };
         }
 

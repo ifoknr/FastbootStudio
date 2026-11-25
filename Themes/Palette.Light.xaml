@@ -40,6 +40,12 @@
     <!-- The cards and bars: solid white on a pale grey page, like the dark theme's solid charcoal. -->
     <SolidColorBrush x:Key="Glass" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="Glass2" Color="#F2F4F8"/>
+    <!-- The card's own colour fading in from clear: laid over the foot of a list that has more rows
+         below, so the last row reads as "more to scroll", not as cut off. -->
+    <LinearGradientBrush x:Key="GlassFade" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#00FFFFFF" Offset="0"/>
+        <GradientStop Color="#F2FFFFFF" Offset="1"/>
+    </LinearGradientBrush>
     <SolidColorBrush x:Key="GlassLine" Color="#DDE1E9"/>
     <SolidColorBrush x:Key="GlassLine2" Color="#CDD3DE"/>
     <SolidColorBrush x:Key="SkyBrush" Color="#EEF0F5"/>
