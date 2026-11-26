@@ -254,6 +254,40 @@ foreach ($sub in (Visible-Tabs $payloadTab)) {
     Save-Window ('{0:D2}-payload-{1}' -f $i, ($sub.Current.Name -replace '[^A-Za-z0-9]+', '-').Trim('-').ToLower()); $i++
 }
 
+# ---------------------------------------------------------------- samples
+# A capture that shows a feature off rather than tests it. When one of its steps does not work
+# on the runner, the capture is skipped with a warning and the run carries on.
+function Sample([string] $name, [scriptblock] $steps) {
+    try {
+        & $steps
+        Save-Window $name
+    } catch {
+        Write-Warning "sample $name skipped: $_"
+        Remove-Item (Join-Path $Out '00-desktop-on-failure.png') -ErrorAction SilentlyContinue
+    }
+}
+
+# Types into a log's find bar ("logs", "flash" or "terminal") and waits for the matches to be counted.
+function Find-In([string] $which, [string] $text) {
+    $box = Wait-For { Shown $root "find_box_$which" } 10 "the find field ($which)"
+    $box.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern).SetValue($text)
+    Wait-For { $c = By-Id $root "find_count_$which"; $null -ne $c -and $c.Current.Name -match '\d' } 10 "the matches to be counted ($which)" | Out-Null
+    Start-Sleep -Milliseconds 600
+    Write-Host "find in ${which}: '$text' -> $((By-Id $root "find_count_$which").Current.Name)"
+}
+
+function Close-Find([string] $which) {
+    try {
+        $close = By-Id $root "find_close_$which"
+        if ($null -ne $close -and -not $close.Current.IsOffscreen) {
+            $close.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()
+            Start-Sleep -Milliseconds 400
+        }
+    } catch {
+        Write-Warning "the find bar of $which was not closed: $_"
+    }
+}
+
 # ---------------------------------------------------------------- the mouse cursor
 # The hand belongs on what can be clicked: a navigation entry shows it, the page it opens
 # does not. (A cursor set on a tab used to reach the whole page under it.)
@@ -370,6 +404,14 @@ if ($ExpectedFlashes -gt 0) {
     Start-Sleep -Milliseconds 800
     Write-Host "after flashing: $((By-Id $root 'flash_result_title').Current.Name)"
     Save-Window ('{0:D2}-flash' -f $i); $i++
+
+    # Find in the live log: Ctrl+F with the keyboard in the log, then every "OKAY" marked.
+    Sample 'find-flash' {
+        (By-Id $root 'flash_log').SetFocus()
+        Send '^f'
+        Find-In 'flash' 'OKAY'
+    }
+    Close-Find 'flash'
 
     Remove-Item $fastbootRefuse -ErrorAction SilentlyContinue
     $flashes = @(Get-Content $fakeLog | Where-Object { $_ -match ' flash ' }).Count
@@ -1021,6 +1063,21 @@ Write-Host "samsung: Magisk's tar built, sent, and the patched one fetched and f
 # ---------------------------------------------------------------- log and about
 Go 'logs_tab' | Out-Null
 Save-Window ('{0:D2}-logs' -f $i); $i++
+
+# The find bar over the log with its matches marked, then the log's right-click menu
+# (opened from the keyboard: Shift+F10).
+Sample 'find-logs' {
+    Press 'log_find'
+    Find-In 'logs' 'OKAY'
+}
+Close-Find 'logs'
+Sample 'find-logs-menu' {
+    (By-Id $root 'log_text').SetFocus()
+    Send '+{F10}'
+    Start-Sleep -Milliseconds 800
+}
+Send '{ESC}'
+Start-Sleep -Milliseconds 400
 Go 'about_tab' | Out-Null
 Save-Window ('{0:D2}-about' -f $i); $i++
 Go 'settings_tab' | Out-Null
@@ -1041,6 +1098,14 @@ if ($Arabic) {
     Go 'payload_tab' | Out-Null
     Wait-For { Shown $root 'payload_info' } 60 "the payload to open (Arabic)" | Out-Null
     Save-Window 'ar-01-payload'
+
+    # The find bar mirrored for right-to-left, the log itself still left to right.
+    Sample 'ar-find-logs' {
+        Go 'logs_tab' | Out-Null
+        Press 'log_find'
+        Find-In 'logs' 'sample'
+    }
+    Close-Find 'logs'
 
     Go 'device_tab' | Out-Null
     $devices = Wait-For { By-Id $root 'fastboot_devices_list' } 10 "the device list (Arabic)"
@@ -1434,3 +1499,42 @@ if (Test-Path $crashLog) { Fail "the app recorded an unhandled exception during 
 Stop-Process -Id $proc.Id -Force
 Remove-Item Env:FASTBOOT_STUDIO_LANG, Env:FASTBOOT_STUDIO_UPDATE_FEED
 Write-Host "update: a zip that does not match its SHA-256 is deleted"
+
+# ---------------------------------------------------------------- compact
+# The same pages with Settings -> Density -> Compact (here forced for this run), as on a
+# 1366 x 768 laptop. Samples only: a step that fails skips the rest with a warning.
+Start-Sleep -Seconds 2
+$env:FASTBOOT_STUDIO_UPDATE_FEED = 'off'
+$env:FASTBOOT_STUDIO_DENSITY = 'compact'
+try {
+    Launch-App
+    Go 'payload_tab' | Out-Null
+    Wait-For { Shown $root 'payload_info' } 60 "the payload to open (compact)" | Out-Null
+    Go 'device_tab' | Out-Null
+    $devices = Wait-For { By-Id $root 'fastboot_devices_list' } 10 "the device list (compact)"
+    $row = Wait-For { $devices.FindFirst($Scope::Descendants, $rowCond) } 20 "a device (compact)"
+    Select-Item $row
+    $row.SetFocus()
+    Send '{ENTER}'
+    Wait-For { Shown $root 'fastboot_info_list' } 20 "the device page (compact)" | Out-Null
+    Start-Sleep -Seconds 3
+    Save-Window 'compact-device'
+    Go 'flash_tab' | Out-Null
+    Save-Window 'compact-flash'
+    Go 'settings_tab' | Out-Null
+    Save-Window 'compact-settings'
+    Go 'samsung_tab' | Out-Null
+    Press 'samsung_open'
+    Choose-File $samsungZip "the firmware file dialog (compact)"
+    Wait-For { $c = By-Id $root 'samsung_build_chip'; $null -ne $c -and $c.Current.Name -eq 'S918BXXU3BWK5' } 30 "the firmware to open (compact)" | Out-Null
+    Wait-For { (By-Id $root 'samsung_progress_text').Current.Name -match '^Done in' } 90 "the MD5 of every firmware file (compact)" | Out-Null
+    Start-Sleep -Milliseconds 800
+    Save-Window 'compact-samsung'
+    Write-Host "captured the compact pages"
+} catch {
+    Write-Warning "compact samples skipped: $_"
+    Remove-Item (Join-Path $Out '00-desktop-on-failure.png') -ErrorAction SilentlyContinue
+} finally {
+    if ($null -ne $proc -and -not $proc.HasExited) { Stop-Process -Id $proc.Id -Force }
+    Remove-Item Env:FASTBOOT_STUDIO_DENSITY, Env:FASTBOOT_STUDIO_UPDATE_FEED -ErrorAction SilentlyContinue
+}
