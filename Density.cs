@@ -50,7 +50,8 @@ namespace FastbootEnhance
             bool compact = Compact;
             resources["CardPadding"] = compact ? new Thickness(12, 10, 12, 10) : new Thickness(16, 14, 16, 14);
             resources["CardTitleMargin"] = new Thickness(0, 0, 0, compact ? 6 : 10);
-            resources["PageHeaderPadding"] = compact ? new Thickness(20, 8, 20, 4) : new Thickness(24, 14, 24, 8);
+            // The top space keeps its proportion to the comfortable one (12 to 14), so a title never sits against the device bar.
+            resources["PageHeaderPadding"] = compact ? new Thickness(20, 12, 20, 6) : new Thickness(24, 14, 24, 8);
             resources["PageMargin"] = compact ? new Thickness(20, 6, 20, 10) : new Thickness(24, 10, 24, 16);
             resources["ButtonMinHeight"] = compact ? 28.0 : 32.0;
             resources["SegmentMinHeight"] = compact ? 28.0 : 30.0;
