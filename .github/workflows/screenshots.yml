@@ -13,11 +13,18 @@ on:
       - 'tools/FastbootEnhance.FakeFastboot/**'
       - 'tools/FastbootEnhance.FakeAdb/**'
       - 'Themes/**'
+      - 'Properties/**'
       - '.github/scripts/screenshots.ps1'
       - '.github/workflows/screenshots.yml'
 
 permissions:
   contents: write
+
+# One run at a time per branch: a second push waits for the first run's screenshots instead of
+# racing it to the branch.
+concurrency:
+  group: screenshots-${{ github.ref }}
+  cancel-in-progress: false
 
 env:
   DOTNET_NOLOGO: true
@@ -78,9 +85,32 @@ jobs:
           git config user.email "253658289+ifoknr@users.noreply.github.com"
           git add docs/screenshots
           git diff --cached --quiet
-          if ($LASTEXITCODE -ne 0) {
+          if ($LASTEXITCODE -eq 0) { Write-Host "The screenshots did not change."; exit 0 }
+          git commit -m "Update app screenshots [skip ci]"
+          if ($LASTEXITCODE -ne 0) { throw "The screenshots could not be committed." }
+
+          # The branch may have moved while the app was being captured. A rebase used to be tried
+          # here; two runs' PNGs conflict in it, and the step then ended without pushing.
+          git fetch origin $env:BRANCH
+          if ($LASTEXITCODE -ne 0) { throw "The branch could not be fetched." }
+          $tip = git rev-parse FETCH_HEAD
+          if ($tip -ne $env:GITHUB_SHA) {
+            # Anything but screenshots added since this run's commit means a newer run will
+            # capture newer code: its pictures are the ones to keep, so this run adds none.
+            $newer = git log --format=%H "$env:GITHUB_SHA..FETCH_HEAD" -- . ":(exclude)docs/screenshots"
+            if ($newer) {
+              Write-Host "::notice::The branch has newer source commits; their own run captures them. Nothing pushed."
+              exit 0
+            }
+            # Only screenshot commits were added: this run's captures go on top of the tip.
+            $mine = git rev-parse HEAD
+            git reset --hard FETCH_HEAD
+            git checkout $mine -- docs/screenshots
+            git add docs/screenshots
+            git diff --cached --quiet
+            if ($LASTEXITCODE -eq 0) { Write-Host "The branch already has these screenshots."; exit 0 }
             git commit -m "Update app screenshots [skip ci]"
-            # The branch may have moved while the app was being captured.
-            git pull --rebase origin $env:BRANCH
-            git push origin HEAD:$env:BRANCH
+            if ($LASTEXITCODE -ne 0) { throw "The screenshots could not be committed on the new tip." }
           }
+          git push origin HEAD:$env:BRANCH
+          if ($LASTEXITCODE -ne 0) { throw "The screenshots could not be pushed." }
