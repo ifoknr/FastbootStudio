@@ -10093,5 +10093,140 @@ namespace FastbootEnhance.Properties {
                 return ResourceManager.GetString("copy_all", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select all.
+        /// </summary>
+        public static string select_all {
+            get {
+                return ResourceManager.GetString("select_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy line.
+        /// </summary>
+        public static string copy_line {
+            get {
+                return ResourceManager.GetString("copy_line", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find….
+        /// </summary>
+        public static string find_menu {
+            get {
+                return ResourceManager.GetString("find_menu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find in the log.
+        /// </summary>
+        public static string find_hint {
+            get {
+                return ResourceManager.GetString("find_hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1}.
+        /// </summary>
+        public static string find_count {
+            get {
+                return ResourceManager.GetString("find_count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No matches.
+        /// </summary>
+        public static string find_none {
+            get {
+                return ResourceManager.GetString("find_none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous match (Shift+Enter).
+        /// </summary>
+        public static string find_prev {
+            get {
+                return ResourceManager.GetString("find_prev", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next match (Enter).
+        /// </summary>
+        public static string find_next {
+            get {
+                return ResourceManager.GetString("find_next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Match case.
+        /// </summary>
+        public static string find_case {
+            get {
+                return ResourceManager.GetString("find_case", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close (Esc).
+        /// </summary>
+        public static string find_close {
+            get {
+                return ResourceManager.GetString("find_close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find.
+        /// </summary>
+        public static string logs_find {
+            get {
+                return ResourceManager.GetString("logs_find", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Density.
+        /// </summary>
+        public static string density {
+            get {
+                return ResourceManager.GetString("density", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compact fits more on a small screen, such as a 1366 × 768 laptop..
+        /// </summary>
+        public static string density_note {
+            get {
+                return ResourceManager.GetString("density_note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comfortable.
+        /// </summary>
+        public static string density_comfortable {
+            get {
+                return ResourceManager.GetString("density_comfortable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compact.
+        /// </summary>
+        public static string density_compact {
+            get {
+                return ResourceManager.GetString("density_compact", resourceCulture);
+            }
+        }
     }
 }

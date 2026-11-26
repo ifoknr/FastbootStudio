@@ -3553,4 +3553,49 @@ Odin에서 AP에 {1}을(를) 넣고, BL, CP, CSC는 같은 펌웨어의 것을 �
   <data name="copy_all" xml:space="preserve">
     <value>모두 복사</value>
   </data>
+  <data name="select_all" xml:space="preserve">
+    <value>모두 선택</value>
+  </data>
+  <data name="copy_line" xml:space="preserve">
+    <value>줄 복사</value>
+  </data>
+  <data name="find_menu" xml:space="preserve">
+    <value>찾기…</value>
+  </data>
+  <data name="find_hint" xml:space="preserve">
+    <value>로그에서 찾기</value>
+  </data>
+  <data name="find_count" xml:space="preserve">
+    <value>{0} / {1}</value>
+  </data>
+  <data name="find_none" xml:space="preserve">
+    <value>일치 없음</value>
+  </data>
+  <data name="find_prev" xml:space="preserve">
+    <value>이전 일치 (Shift+Enter)</value>
+  </data>
+  <data name="find_next" xml:space="preserve">
+    <value>다음 일치 (Enter)</value>
+  </data>
+  <data name="find_case" xml:space="preserve">
+    <value>대소문자 구분</value>
+  </data>
+  <data name="find_close" xml:space="preserve">
+    <value>닫기 (Esc)</value>
+  </data>
+  <data name="logs_find" xml:space="preserve">
+    <value>찾기</value>
+  </data>
+  <data name="density" xml:space="preserve">
+    <value>밀도</value>
+  </data>
+  <data name="density_note" xml:space="preserve">
+    <value>컴팩트는 1366 × 768 노트북 같은 작은 화면에 더 많이 표시합니다.</value>
+  </data>
+  <data name="density_comfortable" xml:space="preserve">
+    <value>여유</value>
+  </data>
+  <data name="density_compact" xml:space="preserve">
+    <value>컴팩트</value>
+  </data>
 </root>

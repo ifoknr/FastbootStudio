@@ -26,6 +26,8 @@ namespace FastbootEnhance
             THIS = this;
             FlowDirection = Languages.Flow;
             ThemedWindow.Attach(this);
+            // Back where it was last time: monitor, position, size, maximised.
+            WindowPlace.Attach(this);
 
             clearStagingDirectories();
 
@@ -63,6 +65,7 @@ namespace FastbootEnhance
             wireThemes();
             wireRendering();
             wireTextSize();
+            wireDensity();
             wireDrivers();
             UpdateUI.init();
             RootUI.init();
@@ -326,6 +329,14 @@ namespace FastbootEnhance
                 e.Handled = true;
                 return;
             }
+            // Ctrl+F: the find bar of this page's log, from anywhere on the page but another text field.
+            if (ctrl && e.Key == System.Windows.Input.Key.F && findOnPage() != null
+                && (!(System.Windows.Input.Keyboard.FocusedElement is System.Windows.Controls.TextBox focused) || focused.IsReadOnly))
+            {
+                findOnPage().Open();
+                e.Handled = true;
+                return;
+            }
             if (!ctrl || System.Windows.Input.Keyboard.FocusedElement is System.Windows.Controls.TextBox)
                 return;
             if (e.Key == System.Windows.Input.Key.L)
@@ -388,10 +399,58 @@ namespace FastbootEnhance
 
         const int MaxLogBoxChars = 400000;
 
+        // Find (Ctrl+F) and the copy menu of each log box.
+        LogFind logsFind, flashFind, terminalFind;
+
+        /// <summary>The find bar of the page in view, or null on a page without a log.</summary>
+        LogFind findOnPage()
+        {
+            return main_tabs.SelectedItem == logs_tab ? logsFind
+                : main_tabs.SelectedItem == flash_tab ? flashFind
+                : main_tabs.SelectedItem == terminal_tab ? terminalFind
+                : null;
+        }
+
+        /// <summary>Comfortable or compact: applies to every page right away, like the text size.</summary>
+        void wireDensity()
+        {
+            string[] names = { Properties.Resources.density_comfortable, Properties.Resources.density_compact };
+            for (int i = 0; i < Density.Codes.Length; i++)
+            {
+                string code = Density.Codes[i];
+                System.Windows.Controls.Button button = new System.Windows.Controls.Button
+                {
+                    Content = names[i],
+                    Tag = code,
+                    Padding = new Thickness(14, 5, 14, 5),
+                    Margin = new Thickness(0, 0, 8, 8),
+                };
+                System.Windows.Automation.AutomationProperties.SetAutomationId(button, "density_" + code);
+                button.Click += delegate
+                {
+                    Density.Set(Application.Current.Resources, code);
+                    Density.Save(code);
+                    paintDensity();
+                };
+                density_buttons.Children.Add(button);
+            }
+            paintDensity();
+        }
+
+        void paintDensity()
+        {
+            foreach (System.Windows.Controls.Button button in density_buttons.Children)
+                button.Style = (Style)FindResource((string)button.Tag == Density.Chosen ? "AccentButton" : "GhostButton");
+        }
+
         /// <summary>The Logs page shows the whole session; the Flash page shows the same feed.</summary>
         void wireLogs()
         {
             log_text.Text = LogStore.Snapshot();
+            logsFind = LogFind.Attach(log_text, "logs");
+            flashFind = LogFind.Attach(flash_log, "flash");
+            terminalFind = LogFind.Attach(terminal_output, "terminal");
+            log_find.Click += delegate { logsFind.Open(); };
 
             LogStore.LineAdded += line =>
             {

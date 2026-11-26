@@ -21,7 +21,7 @@
 
         <!-- The device bar above every page: which phone, in which mode, and the actions that apply to it. -->
         <local:Rail.TopBar>
-            <Border x:Name="device_bar" Height="46" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,0,0,1" Padding="20,0">
+            <Border x:Name="device_bar" Height="{DynamicResource BarHeight}" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,0,0,1" Padding="20,0">
                 <DockPanel VerticalAlignment="Center">
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="bar_cancel" Style="{StaticResource DangerButton}" MinHeight="30" Margin="0,0,8,0" Visibility="Collapsed"
@@ -67,7 +67,7 @@
 
         <!-- The status bar: how many phones fastboot sees, the last command, the tools' versions. -->
         <local:Rail.BottomBar>
-            <Border x:Name="status_bar" Height="24" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,1,0,0" Padding="16,0">
+            <Border x:Name="status_bar" Height="{DynamicResource StatusHeight}" TextElement.Foreground="{StaticResource Text}" Background="{StaticResource Glass}" BorderBrush="{StaticResource GlassLine}" BorderThickness="0,1,0,0" Padding="16,0">
                 <DockPanel VerticalAlignment="Center">
                     <TextBlock x:Name="status_tools" DockPanel.Dock="Right" Style="{StaticResource StatusText}" FlowDirection="LeftToRight" FontFamily="{StaticResource Mono}"/>
                     <TextBlock x:Name="status_devices" Style="{StaticResource StatusText}"/>
@@ -107,7 +107,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="24,10,24,16">
+                <Grid Grid.Row="1" Margin="{DynamicResource PageMargin}">
 
                     <!-- Device picker -->
                     <Border x:Name="fastboot_devices_page" Style="{StaticResource Card}">
@@ -310,7 +310,7 @@
                 </Border>
 
                 <!-- No phone in Android yet -->
-                <Border x:Name="phone_empty" Grid.Row="1" Margin="24,10,24,16" Style="{StaticResource Card}">
+                <Border x:Name="phone_empty" Grid.Row="1" Margin="{DynamicResource PageMargin}" Style="{StaticResource Card}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="460">
                         <Path Data="{StaticResource IconPhoneInfo}" Stroke="{StaticResource Faint}" StrokeThickness="1.6" Width="34" Height="34"
                               Stretch="Uniform" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Margin="0,0,0,14"/>
@@ -324,7 +324,7 @@
                 <!-- The phone: the page scrolls as a whole, so every backup is in the table on a small screen too -->
                 <ScrollViewer x:Name="phone_page" Grid.Row="1" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
                     <!-- Three cards side by side on a wide window; on a narrower one the Companion goes under the other two (PhoneUI.layout). -->
-                    <Grid x:Name="phone_grid" Margin="24,10,24,16">
+                    <Grid x:Name="phone_grid" Margin="{DynamicResource PageMargin}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="12"/>
@@ -525,7 +525,7 @@
                      body its height); before, the live log was squeezed until it was cut off. -->
                 <ScrollViewer x:Name="flash_scroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                               Focusable="False">
-                <Grid x:Name="flash_body" Margin="24,10,24,16">
+                <Grid x:Name="flash_body" Margin="{DynamicResource PageMargin}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -659,7 +659,7 @@
                                                ToolTip="{x:Static props:Resources.flash_note_verify}"/>
                                     <TextBox FlowDirection="LeftToRight" x:Name="flash_log" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0"
                                              FontFamily="{StaticResource Mono}" FontSize="12.5" Foreground="{StaticResource Dim}"
-                                             TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
+                                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"/>
                                 </DockPanel>
                             </Border>
                         </Grid>
@@ -684,7 +684,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="24,10,24,16">
+                <Grid Grid.Row="1" Margin="{DynamicResource PageMargin}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -958,7 +958,7 @@
                 </Border>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <Grid Margin="24,10,24,16">
+                    <Grid Margin="{DynamicResource PageMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="12"/>
@@ -1103,7 +1103,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="24,10,24,16">
+                <Grid Grid.Row="1" Margin="{DynamicResource PageMargin}">
                     <Grid x:Name="payload_before_load" AllowDrop="True" Background="Transparent">
                         <Grid Width="560" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Rectangle RadiusX="16" RadiusY="16" Stroke="{StaticResource GlassLine2}" StrokeThickness="1.5" StrokeDashArray="5 4" Fill="{StaticResource Glass}"/>
@@ -1241,7 +1241,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="24,10,24,16">
+                <Grid Grid.Row="1" Margin="{DynamicResource PageMargin}">
                     <!-- Nothing open: drop zone -->
                     <Grid x:Name="images_empty" AllowDrop="True" Background="Transparent">
                         <Grid Width="600" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -1409,7 +1409,7 @@
                 </Border>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <Grid Margin="24,10,24,16">
+                <Grid Margin="{DynamicResource PageMargin}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="12"/>
@@ -1596,7 +1596,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="24,10,24,16">
+                <Grid Grid.Row="1" Margin="{DynamicResource PageMargin}">
                     <!-- Nothing open -->
                     <Grid x:Name="samsung_empty" AllowDrop="True" Background="Transparent">
                         <Grid Width="620" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -1793,18 +1793,17 @@
                                             <GridViewColumn Header="{x:Static props:Resources.samsung_column_file}" Width="160">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="12.5" TextTrimming="CharacterEllipsis"/>
+                                                        <!-- The state ("Saved", a percentage) sits at the end of the name's own cell and
+                                                             takes room only while there is one; as a column of its own it left an
+                                                             empty strip and the names were cut for it. -->
+                                                        <DockPanel>
+                                                            <TextBlock DockPanel.Dock="Right" Text="{Binding State}" Foreground="{Binding StateBrush}" Margin="8,0,0,0"/>
+                                                            <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}" FontFamily="{StaticResource Mono}" FontSize="12.5" TextTrimming="CharacterEllipsis"/>
+                                                        </DockPanel>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
                                             <GridViewColumn Header="{x:Static props:Resources.column_size}" Width="72" DisplayMemberBinding="{Binding Size}"/>
-                                            <GridViewColumn Width="60">
-                                                <GridViewColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock Text="{Binding State}" ToolTip="{Binding State}" Foreground="{Binding StateBrush}" TextTrimming="CharacterEllipsis"/>
-                                                    </DataTemplate>
-                                                </GridViewColumn.CellTemplate>
-                                            </GridViewColumn>
                                         </GridView>
                                     </ListView.View>
                                 </ListView>
@@ -1868,7 +1867,7 @@
                     </DockPanel>
                 </Border>
 
-                <Grid Grid.Row="1" Margin="24,10,24,16">
+                <Grid Grid.Row="1" Margin="{DynamicResource PageMargin}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
@@ -1908,6 +1907,9 @@
                 <Border Style="{StaticResource PageHeader}">
                     <DockPanel LastChildFill="True">
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- Opens the find bar over the log (also Ctrl+F, and on the log's right-click menu). -->
+                            <Button x:Name="log_find" Style="{StaticResource GhostButton}" Margin="0,0,10,0" Content="{x:Static props:Resources.logs_find}"
+                                    ToolTip="Ctrl+F"/>
                             <Button x:Name="log_copy" Margin="0,0,10,0" Content="{x:Static props:Resources.logs_copy}"/>
                             <Button x:Name="log_open_folder" Style="{StaticResource GhostButton}" Margin="0,0,10,0"
                                     Content="{x:Static props:Resources.logs_open_folder}" ToolTip="{x:Static props:Resources.logs_file_note}"/>
@@ -1920,7 +1922,7 @@
                     </DockPanel>
                 </Border>
 
-                <Border Grid.Row="1" Margin="24,10,24,16" Style="{StaticResource Card}" Background="{StaticResource Well}" BorderThickness="1">
+                <Border Grid.Row="1" Margin="{DynamicResource PageMargin}" Style="{StaticResource Card}" Background="{StaticResource Well}" BorderThickness="1">
                     <TextBox FlowDirection="LeftToRight" x:Name="log_text" IsReadOnly="True" BorderThickness="0" Background="Transparent" Padding="0"
                              FontFamily="{StaticResource Mono}" FontSize="12" Foreground="{StaticResource Dim}"
                              TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"/>
@@ -1930,7 +1932,7 @@
         <!-- Settings and About sit at the foot of the rail (the items host is a DockPanel). -->
         <TabItem x:Name="about_tab" DockPanel.Dock="Bottom" Header="{x:Static props:Resources.about}" Tag="{StaticResource IconAbout}">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <Grid Margin="24,10,24,16">
+                <Grid Margin="{DynamicResource PageMargin}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -2056,7 +2058,7 @@
                 </Border>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <Grid Margin="24,10,24,16">
+                    <Grid Margin="{DynamicResource PageMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="12"/>
@@ -2076,6 +2078,11 @@
                                 <TextBlock FontWeight="SemiBold" Text="{x:Static props:Resources.text_size}"/>
                                 <TextBlock Style="{StaticResource Note}" Margin="0,3,0,0" FontSize="11.5" TextWrapping="Wrap" Text="{x:Static props:Resources.text_size_note}"/>
                                 <WrapPanel x:Name="text_size_buttons" Margin="0,10,0,16"/>
+
+                                <!-- Comfortable or compact (Density.cs): applies at once, like the text size. -->
+                                <TextBlock FontWeight="SemiBold" Text="{x:Static props:Resources.density}"/>
+                                <TextBlock Style="{StaticResource Note}" Margin="0,3,0,0" FontSize="11.5" TextWrapping="Wrap" Text="{x:Static props:Resources.density_note}"/>
+                                <WrapPanel x:Name="density_buttons" Margin="0,10,0,16"/>
 
                                 <CheckBox x:Name="backdrop" Margin="0,0,0,2" Content="{x:Static props:Resources.settings_backdrop}"/>
                                 <TextBlock Style="{StaticResource Note}" FontSize="11.5" Margin="26,4,0,16" TextWrapping="Wrap" Text="{x:Static props:Resources.settings_backdrop_note}"/>

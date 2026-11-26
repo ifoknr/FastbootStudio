@@ -3553,4 +3553,49 @@ super 中的分区（system、vendor…）不包括在内。继续吗？</value>
   <data name="copy_all" xml:space="preserve">
     <value>全部复制</value>
   </data>
+  <data name="select_all" xml:space="preserve">
+    <value>全选</value>
+  </data>
+  <data name="copy_line" xml:space="preserve">
+    <value>复制该行</value>
+  </data>
+  <data name="find_menu" xml:space="preserve">
+    <value>查找…</value>
+  </data>
+  <data name="find_hint" xml:space="preserve">
+    <value>在日志中查找</value>
+  </data>
+  <data name="find_count" xml:space="preserve">
+    <value>{0} / {1}</value>
+  </data>
+  <data name="find_none" xml:space="preserve">
+    <value>无匹配</value>
+  </data>
+  <data name="find_prev" xml:space="preserve">
+    <value>上一个匹配 (Shift+Enter)</value>
+  </data>
+  <data name="find_next" xml:space="preserve">
+    <value>下一个匹配 (Enter)</value>
+  </data>
+  <data name="find_case" xml:space="preserve">
+    <value>区分大小写</value>
+  </data>
+  <data name="find_close" xml:space="preserve">
+    <value>关闭 (Esc)</value>
+  </data>
+  <data name="logs_find" xml:space="preserve">
+    <value>查找</value>
+  </data>
+  <data name="density" xml:space="preserve">
+    <value>密度</value>
+  </data>
+  <data name="density_note" xml:space="preserve">
+    <value>紧凑模式可在小屏幕（如 1366 × 768 笔记本）上显示更多内容。</value>
+  </data>
+  <data name="density_comfortable" xml:space="preserve">
+    <value>舒适</value>
+  </data>
+  <data name="density_compact" xml:space="preserve">
+    <value>紧凑</value>
+  </data>
 </root>

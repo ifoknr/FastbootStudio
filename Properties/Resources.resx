@@ -3553,4 +3553,49 @@ Do not unplug the phone or close this window until it ends. If it stops half-way
   <data name="copy_all" xml:space="preserve">
     <value>Copy all</value>
   </data>
+  <data name="select_all" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="copy_line" xml:space="preserve">
+    <value>Copy line</value>
+  </data>
+  <data name="find_menu" xml:space="preserve">
+    <value>Find…</value>
+  </data>
+  <data name="find_hint" xml:space="preserve">
+    <value>Find in the log</value>
+  </data>
+  <data name="find_count" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
+  <data name="find_none" xml:space="preserve">
+    <value>No matches</value>
+  </data>
+  <data name="find_prev" xml:space="preserve">
+    <value>Previous match (Shift+Enter)</value>
+  </data>
+  <data name="find_next" xml:space="preserve">
+    <value>Next match (Enter)</value>
+  </data>
+  <data name="find_case" xml:space="preserve">
+    <value>Match case</value>
+  </data>
+  <data name="find_close" xml:space="preserve">
+    <value>Close (Esc)</value>
+  </data>
+  <data name="logs_find" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="density" xml:space="preserve">
+    <value>Density</value>
+  </data>
+  <data name="density_note" xml:space="preserve">
+    <value>Compact fits more on a small screen, such as a 1366 × 768 laptop.</value>
+  </data>
+  <data name="density_comfortable" xml:space="preserve">
+    <value>Comfortable</value>
+  </data>
+  <data name="density_compact" xml:space="preserve">
+    <value>Compact</value>
+  </data>
 </root>

@@ -3553,4 +3553,49 @@ adb shell يحتاج أمر بعده، مثل adb shell getprop. وزر إيقا
   <data name="copy_all" xml:space="preserve">
     <value>انسخ الكل</value>
   </data>
+  <data name="select_all" xml:space="preserve">
+    <value>تحديد الكل</value>
+  </data>
+  <data name="copy_line" xml:space="preserve">
+    <value>انسخ السطر</value>
+  </data>
+  <data name="find_menu" xml:space="preserve">
+    <value>بحث…</value>
+  </data>
+  <data name="find_hint" xml:space="preserve">
+    <value>ابحث في السجل</value>
+  </data>
+  <data name="find_count" xml:space="preserve">
+    <value>{0} من {1}</value>
+  </data>
+  <data name="find_none" xml:space="preserve">
+    <value>ما فيه نتائج</value>
+  </data>
+  <data name="find_prev" xml:space="preserve">
+    <value>النتيجة السابقة (Shift+Enter)</value>
+  </data>
+  <data name="find_next" xml:space="preserve">
+    <value>النتيجة التالية (Enter)</value>
+  </data>
+  <data name="find_case" xml:space="preserve">
+    <value>مطابقة حالة الأحرف</value>
+  </data>
+  <data name="find_close" xml:space="preserve">
+    <value>إغلاق (Esc)</value>
+  </data>
+  <data name="logs_find" xml:space="preserve">
+    <value>بحث</value>
+  </data>
+  <data name="density" xml:space="preserve">
+    <value>الكثافة</value>
+  </data>
+  <data name="density_note" xml:space="preserve">
+    <value>المضغوط يعرض أكثر على الشاشة الصغيرة، مثل لابتوب 1366 × 768.</value>
+  </data>
+  <data name="density_comfortable" xml:space="preserve">
+    <value>مريح</value>
+  </data>
+  <data name="density_compact" xml:space="preserve">
+    <value>مضغوط</value>
+  </data>
 </root>

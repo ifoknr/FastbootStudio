@@ -27,6 +27,8 @@ namespace FastbootEnhance
             Theme.Apply(Resources);
             // How text and edges are drawn, for every window, menu and tool tip.
             Crisp.Register();
+            // Comfortable or compact: the sizes the styles read, set before any page is drawn.
+            Density.Apply(Resources);
 
             // Checked before any window exists. Doing it in the window's constructor, as before,
             // left WPF showing a window that had already been told to shut down.
